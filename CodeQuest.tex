@@ -1,0 +1,33 @@
+%@+leo-ver=4-thin
+%@+node:gcross.20090405101642.3:@thin CodeQuest.tex
+%@@language latex
+
+%@<< Prelude >>
+%@+node:gcross.20090405101642.4:<< Prelude >>
+\documentclass[aps,pra,amsfonts,amsmath,amssymb]{revtex4}
+%@-node:gcross.20090405101642.4:<< Prelude >>
+%@nl
+
+\begin{document}
+
+%@+others
+%@+node:gcross.20090405101642.5:Introduction
+In the field of quantum computing there is a grand battle between the forces of mankind, which seek to reliably store and manipulate quantum information, and the forces of nature, which generally seek to destroy it.  The general tactic that is employed by the forces of mankind is to embed the quantum information into a subspace of some larger Hilbert space in order to give it a shelter from the storm;  that is, a Hilbert space $\mathscr{H}$ larger than necessary to store the quantum information is split into a Cartesian product, $\mathscr{H}=\mathscr{P}\times\mathscr{Q}$, of a space $\mathscr{P}$ which (very roughly speaking) protects the quantum information, and a ``shelter'' space $\mathscr{Q}$ in which the information is stored.  When designed correctly, the damaging winds of nature (if sufficiently weak) will essentially blow the sheltered subspace $\mathscr{Q}$ around the full Hilbert space $\mathscr{H}$ without touching the information inside of $\mathscr{Q}$;  if the shelter is blown too far, though, then the information will still be damaged, so one needs to frequently perform an error-correction procedure that moves the subspace $\mathscr{Q}$ back to a safe location.
+
+Perhaps the most focus within this general framework has been spent on so-called \emph{stabilizer codes}.  These work by setting up the subspace $\mathscr{P}$ to have a basis of \emph{stabilizers} -- a set of operators which commute both with each other and also with the logical operators assigned to the qubits stored in $\mathscr{Q}$.  These operators are designed so that errors acting on a single physical qubit (and possibly more) act within the subspace $\mathscr{P}$ but not within the subspace $\mathscr{Q}$, so that they effectively blow our sheltered subspace $\mathscr{Q}$ around $\mathscr{H}$ without touching the information inside;  we can tell to where the shelter has been moved by continuously monitoring the stabilizers (as they commute with everything and hence can be simultaneously diagonalized), and if one has designed the system with cleverness, one can learn about enough the error caused by nature to correct it, moving the subspace $\mathscr{Q}$ back to its original location within $\mathscr{H}$.  In short, the stabilizer formalism does  just what we need to protect our quantum information.
+
+However, merely having a theoretical strategy for protecting quantum information is not enough;  the strategy also has to lead to a system that one can actually \emph{build}, and here stabilizer codes can often fall short.  For example, the 5-qubit Shor code, while being an impressive example of protecting quantum information using only a small number of physical qubits, requires implementing 4-qubit operations, which can be troublesome in practice.
+
+Furthermore, when one starts thinking in terms of actually building a physical system, one realizes that one has another resource on their side:  one can actually try enlisting nature's help in preventing and possibly correcting the errors that it causes, reducing the cost burden that we need to bear to keep the information safe.  The general idea behind this is that we build a physical system whose interactions span the subspace $\mathscr{P}$, thus making the (degenerate) ground states of the system span the subspace $\mathscr{Q}$;  if set up correctly, errors will force the system into an excited state, and hence will be guarded against by an energetic barrier.
+
+Within the stabilizer formalism, one can accomplish this by arranging the Hamiltonian to be the sum of the stabilizers -- i.e., to have the stabilizers themselves give the interactions of the system.  When this is done, one can obtain a system in which there is an energetic barrier to errors;  for an example of this, see  the \emph{toric code} by Kitaev.  However, the protection offered by these approaches is limited because it  provides only an energetic barrier to the first error, but not to additional errors; it can be shown that this is not just a specific property to these systems but a generic property of systems in two dimensions with commuting interactions.  Furthermore, many codes like the toric code also suffer from the problem of needing to engineer 4-qubit interactions.
+
+Happily, we are not limited to using commuting interactions in our Hamiltonian;  there is nothing stopping us from engineering a system with interactions that anti-commute.  When this is done, we leave behind the stabilizer code formalism to enter the more general formalism of \emph{subsystem codes}.  The reason for this name is that the protecting space $\mathscr{P}$ is no longer spanned only by stabilizers, but instead is split into a Cartesian product, $\mathscr{P}=\mathscr{S}\times\mathscr{G}$, of a space $\mathscr{S}$ spanned by stabilizers and a space $\mathscr{G}$ spanned by so-called \emph{gauge qubits}.  Thus, the full space in which quantum information can be stored in $\mathscr{H}=\mathscr{P}\times\mathscr{Q}\equiv\mathscr{S}\times\mathscr{G}\times\mathscr{Q}$ becomes $\mathscr{G}\times\mathscr{Q}$.  However, since we are interested in storing information in a manner that is energetically protected, we only choose to make use of the so-called \emph{logical qubits} spanning $\mathscr{Q}$, and ignore the qubits in $\mathscr{G}$;  thus we are storing our information in what can be considered a ``subsystem'' of the original system, and hence the name ``system code''.  One particularly simple example of this is the two-dimensional compass model, where a set of local, 2-qubit, anti-commuting interactions in a square grid results in a subsystem code with energetic protection -- though like the toric code, the energetic protection only guards against the first error.
+
+%@-node:gcross.20090405101642.5:Introduction
+%@-others
+
+\end{document}
+%@nonl
+%@-node:gcross.20090405101642.3:@thin CodeQuest.tex
+%@-leo
