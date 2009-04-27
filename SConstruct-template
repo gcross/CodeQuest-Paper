@@ -1,0 +1,99 @@
+import os
+import os.path
+
+#### Some configurations.
+
+LATEX_PROJECT = 'CodeQuest'
+
+DEFAULT_TARGET = 'pdf'
+
+GNUPLOT_DIAGRAMS = []
+
+EPS_FIGURES = []
+
+PDF_FIGURES = []
+
+## Some rather fixed configurations:
+
+GNUPLOT_DIRECTORY = 'images'
+GNUPLOT_EXTENSION = '.gnuplot'
+EPS_DIRECTORY = 'eps'
+EPS_EXTENSION = '.eps'
+PDF_DIRECTORY = 'pdf'
+PDF_EXTENSION = '.pdf'
+
+MAKEINDEX_EXTENSIONS = ['.glg', '.glo', '.gls']
+
+#### Defining some new builders.
+env = Environment(tools = ['pdftex','latex'], ENV = os.environ)
+env['ENV']['TEXMFHOME'] = os.path.join(os.environ['HOME'],'texmf') 
+env['ENV']['TEXMFHOME'] = os.path.join(os.environ['HOME'],'local/texmf') 
+
+## eps2pdf Builder:
+pdfBuilder = Builder(action='epstopdf $SOURCE --outfile=$TARGET',
+                     suffix='.pdf',
+                     src_suffix='.eps')
+env.Append(BUILDERS={'Eps2pdf': pdfBuilder})
+
+## pdf2eps Builder:
+epsBuilder = Builder(action='pdftops -eps -level3 $SOURCE $TARGET',
+                     suffix='.eps',
+                     src_suffix='.pdf')
+env.Append(BUILDERS={'Pdf2eps': epsBuilder})
+
+## GNUplot Builder:
+gnuplotBuilder = Builder(action='gnuplot $SOURCE',
+                         suffix='.eps',
+                         src_suffix='.gnuplot')
+env.Append(BUILDERS={'Gnuplot': gnuplotBuilder})
+
+
+#### The actual builds.
+
+## LaTeX DVI build:
+dviOutput = env.DVI(source=LATEX_PROJECT + '.tex', target=LATEX_PROJECT + '.dvi')
+env.Alias('dvi', LATEX_PROJECT + '.dvi')
+
+pdfOutput = env.PDF(source=LATEX_PROJECT + '.tex', target=LATEX_PROJECT + '.pdf')
+env.Alias('pdf', LATEX_PROJECT + '.pdf')
+
+Default(DEFAULT_TARGET)
+
+## Create makeindex file list for dependencies and clean up:
+for item in MAKEINDEX_EXTENSIONS:
+    fileName = os.path.join(LATEX_PROJECT + item)
+    Depends(dviOutput, fileName)
+    Depends(pdfOutput, fileName)
+    Clean(dviOutput, fileName)
+    Clean(pdfOutput, fileName)
+
+## Build GNUplot figures:
+for item in GNUPLOT_DIAGRAMS:
+    gnuplotFile = os.path.join(GNUPLOT_DIRECTORY, item + GNUPLOT_EXTENSION)
+    epsFile = os.path.join(EPS_DIRECTORY, item + EPS_EXTENSION)
+    pdfFile = os.path.join(PDF_DIRECTORY, item + PDF_EXTENSION)
+    
+    env.Gnuplot(epsFile, gnuplotFile)
+    dep = env.Eps2pdf(pdfFile, epsFile)
+    Depends(dep, epsFile)
+    
+    Depends(dviOutput, pdfFile)
+    Depends(pdfOutput, pdfFile)
+    
+## Build PDF figures:
+for item in PDF_FIGURES:
+    epsFile = os.path.join(EPS_DIRECTORY, item + EPS_EXTENSION)
+    pdfFile = os.path.join(PDF_DIRECTORY, item + PDF_EXTENSION)
+
+    env.Pdf2eps(epsFile, pdfFile)
+
+    Depends(dviOutput, epsFile)
+
+## Build EPS figures:
+for item in EPS_FIGURES:
+    epsFile = os.path.join(EPS_DIRECTORY, item + EPS_EXTENSION)
+    pdfFile = os.path.join(PDF_DIRECTORY, item + PDF_EXTENSION)
+    
+    env.Eps2pdf(pdfFile, epsFile)
+
+    Depends(pdfOutput, pdfFile)

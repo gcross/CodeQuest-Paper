@@ -4,7 +4,10 @@
 
 %@<< Prelude >>
 %@+node:gcross.20090405101642.4:<< Prelude >>
-\documentclass[aps,pra,amsfonts,amsmath,amssymb]{revtex4}
+\documentclass[twocolumn,showpacs,preprintnumbers,amsmath,amssymb,nofootinbib,pra,floatfix]{revtex4}
+
+\usepackage{mathrsfs}
+
 %@-node:gcross.20090405101642.4:<< Prelude >>
 %@nl
 
@@ -22,13 +25,48 @@ Furthermore, when one starts thinking in terms of actually building a physical s
 
 Within the stabilizer formalism, one can accomplish this by arranging the Hamiltonian to be the sum of the stabilizers -- i.e., to have the stabilizers themselves give the interactions of the system.  When this is done, one can obtain a system in which there is an energetic barrier to errors;  for an example of this, see  the \emph{toric code} by Kitaev.  However, the protection offered by these approaches is limited because it  provides only an energetic barrier to the first error, but not to additional errors; it can be shown that this is not just a specific property to these systems but a generic property of systems in two dimensions with commuting interactions.  Furthermore, many codes like the toric code also suffer from the problem of needing to engineer 4-qubit interactions.
 
-Happily, we are not limited to commuting interactions in our Hamiltonian;  there is nothing stopping us from engineering a system with interactions that anti-commute.  When this is done, we leave behind the stabilizer code formalism to enter the more general formalism of \emph{subsystem codes}.  The reason for this name is as follows.  The protecting space $\mathscr{P}$ is no longer spanned only by stabilizers, but instead is split into a Cartesian product, $\mathscr{P}=\mathscr{S}\times\mathscr{G}$, of a space $\mathscr{S}$ spanned by stabilizers and a space $\mathscr{G}$ spanned by so-called \emph{gauge qubits}.  Thus, the full space in which quantum information can be stored in $\mathscr{H}=\mathscr{P}\times\mathscr{Q}\equiv\mathscr{S}\times\mathscr{G}\times\mathscr{Q}$ becomes $\mathscr{G}\times\mathscr{Q}$.  However, since we are interested in storing information in a manner that is energetically protected, we only choose to make use of the so-called \emph{logical qubits} spanning $\mathscr{Q}$, and ignore the qubits in $\mathscr{G}$;  thus we are storing our information in what can be considered a ``subsystem'' of the original system, and hence the name ``system code''.  One particularly simple example of this is the two-dimensional compass model, where a set of local, 2-qubit, anti-commuting interactions in a square grid result in a subsystem code with energetic protection -- though like the toric code, the energetic protection only guards against the first error.
+Happily, we are not limited to commuting interactions in our Hamiltonian;  there is nothing stopping us from engineering a system with interactions that anti-commute.  When this is done, we leave behind the stabilizer code formalism to enter the more general formalism of \emph{subsystem codes}.  The reason for this name is as follows.  The protecting space $\mathscr{P}$ is no longer spanned only by stabilizers, but instead is split into a Cartesian product, $\mathscr{P}=\mathscr{S}\times\mathscr{G}$, of a space $\mathscr{S}$ spanned by stabilizers and a space $\mathscr{G}$ spanned by so-called \emph{gauge qubits}.  Thus, the full space in which quantum information can be stored in $\mathscr{H}=\mathscr{P}\times\mathscr{Q}\equiv\mathscr{S}\times\mathscr{G}\times\mathscr{Q}$ becomes $\mathscr{G}\times\mathscr{Q}$.  However, since we are interested in storing information in a manner that is energetically protected, we only choose to make use of the so-called \emph{logical qubits} spanning $\mathscr{Q}$, and ignore the qubits in $\mathscr{G}$;  thus we are storing our information in what can be considered a ``subsystem'' of the original system, and hence the name ``subsystem code''.  One particularly simple example of this is the two-dimensional compass model, where a set of local, 2-qubit, anti-commuting interactions in a square grid result in a subsystem code with energetic protection -- though like the toric code, the energetic protection only guards against the first error.
 
 In fact, since all local interactions belong to the Pauli group and hence either commute or anti-commute with each other, this means that any such system that we build is guaranteed to give rise to some sort of subsystem code, and so the only question is whether this code is useful -- e.g., whether it has a degenerate ground state in which quantum information can be stored.  This perspective invites the following approach:  rather than starting with various encoding schemes and then trying to figure out how one might actually build a system which implements them, we can instead start with a class of systems which are feasible to build and ask if any of them have useful information storage properties;  this way, if any of them do, then they are guaranteed to not be far outside the range of experimentalists. 
 
-In this paper, we perform computer-assisted searches for interesting subsystem codes in various classes of quantum systems that are in the range of being feasibly implementable.  We start by presenting an algorithm which computes the subsystem code implemented by a physical system composed of an arbitrary set of local interactions.  Armed with a code implementing this algorithm, we explore the possibility of using systems with 2-local interactions in the pattern of the 11 uniform planar tilings, and offer evidence that only the square tiling gives rise to a useful subsystem code.  We then change tack from performing guided searches on particular lattice structures and instead perform a brute-force search through all of the possible 2-local interactions that can be placed on selected graphs of  size; the size of the graphs searched is small due to the cost of searching larger graphs, but this also has the benefit of limiting us to systems that can potentially be constructed in the near future.
+In this paper, we perform computer-assisted searches for interesting subsystem codes in various classes of quantum systems that are in the range of being feasibly implementable.  We start by presenting an algorithm which computes the subsystem code implemented by a physical system composed of an arbitrary set of Pauli interactions.  Armed with a code implementing this algorithm, we explore the possibility of using systems with 2-local interactions in the pattern of the 11 uniform planar tilings, and offer evidence that only the square tiling gives rise to a useful subsystem code.  We then change tack from performing guided searches on particular lattice structures and instead perform a brute-force search through all of the possible 2-local interactions that can be placed on selected graphs of  size; the size of the graphs searched is small due to the cost of searching larger graphs, but this also has the benefit of limiting us to systems that can potentially be constructed in the near future.
 %@nonl
 %@-node:gcross.20090405101642.5:Introduction
+%@+node:gcross.20090423002455.2:Algorithm
+\section{Algorithm}
+
+Before describing the algorithm, we shall first define precisely the problem that it solves.
+
+Assume that we have been given a list of operators $\tilde O :=\{O_1,\dots,O_n\}\in \mathcal{P}_n$ --- that is, a list of tensor products of $N$ Pauli operators which act on a Hilbert space of $N$ physical qubits, $\mathscr{H}^N$;  the source of these operators is unimportant as far as the algorithm is concerned, but in particular as described in the introduction they might come from the list of physical interactions that are summed in the Hamiltonian of a system, or alternatively they might be a list of measurements that are cheap to perform continuously on a system.  This list of operators, $\tilde O$, generates a subgroup of the full Pauli group on $N$ qubits, so that $\mathcal{O}\subseteq\mathcal{P_N}$.  In section \ref{cracking-the-code}, we will prove that given this setup, one can always find lists operators $\tilde S$ and $\tilde G$ -- respectively, ``stabilizers'' and ``gauge qubits'' -- such that the following properties hold:
+\begin{itemize}
+\item each of the operators in $\tilde S$ and $\tilde G$ is independent from the rest --- i.e., no operator can be written as a linear combination of operators in $\tilde S$ and $\tilde G$;
+\item all of the operators in $\tilde S$ commute with all of the other operators in $\tilde S$ and also all of the operators in $\tilde G$;
+\item the list $\tilde G$ can partitioned into a list of pairs of operators such that each operator in a pair commutes with all of the operators in $\tilde S$ and $\tilde G$ \emph{except} for the other operator in its pair, with which it \emph{anti-commutes};
+\item the subgroup generated by $\tilde S \cup \tilde G$ is exactly the subgroup $\mathcal{O}$ generated by $\tilde O$;
+\item the vectors acted upon nontrivially by the subgroups generated by $\tilde S$ and $\tilde G$ respectively form orthogonal $k-$ and $l-$ dimensional subspaces $\mathscr{S}$ and $\mathscr{G}$ of $\mathscr{H}^N$, where $k=|\tilde S|$ and $l=|\tilde G|/2$.
+\end{itemize}
+The proof that we give in \ref{cracking-the-code} will be constructive, and hence will simultaneously explain our algorithm for computing $\tilde S$ and $\tilde G$, which is the first step in computing the subsystem code.
+
+To complete the subsystem code, we need to compute the logical qubits, which are the qubits on which the operators in $\mathcal{O}$ act trivially (i.e., like the identity).  Formally, this is a list of operators $\tilde L$ which satisfy the following properties
+\begin{itemize}
+\item the full list of operators given by $\tilde S$, $\tilde G$, and $\tilde L$ are all independent;
+\item the list $\tilde L$ can partitioned into a list of pairs of operators such that each operator in a pair commutes with all of the operators in $\tilde S$, $\tilde G$, and $\tilde L$ \emph{except} for the other operator in its pair, with which it \emph{anti-commutes};
+\item the set of vectors $\mathscr{L}\subseteq \mathscr{H}^N$ on which the group $\mathcal{L}\subseteq P_N$ generated by $\tilde L$ acts non-trivially is a subspace of dimension $N-k-l=|\tilde L|/2$ which is orthogonal to $\mathscr{S}$ and $\mathscr{G}$, so that $\mathscr{H}^N=\mathscr{S}\times\mathscr{G}\times\mathscr{L}$\footnote{Note that although $\mathscr{H}^N=\mathscr{S}\times\mathscr{G}\times\mathscr{L}$, this does not mean in general that $\mathcal{P}^N=\left<\tilde S,\tilde G,\tilde L\right>$, i.e. that the subgroup generated by the stabilizers, gauge qubits, and logical qubits is equal to the full Pauli group.  This can quickly be seen by the fact that $\mathcal{P}^N$ requires $2N$ independent generators (excluding multiplicative factors of $\pm 1$ and $\pm i$), whereas $|\tilde S|+|\tilde G|+|\tilde L|=k+2l+2(N-k-l)=2N-k\le 2N$.  This can also be seen informally by considering that every operator in $\mathcal{P}^N$ must have an operator that anti-commutes with it, since otherwise we would have, informally, a qubit with a degree of freedom that we could not touch; thus, since as long as $|\tilde S|>0$, there exists an operator with which no operator anti-commutes, we must have in this case that $\left<\tilde S,\tilde G,\tilde L\right>\ne \mathcal{P}^N$.}.
+\end{itemize}
+In section \ref{finishing-the-job} we shall prove that a list of operators $\tilde L$ can be constructed with these properties, which is the final step in computing the subsystem code.
+
+However, at this point the problem is not yet completely solved because at this point there is another important piece of information that we need, which is:  how many errors does it take for the envornment to destroy the information in our code?  Formally, 
+%@nonl
+%@+node:gcross.20090423002455.3:Cracking the code
+\subsection{Cracking the code}
+
+\label{cracking-the-code}
+%@-node:gcross.20090423002455.3:Cracking the code
+%@+node:gcross.20090427140200.2:Finishing the job
+\subsection{Finishing the job}
+\label{finishing-the-job}
+%@-node:gcross.20090427140200.2:Finishing the job
+%@-node:gcross.20090423002455.2:Algorithm
 %@-others
 
 \end{document}
