@@ -55,7 +55,9 @@ To complete the subsystem code, we need to compute the logical qubits, which are
 \end{itemize}
 In section \ref{finishing-the-job} we shall prove that a list of operators $\tilde L$ can be constructed with these properties, which is the final step in computing the subsystem code.
 
-However, at this point the problem is not yet completely solved because at this point there is another important piece of information that we need, which is:  how many errors does it take for the envornment to destroy the information in our code?  Formally, 
+However, at this point the problem is not yet completely solved because at there is another important piece of information that we need, which is:  how many errors does it take for the environment to destroy the information in our code so thoroughly that we don't even notice that it is gone?  More formally, we want to know the \emph{minimum weight error}, the operator in $\mathcal{P}^N$ which contains the fewest number of non-identity Pauli operators in its tensor product that both acts trivially on the space $\mathscr{S}\times\mathscr{G}$ and non-trivially on the space $\mathscr{L}$, since the application of such an operator to our system is the smallest interaction that can damage the stored logical information without leaving any sign that this was done that could be measured in the protecting space $\mathscr{P}:=\mathscr{S}\times\mathscr{G}$.
+
+However, if there is more than one logical qubit than learning the minimum weight error is not enough, because it might be possible for 
 %@nonl
 %@+node:gcross.20090423002455.3:Cracking the code
 \subsection{Cracking the code}
