@@ -7,7 +7,6 @@
 \documentclass[twocolumn,showpacs,preprintnumbers,amsmath,amssymb,nofootinbib,pra,floatfix]{revtex4}
 
 \usepackage{mathrsfs}
-
 %@-node:gcross.20090405101642.4:<< Prelude >>
 %@nl
 
@@ -15,38 +14,169 @@
 
 %@+others
 %@+node:gcross.20090405101642.5:Introduction
-In the field of quantum computing, there is a grand battle between the forces of humankind, which seek to reliably store and manipulate quantum information, and the forces of nature, which generally seek to destroy it.  Although armies of experimentalists have made hereoic efforts to build systems that shield quantum information from harm, nature inevitably manages to get past these defences from time to time and strike a blow.  This might seem to paint a grim outlook for the possibility of building a quantum computer, but happily it turns out to be the case that one can generally repair damage to quantum information as long as one knows the exact form that the damage took, and furthermore that one can build a `trap' --- that is to say, a \emph{quantum code} --- that tricks nature into giving this information up.
+In the field of quantum computing, there is a grand battle between the
+forces of humankind, which seek to reliably store and manipulate
+quantum information, and the forces of nature, which generally seek to
+destroy it.  Although armies of experimentalists have made hereoic
+efforts to build systems that shield quantum information from harm,
+nature inevitably manages to get past these defences from time to time
+and strike a blow.  This might seem to paint a grim outlook for the
+possibility of building a quantum computer, but happily it turns out
+to be the case that one can generally repair damage to quantum
+information as long as one knows the exact form that the damage took,
+and furthermore that one can build a `trap' --- that is to say, a
+\emph{quantum code} --- that tricks nature into giving this
+information up.
 
-Now, the nature of codes is that they decouple the space in which our computation lives from the space in which the physical information is stored;  that is to say, although we design our quantum circuit to operate on some space of qubits $\mathscr{C}$, each of these qubits does \emph{not} directly correspond to a physical qubit, but rather there is some isomorphism that relates the entire space $\mathscr{C}$ to the space of physical qubits, $\mathscr{P}$.  To distinguish between these two spaces, we shall call the space of qubits in whose terms the computation is expressed the \emph{computational space}, and the space of qubits which have physically been built the \emph{physical space}.
+Now, the nature of codes is that they decouple the space in which our
+computation lives from the space in which the physical information is
+stored; that is to say, although we design our quantum circuit to
+operate on some space of qubits $\mathscr{C}$, each of these qubits
+does \emph{not} directly correspond to a physical qubit, but rather
+there is some isomorphism that relates the entire space $\mathscr{C}$
+to the space of physical qubits, $\mathscr{P}$.  To distinguish
+between these two spaces, we shall call the space of qubits in whose
+terms the computation is expressed the \emph{computational space}, and
+the space of qubits which have physically been built the
+\emph{physical space}.
 
-Of course, merely building an isomorphism between these two spaces is not enough to allow us to correct errors.  For one thing, we need to add extra qubits to the computational space that contain a record of the damage that we can read out;  thus, we shall say that the full computational space is $\mathscr{C}:=\mathscr{R}\times\mathscr{Q}$, where the qubits that live in $\mathscr{R}$ have the role of keeping a record of the errors that have been introduces, and the qubits that live in $\mathscr{Q}$ are the qubits in whose terms our quantum algorithm is expressed.  Since we are only performing measurements on $\mathscr{R}$, we can effectively ignore all operators except, say, the $Z$ measurement operator for each qubit;  this set of commuting operators allows us to completely measure the state of qubits in $\mathscr{R}$.  In order to build the `trap' element into our system, we need to ensure that whenever nature strikes at the physical space $\mathscr{P}$, it is isomorphic to a strike on the computational space that leaves a \emph{measureable} record in $\mathscr{R}$, which means in particular that it is isomorphic to an operator that must \emph{anti-commute} with the $Z$ operator (or whatever else we have chosen to be our basis of measurement) of one of the qubits in $\mathscr{R}$.  Note that although we speak of measuring the qubits in $\mathscr{R}$, they of course cannot be measured directly, but instead we take the measurement operator of interest in $\mathscr{R}$ and measure the \emph{isomorphic} operator in the physical space $\mathscr{P}$;  this isomorphic operator is referred to as a \emph{stabilizer}, and the full set of operators on $\mathscr{P}$ which are isomorphic to our chosen measurement operators on $\mathscr{R}$ are referred to as the \emph{stabilizers} of the code.
+Of course, merely building an isomorphism between these two spaces is
+not enough to allow us to correct errors.  For one thing, we need to
+add extra qubits to the computational space that contain a record of
+the damage that we can read out; thus, we shall say that the full
+computational space is $\mathscr{C}:=\mathscr{R}\times\mathscr{Q}$,
+where the qubits that live in $\mathscr{R}$ have the role of keeping a
+record of the errors that have been introduces, and the qubits that
+live in $\mathscr{Q}$ are the qubits in whose terms our quantum
+algorithm is expressed.  Since we are only performing measurements on
+$\mathscr{R}$, we can effectively ignore all operators except, say,
+the $Z$ measurement operator for each qubit; this set of commuting
+operators allows us to completely measure the state of qubits in
+$\mathscr{R}$.  In order to build the `trap' element into our system,
+we need to ensure that whenever nature strikes at the physical space
+$\mathscr{P}$, it is isomorphic to a strike on the computational space
+that leaves a \emph{measureable} record in $\mathscr{R}$, which means
+in particular that it is isomorphic to an operator that must
+\emph{anti-commute} with the $Z$ operator (or whatever else we have
+chosen to be our basis of measurement) of one of the qubits in
+$\mathscr{R}$.  Note that although we speak of measuring the qubits in
+$\mathscr{R}$, they of course cannot be measured directly, but instead
+we take the measurement operator of interest in $\mathscr{R}$ and
+measure the \emph{isomorphic} operator in the physical space
+$\mathscr{P}$; this isomorphic operator is referred to as a
+\emph{stabilizer}, and the full set of operators on $\mathscr{P}$
+which are isomorphic to our chosen measurement operators on
+$\mathscr{R}$ are referred to as the \emph{stabilizers} of the code.
 
-Up to this point, the formalism we have described is known as \emph{stabilizer codes} and its essential characteristic is the forcing of every qubits in $\mathscr{R}$ to always have a definite value in some basis by performing continuous measurement.  What if, however, we relaxed this constraint and only continuously measured some of the qubits in $\mathscr{R}$?  That is to say, what if we split the qubits in $\mathscr{R}$ into two catagories:  \emph{stabilizer qubits} whose states we care about and force to always have a definite value in some basis through continuous measurement, \emph{gauge qubits} whose states we do not care about.  (The latter get their name from the fact that they provide a `gauge' degree of freedom, i.e. a degree of freedom that is irrelevent to us.)  Then we would have that $\mathscr{R}=\mathscr{S}\times \mathscr{G}$, where $\mathscr{S}$ is the space in which the stabilizer qubits live, and $\mathscr{G}$ is the space in which the so-called gauge qubits live; such a scheme is known as a \emph{subsystem code}.  In this case, we shall use the term \emph{stabilizers} to denote the set of operators in $\mathscr{P}$ which are isomorphic to our chosen measurement operators of interest in $\mathscr{S}$.
+Up to this point, the formalism we have described is known as
+\emph{stabilizer codes} and its essential characteristic is the
+forcing of every qubits in $\mathscr{R}$ to always have a definite
+value in some basis by performing continuous measurement.  What if,
+however, we relaxed this constraint and only continuously measured
+some of the qubits in $\mathscr{R}$?  That is to say, what if we split
+the qubits in $\mathscr{R}$ into two catagories: \emph{stabilizer
+qubits} whose states we care about and force to always have a definite
+value in some basis through continuous measurement, \emph{gauge
+qubits} whose states we do not care about.  (The latter get their name
+from the fact that they provide a `gauge' degree of freedom, i.e. a
+degree of freedom that is irrelevent to us.)  Then we would have that
+$\mathscr{R}=\mathscr{S}\times \mathscr{G}$, where $\mathscr{S}$ is
+the space in which the stabilizer qubits live, and $\mathscr{G}$ is
+the space in which the so-called gauge qubits live; such a scheme is
+known as a \emph{subsystem code}.  In this case, we shall use the term
+\emph{stabilizers} to denote the set of operators in $\mathscr{P}$
+which are isomorphic to our chosen measurement operators of interest
+in $\mathscr{S}$.
 
-At first there might not seem to be an advantage to this approach, since it essentially means adding  qubits to our code that are `wasted';  however, in practice this can actually make our code easier to implement in a physical system.  The reason for this is that often the measurement of stabilizers requires performing operations that involve several qubits at once, which can be difficult or impossible to implement\footnote{See, for example, the \emph{toric code} [ref], which uses 4-qubit measurements.}  However, there are ways that by adding additional qubits, one can instead use a set of, say, 2-qubit operators whose simultaneous measurement results in an effective measurement of all of the stabilizers so that the stabilizer qubits are all collapsed to definite values in our chosen basis\footnote{For examples of this, see the compass model code [ref].}.
+At first there might not seem to be an advantage to this approach,
+since it essentially means adding qubits to our code that are
+`wasted'; however, in practice this can actually make our code easier
+to implement in a physical system.  The reason for this is that often
+the measurement of stabilizers requires performing operations that
+involve several qubits at once, which can be difficult or impossible
+to implement\footnote{See, for example, the \emph{toric code} [ref],
+which uses 4-qubit measurements.}  However, there are ways that by
+adding additional qubits, one can instead use a set of, say, 2-qubit
+operators whose simultaneous measurement results in an effective
+measurement of all of the stabilizers so that the stabilizer qubits
+are all collapsed to definite values in our chosen basis\footnote{For
+examples of this, see the compass model code [ref].}.
 
-What makes this approach powerful is that we no longer need our measurements on the physical system to commute with each other, as long as they all commute with the stabilizers, since then the fact that they do not commute only affects the gauge qubits, which we do not care about.  In fact, it is so powerful that any set of measurements with the property that every pair either commutes or anti-commutes can be used to implement a subsystem code, and in fact we can compute the code that it implements, as we shall prove in this paper;  of course, the resulting code might not be useful --- since among other possibilities, it might be that it has no room for encoding the quantum information that we want to store --- but it definitely exists.  This fact invites an approach to finding useful subsystem codes that is in many ways opposite to the approach commonly taken:  rather than coming up with codes and then trying to figure out how they might be physically implemented, why not start with a class of physical implementations and search within it for useful subsystem codes?  This is the approach that we explore in this paper.
+What makes this approach powerful is that we no longer need our
+measurements on the physical system to commute with each other, as
+long as they all commute with the stabilizers, since then the fact
+that they do not commute only affects the gauge qubits, which we do
+not care about.  In fact, it is so powerful that any set of
+measurements that are members of the Pauli group on the physical
+qubits can be used to implement a subsystem code, and in fact we can
+compute the code that it implements, as we shall prove in this paper;
+of course, the resulting code might not be useful --- since among
+other possibilities, it might be that it has no room for encoding the
+quantum information that we want to store --- but it definitely
+exists.  This fact invites an approach to finding useful subsystem
+codes that is in many ways opposite to the approach commonly taken:
+rather than coming up with codes and then trying to figure out how
+they might be physically implemented, why not start with a class of
+physical implementations and search within it for useful subsystem
+codes?  This is the approach that we explore in this paper.
 
-In the first section, we shall formally prove that every set of measurements with the property that all pairs either commute or anti-commute gives rise to a subsystem code, and we shall in the process present algorithms for computing this code (or at least, for computing one such code since it is not unique) and its distance.  In the second section, we shall present numerical results obtained by applying a code implementing this algorithm to explore systems built using lattices that take the form of te 11 regular tilings.  In the third section, we shall present an algorithm for seaching over all of the systems that can be implemented by using arbtitrary Ising interactons with the structure of a graph, and then we shall present the results that we have obtained from our searches.
+In the first section, we shall formally prove that every set of
+measurements that are members of the Pauli group acting on the system
+give rise to a subsystem code, and we shall in the process present
+algorithms for computing this code (or at least, for computing one
+such code, since it is not unique) and its distance.  In the second
+section, we shall present numerical results obtained by applying a
+code implementing this algorithm to explore systems built using
+lattices that take the form of te 11 regular tilings.  In the third
+section, we shall present an algorithm for seaching over all of the
+systems that can be implemented by using arbtitrary Ising interactons
+with the structure of a graph, and then we shall present the results
+that we have obtained from our searches.
 %@-node:gcross.20090405101642.5:Introduction
 %@+node:gcross.20090423002455.2:Algorithm
 \section{Algorithm}
 
-Before describing the algorithm, we shall first define precisely the problem that it solves.
+Before describing the algorithm, we shall first define precisely the
+problem that it solves.
 
-Assume that we have been given a list of operators $\tilde O :=\{O_1,\dots,O_n\}\in \mathcal{P}_n$ --- that is, a list of tensor products of $N$ Pauli operators which act on a Hilbert space of $N$ physical qubits, $\mathscr{H}^N$;  the source of these operators is unimportant as far as the algorithm is concerned, but in particular as described in the introduction they might come from the list of physical interactions that are summed in the Hamiltonian of a system, or alternatively they might be a list of measurements that are cheap to perform continuously on a system.  This list of operators, $\tilde O$, generates a subgroup of the full Pauli group on $N$ qubits, so that $\mathcal{O}\subseteq\mathcal{P_N}$.  In section \ref{cracking-the-code}, we will prove that given this setup, one can always find lists operators $\tilde S$ and $\tilde G$ -- respectively, ``stabilizers'' and ``gauge qubits'' -- such that the following properties hold:
+Assume that we have been given a list of operators $\tilde O
+:=\{O_1,\dots,O_n\}\in \mathcal{P}_n$ --- that is, a list of tensor
+products of $N$ Pauli operators which act on a Hilbert space of $N$
+physical qubits, $\mathscr{H}:=\mathbb{C}^{2N}$.  This list of
+operators, $\tilde O$, generates a subgroup $\mathcal{O}$ of
+$\mathcal{P}_n$.  In section \ref{cracking-the-code}, we shall prove
+that given this setup, one can always find lists of operators $\tilde S$
+and $\tilde G$ such that the following properties hold:
 \begin{itemize}
-\item each of the operators in $\tilde S$ and $\tilde G$ is independent from the rest --- i.e., no operator can be written as a linear combination of operators in $\tilde S$ and $\tilde G$;
-\item all of the operators in $\tilde S$ commute with all of the other operators in $\tilde S$ and also all of the operators in $\tilde G$;
-\item the list $\tilde G$ can partitioned into a list of pairs of operators such that each operator in a pair commutes with all of the operators in $\tilde S$ and $\tilde G$ \emph{except} for the other operator in its pair, with which it \emph{anti-commutes};
-\item the subgroup generated by $\tilde S \cup \tilde G$ is exactly the subgroup $\mathcal{O}$ generated by $\tilde O$.
+\item each of the operators in $\tilde S \cup \tilde G$ is
+  independent from the rest --- i.e., no operator in these lists can
+  be written as a product of other operators in these lists
+\item all of the operators in $\tilde S$ commute with each other and
+  also all of the operators in $\tilde G$;
+\item the list $\tilde G$ can partitioned into a list of pairs of
+  operators such that each operator in a pair commutes with all of the
+  operators in $\tilde S \cup \tilde G$ \emph{except} for the other
+  operator in its pair, with which it \emph{anti-commutes};
+\item the subgroup generated by $\tilde S \cup \tilde G$ is exactly
+  the subgroup $\mathcal{O}$ generated by $\tilde O$.
 \end{itemize}
-The proof that we give in \ref{cracking-the-code} will be constructive, and hence will also serve to explain our algorithm for computing $\tilde S$ and $\tilde G$, which is the first step in computing the subsystem code.
+The proof that we give in \ref{cracking-the-code} will be
+constructive, and hence will also serve to explain our algorithm for
+computing $\tilde S$ and $\tilde G$, which is the first step in
+computing the subsystem code.
 
-Now that we know the stabilizers and gauge qubits, in order to complete the subsystem code it remains to compute the logical qubits. Formally, this is a list of operators $\tilde L$ which satisfy the following properties
+Now that we know the stabilizers and gauge qubits, in order to
+complete the subsystem code it remains to compute the logical
+qubits. Formally, this is a list of operators $\tilde L$ which satisfy
+the following properties
 \begin{itemize}
-\item the full list of operators given in $\tilde S$, $\tilde G$, and $\tilde L$ are all independent;
-\item the list $\tilde L$ can be partitioned into a list of pairs of operators such that each operator in a pair commutes with all of the operators in $\tilde S$, $\tilde G$, and $\tilde L$ \emph{except} for the other operator in its pair, with which it \emph{anti-commutes};
+\item all of the operators in $\tilde S \cup \tilde G \cup \tilde L$
+  are independent;
+\item the list $\tilde L$ can be partitioned into a list of pairs of
+  operators such that each operator in a pair commutes with all of the
+  operators in $\tilde S \cup \tilde G \cup \tilde L$ \emph{except}
+  for the other operator in its pair, with which it
+  \emph{anti-commutes};
 \item **** \footnote{Note that although $\mathscr{H}^N=\mathscr{S}\times\mathscr{G}\times\mathscr{L}$, this does not mean in general that $\mathcal{P}^N=\left<\tilde S,\tilde G,\tilde L\right>$, i.e. that the subgroup generated by the stabilizers, gauge qubits, and logical qubits is equal to the full Pauli group.  This can quickly be seen by the fact that $\mathcal{P}^N$ requires $2N$ independent generators (excluding multiplicative factors of $\pm 1$ and $\pm i$), whereas $|\tilde S|+|\tilde G|+|\tilde L|=k+2l+2(N-k-l)=2N-k\le 2N$.  This can also be seen informally by considering that every operator in $\mathcal{P}^N$ must have an operator that anti-commutes with it, since otherwise we would have, informally, a qubit with a degree of freedom that we could not touch; thus, since as long as $|\tilde S|>0$, there exists an operator with which no operator anti-commutes, we must have in this case that $\left<\tilde S,\tilde G,\tilde L\right>\ne \mathcal{P}^N$.}.
 \end{itemize}
 In section \ref{finishing-the-job} we shall prove that a list of operators $\tilde L$ can be constructed with these properties, which is the final step in computing the subsystem code.
