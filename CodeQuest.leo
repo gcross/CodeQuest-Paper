@@ -3,18 +3,18 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="10" left="55" height="890" width="997"/>
+	<global_window_position top="22" left="539" height="540" width="881"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="gcross.20090405101642.1" str_leo_pos="2,2,0"><vh>@chapters</vh></v>
+<v t="gcross.20090405101642.1" str_leo_pos="2,2,1,0"><vh>@chapters</vh></v>
 <v t="gcross.20090423002455.4" a="E"><vh>@settings</vh>
 <v t="gcross.20090423002455.5"><vh>@font</vh></v>
 </v>
 <v t="gcross.20090405101642.3" a="E"
-expanded="gcross.20090423002455.2,"><vh>@thin CodeQuest.tex</vh></v>
+expanded="gcross.20090423002455.2,gcross.20090423002455.3,"><vh>@thin CodeQuest.tex</vh></v>
 </vnodes>
 <tnodes>
 <t tx="gcross.20090405101642.1"></t>

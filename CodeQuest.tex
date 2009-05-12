@@ -6,7 +6,17 @@
 %@+node:gcross.20090405101642.4:<< Prelude >>
 \documentclass[twocolumn,showpacs,preprintnumbers,amsmath,amssymb,nofootinbib,pra,floatfix]{revtex4}
 
-\usepackage{mathrsfs}
+\usepackage{mathrsfs,amsthm,pseudocode}
+
+\newtheorem{theorem}{Theorem}
+
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
 %@-node:gcross.20090405101642.4:<< Prelude >>
 %@nl
 
@@ -139,9 +149,16 @@ that we have obtained from our searches.
 %@+node:gcross.20090511123440.2:Overview
 \subsection{Overview}
 
+\label{overview}
+
 Although conceptually a subsystem code is an isomorphism $T$ such that  $\mathscr{P}\approx^T \mathscr{S}\times\mathscr{G}\times\mathscr{Q}$ --- that is, an isomorphism between the \emph{physical} space of qubits and the \emph{computational} space of qubits in whose terms our computation is actually expressed, we do not need to actually construct this isomorphism in order to be able to use the code.  Since all of our work will be done on the physical system anyway, it suffices to know the operators in the physical space $\mathscr{P}$ that are isomorphic to the qubit measurement operators of interest in the computational space $\mathscr{S}\times\mathscr{G}\times\mathscr{Q}$, and it is exactly the operators on $\mathscr{P}$ that the algorithm we present shall compute\footnote{If one really wanted to, one could explicitly construct the isomorphism $\mathscr{T}$ from these operators by computing the unitary operator which simultaneously diagonalizes a the maximal subset of commuting measurements from this set of operators on $\mathscr{P}$, but in practice this is not particularly useful.}.
 
-When one wants to define a qubit in terms of its measurement operators, it suffices to define two operators that anti-commute with each other but which commute with all of the others measurement operators that have been defined, since this gives us the $X$ and $Z$ measurements on the qubit which are sufficient to generate the full $Pauli$ group (minus phases).  Since working with such pairs of operators shall be a common theme in our algorithm, we shall create a definition in order to simplify the language used to describe them.  We shall say that a pair of operators is a \emph{conjugal pair in relation to the set} $\tilde X$ when each of the operators in the pair commutes with every operator in $\tilde X$ except for its \emph{conjugal partner} --- that is, the other operator in the conjugal pair --- should its conjugal partner be a member of $\tilde X$.  Note that we have explicitly not required that the operators in the conjugal pair be members of $\tilde X$ in order to be a conjugal pair in relation to it.  However, should both operators be members of $\tilde X$, then neither operator can belong to a different conjugal pair with respect to $\tilde X$, since in that case there would be an operator in $\tilde X$ (namely, its original conjugal partner) with which it anti-commutes that was not its conjugal partner in the new pair, leading to a contradiction.
+When one wants to define a qubit in terms of its measurement operators, it suffices to define two operators that anti-commute with each other but which commute with all of the others measurement operators that have been defined, since this gives us the $X$ and $Z$ measurements on the qubit which are sufficient to generate the full $Pauli$ group (minus phases).  Since working with such pairs of operators shall be a common theme in our algorithm, we shall create the following definition in order to simplify the language used to describe them.
+
+\begin{definition} A pair of operators is a \emph{conjugal pair in relation to the set} $\tilde X$ when each of the operators in the pair commutes with every operator in $\tilde X$ except for its \emph{conjugal partner} --- that is, the other operator in the conjugal pair --- should its conjugal partner be a member of $\tilde X$.
+\end{definition}
+
+Note that we have explicitly not required that the operators in the conjugal pair be members of $\tilde X$ in order to be a conjugal pair in relation to it.  However, should both operators be members of $\tilde X$, then neither operator can belong to a different conjugal pair with respect to $\tilde X$, since in that case there would be an operator in $\tilde X$ (namely, its original conjugal partner) with which it anti-commutes that was not its conjugal partner in the new pair, leading to a contradiction.
 
 We now formally define the problem solved by our algorithm.  Assume that we have been given a list of operators $\tilde O :=\{O_1,\dots,O_n\}\in \mathcal{P}_n$ --- that is, a list of tensor products of $N$ Pauli operators which act on a Hilbert space of $N$ physical qubits, $\mathscr{H}:=\mathbb{C}^{2N}$.  This list of operators, $\tilde O$, generates a subgroup $\mathcal{O}$ of $\mathcal{P}_n$.  In section \ref{stabilizers-and-gauge-qubits}, we shall prove one can always find sets of operators $\tilde S$ and $\tilde G$ such that the following properties hold:
 \begin{itemize}
@@ -175,6 +192,80 @@ Now that the full subsystem code has been computed, it remains to determine how 
 
 \label{stabilizers-and-gauge-qubits}
 
+%@<< Theorems >>
+%@+node:gcross.20090511123440.4:<< Theorems >>
+\subsubsection{Theorems}
+
+The basic idea behind this part of the algorithm is that we maintain three lists of operators: $\bar S$, the tentative stabilizers, $\bar G$, the tentative gauge qubit operators, and $\bar O$, the rest of the operators needed to generate some Pauli subgroup $\mathcal{O}$.  As the algorithm progresses, we move operators from $\bar O$ into either $\bar S$ or $\bar G$ until $\bar O$ is empty.
+
+\begin{theorem} Suppose that we are given lists of operators $\bar S$, $\bar G$, and non-empty $\bar O$ that generate some Pauli subgroup $\mathcal{O}$ and satisfy the following properties:
+\begin{enumerate}
+\item all of the operators in $\bar S$ commute with each other and also all of the operators in $\bar G$; \label{stabs-commute-with-G}
+\item each operator in $\bar G$ is a member of a \emph{conjugal pair} (defined in section \ref{overview}) in relation to $\bar S \cup \bar G \cup \bar O$. \label{conjugal-pairs-commute-with-SAG}
+\end{enumerate}
+Then there exists lists of operators $\bar S'$, $\bar G'$, and $\bar O'$ which also generate $\mathcal{O}$ and satisfy the above properties (substituting the primed label in the places of the unprimed label) and furthermore $\bar O'$ is strictly shorter in length than $\bar O$.
+\end{theorem}
+
+\begin{remark}
+Note that at this point, we have deliberately \emph{not} constrained the operators in $\bar S$ to be independent, although the operators in $\bar G$ are necessarily independent since they are all members of conjugal pairs.  Furthermore, since we are using \emph{lists} of operators rather than \emph{sets}, it is possible for there to be duplicate operators in $\bar S$ or $\bar O$ --- though property \ref{conjugal-pairs-commute-with-SAG} prevents the existence of duplicates inside $\bar G$.
+\end{remark}
+
+\begin{proof}
+Since by assumption $\bar O$ is non-empty, we may take any operator $O\in \bar O$ and let $\bar O_{\slash O}:=\bar O\slash O$.  Note that by property \ref{conjugal-pairs-commute-with-SAG} we know that $O$ commutes with all of the operators in $\bar G$.  Given this, there are two cases to consider:
+\begin{enumerate}
+\item when $O$ commutes with all of the operators in $\bar S$;
+\item when there is some operator $S\in\bar S$ with which it anti-commutes.
+\end{enumerate}
+
+\begin{description}
+\item[Case 1]
+Let $\bar S':= \bar S \cup \{O\}$, $\bar G' := G$, and $\bar O' := \bar O_{\slash O}$.  $\bar S'$ continues to satisfy property \ref{stabs-commute-with-G} because $O$ commutes with all of the operators in $\bar S$ and $\bar G$.  Since $\bar G'$ is the same as $\bar G$, it continues to satisfy property \ref{conjugal-pairs-commute-with-SAG}.  Furthermore, since $\bar S\cup \bar G \cup \bar O=\bar S' \cup \bar G' \cup \bar O'$, we have that $\bar S' \cup \bar G' \cup \bar O'$ continues to generate the subgroup $\mathcal{O}$.  Finally, because by construction $\bar O'$ has one fewer element than $\bar O$, we have that $|\bar O'|=|\bar O|-1$, and so we are done.
+\item[Case 2]
+Let $\bar S_{\slash S}:=\bar S\slash S$, and $\bar G' := \bar G \cup \{S,O\}$.  There are three things that we need to show:  First, that we can define $\bar S'$ to satisfy property \ref{stabs-commute-with-G}.  Second, that we can define $\bar O'$ to satisfy property \ref{conjugal-pairs-commute-with-SAG}.  Finally, that we have $|\bar O'|=|\bar O|-1$, and  $\bar S' \cup \bar G' \cup \bar O'$ continue to generate the subgroup $\mathcal{O}$.
+
+Let $\bar S' := [f(A) | A \in \bar S_{\slash S}]$ where $$f(A) :=
+\begin{cases}
+A & A \text{ and } O \text{ \emph{commute} }\\
+A\cdot S  & A \text{ and } O \text{ \emph{anti-commute} }. \\
+\end{cases}
+$$
+We now need to show that $\bar S'$ satisfies property \ref{stabs-commute-with-G}.  First, all of the operators in $\bar S'$ continue to commute with each other since they are all products of operators in the original list $\bar S$.  Furthermore, by the same argument we immediately conclude that all of the operators in $\bar S'$ continue to commute with all of the operators in $\bar G'$, except for possibly $O$ which is the only operator in $\bar G'$ not in $\bar G$ or $\bar S$.  Finally, we observe that for each element $A\in \bar S_{\slash S}$, we have that $f(A)$ commutes with $O$, since if $A$ anti-commutes with $O$ then $f(A)=A\cdot S$ which \emph{does} commute with $O$ since $O$ anti-commutes with $S$;  thus, since all of the elements in $\bar S_{\slash S}$ were run through the function $f$ to form $\bar S'$, we conclude that they all commute with $O$ as well, and hence with all of the operators in $\bar G'$.
+
+Now let $\bar O' := [(g\circ f)(A) | A \in \bar O_{\slash O}]$ where $$g(A) :=
+\begin{cases}
+A & A \text{ and } S \text{ \emph{commute} }\\
+A\cdot O  & A \text{ and } S \text{ \emph{anti-commute} }. \\
+\end{cases}
+$$
+We now need to show that $\bar G'$ satisfies property \ref{conjugal-pairs-commute-with-SAG}.  Since $S$ and $O$ anti-commute with each other and commute with all of the operators in $\bar G'$ (as by property \ref{conjugal-pairs-commute-with-SAG} they commute with all of the operators in $\bar G$, and $\bar G':=\bar G\cup\{S,O\}$), and by the previous paragraph we showed that they commute with all of the operators in $\bar S'$, it remains only to show that they also commute with all of the operators in $O'$.  To do this, we observe that $(g\circ f)(A)$ commute with both $S$ and $O$ for every operator $A\in\bar O'$, since if $A$ anti-commutes with either or both of respectively $S$ and $O$ then it is multiplied by respectively $O$ and/or $S$ which forms a new operator that commutes with both.  Since all of the operators in $\bar O_{\slash O}$  were run through $g\circ f$ to form $\bar O$, we conclude that all of the operators in $\bar O'$ commute with all of the operators in $\bar G'$, and hence property \ref{conjugal-pairs-commute-with-SAG} is satisfied.
+
+It is obvious $\bar O'$ is shorter in length than $\bar O$ due to the removal of an element from $\bar O$, so it remains only to show that $\bar S' \cup \bar G' \cup \bar O'$ continues to generate the subgroup $\mathcal{O}$.  To do this, note that any operator in $\bar S' \cup \bar G' \cup \bar O'$ was formed by products of operators in $\bar S \cup \bar G \cup \bar O$ with $S$ and/or $O$, and since $S$ and $O$ are their own inverse we can conversely obtain any operator in $\bar S \cup \bar G \cup \bar O$ from products of operator in $\bar S' \cup \bar G' \cup \bar O'$ and $S$ and/or $G$.  Since $S$ and $G$ are in both $\bar S \cup \bar G \cup \bar O$ and $\bar S' \cup \bar G' \cup \bar O'$, this means that any operator in one list can be written as a product of members of the other list, and so both lists of operators generate the same group, namely $\mathcal{O}$.
+\end{description}
+\end{proof}
+
+A consequence of not requiring independence of the operators in $\bar O$ is that when the lists $\bar S$ and $\bar G$ are constructed, the operators in $\bar S$ are not necessarily independent.  Fortunately, by encoding the operators into bit strings we can incrementally construct a list of independent operators from $\bar S'$.
+
+\begin{theorem}
+Suppose that we have been given lists of Pauli operators $\bar D$ and $\bar I$ such that the operators in $\bar I$ are independent and $\bar D \cup \bar I$ generate some Pauli subgroup $\mathcal{S}$.  Then there exists lists of operators $\bar D'$ and $\bar I'$ such that $|\bar D'|<|\bar D|$, the operators in $\bar I'$ are independent, and $\bar D' \cup \bar I'$ also generates $\mathcal{S}$.
+\end{theorem}
+
+\begin{proof}
+\end{proof}
+%@-node:gcross.20090511123440.4:<< Theorems >>
+%@nl
+
+%@<< Pseudo-code >>
+%@+node:gcross.20090511123440.5:<< Pseudo-code >>
+\subsubsection{Psuedo-code}
+
+The following is pseudo-code which explicitly implements the algorithm given in the theorem.  Although set notation is used, the objects used are understood to be lists, which means that they might contain duplicate elements.
+
+\begin{pseudocode}{ComputeStabilizersAndGaugeQubits}{O}
+S \GETS \text{empty list of operators }\\
+G \GETS \text{empty list of pairs of operators}
+\end{pseudocode}
+%@-node:gcross.20090511123440.5:<< Pseudo-code >>
+%@nl
 %@-node:gcross.20090423002455.3:Stabilizers and gauge qubits
 %@+node:gcross.20090427140200.2:Logical qubits
 \subsection{Logical qubits}
