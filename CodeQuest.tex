@@ -9,6 +9,8 @@
 \usepackage{mathrsfs,amsthm,pseudocode}
 
 \newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corolary}{Corolary}
 
 \newenvironment{definition}[1][Definition]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
@@ -196,15 +198,15 @@ Now that the full subsystem code has been computed, it remains to determine how 
 %@+node:gcross.20090511123440.4:<< Theorems >>
 \subsubsection{Theorems}
 
-The basic idea behind this part of the algorithm is that we maintain three lists of operators: $\bar S$, the tentative stabilizers, $\bar G$, the tentative gauge qubit operators, and $\bar O$, the rest of the operators needed to generate some Pauli subgroup $\mathcal{O}$.  As the algorithm progresses, we move operators from $\bar O$ into either $\bar S$ or $\bar G$ until $\bar O$ is empty.
+The basic idea behind part of the algorithm is that we maintain three lists of operators: $\bar S$, the tentative stabilizers, $\bar G$, the tentative gauge qubit operators, and $\bar O$, the rest of the operators needed to generate some Pauli subgroup $\mathcal{O}$.  As the algorithm progresses, we move operators from $\bar O$ into either $\bar S$ or $\bar G$ until $\bar O$ is empty.
 
-\begin{theorem} Suppose that we are given lists of operators $\bar S$, $\bar G$, and non-empty $\bar O$ that generate some Pauli subgroup $\mathcal{O}$ and satisfy the following properties:
+\begin{proposition} Suppose that we are given lists of operators $\bar S$, $\bar G$, and non-empty $\bar O$ that generate some Pauli subgroup $\mathcal{O}$ and satisfy the following properties:
 \begin{enumerate}
 \item all of the operators in $\bar S$ commute with each other and also all of the operators in $\bar G$; \label{stabs-commute-with-G}
 \item each operator in $\bar G$ is a member of a \emph{conjugal pair} (defined in section \ref{overview}) in relation to $\bar S \cup \bar G \cup \bar O$. \label{conjugal-pairs-commute-with-SAG}
 \end{enumerate}
 Then there exists lists of operators $\bar S'$, $\bar G'$, and $\bar O'$ which also generate $\mathcal{O}$ and satisfy the above properties (substituting the primed label in the places of the unprimed label) and furthermore $\bar O'$ is strictly shorter in length than $\bar O$.
-\end{theorem}
+\end{proposition}
 
 \begin{remark}
 Note that at this point, we have deliberately \emph{not} constrained the operators in $\bar S$ to be independent, although the operators in $\bar G$ are necessarily independent since they are all members of conjugal pairs.  Furthermore, since we are using \emph{lists} of operators rather than \emph{sets}, it is possible for there to be duplicate operators in $\bar S$ or $\bar O$ --- though property \ref{conjugal-pairs-commute-with-SAG} prevents the existence of duplicates inside $\bar G$.
@@ -243,7 +245,23 @@ It is obvious $\bar O'$ is shorter in length than $\bar O$ due to the removal of
 \end{description}
 \end{proof}
 
-A consequence of not requiring independence of the operators in $\bar O$ is that when the lists $\bar S$ and $\bar G$ are constructed, the operators in $\bar S$ are not necessarily independent.  Fortunately, by encoding the operators into bit strings we can incrementally construct a list of independent operators from $\bar S'$.
+\begin{corolary}
+\end{corolary}
+
+\begin{proof}
+\end{proof}
+
+A consequence of not requiring independence of the operators in $\bar O$ is that when the lists $\bar S$ and $\bar G$ are constructed, the operators in $\bar S$ are not necessarily independent.  Happily, since all of these operators can be expressed as tensor products of Pauli operators, we can construct a set of independent operators by performing an analogue of Gaussian elimination.  There are two options that one has for doing this:  the `block' representation, in which elimination proceeds by eliminating both the $X$ and $Z$ operators in each physical qubits before moving to the next, or the `split' representation, in which elimination first clears out the $X$ operators from all of the physical qubits before starting to clear the $Z$ operators.
+
+\begin{proposition}
+Suppose that we have been given lists of Pauli operators $\bar I$ and $\bar D$ acting on $N$ qubits as well as an integer $0\le k\le N$ such that for all integers $1 \le i \le k$, the following properties hold:
+\begin{enumerate}
+\item in each ($N-$qubit tensor product) operator of $\bar D$, the single-qubit operator acting on qubit $i$ is the identity;
+\item there is at most one operator in $\bar I$ for which the single-qubit operator acting on qubit $i$ is $X$;
+\item there is at most one operator in $\bar I$ for which the single-qubit operator acting on qubit $i$ is $Z$.
+\end{enumerate}
+Then there exist lists $\bar I'$ and $bar D'$ and an integer $k+1$ such that the above properties also hold.
+\end{proposition}
 
 \begin{theorem}
 Suppose that we have been given lists of Pauli operators $\bar D$ and $\bar I$ such that the operators in $\bar I$ are independent and $\bar D \cup \bar I$ generate some Pauli subgroup $\mathcal{S}$.  Then there exists lists of operators $\bar D'$ and $\bar I'$ such that $|\bar D'|<|\bar D|$, the operators in $\bar I'$ are independent, and $\bar D' \cup \bar I'$ also generates $\mathcal{S}$.
