@@ -318,7 +318,7 @@ Then there is an integer $i'$ such that $i< i' \le 2n$ and lists $\bar D'$ and $
 \begin{proof}
 There are two possible cases:  either $0\le i<n$, or $n\le i < 2n$.
 \begin{description}
-\item[$0\le i<n$ Case] Let $i':=i+1$.  If there is no operator in $\bar D$ that anti-commutes with $X_{i'}$, then we are done with $\bar D':=\bar D$ and $\bar I':=\bar I$.  Otherwise, let $O$ be some member of $\bar D$ which anti-commutes with $X_{i'}$, and let $\bar D':=[f(A)|A\in \bar D]$ and $\bar I':=[f(A)|A\in\bar I]\cup[O]$, where
+\item[Case $0\le i<n$] Let $i':=i+1$.  If there is no operator in $\bar D$ that anti-commutes with $X_{i'}$, then we are done with $\bar D':=\bar D$ and $\bar I':=\bar I$.  Otherwise, let $O$ be some member of $\bar D$ which anti-commutes with $X_{i'}$, and let $\bar D':=[f(A)|A\in \bar D]$ and $\bar I':=[f(A)|A\in\bar I]\cup[O]$, where
 $$f(A):=\begin{cases}
 A\cdot O & \text{$A$ and $X_{i'}$ anti-commute}\\
 A & \text{otherwise}
@@ -326,7 +326,8 @@ A & \text{otherwise}
 Note that for all Pauli operators $A$ we have that $f(A)$ commutes with $X_{i'}$ since either $A$ commutes with $X_{i'}$ and so $f(A)=A$, or $A$ anti-commutes with $X_{i'}$ and so $f(A)=A\cdot O$ which commutes with $X_{i'}$ since both $A$ and $O$ anti-commute with $X_{i'}$.  Thus, we have that $\bar D$ satisfies \ref{no-Z-in-D}, and it also trivially satisfies \ref{no-X-in-D} since $i'\le n$.
 
 It remains to show that $\bar I'$ satisfies property \ref{each-is-independent}.  Take any operator $A'\in\bar I'\slash[O]$.  This operator is equal to $f(A)$ for some $A\in \bar I'$.  We know that there exists an integer $1\le j \le i$ such that $X_j$ anti-commutes only with the operator $A$ in $\bar I$.  Since $O\in \bar D$ and $j\le i$, we also know that $X_j$ commutes with $O$, and thus $f(A)\equiv A'$ anti-commutes with $X_j$.  Because of this fact, for any operator $B'\in\bar I'$ and $B\in I$ such that $f(B)=B'$, we know that $B'$ anti-commutes with $X_j$ only if $B'$ anti-commutes with $X_j$;  as a direct consequence of this, we conclude that no other operator in $\bar I'$ can commute with $X_j$, since if it did this would imply that there was an operator $B\ne A$ in $\bar I$ which anti-commutes with $X_j$, which would lead to a contradiction.  Finally, we observe that the operator $O$ is the only operator in $\bar I'$ which anti-commutes with $X_{i'}$ and so we have shown that \ref{each-is-independent} is satisfied.
-\item[$n\le i<2n$ Case]  The proof takes nearly the same form as the proof given in the previous case by subsituting operators in the $Z_j$ family in the place of operators in the $X_{i'}$ family.  We describe only the differences here.
+\item[Case $n\le i<2n$] 
+The proof takes nearly the same form as the proof given in the previous case by subsituting operators in the $Z_j$ family in the place of operators in the $X_{i'}$ family.  We describe only the differences here.
 
 First, the fact that property \ref{no-Z-in-D} holds can in this case be obtained directly from the fact that every operator in $\bar D$ commutes with the entire $X_j$ family of operators.  To show that \ref{no-X-in-D} is satisfied is satisfied in this case, it suffices to repeat the argument used in the $i<n$ case to prove that property \ref{no-Z-in-D} held, making the substitution described in the first paragraph.
 
