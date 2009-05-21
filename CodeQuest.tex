@@ -377,18 +377,12 @@ A pseudo-code representation of the algorithm described by Theorem \ref{theorem-
 \li              $s \gets S[j]$
 \li               \For $k \gets 1$ \To $|S|$
 \li                   \Do
-\li                       \If $\func{anti}(S[k],o)=0$
-\li                       \Then  $S[k] \gets S[k]\cdot s$
-                           \End
+\li                        \kw{if} $\func{anti}(S[k],o)$ \kw{then} $S[k] \gets S[k]\cdot s$
                        \End 
 \li               \For $k \gets i+1$ \To $|O|$
 \li                  \Do
-\li                        \If $\func{anti}(O[k],o)$
-\li                       \Then  $O[k] \gets O[k]\cdot s$
-                            \End
-\li                       \If $\func{anti}(O[k],s)$
-\li                       \Then $O[k] \gets O[k]\cdot o$
-                            \End
+\li                        \kw{if} $\func{anti}(O[k],o)$ \kw{then} $O[k] \gets O[k]\cdot s$
+\li                        \kw{if} $\func{anti}(O[k],s)$ \kw{then} $O[k] \gets O[k]\cdot o$
                        \End
 \li             append $(o,s)$ to $G$
 \li             \Goto \ref{li:csg-main-loop-start}
@@ -398,54 +392,32 @@ A pseudo-code representation of the algorithm described by Theorem \ref{theorem-
       \End
 \li $D \gets S$
 \li $S \gets []$
-\li \For $n \gets 1$ \To $\id{number-of-physical-qubits}$ \label{li:csg-indy-loop-1-start}
-\li \Do
+\zi \Comment $X$ and $Z$ are arrays such that
+  $X[i]:=X_i$, and $Z[i]:=Z_i$, where $X_i$ and $Z_i$ are the tensor
+  families defined earlier.
+\li \For $P\gets X,Z$
+\li \Do % P loop
+\li   \For $i \gets 1$ \To $\id{number-of-physical-qubits}$ \label{li:csg-indy-loop-1-start}
+\li   \Do % i loop
 \li     \For $j \gets 1$ \To $|D|$
-\li     \Do
-\li         \If $\func{anti}(D[j],X_n)$
+\li     \Do % j loop
+\li         \If $\func{anti}(D[j],P[i])$
 \li         \Then
 \li            $o \gets D[j]$
 \li             \For $k \gets 1$ \To $|D|$
-\li             \Do
-\li                 \If $\func{anti}(D[k],X_n)$
-\li                 \Then $D[k]\gets D[k]\cdot o$
-                      \End
-                  \End 
+\li             \Do % k loop
+\li                 \kw{if} $\func{anti}(D[k],P[i])$ \kw{then} $D[k] \gets D[k]\cdot o$
+                 \End % k loop
 \li             \For $k \gets 1$ \To $|S|$
-\li             \Do
-\li                 \If $\func{anti}(S[j],X_n)$
-\li                 \Then $S[k]\gets S[k]\cdot o$
-                      \End
-                  \End
+\li             \Do % k loop
+\li                 \kw{if} $\func{anti}(S[k],P[i])$ \kw{then} $S[k] \gets S[k]\cdot o$
+                  \End % k loop
 \li             append $o$ to $S$
 \li            \Goto \ref{li:csg-indy-loop-1-start}
-              \End
-          \End 
-        \End 
-\li \For $n \gets 1$ \To $\id{number-of-physical-qubits}$ \label{li:csg-indy-loop-2-start}
-\li \Do
-\li     \For $j \gets 1$ \To $|D|$
-\li     \Do
-\li         \If $\func{anti}(D[j],Z)$
-\li         \Then
-\li            $o \gets D[j]$
-\li             \For $k \gets 1$ \To $|D|$
-\li             \Do
-\li                 \If $\func{anti}(D[k],Z_n)$
-\li                 \Then $D[k]\gets D[k]\cdot o$
-                      \End
-                  \End 
-\li             \For $k \gets 1$ \To $|S|$
-\li             \Do
-\li                 \If $\func{anti}(S[j],Z_n)$
-\li                 \Then $S[k]\gets S[k]\cdot o$
-                      \End
-                  \End
-\li             append $o$ to $S$
-\li            \Goto \ref{li:csg-indy-loop-2-start}
-              \End
-          \End
-      \End
+              \End % If
+           \End % j loop
+          \End % i loop
+        \End % P loop
 \li \Return (S,G)
 \end{codebox}
 \caption{Algorithm which computes the stabilizers and gauge qubits of
