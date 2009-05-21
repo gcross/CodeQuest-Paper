@@ -6,7 +6,7 @@
 %@+node:gcross.20090405101642.4:<< Prelude >>
 \documentclass[twocolumn,showpacs,preprintnumbers,amsmath,amssymb,nofootinbib,pra,floatfix]{revtex4}
 
-\usepackage{mathrsfs,amsthm,pseudocode}
+\usepackage{mathrsfs,amsthm,clrscode}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}{Proposition}
@@ -214,10 +214,6 @@ Now that the full subsystem code has been computed, it remains to determine how 
 \subsection{Stabilizers and gauge qubits}
 
 \label{stabilizers-and-gauge-qubits}
-%@+node:gcross.20090511123440.4:Theorems
-\subsubsection{Theory}
-
-%@+others
 %@+node:gcross.20090520163423.14:Introduce main theorem
 \begin{theorem} \label{theorem-SG} Suppose that we are given a list of operators $\bar O$.  Then there exist sets of operators $\tilde S$ and $\tilde G$ such that the following properties hold:
 \begin{enumerate}
@@ -325,7 +321,9 @@ A & \text{otherwise}
 \end{cases}.$$
 Note that for all Pauli operators $A$ we have that $f(A)$ commutes with $X_{i'}$ since either $A$ commutes with $X_{i'}$ and so $f(A)=A$, or $A$ anti-commutes with $X_{i'}$ and so $f(A)=A\cdot O$ which commutes with $X_{i'}$ since both $A$ and $O$ anti-commute with $X_{i'}$.  Thus, we have that $\bar D$ satisfies \ref{no-Z-in-D}, and it also trivially satisfies \ref{no-X-in-D} since $i'\le n$.
 
-It remains to show that $\bar I'$ satisfies property \ref{each-is-independent}.  Take any operator $A'\in\bar I'\slash[O]$.  This operator is equal to $f(A)$ for some $A\in \bar I'$.  We know that there exists an integer $1\le j \le i$ such that $X_j$ anti-commutes only with the operator $A$ in $\bar I$.  Since $O\in \bar D$ and $j\le i$, we also know that $X_j$ commutes with $O$, and thus $f(A)\equiv A'$ anti-commutes with $X_j$.  Because of this fact, for any operator $B'\in\bar I'$ and $B\in I$ such that $f(B)=B'$, we know that $B'$ anti-commutes with $X_j$ only if $B'$ anti-commutes with $X_j$;  as a direct consequence of this, we conclude that no other operator in $\bar I'$ can commute with $X_j$, since if it did this would imply that there was an operator $B\ne A$ in $\bar I$ which anti-commutes with $X_j$, which would lead to a contradiction.  Finally, we observe that the operator $O$ is the only operator in $\bar I'$ which anti-commutes with $X_{i'}$ and so we have shown that \ref{each-is-independent} is satisfied.
+We now show that $\bar I'$ satisfies property \ref{each-is-independent}.  Take any operator $A'\in\bar I'\slash[O]$.  This operator is equal to $f(A)$ for some $A\in \bar I'$.  We know that there exists an integer $1\le j \le i$ such that $X_j$ anti-commutes only with the operator $A$ in $\bar I$.  Since $O\in \bar D$ and $j\le i$, we also know that $X_j$ commutes with $O$, and thus $f(A)\equiv A'$ anti-commutes with $X_j$.  Because of this fact, for any operator $B'\in\bar I'$ and $B\in I$ such that $f(B)=B'$, we know that $B'$ anti-commutes with $X_j$ only if $B'$ anti-commutes with $X_j$;  as a direct consequence of this, we conclude that no other operator in $\bar I'$ can commute with $X_j$, since if it did this would imply that there was an operator $B\ne A$ in $\bar I$ which anti-commutes with $X_j$, which would lead to a contradiction.  Finally, we observe that the operator $O$ is the only operator in $\bar I'$ which anti-commutes with $X_{i'}$ and so we have shown that \ref{each-is-independent} is satisfied.
+
+It remains to show that $\bar I'\cup \bar D'$ generate the same subgroup as $\bar I \cup \bar D$.  To do this, we note that since every operator in $\bar I'\cup \bar D'$ was obtained from either an operator in $\bar I\cup \bar D$ or an operator in $\bar I\cup\bar D$ multiplied by $O$, $O\in\bar I'\cup \bar D'$, and $O^2=I$, we conclude that any operator in $\bar I\cup \bar D$ can be obtained from a product of operators in $\bar I'\cup \bar D$.
 \item[Case $n\le i<2n$] 
 The proof takes nearly the same form as the proof given in the previous case by subsituting operators in the $Z_j$ family in the place of operators in the $X_{i'}$ family.  We describe only the differences here.
 
@@ -357,20 +355,102 @@ Let $\bar I_0 := []$ and $\bar D_0 := \bar D$.  These satisfy the properties req
 \begin{proof}[Theorem \ref{theorem-SG}]
 By Corolary \label{corolary-SG}, we know that there exists a list of operators $\bar S$ and a set of independent operators $\tilde G$ satisfying the properties \ref{theorem-complete-SG-prop}, \ref{theorem-conjugal-pairs-SG-prop} and \ref{theorem-all-commute-SG-prop}.  By Corolary \label{corolary-make-independent-using-split}, we know that from $\bar S$ we can construct a set of operators $\tilde S$ which are independent and generate the same group as $\bar S$, and so $\tilde S$ and $\tilde G$ satisfy all of the listed properties. \qed
 \end{proof}
-%@nonl
 %@-node:gcross.20090520163423.15:Prove main theorem
-%@-others
-
-%@-node:gcross.20090511123440.4:Theorems
 %@+node:gcross.20090511123440.5:Pseudo-code
-\subsubsection{Psuedo-code}
+\begin{remark}
+A pseudo-code representation of the algorithm described by Theorem \ref{theorem-SG} is given in Table  \ref{SG-algorithm}.  There is a minor divergence in that it does not filter out identities from the lists as described in the proof of Proposition \ref{proposition-SG}, since this is effectively done already by the procedure described in the proof of Proposition {make-independent-using-split}.
+\end{remark}
 
-The following is pseudo-code which explicitly implements the algorithm given in the theorem.  Although set notation is used, the objects used are understood to be lists, which means that they might contain duplicate elements.
-
-\begin{pseudocode}{ComputeStabilizersAndGaugeQubits}{O}
-S \GETS \text{empty list of operators }\\
-G \GETS \text{empty list of pairs of operators}
-\end{pseudocode}
+\begin{table*}
+\label{SG-algorithm}
+\begin{codebox}
+\Procname{$\proc{Compute-Stabilizers-and-Gauge-Qubits}(\id{number-of-physical-qubits},O)$}
+\li $S \gets []$
+\li $G\gets []$
+\li \For $i \gets 1$ \To $|O|$ \label{li:csg-main-loop-start}
+\li \Do
+\li      \For $j \gets 1$ \To $|S|$
+\li      \Do
+\li        \If $\func{anti}(O[i],S[j])$
+\li        \Then
+\li              $o \gets O[i]$
+\li              $s \gets S[j]$
+\li               \For $k \gets 1$ \To $|S|$
+\li                   \Do
+\li                       \If $\func{anti}(S[k],o)=0$
+\li                       \Then  $S[k] \gets S[k]\cdot s$
+                           \End
+                       \End 
+\li               \For $k \gets i+1$ \To $|O|$
+\li                  \Do
+\li                        \If $\func{anti}(O[k],o)$
+\li                       \Then  $O[k] \gets O[k]\cdot s$
+                            \End
+\li                       \If $\func{anti}(O[k],s)$
+\li                       \Then $O[k] \gets O[k]\cdot o$
+                            \End
+                       \End
+\li             append $(o,s)$ to $G$
+\li             \Goto \ref{li:csg-main-loop-start}
+              \End
+            \End
+\li      append $O[i]$ to $S$
+      \End
+\li $D \gets S$
+\li $S \gets []$
+\li \For $n \gets 1$ \To $\id{number-of-physical-qubits}$ \label{li:csg-indy-loop-1-start}
+\li \Do
+\li     \For $j \gets 1$ \To $|D|$
+\li     \Do
+\li         \If $\func{anti}(D[j],X_n)$
+\li         \Then
+\li            $o \gets D[j]$
+\li             \For $k \gets 1$ \To $|D|$
+\li             \Do
+\li                 \If $\func{anti}(D[k],X_n)$
+\li                 \Then $D[k]\gets D[k]\cdot o$
+                      \End
+                  \End 
+\li             \For $k \gets 1$ \To $|S|$
+\li             \Do
+\li                 \If $\func{anti}(S[j],X_n)$
+\li                 \Then $S[k]\gets S[k]\cdot o$
+                      \End
+                  \End
+\li             append $o$ to $S$
+\li            \Goto \ref{li:csg-indy-loop-1-start}
+              \End
+          \End 
+        \End 
+\li \For $n \gets 1$ \To $\id{number-of-physical-qubits}$ \label{li:csg-indy-loop-2-start}
+\li \Do
+\li     \For $j \gets 1$ \To $|D|$
+\li     \Do
+\li         \If $\func{anti}(D[j],Z)$
+\li         \Then
+\li            $o \gets D[j]$
+\li             \For $k \gets 1$ \To $|D|$
+\li             \Do
+\li                 \If $\func{anti}(D[k],Z_n)$
+\li                 \Then $D[k]\gets D[k]\cdot o$
+                      \End
+                  \End 
+\li             \For $k \gets 1$ \To $|S|$
+\li             \Do
+\li                 \If $\func{anti}(S[j],Z_n)$
+\li                 \Then $S[k]\gets S[k]\cdot o$
+                      \End
+                  \End
+\li             append $o$ to $S$
+\li            \Goto \ref{li:csg-indy-loop-2-start}
+              \End
+          \End
+      \End
+\li \Return (S,G)
+\end{codebox}
+\caption{Algorithm which computes the stabilizers and gauge qubits of
+  a subsystem code generated by a given set of operators $O$.}
+\end{table*}
 %@-node:gcross.20090511123440.5:Pseudo-code
 %@-node:gcross.20090423002455.3:Stabilizers and gauge qubits
 %@+node:gcross.20090427140200.2:Logical qubits
