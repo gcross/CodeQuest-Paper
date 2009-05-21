@@ -9,7 +9,7 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="gcross.20090405101642.1" str_leo_pos="3,3,1,4"><vh>@chapters</vh></v>
+<v t="gcross.20090405101642.1" str_leo_pos="3,3,1,2"><vh>@chapters</vh></v>
 <v t="gcross.20090423002455.4"><vh>@settings</vh>
 <v t="gcross.20090423002455.5"><vh>@font</vh></v>
 </v>
