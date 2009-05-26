@@ -218,8 +218,16 @@ Now that the full subsystem code has been computed, it remains to determine how 
 \subsection{Stabilizers and gauge qubits}
 
 \label{stabilizers-and-gauge-qubits}
+
+\begin{remark}
+This subsection describes by way of a constructive proof how one can
+compute the stabilizers and gauge qubits of a quantum subsystem code
+from the set of measurement operators.  For a listing of pseudo-code that
+implements the algorithm described in this proof, see Table
+\ref{SG-algorithm} near the send of this subsection.
+\end{remark}
 %@+node:gcross.20090520163423.14:Introduce main theorem
-\begin{theorem} \label{theorem-SG} Suppose that we are given a list of operators $\lst O$.  Then there exist sets of operators $\set S$ and $\set G$ such that the following properties hold:
+\begin{theorem} \label{theorem-SG} Suppose we are given a list of operators $\lst O$.  Then there exist sets of operators $\set S$ and $\set G$ such that the following properties hold:
 \begin{enumerate}
 \item each of the operators in $\set S \cup \set G$ is
   independent from the rest --- i.e., no operator in this (unioned) set can
@@ -294,23 +302,23 @@ Let $\lst O_0:=\lst O$, $\lst S_0:=[]$, and $\lst G_0:=[]$.  If $\lst O$ is the 
 %@-node:gcross.20090519160701.3:Construction of lists
 %@+node:gcross.20090519160701.4:Making them independent
 \begin{remark}
-A consequence of not requiring independence of the operators in $\lst O$ is that the operators $\lst S$ given by Corolary \ref{corolary-SG} are not necessarily independent.  Happily, since all of these operators can be expressed as tensor products of Pauli operators, we can construct a set of independent operators by performing an analogue of Gaussian elimination.
+A consequence of not requiring independence of the operators in $\lst O$ is that the operators $\lst S$ given by Corollary \ref{corolary-SG} are not necessarily independent.  Happily, since all of these operators can be expressed as tensor products of Pauli operators, we can construct a set of independent operators by performing an analog of Gaussian elimination.
 \end{remark}
 
 \begin{proposition}
 \label{make-independent-using-elimination}
 Suppose that we have been given
 \begin{itemize}
-\item a (parameterized) set of generators $\{P_i\}_{i=1,\dots,2N}$ of $\mathscr{P}_N$;
+\item an indexed set of Pauli operators $\{P_i\}_{i=1,\dots,2N}\subseteq \mathscr{P}_N$ which generate $\mathscr{P}_N$;
 \item lists of Pauli operators $\lst I\subseteq \mathscr{P}_N$ and \empty{non-empty} $\lst D\subseteq \mathscr{P}_N$;
 \item and a strictly increasing sequence of integers $\{n_i\}_{i=1,\dots,|\lst I|}$ such that $1\le n_i \le 2N$,
 \end{itemize}
 such that
 \begin{itemize}
-\item \label{independent-of-below} $\lst I_i$ anti-commutes with $P_{n_i}$ and commutes with $P_n$ for $n<n_i$;
-\item \label{empty-of-paulis-before-index} and every operator in $\lst D$ commutes with $P_n$ for $n\le n_{|\lst I}$;
+\item \label{independent-of-below} the $i$-th operator in $\lst I$ anti-commutes with $P_{n_i}$ and commutes with $P_n$ for $n<n_i$;
+\item \label{empty-of-paulis-before-index} and every operator in $\lst D$ commutes with $P_n$ for $n\le n_{|\lst I}$.
 \end{itemize}
-Then there exists lists $\lst I'$ and $\lst D'$ and a sequence of integers $n'_1,\dots,n'_{|\lst I'|}$ such that
+Then there exists lists $\lst I'$ and $\lst D'$ and a strictly increasing sequence of integers $\{n'_i\}_{i=1,\dots,|\lst I'|}$ such that
 \begin{itemize}
 \item $|\lst D'|<|\lst D|$;
 \item properties 1-2 are satisfied;
@@ -319,7 +327,7 @@ Then there exists lists $\lst I'$ and $\lst D'$ and a sequence of integers $n'_1
 \end{proposition}
 
 \begin{proof}
-Let $n'_i:=n_i$ for $i\le|\lst I|$, and $n'_{|\lst I|+1}$ be the first integer after $n_{|\lst I|}$ such that there is an operator $O\in\lst D$ which anti-commutes with $P_{n'}$;  property \ref{empty-of-paulis-before-index} guarantees us that $n'_{|\lst I|+1}>n'_{|\lst I|}$ so that we obtain a new strictly increasing sequance of integers $\{n'_i\}_{i=1,\dots,|\lst I|+1}$.  Let $\lst I':=\lst I'\cup [O]$ and $\lst D':=[f(D)|D\in \lst D, f(D)\ne I]$ where 
+Let $n'_i:=n_i$ for $i\le|\lst I|$, and $n'_{|\lst I|+1}$ be the first integer after $n_{|\lst I|}$ such that there is an operator $O\in\lst D$ which anti-commutes with $P_{n'}$;  property \ref{empty-of-paulis-before-index} guarantees us that $n'_{|\lst I|+1}>n'_{|\lst I|}$ so that we obtain a new strictly increasing sequence of integers $\{n'_i\}_{i=1,\dots,|\lst I|+1}$.  Let $\lst I':=\lst I'\cup [O]$ and $\lst D':=[f(D)|D\in \lst D, f(D)\ne I]$ where 
 $$f(D):=
 \begin{cases}
 D & \text{$D$ commutes with $P_{n'}$} \\
@@ -331,7 +339,7 @@ Property \ref{independent-of-below} remains satisfied for the first $|\lst I|$ e
 To see that property \ref{empty-of-paulis-before-index} is satisfied, observe that for every $D\in \lst D$:
 \begin{itemize}
 \item both $D$ and $D\cdot O$ commute with $P_n$ for $n<n'$, so $f(D)$ commutes with $P_n$ for $n<n'$;
-\item either $D$ commutes with $P_{n'}$ and so $f(D)=D$, or $D$ anti-commutes with $P_{n'}$ and so $f(D)=D\dot O$ which commuets with $P_{n'}$, so $f(D)$ commutes with $P_n'$.
+\item either $D$ commutes with $P_{n'}$ and so $f(D)=D$, or $D$ anti-commutes with $P_{n'}$ and so $f(D)=D\dot O$ which commutes with $P_{n'}$, so $f(D)$ commutes with $P_n'$.
 \end{itemize} Thus, every member of $\lst D'$ commutes with $P_n$ for $n\le n'$.
 \end{proof}
 
@@ -343,7 +351,7 @@ Suppose that we have been given
 \item an \emph{independent} list of Pauli operators $\lst I\subseteq \mathscr{P}_N$;
 \item and a strictly increasing sequence of integers $n_1,\dots, n_{|\lst I|}$ inclusively between $1$ and $2N$,
 \end{itemize}
-such that $\lst I_i$ anti-commutes with $P_{n_i}$ and commutes with $P_n$ for $n< n_i$.  Then the operators in $\lst I$ are independent.
+such that the $i$-th operator in $\lst I$ anti-commutes with $P_{n_i}$ and commutes with $P_n$ for $n< n_i$.  Then the operators in $\lst I$ are independent.
 \end{lemma}
 
 \begin{proof}
@@ -361,7 +369,7 @@ Let $\lst I_0 := []$ and $\lst D_0 := \lst D$.  These satisfy the properties req
 %@-node:gcross.20090519160701.4:Making them independent
 %@+node:gcross.20090520163423.15:Prove main theorem
 \begin{proof}[Theorem \ref{theorem-SG}]
-By Corolary \ref{corolary-SG}, we know that there exists a list of operators $\lst S$ and a set of independent operators $\set G$ satisfying the properties \ref{theorem-complete-SG-prop}, \ref{theorem-conjugal-pairs-SG-prop} and \ref{theorem-all-commute-SG-prop}.  Define the (paramaterized) set $\{P_i\}_{i=1,\dots,2N}\subseteq \mathscr{P}_N$ by
+By Corolary \ref{corolary-SG}, we know that there exists a list of operators $\lst S$ and a set of independent operators $\set G$ satisfying the properties \ref{theorem-complete-SG-prop}, \ref{theorem-conjugal-pairs-SG-prop} and \ref{theorem-all-commute-SG-prop}.  Define the indexed set $\{P_i\}_{i=1,\dots,2N}\subseteq \mathscr{P}_N$ by
 $$
 P_i :=
 \begin{cases}
