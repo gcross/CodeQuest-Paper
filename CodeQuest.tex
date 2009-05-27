@@ -279,13 +279,40 @@ A consequence of not requiring independence of the operators in $\lst O$ is that
 
 \begin{proposition}
 \label{make-independent-using-elimination}
-Suppose that we have been given a list of commuting Pauli operators $\lst S$.  Then there exists an indexed set of commuting operators $\set S := \{S_i\}_{i=1,\dots,n}$ that generate the same subgroup as the operators in $\lst S$, as well as a map $s:1,\dots n \to \{1,2\}$ such that $S_i$ is the only operator in $\set S$ that anti-commutes with $P_i^{(s(i))}$, where $P_i^{(1)}:=X_i$ and $P_i^{(2)}:=Z_i$.
+Suppose that we have been given a list of commuting Pauli operators $\lst S$.  Then there exists an indexed set of commuting operators $\set S := \{S_i\}_{i=1,\dots,n}$ that generate the same subgroup as the operators in $\lst S$, an indexed set of integers $\set k := \{k_i\}_{i=1,\dots,n}$ in the inclusive range $1\dots n$, and a map $s:1,\dots, n \to \{1,2\}$ such that $S_i$ is the only operator in $\set S$ that anti-commutes with $P_{k_i}^{[s(i)]}$, where $P_k^{[1]}:=X_k$ and $P_k^{[2]}:=Z_k$.
 \end{proposition}
 
 \begin{proof}
-Proof by induction.  For the base case, we observe that if $\lst S$ is empty, then the trivial set $\set S:=\emptyset$  and function $s:\emptyset\to\emptyset$ satisfy the requirements.
+Proof by induction.  For the base case, we observe that if $\lst S$ is empty, then the trivial sets $\set S:=\emptyset$ and $\set k :=\emptyset$ and the function $s:\emptyset\to\emptyset$ satisfy the requirements.
 
-Now suppose that we know the proposition holds for lists of size $n-1$, and we are given a list $\lst S$ of size $n$.  Let $S$ be the last element in $\lst S$, and let $S':=S\cdot \prod_{i=1,\dots,n-1 \atop \{S,P_i^{(s(i))}\}=0} S^{(3-s(i))}_i$.  Note that $S'$ commutes with every operator in the set $\{P_i^{(s(i))}\}_{i=1,\dots,n-1}$.
+Now suppose that we know the proposition holds for lists of size $n-1$, and we are given a list $\lst S$ of size $n$.  By our inductive hypothesis, we can apply the proposition to the first $n-1$ operators in $\lst S$ obtain indexed sets $\set T:=\{T_i\}_{i=1,\dots,n}$ and $\set l := \{l_i\}_{i=1,\dots,n-1}$ and a map $t:1,\dots,n-1\to \{1,2\}$ with the properties stated in the proposition.  Let $S$ be the last element in $\lst S$, and let $S':=S\cdot \prod_{i=1,\dots,n-1 \atop \{S,P_{l_i}^{[t(i)]}\}=0} T_i$.  We know that $S'$ commutes with every operator in $\set T$ since $S$ does, as $\set T$ consists entirely of products of elements in $\lst S$.  Furthermore, since $S'$ is a product of $S$ and a factor of $T_i$ for every $i$ such that $S$ and $P_{l_i}^{(t(i))}$ anti-commute, and we know that $T_i$ is the only operator in $\set T$ that anti-commutes with $P_{l_i}^{(t(i))}$ for $i=1,\dots,n-1$, it is therefore the case that $S'$ commutes with every member of the set $\{P_{l_i}^{(t(i))}\}_{i=1,\dots,n-1}$.  Finally, since $S'$ is a product of $S$ and operators in $\set T$, we can obtain $S$ entirely from products of operators in $\set T \cup \{S'\}$, and so $\set T \cup \{S'\}$ generates the same Pauli subgroup as $\lst S$.
+
+If $S'$ is the identity operator, then set $\set S:=\set T$ and $s:=t$ and we are done.  Otherwise, there must be an integer $k$ in the set $\{1,\dots,N\}\slash\{l_1,\dots,l_{n-1}\}$ and an integer $s\in\{1,2\}$ such that $S'$ anti-commutes with $P_k^{[s]}$.  To see why, suppose that this were not true.  Since $S'$ is not the identity operator, this means that it must consist of the product of operators in a non-trivial subset of $\{P_{l_i}^{[3-t(i)]}\}_{i=1,\dots,n-1}$;  in particular, it must be the case that there exists an integer $i\in 1,\dots,(n-1)$ such that $S'$ anti-commutes with $P_{l_i}^{[3-t(i)]}$.  However, observe that $l_i$ is the only integer in the inclusive range $1,\dots, N$ such that $S'$ anti-commutes with $P_{l_i}^{[3-t(i)]}$ and $S_i$ anti-commutes with $P_{l_i}^{[t(i)]}$.  To repeat this statement in more concrete terms, $l_i$ is the only integer such that either $\{S',X_{l_i}\}=0$, $[S',Z_{l_i}]=0$ and $\{S'_i,Z_{l_i}\}=0$, or $\{S',Z_{l_i}\}=0$, $[S',X_{l_i}]=0$ and $\{S'_i,X_{l_i}\}=0$.  From this we conclude that $S'$ and $S'_i$ must anti-commute, which leads to a contradiction.
+
+Given this, define $\set S := \{S_i\}_{i=1,\dots,n}$ by 
+$$S_i := 
+\begin{cases}
+\begin{cases}
+T_i \cdot S' & \{T_i,P_k^{[s]}\}=0 \\
+T_i & \text{otherwise}
+\end{cases} & 1\le i\le n-1 \\
+S' & i=n
+\end{cases},
+$$ $\set k:=\{k_i\}_{i=1,\dots,n}$ by
+$$
+k_i :=
+\begin{cases}
+l_i & 1 \le i \le n-1 \\
+k & i=n
+\end{cases},
+$$ and $s:1,\dots,n\to \{1,2\}$ by
+$$
+s(i):=
+\begin{cases}
+t(i) & 1 \le i \le n-1\\
+s & i=n
+\end{cases},
+$$ and we are done.
 \end{proof}
 %@-node:gcross.20090519160701.4:Making them independent
 %@+node:gcross.20090520163423.15:Prove main theorem
