@@ -215,37 +215,39 @@ In section \ref{logical-qubits} we shall prove that a list of operators $\set L$
 Now that the full subsystem code has been computed, it remains to determine how well it protects the quantum information stored in the logical qubits.  Recall that each \emph{conjugal pair} fully defines the measurement operators on a single logical qubit of the system.  The distance of that qubit is the minimum weight operator that acts non-trivially on the qubit --- that is, which anti-commutes with one of the operator in the conjugal pair --- but which commutes with all of the operators in $\set S$ and hence cannot be detected.  If there are $N$ qubits defined by the conjugal pairs in $\set L$, then each of these has a distance which we shall name $d_1,\dots,d_N$, where $d_1\le d_2 \le \dots \le d_N$.  Now, the choice of the operators in $\set L$ which satisfy the properties listed in the previous paragraph is not unique, so different choices can have different values for the distances.  The choice with the \emph{optimal distances} is the choice with distances $d_1\le \dots \le d_N$ such that given any choicr with distances $d_1'\le \dots \le d_N'$, we have that $d_i' \le d_i$ for $i\in 1\dots N$.  In section \ref{optimal-distances} we shall prove that starting with any subsystem code we can compute the choice of logical operators with that code which has the optimal distances.  This completes our algorithm.
 %@-node:gcross.20090511123440.2:Overview
 %@+node:gcross.20090423002455.3:Stabilizers and gauge qubits
-\subsection{Stabilizers and gauge qubits}
-
-\label{stabilizers-and-gauge-qubits}
+\subsection{Construction of the subsystem code}
 
 \begin{remark}
-This subsection describes by way of a constructive proof how one can
-compute the stabilizers and gauge qubits of a quantum subsystem code
-from the set of measurement operators.  For a listing of pseudo-code that
-implements the algorithm described in this proof, see Table
-\ref{SG-algorithm} near the send of this subsection.
+This subsection describes by way of a constructive proof how one can compute the quantum subsystem code implemetable by a the set of measurement operators.  For a listing of pseudo-code that implements the algorithm described in this proof, see Table \ref{code-algorithm} near the end of this subsection.
 \end{remark}
 %@+node:gcross.20090520163423.14:Introduce main theorem
-\begin{theorem} \label{theorem-SG} Suppose we are given a list of operators $\lst O$.  Then there exist sets of operators $\set S$ and $\set G$ such that the following properties hold:
+Although conceptually a subsystem code is an isomorphism $T$ such that  $\mathscr{P}\approx^T \mathscr{S}\times\mathscr{G}\times\mathscr{Q}$ --- that is, an isomorphism between the \emph{physical} space of qubits and the \emph{computational} space of qubits in whose terms our computation is actually expressed, we do not need to actually construct this isomorphism in order to be able to use the code.  Since all of our work will be done on the physical system anyway, it suffices to know the operators in the physical space $\mathscr{P}$ that are isomorphic to the qubit measurement operators of interest in the computational space $\mathscr{S}\times\mathscr{G}\times\mathscr{Q}$, and it is exactly the operators on $\mathscr{P}$ that the algorithm we present shall compute\footnote{If one really wanted to, one could explicitly construct the isomorphism $\mathscr{T}$ from these operators by computing the unitary operator which simultaneously diagonalizes a the maximal subset of commuting measurements from this set of operators on $\mathscr{P}$, but in practice this is not particularly useful.}.
+
+When one wants to define a qubit in terms of its measurement operators, it suffices to define two operators that anti-commute with each other but which commute with all of the others measurement operators that have been defined, since this gives us the $X$ and $Z$ measurements on the qubit which are sufficient to generate the full $Pauli$ group (minus phases).  Since working with such pairs of operators shall be a common theme in our algorithm, we shall create the following definition in order to simplify the language used to describe them.
+
+\begin{definition} A pair of operators is a \emph{conjugal pair in relation to the set} $\set X$ when each of the operators in the pair commutes with every operator in $\set X$ except for its \emph{conjugal partner} --- that is, the other operator in the conjugal pair --- should its conjugal partner be a member of $\set X$.
+\end{definition}
+
+Note that we have explicitly not required that the operators in the conjugal pair be members of $\set X$ in order to be a conjugal pair in relation to it.  However, should both operators be members of $\set X$, then neither operator can belong to a different conjugal pair with respect to $\set X$, since in that case there would be an operator in $\set X$ (namely, its original conjugal partner) with which it anti-commutes that was not its conjugal partner in the new pair, leading to a contradiction.
+
+We now introduce the main theorem of this subsection.
+
+\begin{theorem} \label{theorem-SG} Suppose we are given a list\footnote{For the purpose of this proof, a list of elements is considered to be an ordered sequence of elements which might contain duplicates.  The reason for employing lists in several parts of this subsection instead of sets is to make the machinery of the proof more closely match the computer machinery that implements the algorithm described in the proof.}
+ of operators $\lst O$.  Then there exist sets of operators $\set S$, $\set G$, and $\set L$ such that
 \begin{enumerate}
-\item each of the operators in $\set S \cup \set G$ is
-  independent from the rest --- i.e., no operator in this (unioned) set can
-  be written as a product of other operators in the set
-\item \label{theorem-all-commute-SG-prop} all of the operators in $\set S$ commute with each other and
-  also all of the operators in $\set G$;
-\item \label{theorem-conjugal-pairs-SG-prop} each operator in $\set G$ is a member of a conjugal pair in relation to $\set S \cup \set G$;
-\item \label{theorem-complete-SG-prop} the Pauli subgroup generated by $\set S \cup \set G$ is exactly
-  the subgroup generated by $\lst O$.
+\item each of the operators in $\set S \cup \set G \cup \set L$ is independent from the rest --- i.e., no operator in this (unioned) set can be written as a product of other operators in the set;
+\item each operator in $\set L \cup \set G$ is a member of a conjugal pair in relation to $\set S \cup \set G \cup \set L$;
+\item the Pauli subgroup generated by $\set S \cup \set G$ is exactly the subgroup generated by $\lst O$;
+\item and the Pauli subgroup generated by $\set S \cup \set G \cup \set L$ is exactly the subgroup of Pauli operators that commute with every operator in $\set S$.
 \end{enumerate}
 \end{theorem}
+
+\begin{remark}
+The main work in the proof of this theorem will be performed by proving several related propositions.  First we shall show how the set $\set G$ and a list $\lst S$ are constructed from the list of operators $\lst O$.  Since we want our stabilizers to form an independent set of operators, we shall then show that through a Gaussian elimination procedure it is possible to extract a list of independent operators from $\lst S$ into a a set $\set S$.  Finally, we shall show how using this same Gaussian elimination procedure we can transform a subset of the operators of $\set S\cup\set G$ into a form that makes it trivial to compute the logical qubit operators $\set L$.
+\end{remark}
 %@nonl
 %@-node:gcross.20090520163423.14:Introduce main theorem
 %@+node:gcross.20090519160701.3:Construction of lists
-\begin{remark}
-This theorem will be proven in two parts, each of which is stated in a proposition.  The first will show that we can construct a list of operators $\lst S$ and a set of operators $\set G$ that have \emph{nearly} all of the properties that we want, except for the fact that the operators in$\lst S$ need not be independent.  The second will show that we can take the list $\lst S$ and from it compute a set $\set S$ of independent operators that generate the same subgroup as $\lst S$.
-\end{remark}
-
 \begin{proposition} \label{proposition-SG} Suppose that we are given a list of Pauli operators $\lst O$.  Then there exists a list of operators $\lst S$ and a set of operators $\set G$ such that
 \begin{enumerate}
 \item all of the operators in $\lst S$ commute with each other and also all of the operators in $\lst G$; \label{stabs-commute-with-G};
