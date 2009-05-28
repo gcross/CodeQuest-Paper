@@ -173,14 +173,6 @@ that we have obtained from our searches.
 %@+node:gcross.20090423002455.2:Algorithm
 \section{Algorithm}
 
-%@+node:gcross.20090511123440.2:Overview
-\subsection{Overview}
-
-\label{overview}
-
-
-Now that the full subsystem code has been computed, it remains to determine how well it protects the quantum information stored in the logical qubits.  Recall that each \emph{conjugal pair} fully defines the measurement operators on a single logical qubit of the system.  The distance of that qubit is the minimum weight operator that acts non-trivially on the qubit --- that is, which anti-commutes with one of the operator in the conjugal pair --- but which commutes with all of the operators in $\set S$ and hence cannot be detected.  If there are $N$ qubits defined by the conjugal pairs in $\set L$, then each of these has a distance which we shall name $d_1,\dots,d_N$, where $d_1\le d_2 \le \dots \le d_N$.  Now, the choice of the operators in $\set L$ which satisfy the properties listed in the previous paragraph is not unique, so different choices can have different values for the distances.  The choice with the \emph{optimal distances} is the choice with distances $d_1\le \dots \le d_N$ such that given any choicr with distances $d_1'\le \dots \le d_N'$, we have that $d_i' \le d_i$ for $i\in 1\dots N$.  In section \ref{optimal-distances} we shall prove that starting with any subsystem code we can compute the choice of logical operators with that code which has the optimal distances.  This completes our algorithm.
-%@-node:gcross.20090511123440.2:Overview
 %@+node:gcross.20090423002455.3:Stabilizers and gauge qubits
 \subsection{Construction of the subsystem code}
 
@@ -401,6 +393,8 @@ A pseudo-code representation of the algorithm described by Theorem \ref{theorem-
 \subsection{Optimal distances}
 
 \label{optimal-distances}
+
+Now that the full subsystem code has been computed, it remains to determine how well it protects the quantum information stored in the logical qubits.  Recall that each \emph{conjugal pair} fully defines the measurement operators on a single logical qubit of the system.  The distance of that qubit is the minimum weight operator that acts non-trivially on the qubit --- that is, which anti-commutes with one of the operator in the conjugal pair --- but which commutes with all of the operators in $\set S$ and hence cannot be detected.  If there are $N$ qubits defined by the conjugal pairs in $\set L$, then each of these has a distance which we shall name $d_1,\dots,d_N$, where $d_1\le d_2 \le \dots \le d_N$.  Now, the choice of the operators in $\set L$ which satisfy the properties listed in the previous paragraph is not unique, so different choices can have different values for the distances.  The choice with the \emph{optimal distances} is the choice with distances $d_1\le \dots \le d_N$ such that given any choicr with distances $d_1'\le \dots \le d_N'$, we have that $d_i' \le d_i$ for $i\in 1\dots N$.  In section \ref{optimal-distances} we shall prove that starting with any subsystem code we can compute the choice of logical operators with that code which has the optimal distances.  This completes our algorithm.
 %@-node:gcross.20090511123440.3:Optimal distances
 %@-node:gcross.20090423002455.2:Algorithm
 %@-others
