@@ -13,14 +13,13 @@
 <v t="gcross.20090423002455.4"><vh>@settings</vh>
 <v t="gcross.20090423002455.5"><vh>@font</vh></v>
 </v>
-<v t="gcross.20090519160701.1" a="E"><vh>Shelved</vh>
+<v t="gcross.20090519160701.1"><vh>Shelved</vh>
 <v t="gcross.20090519160701.2"><vh>Proof of row eschelon block form</vh></v>
 </v>
-<v t="gcross.20090405101642.3" a="E"
-expanded="gcross.20090423002455.2,gcross.20090423002455.3,"><vh>@thin CodeQuest.tex</vh></v>
+<v t="gcross.20090405101642.3"><vh>@thin CodeQuest.tex</vh></v>
 </vnodes>
 <tnodes>
-<t tx="gcross.20090405101642.1"></t>
+<t tx="gcross.20090405101642.1" str_leo_pos="3"></t>
 <t tx="gcross.20090423002455.4"></t>
 <t tx="gcross.20090423002455.5">#body_text_font_family = courier 10 pitch
 #body_text_font_size = 16
