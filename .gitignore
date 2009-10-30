@@ -1,0 +1,9 @@
+*.pdf
+*.ps
+*.toc
+*.dvi
+*.aux
+*.log
+prv_*
+*~
+.scons*
