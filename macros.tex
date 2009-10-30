@@ -1,0 +1,376 @@
+%@+leo-ver=4
+%@+node:@file /Users/cog/Documents/macros.tex
+%@@language latex
+
+\newcommand{\drv}[2]{ \frac{d#1}{d#2} }
+\newcommand{\pdrv}[2]{ \frac{\partial #1}{\partial #2} }
+\newcommand{\dpdrv}[2]{ \frac{\partial^2 #1}{\partial #2^2} }
+\newcommand{\ddrv}[2]{\frac{d^2#1}{d#2^2}}
+\newcommand{\ndrv}[3]{\frac{d^{#3}#1}{d#2^{#3}}}
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\quarter}{\frac{1}{4}}
+
+\newcommand{\intii}{\int^{\infty}_{-\infty}}
+
+\newcommand{\eqn}[2]{\begin{equation}\label{#1}#2\end{equation}}
+
+\newcommand{\E}[1]{\times 10^{#1}}
+
+\newcommand{\om}{\omega}
+\newcommand{\bomega}{\vec{\omega}}
+\newcommand{\bom}{\bomega}
+\newcommand{\domega}{\dot\omega}
+\newcommand{\dom}{\domega}
+
+%\newcommand{\th}{\theta}
+
+\newcommand{\unit}[1]{\,\text{#1}}
+
+\newcommand{\g}{\unit{g}}
+\newcommand{\kg}{\unit{kg}}
+\newcommand{\m}{\unit{m}}
+\newcommand{\um}{\,\mu\!\unit{m}}
+\newcommand{\micrometer}{\um}
+\newcommand{\mm}{\unit{mm}}
+\newcommand{\nm}{\unit{nm}}
+\newcommand{\picom}{\unit{pm}}
+\newcommand{\km}{\unit{km}}
+\newcommand{\cm}{\unit{cm}}
+\newcommand{\s}{\unit{s}}
+\newcommand{\us}{\,\mu\!\unit{s}}
+\newcommand{\ns}{\unit{ns}}
+\renewcommand{\min}{\unit{min}}
+\newcommand{\N}{\unit{N}}
+\newcommand{\Li}{\unit{L}}
+\newcommand{\Hz}{\unit{Hz}}
+\newcommand{\mHz}{\unit{mHz}}
+\newcommand{\kHz}{\unit{kHz}}
+\newcommand{\MHz}{\unit{MHz}}
+\newcommand{\GHz}{\unit{GHz}}
+\newcommand{\J}{\unit{J}}
+\newcommand{\kJ}{\unit{kJ}}
+\newcommand{\mol}{\unit{mol}}
+\newcommand{\K}{\unit{K}}
+\newcommand{\W}{\unit{W}}
+\newcommand{\kW}{\unit{kW}}
+\newcommand{\V}{\unit{V}}
+\newcommand{\eV}{\unit{eV}}
+\newcommand{\keV}{\unit{keV}}
+\newcommand{\MeV}{\unit{MeV}}
+\newcommand{\meV}{\unit{meV}}
+\newcommand{\ueV}{\unit{ueV}}
+\newcommand{\T}{\unit{T}}
+\newcommand{\C}{\unit{C}}
+\newcommand{\hour}{\unit{hr}}
+\newcommand{\dayunit}{\unit{day}}
+
+\newcommand{\tr}{\text{tr}\,}
+
+\newcommand{\vel}{\,\frac{\m}{\s}}
+
+\newcommand{\speedoflight}{3\E{8}\vel}
+
+
+\renewcommand{\max}{\text{max}}
+
+\renewcommand{\dim}[1]{\left[#1\right]}
+
+\newcommand{\rms}{\text{rms}}
+
+\renewcommand{\deg}{^\circ}
+
+\newcommand{\dx}{\dot x}
+\newcommand{\dv}{\dot v}
+\newcommand{\ddx}{\ddot x}
+
+\newcommand{\mathboit}{\textbf}
+
+\newcommand{\hH}{\hat H}
+\newcommand{\ha}{\hat a}
+\newcommand{\hadag}{\hat a^\dagger}
+
+\newcommand{\btheta}{\theta}
+\newcommand{\bF}{\mathboit F}
+\newcommand{\bL}{\mathboit L}
+\newcommand{\br}{\mathboit r}
+\newcommand{\bl}{\mathboit l}
+\newcommand{\bp}{\mathboit p}
+\newcommand{\bc}{\mathboit c}
+\newcommand{\bv}{\mathboit v}
+\newcommand{\bA}{\mathboit{A}}
+\newcommand{\bB}{\mathboit{B}}
+\newcommand{\bJ}{\mathboit{J}}
+\newcommand{\bD}{\mathboit{D}}
+\newcommand{\bS}{\mathboit{S}}
+\newcommand{\bT}{\mathboit{T}}
+\newcommand{\bI}{\mathboit{I}}
+\newcommand{\bR}{\mathboit{R}}
+\newcommand{\bK}{\mathboit{K}}
+\newcommand{\bH}{\mathboit{H}}
+\newcommand{\bM}{\mathboit{M}}
+\newcommand{\bG}{\mathboit{G}}
+\newcommand{\bP}{\mathboit{P}}
+\newcommand{\bE}{\mathboit{E}}
+\newcommand{\bV}{\mathboit{V}}
+\newcommand{\bQ}{\mathboit{Q}}
+\newcommand{\bO}{\mathboit{O}}
+\newcommand{\bX}{\mathboit{X}}
+\newcommand{\bZ}{\mathboit{Z}}
+\newcommand{\bC}{\mathboit{C}}
+\newcommand{\bN}{\mathboit{N}}
+
+\newcommand{\bx}{\mathboit x}
+\newcommand{\bz}{\mathboit z}
+\newcommand{\be}{\mathboit e}
+\newcommand{\bg}{\mathboit g}
+
+\newcommand{\bn}{\mathboit n}
+\newcommand{\bm}{\mathboit m}
+\newcommand{\ba}{\mathboit a}
+\newcommand{\bb}{\mathboit b}
+\newcommand{\bu}{\mathboit u}
+\newcommand{\bs}{\mathboit s}
+
+\newcommand{\bi}{\mathboit i}
+\newcommand{\bj}{\mathboit j}
+\newcommand{\bk}{\mathboit k}
+
+\newcommand{\mO}{\mathscr O}
+\newcommand{\mL}{\mathscr L}
+\newcommand{\mH}{\mathscr H}
+
+\newcommand{\hx}{\hat{\mathboit x}}
+\newcommand{\hy}{\hat{\mathboit y}}
+\newcommand{\hz}{\hat{\mathboit z}}
+\newcommand{\hr}{\hat{\mathboit r}}
+\newcommand{\he}{\hat{\mathboit e}}
+\newcommand{\htheta}{\hat{\theta}}
+
+\newcommand{\hse}{\,\hat{\mathboit e}\,}
+
+\newcommand{\va}{\vec{a}}
+\newcommand{\vb}{\vec{b}}
+\newcommand{\vc}{\vec{c}}
+\newcommand{\vd}{\vec{d}}
+%\newcommand{\vr}{\vec{r}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vy}{\vec{y}}
+\newcommand{\vz}{\vec{z}}
+%\newcommand{\vr}{\vec{r}}
+\newcommand{\vp}{\vec{p}}
+\newcommand{\vq}{\vec{q}}
+\newcommand{\vk}{\vec{k}}
+\newcommand{\vv}{\vec{v}}
+\newcommand{\vu}{\vec{u}}
+\newcommand{\vf}{\vec{f}}
+\newcommand{\vR}{\vec{R}}
+\newcommand{\vP}{\vec{P}}
+\newcommand{\vS}{\vec{S}}
+\newcommand{\vs}{\vec{s}}
+\newcommand{\vL}{\vec{L}}
+\newcommand{\vl}{\vec{l}}
+\newcommand{\vJ}{\vec{J}}
+\newcommand{\vj}{\vec{j}}
+\newcommand{\vF}{\vec{F}}
+\newcommand{\vE}{\vec{E}}
+\newcommand{\vB}{\vec{B}}
+\newcommand{\vM}{\vec{M}}
+\newcommand{\vA}{\vec{A}}
+\newcommand{\vH}{\vec{H}}
+\newcommand{\vD}{\vec{D}}
+\newcommand{\vsigma}{\vec{\sigma}}
+\newcommand{\valpha}{\vec{\alpha}}
+
+\newcommand{\vepsilon}{\vec{\epsilon}}
+
+\newcommand{\dtbx}{\dot \bx}
+\newcommand{\ddtbx}{\ddot \bx}
+\newcommand{\dtbr}{\dot \br}
+\newcommand{\ddtbr}{\ddot \br}
+\newcommand{\dtbR}{\dot \bR}
+\newcommand{\ddtbR}{\ddot \bR}
+
+\newcommand{\dtx}{\dot x}
+\newcommand{\dty}{\dot y}
+\newcommand{\dtz}{\dot z}
+\newcommand{\dts}{\dot s}
+\newcommand{\dtheta}{\dot \theta}
+\newcommand{\dttheta}{\dot \theta}
+\newcommand{\ddtx}{\ddot x}
+\newcommand{\ddty}{\ddot y}
+\newcommand{\ddtz}{\ddot z}
+\newcommand{\ddts}{\ddot s}
+\newcommand{\ddttheta}{\ddot \theta}
+\newcommand{\dtr}{\dot r}
+\newcommand{\ddtr}{\ddot r}
+\newcommand{\dtl}{\dot l}
+\newcommand{\ddtl}{\ddot l}
+
+\newcommand{\atan}{\text{atan}\,}
+\newcommand{\atanh}{\text{atanh}\,}
+\newcommand{\acot}{\text{acot}\,}
+\newcommand{\acoth}{\text{acoth}\,}
+
+%\newcommand{\br}{\mathboit r}
+\renewcommand{\r}{\br}
+%\newcommand{\bv}{\mathboit v}
+\renewcommand{\v}{\bv}
+
+\newcommand{\curl}{\nabla\times}
+
+\newcommand{\ip}[2]{\left<#1,#2\right>}
+\newcommand{\cip}[2]{\left<#1|#2\right>}
+\newcommand{\coip}[3]{\left<#1\left|#2\right|#3\right>}
+
+\newcommand{\ket}[1]{\left|#1\right>}
+\newcommand{\bra}[1]{\left<#1\right|}
+\newcommand{\ketbra}[2]{\left|#1\right>\left<#2\right|}
+
+\newcommand{\valuepermittivity}{\left(8.85419\E{-12}\frac{\C^2}{\J\m}\right)}
+\newcommand{\valuehbar}{\left(1.05457\E{-34}\J\s\right)}
+\newcommand{\valueplanck}{\left(6.62607\E{-34}\J\s\right)}
+\newcommand{\valuefundamentalcharge}{\left(1.60218\E{-19}\C\right)}
+\newcommand{\valuemassofelectron}{\left(9.10939\E{-31}\kg\right)}
+\newcommand{\valuemassofproton}{\left(1.67262\E{-27}\kg\right)}
+\newcommand{\valuespeedoflight}{\left(3\E{8}\vel\right)}
+\newcommand{\valueboltzmann}{\left(1.3807\E{-23}\frac{\J}{\K}\right)}
+\newcommand{\valueraleigh}{\left(1.097\E{7}\m^{-1}\right)}
+\newcommand{\valuegasconstant}{8.31\frac{\J}{\mol\K}}
+
+\newcommand{\operatormomentum}{\left(\frac{\hbar}{i}\drv{}{x}\right)}
+
+\renewcommand{\exp}[1]{\left<#1\right>}
+
+\newcommand{\sech}{\,\text{sech}\,}
+
+\renewcommand{\choose}[2]{\left(\begin{matrix}#1\\#2\end{matrix}\right)}
+
+\newcommand\cancel{\bgroup \markoverwith{---}\ULon}
+
+
+\newcommand{\mmat}[4]{
+\begin{matrix}
+#1 & #2\\
+#3 & #4\\
+\end{matrix}
+}
+
+\newcommand{\bmat}[4]{
+\begin{bmatrix}
+\,\,\,\, #1 \,\, & \,\, #2 \,\,\,\, \\
+\,\,\,\, #3 \,\, & \,\, #4 \,\,\,\, \\
+\end{bmatrix}
+}
+
+
+\newcommand{\pmat}[4]{
+\begin{pmatrix}
+\,\,\,\, #1 \,\, & \,\, #2 \,\,\,\, \\
+\,\,\,\, #3 \,\, & \,\, #4 \,\,\,\, \\
+\end{pmatrix}
+}
+
+\newcommand{\bmattt}[9]{
+\begin{bmatrix}
+\,\,\,\, #1 \,\, & \,\, #2 \,\, & \,\, #3 \,\,\,\, \\
+\,\,\,\, #4 \,\, & \,\, #5 \,\, & \,\, #6 \,\,\,\, \\
+\,\,\,\, #7 \,\, & \,\, #8 \,\, & \,\, #9 \,\,\,\, \\
+\end{bmatrix}
+}
+
+
+\newcommand{\pmattt}[9]{
+\begin{pmatrix}
+\,\,\,\, #1 \,\, & \,\, #2 \,\, & \,\, #3 \,\,\,\, \\
+\,\,\,\, #4 \,\, & \,\, #5 \,\, & \,\, #6 \,\,\,\, \\
+\,\,\,\, #7 \,\, & \,\, #8 \,\, & \,\, #9 \,\,\,\, \\
+\end{pmatrix}
+}
+
+\newcommand{\bvec}[2]{
+\begin{bmatrix}
+#1 \\
+#2 \\
+\end{bmatrix}
+}
+\newcommand{\bveccc}[3]{
+\begin{bmatrix}
+#1 \\
+#2 \\
+#3 \\
+\end{bmatrix}
+}
+
+\newcommand{\bvecccc}[4]{
+\begin{bmatrix}
+#1 \\
+#2 \\
+#3 \\
+#4 \\
+\end{bmatrix}
+}
+
+\newcommand{\pvec}[2]{
+\begin{pmatrix}
+#1 \\
+#2 \\
+\end{pmatrix}
+}
+\newcommand{\pveccc}[3]{
+\begin{pmatrix}
+#1 \\
+#2 \\
+#3 \\
+\end{pmatrix}
+}
+\newcommand{\pvecccc}[4]{
+\begin{pmatrix}
+#1 \\
+#2 \\
+#3 \\
+#4 \\
+\end{pmatrix}
+}
+
+
+\newcommand{\btvec}[2]{
+\begin{bmatrix}
+\,\,\,\, #1 \,\, & \,\, #2 \,\,\,\, \\
+\end{bmatrix}
+}
+
+\newcommand{\paren}[1]{\left(#1\right)}
+
+\newcommand{\pr}[1]{#1^\prime}
+\newcommand{\dpr}[1]{#1^{\prime\prime}}
+
+\newcommand{\halfpi}{\frac{\pi}{2}}
+\newcommand{\twopi}{2\pi}
+
+\newcommand{\vn}{\vec\nabla}
+\newcommand{\vnabla}{\vec\nabla}
+
+\newcommand{\cippsiket}[4]{\left<\psi_{#1}^{(#2)}|\psi_{#3}^{(#4)}\right>}
+\newcommand{\coippsiket}[5]{\left<\psi_{#1}^{(#2)}|#3|\psi_{#4}^{(#5)}\right>}
+\newcommand{\psiketord}[2]{\ket{\psi_{#1}^{(#2)}}}
+\newcommand{\psibraord}[2]{\bra{\psi_{#1}^{(#2)}}}
+
+\newcommand{\psiketordt}[3][t]{\ket{\psi_{#2}^{(#3)}(#1)}}
+\newcommand{\psibraordt}[3][t]{\bra{\psi_{#2}^{(#3)}(#1)}}
+
+\newcommand{\coippsikett}[6][t]{\left<\psi_{#2}^{(#3)}(#1)|#4|\psi_{#5}^{(#6)}(#1)\right>}
+
+\newcommand{\paslash}{\ensuremath \raisebox{0.025cm}{\slash}\hspace{-0.25cm}\partial\/}
+
+\newcommand{\sll}[1]{\rlap{\hbox{$\mskip 1 mu /$}}#1}      % good slash for lower case
+\newcommand{\Sl}[1]{\rlap{\hbox{$\mskip 3 mu /$}}#1}      % " upper
+\newcommand{\SL}[1]{\rlap{\hbox{$\mskip 4.5 mu /$}}#1}    % " fat stuff (e.g., M)
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
+%@-node:@file /Users/cog/Documents/macros.tex
+%@-leo
