@@ -196,6 +196,7 @@ Although conceptually a subsystem code is an isomorphism $T$ such that  $\mathsc
 When one wants to define a qubit in terms of its measurement operators, it suffices to define two operators that anti-commute with each other but which commute with all of the others measurement operators that have been defined, since this gives us the $X$ and $Z$ measurements on the qubit which are sufficient to generate the full $Pauli$ group (minus phases).  Since working with such pairs of operators shall be a common theme in our algorithm, we shall introduce the following definition in order to simplify the language used to describe them.
 
 \begin{definition} A pair of operators is a \emph{conjugal pair in relation to the set} $\set X$ when each of the operators in the pair commutes with every operator in $\set X$ except for its \emph{conjugal partner} --- that is, the other operator in the conjugal pair --- should its conjugal partner be a member of $\set X$.
+\label{conjugal-pair-definition}
 \end{definition}
 
 Note that we have explicitly not required that the operators in the conjugal pair be members of $\set X$ in order to be a conjugal pair in relation to it.  However, should both operators be members of $\set X$, then neither operator can belong to a different conjugal pair with respect to $\set X$, since in that case there would be an operator in $\set X$ (namely, its original conjugal partner) with which it anti-commutes that was not its conjugal partner in the new pair, leading to a contradiction.
@@ -233,7 +234,7 @@ The main work in the proof of this theorem will be performed by proving several 
 \begin{proposition} \label{proposition-SG} Suppose that we are given a sequence of Pauli operators $\lst O\subseteq \pauligroup$.  Then there exists a sequence of Pauli operators $\lst S\subseteq\pauligroup$ and a set of Pauli operators $\set G\subseteq\pauligroup$ such that
 \begin{enumerate}
 \item all of the operators in $\lst S$ commute with each other and also all of the operators in $\lst G$; \label{stabs-commute-with-G}
-\item each operator in $\set G$ is a member of a \emph{conjugal pair} (defined in section \ref{overview}) in relation to $\{\lst S_i\} \cup \set G $ \label{conjugal-pairs-commute-with-SAG}; and
+\item each operator in $\set G$ is a member of a \emph{conjugal pair} (Definition \ref{conjugal-pair-definition}) in relation to $\{\lst S_i\} \cup \set G $ \label{conjugal-pairs-commute-with-SAG}; and
 \item $\genfun\paren{\{\lst S_i\}\cup \set G}=\genfun\paren{\{\lst O_i\}}$ \label{SAG-spans-all}.
 \end{enumerate}
 \end{proposition}
