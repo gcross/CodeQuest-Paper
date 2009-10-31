@@ -242,26 +242,26 @@ The main work in the proof of this theorem will be performed by proving several 
 \begin{proof}
 Proof by induction.  For the base case, note that if $\lst O$ is empty then $\lst S:=\emptyset$ and $\set G:=\emptyset$ trivially satisfy all properties.
 
-Now assume that the proposition holds for a sequence of length $n-1$, and consider a sequence of operators $\lst O$ of length $n$.  By the inductive hypothesis, we know that there is a sequence $\lst S'$ and a set $\set G'$ satisfying the properties above for the subsequence of $\lst O$ consisting of the first $n-1$ operators.  Let $O$ be the last operator in $\lst O$, and let $O':=O\cdot \prod_{A\in \set G, \{O,A\}=0} \text{conj}(A)$ --- that is, the product of $O$ with the conjugal partner of every operator in $\set G$ with which $O$ anti-commutes.  This definition guarantees that $O'$ commmutes with every operator in $\set G$;  furthermore, we can obtain $O$ back from $O'$ by the formula $O':=O\cdot \prod_{A\in \set G, \{O,A\}=0} \text{conj}(A)$ since every operator in $\set G$ squares to the identity, so $\genfun\paren{\{\lst S'_i\} \cup \set G' \cup \{O'\}}=\genfun\paren{\{\lst O_i\}}$.
+Now assume that the proposition holds for a sequence of length $n-1$, and consider a sequence of operators $\lst O$ of length $n$.  By the inductive hypothesis, we know that there is a sequence $\lst S'$ and a set $\set G'$ satisfying the properties above for the subsequence of $\lst O$ consisting of the first $n-1$ operators.  Let $o:=\lst O_n\cdot \prod_{g\in \set G, \{\lst O_n,g\}=0} \text{conj}(g)$ --- that is, the product of $\lst O_n$ with the conjugal partner of every operator in $\set G$ with which $\lst O_n$ anti-commutes.  This definition guarantees that $o$ commmutes with every operator in $\set G$;  furthermore, we can obtain $\lst O_n$ back from $o$ since every operator in $\set G$ squares to the identity and thus $\lst O_n=o\cdot \prod_{g\in \set G, \{\lst O_n,g\}=0} \text{conj}(o)$; therefore we conclude that $\genfun\paren{\{\lst S'_i\} \cup \set G' \cup \{o\}}=\genfun\paren{\{\lst O_i\}}$.
 
-If $O'$ commutes with every operator in $\lst S'$, then set
+If $o$ commutes with every operator in $\lst S'$, then set
 $$\lst S_i :=
 \begin{cases}
 \lst S'_i & i \le n-1 \\
-O' & i = n
+o & i = n
 \end{cases}
 $$
-and $\set G' := \set G$, and we are done.  Otherwise, let $S'$ be some operator in $\lst S'$ that anti-commutes with $O'$, $\set G:=\set G'\cup \{S',O'\}$
-\footnote{Observe that neither $O'$ nor $S'$ can be present in $\set G'$ since they commute with every operator in $\set G'$, so the new set $\set G:=\set G'\cup \{S',O'\}$ gives us a strictly larger set.  This fact is not important as far as the proof is concerned, but it has the important consequence that a computer code implementing the algorithm described by this proof can assume that it can add $S'$ and $O'$ to the list of gauge operators and assume that it continues to have a set (i.e., a sequence without duplicates) without having to explicitly check for this.}, $\lst S_i'' := f(\lst S'_i)$, and $\lst S$ be the subsequence of $\lst S''$ with the identity operators removed, where
+and $\set G := \set G'$, and we are done.  Otherwise, let $s$ be some operator in $\lst S'$ that anti-commutes with $o$, $\set G:=\set G'\cup \{s,o\}$
+\footnote{Observe that neither $o$ nor $s$ can be present in $\set G'$ since they commute with every operator in $\set G'$, so the new set $\set G:=\set G'\cup \{s,o\}$ gives us a strictly larger set.  This fact is irrelevant far as the proof is concerned, but it has the important consequence that a computer code implementing the algorithm described by this proof can append $s$ and $o$ to a list of gauge operators and assume that this list continues to form a set (i.e., a sequence without duplicates) without having to explicitly check for this.}, $\lst S_i'' := f(\lst S'_i)$, and $\lst S$ be the subsequence of $\lst S''$ with the identity operators removed, where
 $$
-f(S) :=
+f(s') :=
 \begin{cases}
-S\cdot S' & \text{$S$ and $O'$ anti-commute}\\
-S & \text{otherwise}
+s'\cdot s & \{s',o\}=0\\
+s' & \text{otherwise}
 \end{cases}.
 $$
-Observe that by this definition, all of the operators in $\lst S$ commute with every operator in $\set G$, so property \ref{stabs-commute-with-G} is satisfied.  Since the only difference between $\set G'$ and $\set G$ is the addition of $S'$ and $O'$, which form a conjugal pair with respect to $\{\lst S_i\} \cup \set G$, we conclude that property \ref{conjugal-pairs-commute-with-SAG} is satisfied.
-Lastly, since $S'\in \set G$, we can form any operator in $\lst S'$ with products of operators in $\lst S$ and $\set G$, so therefore $\genfun\paren{\{\lst S_i\} \cup \set G}=\genfun\paren{\{\lst S'_i\} \cup G' \cup \{O'\}}=\genfun\paren{\{\lst O_i\}}$, and so the final property is satisfied.
+Observe that by this definition, all of the operators in $\lst S$ commute with every operator in $\set G$, so property \ref{stabs-commute-with-G} is satisfied.  Since the only difference between $\set G'$ and $\set G$ is the addition of $s$ and $o$, which form a conjugal pair with respect to $\{\lst S_i\} \cup \set G$, we conclude that property \ref{conjugal-pairs-commute-with-SAG} is satisfied.
+Lastly, since $s\in \set G$, we can form any operator in $\lst S'$ with products of operators in $\lst S$ and $\set G$, so therefore $\genfun\paren{\{\lst S_i\} \cup \set G}=\genfun\paren{\{\lst S'_i\} \cup G' \cup \{s,o\}}=\genfun\paren{\{\lst O_i\}}$, and so the final property is satisfied.
 
 We conclude by noting that since all of the operators in $\lst S$ and $\set G$ were formed from products of operators in $\lst O$, which are Pauli operators (i.e., members of the group $\pauligroup$), they are Pauli operators themselves.
 \end{proof}
@@ -273,44 +273,43 @@ A consequence of not requiring independence of the operators in $\lst O$ is that
 
 \begin{proposition}
 \label{make-independent-using-elimination}
-Suppose that we have been given a sequence of Pauli operators $\lst S$ which commute with each other.  Then there exists
+Suppose that we have been given a sequence of Pauli operators which commute with each other, $\lst R$.  Then there exists
 \begin{enumerate}
-\item an indexed set of commuting operators $\set S := \{S_i\}_{i=1,\dots,n}$ that generate the same subgroup as the operators in $\lst S$,
-\item an indexed set of integers $\set k := \{k_i\}_{i=1,\dots,n}$ in the inclusive range $1\dots n$,
-\item and a map $s:1,\dots, n \to \{0,1\}$ such that $S_i$ is the only operator in $\set S$ that anti-commutes with $P_{k_i}^{[s(i)]}$, where $P_k^{[0]}:=X_k$ and $P_k^{[1]}:=Z_k$.
+\item a sequence $\lst S$ of $n$ independent operators such that $\genfun\paren{\{\lst S_i\}}=\genfun\paren{\{\lst R_i\}}$,
+\item a sequence of $n$ integers without duplicates in the inclusive range $1\dots n$,
+\item and a map $p:\{1\dots n\} \to \{0,1\}$ such that $\lst S_i$ is the only operator in $\lst S$ that anti-commutes with $P_{k_i}^{[p(i)]}$, where $P_k^{[0]}:=X_k$ and $P_k^{[1]}:=Z_k$.
 \end{enumerate}
 \end{proposition}
 
 \begin{proof}
-Proof by induction.  For the base case, we observe that if $\lst S$ is empty, then the trivial sets $\set S:=\emptyset$ and $\set k :=\emptyset$ and the function $s:\emptyset\to\emptyset$ satisfy the requirements.
+Proof by induction.  For the base case, we observe that if $\lst R$ is empty, then the trivial sequences $\lst S:=\emptyset$ and $\lst k :=\emptyset$ and the trivial function $p:\emptyset\to\emptyset$ satisfy the requirements.
 
-Now suppose that we know the proposition holds for lists of size $n-1$, and we are given a list $\lst S$ of size $n$.  By our inductive hypothesis, we can apply the proposition to the first $n-1$ operators in $\lst S$ obtain indexed sets $\set T:=\{T_i\}_{i=1,\dots,n}$ and $\set l := \{l_i\}_{i=1,\dots,n-1}$ and a map $t:1,\dots,n-1\to \{0,1\}$ with the properties stated in the proposition.  Let $S$ be the last element in $\lst S$, and let $S':=S\cdot \prod_{i=1,\dots,n-1 \atop \{S,P_{l_i}^{[t(i)]}\}=0} T_i$.  We know that $S'$ commutes with every operator in $\set T$ since $S$ does, as $\set T$ consists entirely of products of elements in $\lst S$.  Furthermore, since $S'$ is a product of $S$ and a factor of $T_i$ for every $i$ such that $S$ and $P_{l_i}^{(t(i))}$ anti-commute, and we know that $T_i$ is the only operator in $\set T$ that anti-commutes with $P_{l_i}^{(t(i))}$ for $i=1,\dots,n-1$, it is therefore the case that $S'$ commutes with every member of the set $\{P_{l_i}^{(t(i))}\}_{i=1,\dots,n-1}$.  Finally, since $S'$ is a product of $S$ and operators in $\set T$, we can obtain $S$ entirely from products of operators in $\set T \cup \{S'\}$, and so $\set T \cup \{S'\}$ generates the same Pauli subgroup as $\lst S$.
+Now suppose that we know the proposition holds for sequences of length $N-1$, and we are given a sequence $\lst S$ of length $N$.  By our inductive hypothesis, we can apply the proposition to the first $N-1$ operators in $\lst R$ obtain sequences $\lst S'$ and $\lst k'$ of length $n-1$\footnote{$n\ne N$ in general}, and a map $p':\{1\dots n-1\}\to \{0,1\}$ which all satisfy the respective properties of the theorem.  Let $$s:=\lst R_N\cdot \prod_{i=1\dots n-1, \,\,\left\{\lst R_N,P_{k'_i}^{[p(i)]}\right\}=0} \lst S'_i.$$  We know that $s$ commutes with every operator in $\lst S'$ because both $s$ and every operator in $\lst S'$ are equal to products of operators in $\lst R$, which all commute with each other.  Furthermore, since $s$ is a product of $\lst R_N$ and a factor of $\lst S'_i$ for every $i$ such that $\lst R_N$ and $P_{k'_i}^{[p'(i)]}$ anti-commute, and we know that $\lst S_i'$ is the only operator in $\lst S'$ that anti-commutes with $P_{k'_i}^{[p'(i)]}$ for $i=1\dots n-1$, it is therefore the case that $s$ commutes with every member of the set $\{P_{k'_i}^{[p'(i)]}\}_{i=1\dots n-1}$.  Finally, since $s$ is a product of $\lst R_N$ and operators in $\lst S'$, we can obtain $\lst R_N$ entirely from products of operators in $\{\lst S'_i\} \cup \{s\}$, and so $\genfun\paren{\{\lst S'_i\} \cup \{s\}}=\genfun\paren{\{\lst R_i\}}$.
 
-If $S'$ is the identity operator, then set $\set S:=\set T$ and $s:=t$ and we are done.  Otherwise, there must be an integer $k$ in the set $\{1,\dots,N\}\slash\{l_1,\dots,l_{n-1}\}$ and an integer $s\in\{0,1\}$ such that $S'$ anti-commutes with $P_k^{[s]}$.  To see why, suppose that this were not true.  Since $S'$ is not the identity operator, this means that it must consist of the product of operators in a non-trivial subset of $\{P_{l_i}^{[1-t(i)]}\}_{i=1,\dots,n-1}$;  in particular, it must be the case that there exists an integer $i\in 1,\dots,(n-1)$ such that $S'$ anti-commutes with $P_{l_i}^{[1-t(i)]}$.  However, observe that $l_i$ is the only integer in the inclusive range $1,\dots, N$ such that $S'$ anti-commutes with $P_{l_i}^{[1-t(i)]}$ and $S_i$ anti-commutes with $P_{l_i}^{[t(i)]}$.  To repeat this statement in more concrete terms, $l_i$ is the only integer such that either $\{S',X_{l_i}\}=0$, $[S',Z_{l_i}]=0$ and $\{S'_i,Z_{l_i}\}=0$, or $\{S',Z_{l_i}\}=0$, $[S',X_{l_i}]=0$ and $\{S'_i,X_{l_i}\}=0$.  From this we conclude that $S'$ and $S'_i$ must anti-commute, which leads to a contradiction.
+If $s$ is the identity operator, then let $\lst S:=\set S'$ and $p:=p$ and we are done.  Otherwise, there must be an integer $j$ in the set $\{1,\dots,N\}\backslash\{\lst k'_i\}$ and an integer $l\in\{0,1\}$ such that $s$ anti-commutes with $P_{j}^{[l]}$.  To see why, suppose that this were not true.  Since $s$ is not the identity operator, this means that it must consist of a product of operators in a non-trivial subset of $\{P_{k'_i}^{[1-p'(i)]}\}_{i=1\dots n-1}$;  in particular, it must be the case that there exists an integer $i\in 1,\dots,(n-1)$ such that $s$ anti-commutes with $P_{k'_i}^{[1-p'(i)]}$.  However, observe that $k'_i$ is the only integer in the inclusive range $1,\dots, N$ such that $s$ anti-commutes with $P_{k'_i}^{[1-p'(i)]}$ and $\lst S'_i$ anti-commutes with $P_{k'_i}^{[p'(i)]}$.  To repeat this statement in more concrete terms, $\lst k_i'$ is the only integer such that either $\{s,X_{k'_i}\}=0$, $[s,Z_{k'_i}]=0$ and $\{\lst S'_i,Z_{k'_i}\}=0$, or $\{s,Z_{k_i'}\}=0$, $[s,X_{k'_i}]=0$ and $\{\lst S'_i,X_{k'_i}\}=0$.  From this we conclude that $s$ and $\lst S'_i$ must anti-commute, which leads to a contradiction.
 
-Given this, define $\set S := \{S_i\}_{i=1,\dots,n}$ by 
-$$S_i := 
+Given this, define
+$$
+\begin{aligned}
+\lst S_i &:= 
 \begin{cases}
 \begin{cases}
-T_i \cdot S' & \{T_i,P_k^{[s]}\}=0 \\
-T_i & \text{otherwise}
+\lst S'_i \cdot s & \{\lst S_i',P_j^{[l]}\}=0 \\
+\lst S'_i & \text{otherwise}
 \end{cases} & 1\le i\le n-1 \\
 S' & i=n
-\end{cases},
-$$ $\set k:=\{k_i\}_{i=1,\dots,n}$ by
-$$
-k_i :=
+\end{cases}, \\
+\lst k_i &:=
 \begin{cases}
-l_i & 1 \le i \le n-1 \\
-k & i=n
-\end{cases},
-$$ and $s:1,\dots,n\to \{0,1\}$ by
-$$
-s(i):=
+\lst k'_i & 1 \le i \le n-1 \\
+j & i=n
+\end{cases},\quad \text{and} \\
+p(i) &:=
 \begin{cases}
-t(i) & 1 \le i \le n-1\\
-s & i=n
+p'(i) & 1 \le i \le n-1\\
+l & i=n
 \end{cases},
+\end{aligned}
 $$ and we are done.
 \end{proof}
 %@-node:gcross.20090519160701.4:Making them independent
