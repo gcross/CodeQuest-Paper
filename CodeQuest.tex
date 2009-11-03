@@ -474,10 +474,10 @@ Within the context of Theorem \ref{theorem-SG}:
 \item the function $m:\powerset(\pauligroup)\to \mathscr{N}$ is defined such that $m(\set L):=\min_{o\in e(\set L)} w(o)$ --- that is, it gives the weight of the smallest weight error acting on $\set L$;
 \item the function $M:\pauligroup\times\pauligroup \to \mathscr{N}$ is defined such that $M(\set L,\set L'):=\min \{m(\set L),m(\set L')\}$ --- that is, it gives the smaller of the weights of the smallest weight errors acting on respectively $\set L$ and $\set L'$;
 \item an sequence of conjugal pairs, $\lst P$, is said to be an \emph{ordered sequence of conjugal pairs} if $M(\lst P_i) \le M(\lst P_j)$ when $i<j$;
-\item the function $u:\powerset(\pauligroup\times\pauligroup)\to\powerset(\pauligroup)$ is defined (for convenience) such that $u\paren{\set X}:=\bigcup_{(a,b)\in\set X} \{a,b\}$ --- that is, it `unpacks' all of the conjugal pairs into a set of operators; and finally,
+\item the function $\set U:\powerset(\pauligroup\times\pauligroup)\to\powerset(\pauligroup)$ is defined (for convenience) such that $\set U\paren{\set X}:=\bigcup_{(a,b)\in\set X} \{a,b\}$ --- that is, it `unpacks' all of the conjugal pairs into a set of operators; and finally,
 \item an \emph{optimal choice of logical qubits} is any ordered sequence $\lst P$ conjugal pairs such that
 \begin{enumerate}
-\item $u\paren{\lst P}$ satisfies the properties of $\set L$ (given $\set S$ and $\set G$) in Theorem \ref{theorem-SG}, and \\
+\item $\set U\paren{\{\lst P_i\}_i}$ satisfies the properties of $\set L$ (given $\set S$ and $\set G$) in Theorem \ref{theorem-SG}, and \\
 \item given any other sequence $\lst P'$ that satisfies (1), we have that $M(\lst P_i)\ge M(\lst P'_i)$ for $i=1\dots|\lst P|$. \\
 \end{enumerate}
 \end{itemize}
