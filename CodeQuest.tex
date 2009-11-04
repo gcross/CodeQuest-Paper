@@ -454,28 +454,35 @@ Given conjugal pairs $(a,b)$ and $(c,d)$ in relation to some set $\set X$, we ha
 \end{enumerate}
 \end{proof}
 
-As a result of this lemma, we see that we can take pairs of arbitrary conjugal pairs from sets $\set G$ and $\set L$ of Theorem \ref{theorem-SG} and replace them with different pairs per the recipe in Lemma \ref{combining-pairs} such that the properties of the theorem still hold.  So given that these sets are not unique, the natural question is:  What is the best choice of $\set G$ and $\set L$?  To answer this, we observe that another criteria we would like for our code to satisfy is that it be as robust to errors as possible.  Specifically, we would like to make it as hard as possible for an \emph{undetectable error} to creep into our system, which we define to be an operator that anti-commutes with some operator in $\set L$ (and hence modifies the stored quantum information) but commutes with every operator in $\set S$ (and hence is undetectable).  We assume that the `difficulty' of an interaction between our physical system and its environment is related to the number of physical qubits in our system that are participating in the interaction.  Thus, the natural metric for measuring the relative difficulty of an error is given by its weight, which recall is defined as follows:
+As a result of this lemma, we see that we can take pairs of arbitrary conjugal pairs from sets $\set G$ and $\set L$ of Theorem \ref{theorem-SG} and replace them with different pairs per the recipe in Lemma \ref{combining-pairs} such that the properties of the theorem still hold.  So given that these sets are not unique, the natural question is:  What is the best choice of $\set G$ and $\set L$?  To answer this, we observe that another criteria we would like for our code to satisfy is that it be as robust to errors as possible;  in particular, we seek to maximize the difficulty of \emph{undetectable errors}, which is defined as follows:
+
+\begin{definition}
+Given a set $\set S\subseteq\pauligroup$ and operators $l\in\pauligroup$ and $e\in\centralizer_\pauligroup(\set S)$ which anti-commute (i.e., $\{l,e\}=0$), we say that $e$ is an \emph{undetectable error with respect to} $\set S$ \emph{acting on} $l$.
+\end{definition}
+
+We assume that the `difficulty' of an interaction between our physical system and its environment is related to the number of physical qubits in our system that are participating in the interaction.  Thus, the natural metric for measuring the relative difficulty of an error is given by its weight, which recall is defined as follows:
 
 \begin{definition}
 Given an operator $p\in\pauligroup$---which recalls means that $p$ is the tensor product of single-qubit Pauli unnormalized spin matrices---the \emph{weight} of $p$ is the number of single-qubit operators in the product which are non-trivial (i.e., not the identity).  So for example, the weight of $I\otimes I\otimes I$ is 0, the weight of $I\otimes Z\otimes I\otimes X$ is 2, and the weight of $Z\otimes X\otimes Y$ is 3.
 \end{definition}
 
-We now introduce some additional notation for later convenience.
+For convenience, we introduce the following additional notation:
 
 \begin{definition}
+
 \begin{itemize}
 \item the function $w:\pauligroup\to \mathscr{N}$ is defined such that $w(o)$ gives the weight of $o$;
-\item the function $\set E_{\set S}:\powerset{\pauligroup}\to \powerset\paren{\centralizer_\pauligroup\paren{\set S}}$ is defined such that $$\set E_{\set S}(\set L) := \left\{e: e\in \centralizer_\pauligroup\paren{\set S}, \exists\,\, l\in\set L\,\,\text{such that}\,\,\{e,l\}=0\right\},$$ that is, it gives the set of undetectable errors on $\set L$,  namely the set of operators which all commute with every operator in $\set S$ and for which each operator anti-commutes with some operator in $\set L$;
-\item the function $m_{\set S}:\powerset(\pauligroup)\to \mathscr{N}$ is defined such that $m_{\set S}(\set L):=\min_{o\in \set E_{\set S}(\set L)} w(o)$ --- that is, it gives the weight of the smallest weight undetectable error acting on $\set L$;
-\item the function $m:\pauligroup\times\pauligroup \to \mathscr{N}$ is defined such that $M(\set L,\set L'):=\min \{m(\set L),m(\set L')\}$ --- that is, it gives the smaller of the weights of the smallest weight errors acting on respectively $\set L$ and $\set L'$;
-\item an sequence of conjugal pairs, $\lst P$, is said to be an \emph{ordered sequence of conjugal pairs} if $M(\lst P_i) \le M(\lst P_j)$ when $i<j$;
+\item the function $e_{\set S}:\pauligroup\to \centralizer_\pauligroup\paren{\set S}$ is defined such that $e_{\set S}(l)$ is the minimizer of $w$ over the set $\left\{o: o\in \centralizer_\pauligroup\paren{\set S}, \{o,l\}=0\right\}$ --- that is, it gives the undetectable error with respect to $\set S$ acting on $l$ that is of minimum weight;
+\item the function $m_{\set S}:\pauligroup\times\pauligroup \to \mathscr{N}$ is defined such that $m_{\set S}(l,l'):=\min \{w\paren{e_{\set S}(l)},w\paren{e_{\set S}(l')}\}$ --- that is, it gives the smaller of the weights of the smallest weight errors acting on respectively $\set L$ and $\set L'$;
+\item an sequence of conjugal pairs, $\lst P$, is said to be an \emph{ordered sequence of conjugal pairs} if $m(\lst P_i) \le m(\lst P_j)$ when $i<j$;
 \item the function $\set U:\powerset(\pauligroup\times\pauligroup)\to\powerset(\pauligroup)$ is defined (for convenience) such that $\set U\paren{\set X}:=\bigcup_{(a,b)\in\set X} \{a,b\}$ --- that is, it `unpacks' all of the conjugal pairs into a set of operators; and finally,
-\item an \emph{optimal choice of logical qubits} is any ordered sequence $\lst P$ conjugal pairs such that
+\item given the sets $\set S$ and $\set G$ in the context of Theorem \ref{theorem-SG}, an \emph{optimal choice of logical qubits} is any ordered sequence of conjugal pairs, $\lst P$, such that
 \begin{enumerate}
-\item $\set U\paren{\{\lst P_i\}_i}$ satisfies the properties of $\set L$ (given $\set S$ and $\set G$) in Theorem \ref{theorem-SG}, and \\
-\item given any other sequence $\lst P'$ that satisfies (1), we have that $M(\lst P_i)\ge M(\lst P'_i)$ for $i=1\dots|\lst P|$. \\
+\item $\set U\paren{\{\lst P_i\}_i}$ satisfies the properties of $\set L$ described in Theorem \ref{theorem-SG}, and \\
+\item given any other sequence $\lst P'$ that satisfies the first property, we have that $M(\lst P_i)\ge M(\lst P'_i)$ for $i=1\dots|\lst P|$. \\
 \end{enumerate}
 \end{itemize}
+
 \end{definition}
 
 Now we have a precise notion of what it means to have made the best choice of logical qubits, but it remains to show that there exists an algorithm that will make this choice.  To do this, we need to introduce more definitions:
