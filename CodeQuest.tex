@@ -208,8 +208,8 @@ For convenience, we introduce the following additional definitions:
 \begin{enumerate}
 \item $\pauligroup$ is the group of Pauli operators --- that is, the group of tensor products of the (unnormalized) Pauli matrices --- acting on the physical space $\mathscr{P}$;
 \item $\powerset(\set S)$ is the power set of $\set S$, i.e. the set of all subsets of $\set S$; and
-\item $\centralizer_\mathfrak{G}(\set S)$ is the centralizer of $\set S$, that is the set of elements of the group $\mathfrak{G}$ which commute with $\set S$;
-\item the function $\genfun:\powerset(\mathscr{P})\to\powerset(\mathscr{P})$ is defined such that $\genfun(\set S)$ is the set of all possible products of operators in $\set S$ --- that is, it is the set \emph{generated} by $\set S$.
+\item $\centralizer_\mathfrak{G}(\set S)$ is the centralizer of $\set S$, that is the subgroup of elements in $\mathfrak{G}$ which commute with $\set S$;
+\item the function $\genfun:\powerset(\pauligroup)\to\powerset(\pauligroup)$ is defined such that $\genfun(\set S)$ is the set of all possible products of operators in $\set S$ --- that is, it is the set \emph{generated} by $\set S$.
 \end{enumerate}
 
 \end{definition}
@@ -242,7 +242,7 @@ The main work in the proof of this theorem will be performed by proving several 
 \begin{proof}
 Proof by induction.  For the base case, note that if $\lst O$ is empty then $\lst S:=\emptyset$ and $\set G:=\emptyset$ trivially satisfy all properties.
 
-Now assume that the proposition holds for a sequence of length $n-1$, and consider a sequence of operators $\lst O$ of length $n$.  By the inductive hypothesis, we know that there is a sequence $\lst S'$ and a set $\set G'$ satisfying the properties above for the subsequence of $\lst O$ consisting of the first $n-1$ operators.  Let $o:=\lst O_n\cdot \prod_{g\in \set G, \{\lst O_n,g\}=0} \text{conj}(g)$ --- that is, the product of $\lst O_n$ with the conjugal partner of every operator in $\set G$ with which $\lst O_n$ anti-commutes.  This definition guarantees that $o$ commmutes with every operator in $\set G$;  furthermore, we can obtain $\lst O_n$ back from $o$ since every operator in $\set G$ squares to the identity and thus $\lst O_n=o\cdot \prod_{g\in \set G, \{\lst O_n,g\}=0} \text{conj}(o)$; therefore we conclude that $\genfun\paren{\{\lst S'_i\} \cup \set G' \cup \{o\}}=\genfun\paren{\{\lst O_i\}}$.
+Now assume that the proposition holds for a sequence of length $n-1$, and consider a sequence of operators $\lst O$ of length $n$.  By the inductive hypothesis, we know that there is a sequence $\lst S'$ and a set $\set G'$ satisfying the properties above for the subsequence of $\lst O$ consisting of the first $n-1$ operators.  Let $o:=\lst O_n\cdot \prod_{g\in \set G, \{\lst O_n,g\}=0} \text{conj}_{\set G}(g)$ --- that is, the product of $\lst O_n$ with the conjugal partner of every operator in $\set G$ with which $\lst O_n$ anti-commutes.  This definition guarantees that $o$ commmutes with every operator in $\set G$;  furthermore, we can obtain $\lst O_n$ back from $o$ since every operator in $\set G$ squares to the identity and thus $\lst O_n=o\cdot \prod_{g\in \set G, \{\lst O_n,g\}=0} \text{conj}_{\set G}(o)$; therefore we conclude that $\genfun\paren{\{\lst S'_i\} \cup \set G' \cup \{o\}}=\genfun\paren{\{\lst O_i\}}$.
 
 If $o$ commutes with every operator in $\lst S'$, then set
 $$\lst S_i :=
@@ -286,18 +286,11 @@ Proof by induction.  For the base case, we observe that if $\lst R$ is empty, th
 
 Now suppose that we know the proposition holds for sequences of length $N-1$, and we are given a sequence $\lst S$ of length $N$.  By our inductive hypothesis, we can apply the proposition to the first $N-1$ operators in $\lst R$ obtain sequences $\lst S'$ and $\lst k'$ of length $n-1$\footnote{$n\ne N$ in general}, and a map $p':\{1\dots n-1\}\to \{0,1\}$ which all satisfy the respective properties of the theorem.  Let $$s:=\lst R_N\cdot \prod_{i=1\dots n-1, \,\,\left\{\lst R_N,P_{k'_i}^{[p(i)]}\right\}=0} \lst S'_i.$$  We know that $s$ commutes with every operator in $\lst S'$ because both $s$ and every operator in $\lst S'$ are equal to products of operators in $\lst R$, which all commute with each other.  Furthermore, since $s$ is a product of $\lst R_N$ and a factor of $\lst S'_i$ for every $i$ such that $\lst R_N$ and $P_{k'_i}^{[p'(i)]}$ anti-commute, and we know that $\lst S_i'$ is the only operator in $\lst S'$ that anti-commutes with $P_{k'_i}^{[p'(i)]}$ for $i=1\dots n-1$, it is therefore the case that $s$ commutes with every member of the set $\{P_{k'_i}^{[p'(i)]}\}_{i=1\dots n-1}$.  Finally, since $s$ is a product of $\lst R_N$ and operators in $\lst S'$, we can obtain $\lst R_N$ entirely from products of operators in $\{\lst S'_i\} \cup \{s\}$, and so $\genfun\paren{\{\lst S'_i\} \cup \{s\}}=\genfun\paren{\{\lst R_i\}}$.
 
-If $s$ is the identity operator, then let $\lst S:=\lst S'$ and $p:=p$ and we are done.  Otherwise, we shall now show that there must integers $j\in\{1,\dots,N\}\backslash\{\lst k'_i\}$ and $l\in\{0,1\}$ such that $s$ anti-commutes with $P_{j}^{[l]}$, by demonstrating that if this were not the case then $s$ would have to anti-commute with some element in $\lst S'$, leading to a contradiction.
+If $s$ is the identity operator, then let $\lst S:=\lst S'$ and $p:=p$ and we are done.  Otherwise, we shall now show that there must exist integers $j\in\{1,\dots,N\}\backslash\{\lst k'_i\}$ and $l\in\{0,1\}$ such that $s$ anti-commutes with $P_{j}^{[l]}$, by demonstrating that if this were not the case then $s$ would have to anti-commute with some element in $\lst S'$, leading to a contradiction.
 
-Assume that $s$ commutes with every operator in the set $\{P_j^{[l]}:\quad j\in\{1,\dots,N\}\backslash\{\lst k'_i\}, l\in\{0,1\}.$  Recalling that $s$ is a member of the Pauli group and thus a tensor product of single-particle Pauli spin matrices, and also that $s$ commutes with every member of the set $\{P_{\lst k'_i}^{[p'(i)]}\}_{i=1\dots n-1}$, we see therefore that $s$ must be a product of elements from this set, and thus in particular that there must be some integer $i=1\dots n-1$ such that $s$ anti-commutes with $P_{\lst k'_i}^{[1-p'(i)]}$.  Let $s'$ be the member of $\lst S'$ which anti-commmutes with $P_{\lst k'_i}^{[p'(i)]}$.  
+Assume that $s$ commutes with every operator in the set $\left\{P_j^{[l]}:\quad j\in\{1,\dots,N\}\backslash\{\lst k'_i\}, \quad l\in\{0,1\}\right\}.$  Recalling that $s$ is a member of the Pauli group and thus a tensor product of single-particle Pauli spin matrices, and also that $s$ commutes with every member of the set $\{P_{\lst k'_i}^{[p'(i)]}\}_{i=1\dots n-1}$, we see therefore that $s$ must be a product of elements from this set --- that is, there is some subset $\emptyset \ne \set F \subseteq \{P_{\lst k'_i}^{[p'(i)]}\}_{i=1\dots n-1}$ such that $s=\prod_{o\in \set F} o$.  However, from our inductive hypothesis we know that for every operator $f\in\set F$ there is an operator $s'\in\lst S'$ that anti-commutes with $f$ but commutes with the operators in $\set F\backslash\{f\}$.  Since $s$ is therefore a product of a single operator that anti-commutes with $s'$ and more operators that commute with $s'$, we conclude that $s$ and $s'$ anti-commute, which contradicts our earlier conclusion that $s$ commutes with every operator in $\lst S'$.
 
-As previously discussed, by construction $s$ commutes with every operator in $\{P_{k'_i}^{[p'(i)]}\}_{i=1\dots n-1}$.  Observe furthermore that the only way that $\lst S'_i$ can anti-commute with  $\{P_{k'_i}^{[p'(i)]}\}_{i=1\dots n-1}$ is if it  if there were some $i\in 1\dots n-1$ such that $s$ and $P_{k'_i}^{[1-p'(i)]}$ anti-commute, then 
-
- for some $\}_{i=1\dots n-1}$ then it would also anti-commute with $\lst S'_i$
-
-
-To see why, suppose that this were not true.  Since $s$ is not the identity operator and it commutes with all of the operators in the set  this means that it must consist of a product of operators in a non-trivial subset of $\{P_{k'_i}^{[p'(i)]}\}_{i=1\dots n-1}$;  in particular, it must be the case that there exists an integer $i\in 1,\dots,(n-1)$ such that $s$ anti-commutes with $P_{k'_i}^{[1-p'(i)]}$.  However, observe that $k'_i$ is the only integer in the inclusive range $1,\dots, N$ such that $s$ anti-commutes with $P_{k'_i}^{[1-p'(i)]}$ and $\lst S'_i$ anti-commutes with $P_{k'_i}^{[p'(i)]}$.  To repeat this statement in more concrete terms, $\lst k_i'$ is the only integer such that either $\{s,X_{k'_i}\}=0$, $[s,Z_{k'_i}]=0$ and $\{\lst S'_i,Z_{k'_i}\}=0$, or $\{s,Z_{k_i'}\}=0$, $[s,X_{k'_i}]=0$ and $\{\lst S'_i,X_{k'_i}\}=0$.  From this we conclude that $s$ and $\lst S'_i$ must anti-commute, which leads to a contradiction.
-
-Given this, define
+Now that we have shown that there exist integers $j\in\{1,\dots,N\}\backslash\{\lst k'_i\}$ and $l\in\{0,1\}$ such that $s$ anti-commutes with $P_{j}^{[l]}$, in terms of these integers we define
 $$
 \begin{aligned}
 \lst S_i &:= 
@@ -329,28 +322,28 @@ Proposition \ref{make-independent-using-elimination} is good for more than compu
 
 \begin{proposition}
 \label{construction-of-logicals}
-Suppose that we have been given the objects described in 1-3 of Proposition \ref{make-independent-using-elimination}.  Then there exists a set of operators $\set L$ such that
+Suppose that we have been given the objects described in 1-3 of Proposition \ref{make-independent-using-elimination}.  Let $\set S := \{\vec S_i\}_i.$  Then there exists a set of operators $\set L$ such that
 \begin{enumerate}
 \item \label{L-are-independent} the operators in $\set S\cup\set L$ are independent;
 \item \label{L-are-conjugal-pairs} every operator in $\set L$ is a member of a conjugal pair with respect to $\set S\cup\set L$;
-\item \label{L-completes-the-generators} the set of operators $\set S\cup\set L$ generate the subgroup of Pauli operators which commute with every operator $\set S$.
+\item \label{L-completes-the-generators} $\genfun\paren{\set S\cup\set L}=\centralizer_\pauligroup(\set S)$ --- that is, the set generated by $\set S\cup\set L$ is equal to the set of Pauli operators that commute with $\set S$.
 \end{enumerate}
 \end{proposition}
 
 \begin{proof}
-Let $\set L:=\set A\cup\set B$, where $\set A:=\{A_i\}_{i=1,N-|\set S|}$, $\set B:=\{B_i\}_{i=1,N-|\set S|}$,
+Recalling that $n$ is the number of elements in $\lst S$ (and $\set S$), let $\lst l$ be some sequential ordering of $\{1 \dots N\}\backslash\{\vec k_i\}_i$, and then let $\set L:=\{\lst A_i\}_i\cup\{\lst B_i\}_i$ where
 $$
 \begin{aligned}
-A_i &:= Z_{l_i}\cdot \prod_{j=1,\dots,|\set S|\atop \{Z_{l_i},S_j\}=0} P_{k_j}^{[s(j)]},\\
-B_i &:= X_{l_i}\cdot \prod_{j=1,\dots,|\set S|\atop \{X_{l_i},S_j\}=0} P_{k_j}^{[s(j)]},\\
+\lst A_i &:= P_{\lst l_i}^{[1]}\cdot \prod_{j=1\dots n\atop \{P_{l_i}^{[1]},\lst S_j\}=0} P_{\lst k_j}^{[s(j)]},\\
+\lst B_i &:= P_{\lst l_i}^{[0]}\cdot \prod_{j=1\dots n\atop \{P_{l_i}^{[0]},\lst S_j\}=0} P_{\lst k_j}^{[s(j)]}.\\
 \end{aligned}
-$$ and $\set l:=\{l_i\}=\{1,\dots,N\}\slash\{k_1,\dots,k_{|\set S|}\}$.
+$$
 
-To see that property \ref{L-are-independent} is satisfied, observe the following.  First, the operators in $\set L$ are independent from the operators in $\set S$ since they all commute with every operator in $\{P_{k_i}^[s(i)]\}_{i=1,\dots,|\set S|}$.  Second, they are independent from each other since for every $i=1,\dots,N-|\set S|$ we have that $A_i$ is the only operator that anti-commutes with $X_{l_i}$ and $B_i$ is the only operator that anti-commutes with $Z_{l_i}$.  Thus we conclude that all of the operators in $\set S\cup\set L$ are independent.
+To see that property \ref{L-are-independent} is satisfied, observe the following.  First, the operators in $\set L$ are independent from the operators in $\set S$ since none of them is the identity operator and they all commute with every operator in $\{P_{\lst k_i}^{[s(i)]}\}_{i=1 \dots n}$.  Second, they are independent from each other since for every $i=1 \dots |\lst l|$ we have that $\vec A_i$ is the only operator that anti-commutes with $P_{\lst l_i}^{[0]}$ and $\lst B_i$ is the only operator that anti-commutes with $P_{\lst l_i}^{[1]}$.  Thus we conclude that all of the operators in $\set S\cup\set L$ are independent.
 
-Next, to see that property \ref{L-are-conjugal-pairs} holds, recall that for every operator $S_i\in\set S$ we know that there is only one operator $P\in\{P_{k_i}^[s(i)]\}_{i=1,\dots,|\set S|}$ with which it anti-commutes.  Now observe that every operator in $\set L$ only includes $P$ if in addition to factors within $\{P_{k_i}^[s(i)]\}_{i=1,\dots,|\set S|}$ it also includes an additional operator $X_l$ or $Z_l$ that is not in $\{P_{k_i}^[s(i)]\}_{i=1,\dots,|\set S|}$ but with which $S_i$ also anti-commutes.  Thus, every operator in $\set L$ commutes with every operator in $\set S$.  Furthermore, each operator $A_i$ commutes with every operator in $L$ except for its conjugal partner $B_i$, since the only factor in $A_i$ that could anti-commute with a factor contained within another operator in $\set L$ is $Z_{l_i}$, and $B_i$ is the only operator in $\set L$ that contains a factor $X_{l_i}$ that anti-commutes with $X_{l_i}$;  reversing this argument, we also see that $B_i$ commutes with every operator in $\set L$ except for $A_i$.  Thus, every operator in $\set L$ is a member of a conjugal pair with respect to $\set L\cup\set S$.
+Next, to see that property \ref{L-are-conjugal-pairs} holds, observe that for every choice of operators $\lst A_i$ and $\lst S_j$ we have (by intentional construction) that $\lst S_j$ either anti-commutes with two of the operators in the product forming $\lst A_i$ or none at all, and so $[\lst S_i,\lst A_j]=0$ for all $i=1\dots n$ and $j=1\dots |\lst l|$;  by the same reasoning we see also that $[\lst S_i,\lst B_j]=0$ for all $i=1\dots n$ and $j=1\dots |\lst l|$.  Furthermore, each operator $\lst A_i$ commutes with every operator in $\set L$ except for its conjugal partner $\lst B_i$, since the only factor in $\lst A_i$ that could anti-commute with a factor contained within another operator in $\set L$ is $P_{l_i}^{[1]}$, and $\lst B_i$ is the only operator in $\set L$ that contains a factor $P_{l_i}^{[0]}$ that anti-commutes with $\lst X_{l_i}$;  reversing this argument, we also see that $\lst B_i$ commutes with every operator in $\set L$ except for $\lst A_i$.  Thus, every operator in $\set L$ is a member of a conjugal pair with respect to $\set L\cup\set S$.
 
-Finally, to see that property \ref{L-completes-the-generators} holds, observe that since the operators in $\set S$ commute they can therefore be simultaneously diagonalized, which means that there is an automorphism on $\mathcal{P}$ that takes $S_i\mapsto Z_i$ for every $i=1,\dots,|\set S|$.  The only operators that commute with every such $Z_i$ are those which do not contain any factor of $X_i$ for $i=1,\dots,|\set S|$, and so it is the subgroup generated by $\{Z_i\}_{i=1,\dots,|\set S|}\cup \{X_i,Z_i\}_{i=|\set S|,\dots N}$, which has $2N-|\set S|$ generators.  Thus, we conclude that the subgroup of operators which commute with every member of $\set S$ has exactly $2N-|\set S|$ generators.  Since $\set S\cup\set L$ contains independent operators which commute with every member of $\set S$, and furthermore $|\set S\cup\set L|=2N-|\set S|$, thus conclude that $\set S\cup\set L$ exactly generates the subgroup of operators which commute with every member of $\set S$.
+Finally, to see that property \ref{L-completes-the-generators} holds, observe that since the operators in $\set S$ commute they can therefore be simultaneously diagonalized, which means that there is an automorphism on $\pauligroup$ that takes $\lst S_i\mapsto P_i^{[1]}$ for every $i=1 \dots n$.  The only operators that commute with every such $P_i^{[1]}$ are those which do not contain any factor of $P_i^{[0]}$ for $i=1 \dots n$, and so $\centralizer_\pauligroup\paren{\{P_i^{[0]}\}_{i=1\dots n}} = \genfun\paren{\{P_i^{[1]}\}_{i=1 \dots n}\cup \{P_i^{[l]}\}_{i=n+1 \dots N, \,\, l=0,1}}$, which has $2N-n$ generators.  Since the automorphism preserves the number of generators in the centralizer, we thus conclude that $\centralizer_\pauligroup(\set S)$ has exactly $2N-n$ generators.  Since $\set S\cup\set L$ contains independent operators which commute with every member of $\set S$, and furthermore $|\set S\cup\set L|=2N-n$, we thus conclude that $\genfun\paren{\set S\cup\set L}=\centralizer_\pauligroup(\set S)$.
 \end{proof}
 %@nonl
 %@-node:gcross.20090527164539.1:Construct the logical operators
@@ -358,11 +351,11 @@ Finally, to see that property \ref{L-completes-the-generators} holds, observe th
 With these building blocks in place, we now prove the main theorem:
 
 \begin{proof}[Theorem \ref{theorem-SG}]
-By Proposition ref{proposition-SG}, we know that there exists a list of operators $\lst S$ and a set of independent operators $\set G$ satisfying the properties that are listed there.  By Proposition \ref{make-independent-using-elimination}, we know that there is an independent set of operators $\set S$ that generate the same subgroup as $\lst S$.  
+By Proposition \ref{proposition-SG}, we know that there exists a list of operators $\lst S$ and a set of independent operators $\set G$ satisfying the properties that are listed there.  By Proposition \ref{make-independent-using-elimination}, we know that there is an independent set of operators $\set S$ that generate the same subgroup as $\lst S$.  
 
-Now let $\set F$ be a maximal subset of commuting operators in $\set G$ --- i.e., for each conjugal pair in $\set G$ take one of the two operators --- and then let $\set O := \set F \cup \set S$.  Since all of the operators in $\set O$ commute, we apply Proposition \ref{make-independent-using-elimination} again to conclude the existance of the objects listed there, and then we immediately apply \ref{construction-of-logicals} to show that a set $\set M$ exists with the properties listed there.  We are not done yet, however, since there might be operators in $\set G$ with which operators in $\set M$ anti-commute, so we let
-$$\set L := \{M\cdot\prod_{F\in \set F\atop \{M,conj(F)\}=0} F | M \in\set M\}$$
-where $\text{conj}(F)$ is the conjugal partner of $F$ in the set $\set G$.  This guarantees that the operators in $\set L$ commute with every operator in $\set S\cup\set G$, and so we are done.
+Now let $\set F$ be a maximal subset of commuting operators in $\set G$ --- i.e., for each conjugal pair in $\set G$ take one of the two operators --- and then let $\set O := \set F \cup \set S$.  Since all of the operators in $\set O$ commute, we apply Proposition \ref{make-independent-using-elimination} again to conclude the existance of the objects listed there, and then we immediately apply Proposition \ref{construction-of-logicals} to show that a set $\set M$ exists with the properties listed there.  We are not done yet, however, since there might be operators in $\set G$ with which operators in $\set M$ anti-commute, so we let
+$$\set L := \{m\cdot\prod_{f\in \set F\atop \{M,\text{conj}_{\set G}(f)\}=0} f :\quad m \in\set M\}$$
+where $\text{conj}_{\set G}(F)$ is the conjugal partner of $F$ in the set $\set G$.  This guarantees that the operators in $\set L$ commute with every operator in $\set S\cup\set G$, and so we are done.
 \end{proof}
 %@-node:gcross.20090520163423.15:Prove main theorem
 %@+node:gcross.20090511123440.5:Pseudo-code
@@ -447,41 +440,41 @@ In general there are multiple sets of operators that satisfy the properties of \
 
 \begin{lemma}
 \label{combining-pairs}
-Given conjugal pairs $(A,B)$ and $(C,D)$ in relation to some set $\set X$, we have that
+Given conjugal pairs $(a,b)$ and $(c,d)$ in relation to some set $\set X$, we have that
 \begin{enumerate}
-\item the pairs $(A\cdot C,B)$ and $(C,D\cdot B)$ are also conjugal pairs;
-\item and the sets generated by the operators in the former pairs and the operators in the latter pairs are the same.
+\item the pairs $(a\cdot c,b)$ and $(c,d\cdot b)$ are also conjugal pairs; and
+\item $\genfun\paren{\{a,b,c,d\}}=\genfun\paren{\{a\cdot c,b,c,d\cdot b\}}$.
 \end{enumerate}
 \end{lemma}
 
 \begin{proof}
 \begin{enumerate}
-\item Since $[A,C]=[A,D]=[B,C]=[B,D]=\{A,B\}=\{C,D\}=0$, we see therefore that $[A\cdot C,C]=[A\cdot C,D\cdot B]=[B,C]=[B,D\cdot B]=\{A\cdot C,B\}=\{C,D\cdot B\}=0$.  Furthermore, since $A,B,C$ and $D$ are products of operators which commute with every operator in $\set X$ except for their conjugal partners, so do $A\cdot C$ and $D\cdot B$.
-\item Since $B$ and $C$ are Pauli operators and thus square to the identity, we have that $A\cdot C\cdot C=A$ and $D\cdot B\cdot B=D$, and so $\left<A,B,C,D\right> =\left<A\cdot C,B,C,D\cdot B\right>$.
+\item Since $[a,c]=[a,d]=[b,c]=[b,d]=\{a,b\}=\{c,d\}=0$, we see therefore that $[a\cdot c,c]=[a\cdot c,d\cdot b]=[b,c]=[b,d\cdot b]=\{a\cdot c,b\}=\{c,d\cdot b\}=0$.  Furthermore, since $a$, $b$, $c$ and $d$ are products of operators which commute with every operator in $\set X$ except for their conjugal partners, so do $a\cdot c$ and $d\cdot b$.
+\item Since $b$ and $c$ are Pauli operators and thus square to the identity, we have that $a\cdot c\cdot c=a$ and $d\cdot b\cdot b=d$, and so $\genfun\paren{\{a,b,c,d\}}=\genfun\paren{\{a\cdot c,b,c,d\cdot b\}}$.
 \end{enumerate}
 \end{proof}
 
-As a result of this lemma, we see that we can take pairs of arbitrary conjugal pairs from sets $\set G$ and $\set L$ of Theorem \ref{theorem-SG} and replace them with different pairs per the recipe in Lemma \ref{combining-pairs} such that the properties of the theorem still hold.  So given that these sets are not unique, the natural question is:  What is the best choice of $\set G$ and $\set L$?  To answer this, we observe that another criteria we would like for our code to satisfy is that it be as robust to errors as possible, where we define an `error' as follows:
+As a result of this lemma, we see that we can take pairs of arbitrary conjugal pairs from sets $\set G$ and $\set L$ of Theorem \ref{theorem-SG} and replace them with different pairs per the recipe in Lemma \ref{combining-pairs} such that the properties of the theorem still hold.  So given that these sets are not unique, the natural question is:  What is the best choice of $\set G$ and $\set L$?  To answer this, we observe that another criteria we would like for our code to satisfy is that it be as robust to errors as possible.  Specifically, we would like to make it as hard as possible for an \emph{undetectable error} to creep into our system, which we define to be an operator that anti-commutes with some operator in $\set L$ (and hence modifies the stored quantum information) but commutes with every operator in $\set S$ (and hence is undetectable).  We assume that the `difficulty' of an interaction between our physical system and its environment is related to the number of physical qubits in our system that are participating in the interaction.  Thus, the natural metric for measuring the relative difficulty of an error is given by its weight, which recall is defined as follows:
 
 \begin{definition}
-Assuming that we are in the context of Theorem \ref{theorem-SG} an \emph{error} is a Pauli operator that anti-commutes with some operator in $\set L$\footnote{Of course, such operators are often called by another name, and that is \emph{gates}.  It all depends on whether the action of the operator was desired or not;  at the moment we are obviously assuming that it is undesired.}.  The error is \emph{detectable} if it anti-commutes with some operator in $\set S$, and \emph{undetectable} otherwise.  If we are given one of the specific operators, $L\in \set L$, which anti-commutes with the error, then we say that the error \emph{acts on} $L$.
+Given an operator $p\in\pauligroup$---which recalls means that $p$ is the tensor product of single-qubit Pauli unnormalized spin matrices---the \emph{weight} of $p$ is the number of single-qubit operators in the product which are non-trivial (i.e., not the identity).  So for example, the weight of $I\otimes I\otimes I$ is 0, the weight of $I\otimes Z\otimes I\otimes X$ is 2, and the weight of $Z\otimes X\otimes Y$ is 3.
 \end{definition}
 
-We would like to make it as hard as possible for an undetectable error to creep into our system.  We assume that the `difficulty' of an interaction between our physical system and its environment is related to the number of physical qubits in our system that are participating in the interaction.  Thus, the natural metric for measuring the relative difficulty of an error is given by its weight, which recall is defined as follows:
+We now introduce some additional notation for later convenience.
 
 \begin{definition}
-Given an operator which is the tensor product of some number of single-qubit operators (as is the case for any member of $\mathscr{P}^N$, the set of $N$-qubit Pauli operators), the \emph{weight} of the operator is the number of single-qubit operators in the product which are non-trivial (i.e., not the identity).  So for example, the weight of $I\otimes I\otimes I$ is 0, the weight of $I\otimes Z\otimes I\otimes X$ is 2, and the weight of $Z\otimes X\otimes Y$ is 3.
-\end{definition}
-
-\begin{definition}
-Within the context of Theorem \ref{theorem-SG}:
 \begin{itemize}
-\item the function $w:\mathscr{P}^N\to \mathscr{N}$ is defined such that $w(O)$ gives the weight of $O$;
-\item the function $e:\mathscr{P}^N\to P^{\mathscr{P}^N}$ is defined such that $e(L)$ gives the set of errors acting on $L$;
-\item the function $m:\mathscr{P}^N\to \mathscr{N}$ is defined such that $m(L):=\min_{O\in e(L)} w(O)$ --- that is, it gives the weight of the smallest weight error acting on $L$;
-\item the function $M:\mathscr{P}^N\times\mathscr{P}^N \to \mathscr{N}$ is defined such that $M(L,L'):=\min \{m(L),m(L')\}$ --- that is, it gives the smaller of the weights of the smallest weight errors acting on respectively $L$ and $L'$;
-\item a sequence of conjugal pairs, $P:=\{p_i\}_{i=1,\dots,|P|}\subseteq \mathscr{P}^N\times\mathscr{P}^N$, is said to be an \emph{ordered sequence of conjugal pairs} if $M(p_i) < M(p_j)$ when $i<j$; and finally,
-\item an \emph{optimal choice of logical qubits} is any ordered sequence $\{p_i\}_{i=1,|L|}$ of conjugal pairs satisfying the properties of $\set L$ (given $\set S$ and $\set G$) in Theorem \ref{theorem-SG} such that given any other ordered sequence $\{p'_i\}_{i=1,|L|}$ that also satisfies the properties of $L$ we have that $M(p_i)\ge M(p'_i)$ for $i=1,\dots,|L|$.
+\item the function $w:\pauligroup\to \mathscr{N}$ is defined such that $w(o)$ gives the weight of $o$;
+\item the function $\set E_{\set S}:\powerset{\pauligroup}\to \powerset\paren{\centralizer_\pauligroup\paren{\set S}}$ is defined such that $$\set E_{\set S}(\set L) := \left\{e: e\in \centralizer_\pauligroup\paren{\set S}, \exists\,\, l\in\set L\,\,\text{such that}\,\,\{e,l\}=0\right\},$$ that is, it gives the set of undetectable errors on $\set L$,  namely the set of operators which all commute with every operator in $\set S$ and for which each operator anti-commutes with some operator in $\set L$;
+\item the function $m_{\set S}:\powerset(\pauligroup)\to \mathscr{N}$ is defined such that $m_{\set S}(\set L):=\min_{o\in \set E_{\set S}(\set L)} w(o)$ --- that is, it gives the weight of the smallest weight undetectable error acting on $\set L$;
+\item the function $m:\pauligroup\times\pauligroup \to \mathscr{N}$ is defined such that $M(\set L,\set L'):=\min \{m(\set L),m(\set L')\}$ --- that is, it gives the smaller of the weights of the smallest weight errors acting on respectively $\set L$ and $\set L'$;
+\item an sequence of conjugal pairs, $\lst P$, is said to be an \emph{ordered sequence of conjugal pairs} if $M(\lst P_i) \le M(\lst P_j)$ when $i<j$;
+\item the function $\set U:\powerset(\pauligroup\times\pauligroup)\to\powerset(\pauligroup)$ is defined (for convenience) such that $\set U\paren{\set X}:=\bigcup_{(a,b)\in\set X} \{a,b\}$ --- that is, it `unpacks' all of the conjugal pairs into a set of operators; and finally,
+\item an \emph{optimal choice of logical qubits} is any ordered sequence $\lst P$ conjugal pairs such that
+\begin{enumerate}
+\item $\set U\paren{\{\lst P_i\}_i}$ satisfies the properties of $\set L$ (given $\set S$ and $\set G$) in Theorem \ref{theorem-SG}, and \\
+\item given any other sequence $\lst P'$ that satisfies (1), we have that $M(\lst P_i)\ge M(\lst P'_i)$ for $i=1\dots|\lst P|$. \\
+\end{enumerate}
 \end{itemize}
 \end{definition}
 
