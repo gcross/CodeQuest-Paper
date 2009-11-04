@@ -472,25 +472,46 @@ For convenience, we introduce the following additional notation:
 
 \begin{itemize}
 \item the function $w:\pauligroup\to \mathscr{N}$ is defined such that $w(o)$ gives the weight of $o$;
-\item the function $e_{\set S}:\pauligroup\to \centralizer_\pauligroup\paren{\set S}$ is defined such that $e_{\set S}(l)$ is the minimizer of $w$ over the set $\left\{o: o\in \centralizer_\pauligroup\paren{\set S}, \{o,l\}=0\right\}$ --- that is, it gives the undetectable error with respect to $\set S$ acting on $l$ that is of minimum weight;
-\item the function $m_{\set S}:\pauligroup\times\pauligroup \to \mathscr{N}$ is defined such that $m_{\set S}(l,l'):=\min \{w\paren{e_{\set S}(l)},w\paren{e_{\set S}(l')}\}$ --- that is, it gives the smaller of the weights of the smallest weight errors acting on respectively $\set L$ and $\set L'$;
-\item an sequence of conjugal pairs, $\lst P$, is said to be an \emph{ordered sequence of conjugal pairs} if $m(\lst P_i) \le m(\lst P_j)$ when $i<j$;
-\item the function $\set U:\powerset(\pauligroup\times\pauligroup)\to\powerset(\pauligroup)$ is defined (for convenience) such that $\set U\paren{\set X}:=\bigcup_{(a,b)\in\set X} \{a,b\}$ --- that is, it `unpacks' all of the conjugal pairs into a set of operators; and finally,
-\item given the sets $\set S$ and $\set G$ in the context of Theorem \ref{theorem-SG}, an \emph{optimal choice of logical qubits} is any ordered sequence of conjugal pairs, $\lst P$, such that
+\item the function $e_{\set S}:\centralizer_\pauligroup\paren{\set S}\to \centralizer_\pauligroup\paren{\set S}$ is defined such that $e_{\set S}(l)$ is the minimizer of $w$ over the set $\left\{o: o\in \centralizer_\pauligroup\paren{\set S}, \{o,l\}=0\right\}$ --- that is, it gives the undetectable error with respect to $\set S$ acting on $l$ that is of minimum weight;
+\item the function $m_{\set S}:\centralizer_\pauligroup\paren{\set S}\times \centralizer_\pauligroup\paren{\set S} \to \mathscr{N}$ is defined such that $m_{\set S}(l,l'):=\min \{w\paren{e_{\set S}(l)},w\paren{e_{\set S}(l')}\}$ --- that is, it gives the smaller of the weights of the smallest weight errors acting on respectively $\set L$ and $\set L'$;
+\item the function $\set U:\powerset(\pauligroup\times\pauligroup)\to\powerset(\pauligroup)$ is defined (for convenience) such that $\set U\paren{\set X}:=\bigcup_{(a,b)\in\set X} \{a,b\}$ --- that is, it `unpacks' a set of pairs of operators into a set of operators;
+\item a sequence of pairs of operators from the Pauli group, $\lst P$, is said to be a \emph{choice of qubits stabilized by} $\set S$ if 
 \begin{enumerate}
-\item $\set U\paren{\{\lst P_i\}_i}$ satisfies the properties of $\set L$ described in Theorem \ref{theorem-SG}, and \\
-\item given any other sequence $\lst P'$ that satisfies the first property, we have that $M(\lst P_i)\ge M(\lst P'_i)$ for $i=1\dots|\lst P|$. \\
+\item $\set U\paren{\{\lst P_i\}_i}\cap \set S = \emptyset$ --- that is, the operators in $\lst P$ are not included in $\set S$;
+\item every pair in $\lst P$ is a conjugal pair with respect $\set S \cup \set U\paren{\{\lst P_i\}_i}$;
+\item and for every $i,j\in 1\dots |\lst P_i|$ we have that $m(\lst P_i) \le m(\lst P_j)$ when $i<j$
 \end{enumerate}
+\item finally an \emph{optimal choice of qubits stabilized by} $\set S$ is any choice of qubits stabilized by $\set S$, $\lst P$, such that given any other possible choice $\lst P'$ such that $\genfun\paren{\lst P}=\genfun\paren{\lst P'}$, we have that $m_{\set S}(\lst P_i)\ge m_{\set S}(\lst P'_i)$ for every $i=1\dots|\lst P|$.
 \end{itemize}
 
 \end{definition}
 
-Now we have a precise notion of what it means to have made the best choice of logical qubits, but it remains to show that there exists an algorithm that will make this choice.  To do this, we need to introduce more definitions:
+Now that we have a precise notion of what it means to have made the best choice of logical qubits, it remains to show that there exists an algorithm that will make this choice.  The key to doing this resides in the following proposition:
 
-\begin{definition}
+\begin{proposition}
+Suppose we are given a choice of logical qubits with respect to some set $\set S$, $\lst P$, and also a sequence of Pauli operators $\lst E$ of the same length as $\lst P$ such that for every $i=1\dots|\lst P|$, we have that
+\begin{enumerate}
+\item $\lst E_i$ is an undetectable error (with respect to $\set S$) acting on the first operator in the pair $\lst P_i$;
+\item $w\paren{\lst E_i}=m\paren{\lst P_i}$; and
+\item $\lst E_i$ commutes with every operator in $\set U\paren{\{\lst P_j\}_{j>i}}$, i.e. with every operator in every pair after the $i$-th pair in the sequence.
+\end{enumerate}
+Then $\lst P$ is an \emph{optimal choice of qubits stabilized by} $\set S$.
+\end{proposition}
 
-\end{definition}
+In order to prove this, we shall need the following lemma:
 
+\begin{lemma}
+Suppose we are given two operators $a,b\in\pauligroup$ such that $d_a:=w\paren{e_{\set S}(a)}$ and $d_b:=w\paren{e_{\set S}(b)}$.  Then $w\paren{e_{\set S}(a\cdot b)} \ge \text{min}(d_a,d_b)$.
+\end{lemma}
+
+\begin{proof}
+Any undetectable error with respect to $\set S$ acting on $a\cdot b$ must also act on \emph{either} $a$ or $b$, since otherwise it cannot anti-commute with the product.  By assumption, there is no such error satisfying this property that has weigh less than $\text{min}(d_a,d_b)$, and so $w\paren{e_{\set S}(a\cdot b)} \ge \text{min}(d_a,d_b)$.
+\end{proof}
+
+\begin{corollary}
+Suppose we are given two pairs of operators $(a,b),(c,d)\in\pauligroup\times\pauligroup$ such that $d_{ab}:=m(a,b)$ and $d_{cd}:=m(c,d)$.  Then $w\paren{e_{\set S}(a\cdot b)} \ge \text{min}(d_a,d_b)$.
+\end{corollary}
+%@nonl
 %@-node:gcross.20090511123440.3:Optimal generators
 %@-node:gcross.20090423002455.2:Algorithm
 %@-others
