@@ -4,7 +4,7 @@
 
 %@<< Prelude >>
 %@+node:gcross.20090405101642.4:<< Prelude >>
-\documentclass[twocolumn,showpacs,preprintnumbers,amsmath,amssymb,nofootinbib,pra,floatfix]{revtex4}
+\documentclass[twocolumn,showpacs,preprintnumbers,amsmath,amssymb,nofootinbib,pra,floatfix]{revtex4-1}
 
 \usepackage{mathrsfs,amsthm,clrscode,comment}
 
@@ -513,14 +513,27 @@ Suppose we are given
 Then $\lst P$ is an \emph{optimal choice of qubits stabilized by} $\set S$.
 \end{proposition}
 
-In order to prove this, we shall need the following lemma:
+In order to prove this, we shall need the following lemmas:
 
 \begin{lemma}
 Suppose we are given two operators $a,b\in\pauligroup$ such that $d_a:=w\paren{e_{\set S}(a)}$ and $d_b:=w\paren{e_{\set S}(b)}$.  Then $w\paren{e_{\set S}(a\cdot b)} \ge \text{min}(d_a,d_b)$.
 \end{lemma}
 
-\begin{proof}
-Any undetectable error with respect to $\set S$ acting on $a\cdot b$ must also act on \emph{either} $a$ or $b$, since otherwise it cannot anti-commute with the product.  By assumption, there is no such error satisfying this property that has weigh less than $\text{min}(d_a,d_b)$, and so $w\paren{e_{\set S}(a\cdot b)} \ge \text{min}(d_a,d_b)$.
+\begin{proof}[Proof of Lemma]
+Any undetectable error with respect to $\set S$ acting on $a\cdot b$ must also act on \emph{either} $a$ or $b$, since otherwise it cannot anti-commute with the product.  By assumption, there is no such error satisfying this property that has weight less than $\text{min}(d_a,d_b)$, and so $w\paren{e_{\set S}(a\cdot b)} \ge \text{min}(d_a,d_b)$.
+\end{proof}
+
+\begin{lemma}
+In the context of Proposition \ref{proposition-optimality-condition}, suppose that we are given an operator $o\in \genfun\paren{\set U\paren{\{\lst P_i\}_i}}$, and let $\set C\subseteq \set U\paren{\{\lst P_i\}_i}$ be the set such that $o=\prod_{c\in \set C} c$.  If there is at least one operator $c\in \set C$ such that $c$ is the first member of a pair in $\lst P$, then $w\paren{e_{\set S}(o)} \le w\paren{e_{\set S}(c)}$ for all $c\in \set C$.
+\end{lemma}
+
+\begin{proof}[Proof of Lemma]
+Let $c$ be the minimizer of $w \circ e_{\set S}$.  Since there might be several minimizers, and we know that each minimizer must be the first or second member of some pair $\lst P_i$, choose $c$ so that the integer index $i$ on the pair $\lst P_i$ to which $c$ belongs is smallest;  if both operators in $\lst P_i$ meet this criteria, then let $c$ be the first one.
+
+Suppose that $c$ is the second member of the pair and $i\notin\set F$.  Since for every $i$ we have that $w(\lst E_i) \le w(\lst E_n) \le w\paren{e_{\set S}(c)}$ by the assumptions of the Proposition, due to our choice of $c$ this must mean that there is no operator in $\set C$ which anti-commutes with any operator in the sequence $\lst E$, and hence that no operator in $\set C$ is the first member of a pair in $\lst P$, which contradicts an assumption of this Lemma.  Hence, we conclude that either $c$ is the first member of the pair, or that $c$ is the second member of the pair and $i\in\set F$.
+
+Take any operator $x\in \set C$ that anti-commutes with $e_{\set S}(c)$, and let $\lst P_j$ be the pair of which it is a member.  Since $x$ must satisfy $w\paren{ e_{\set S}(x)}\le w\paren{ e_{\set S}(c)}$, we observe that due to our choice of $c$ we cannot have $j < i$.  Furthermore, observe that by our definition of $c$, the conclusion of the previous paragraph, and the assumptions of the Proposition, we cannot have $j > i$ since every operator in a pair $\lst P_k$ such that $k > i$ must commute with $e_{\set S}(c)$.  Thus, we conclude that $i=j$, and due to our choice of $c$ it must furthermore be the case that $c=x$, which means that $c$ is the only operator in $\set C$ that anti-commutes with $e_{\set S}(c)$.  Thus, $o$ must also anti-commute with $e_{\set S}(c)$, and so $w\paren{e_{\set S}(o)} \le w\paren{e_{\set S}(c)}$.  Since $c$ is the minmizer of $w \circ e_{\set S}$, we conclude that $w\paren{e_{\set S}(o)} \le w\paren{e_{\set S}(c)}$ for all $c\in \set C$.
+
 \end{proof}
 
 \begin{proof}[Proof of Proposition \ref{proposition-optimality-condition}]
@@ -532,7 +545,7 @@ The general strategy of this proof is as follows.  First we shall show that $m_{
 
 First we shall show that $m_{\set S}(\lst P_n)\ge m_{\set S}(\lst P'_n)$.  Let $(a,b):=\lst P'_n$, and observe that since $\genfun\paren{\set U\paren{\{\lst P_i\}_i}}=\genfun\paren{\set U\paren{\{\lst P'_i\}_i}}$ we know that $a$ and $b$ can be written as products of operators from $\set U\paren{\{\lst P_i\}_i}$, i.e., $a=\prod_{a'\in \set A} a'$ and $b=\prod_{b'\in \set B} b'$ where $\set A,\set B\subseteq\set U\paren{\{\lst P_i\}_i}$.  Let $\set C := \set A\, \cup\, \set B$.  If we can show that there is an undetectable error $e$ (with respect to $\set S$) with a weight no greater than $m_{\set S}(\lst P_n)$ that acts only on a single operator $o\in \set C$, then we are done because either $o\in \set A$ or (non-exclusively) $o\in \set B$ and since no other operator in $\set C$ anti-commmutes with $e$ that means that either $\{e,a\}=0$ or $\{e,b\}=0$, and thus $m_{\set S}(\lst P'_n) \le m_{\set S}(\lst P_n)$.  To do this, take the smallest integer $k$ such that, letting $(c,d)\in\lst P_k$, we have that either $c\in \set C$, or (non-exclusively) $d\in \set C$ and $i\in \set F$.  In the first case, we have that $\{c,\lst E_i\}=0$, and since every other operator in $\set C$ is either $d$ or a member of a pair $\lst P_j$ for $j>k$ we know that $\lst E_i$ anti-commutes with only $c$, so we are done with $e:= \lst E_i$ and $o := c$.  In the second case (assuming that the first case did not hold, i.e. $c\notin \set C$), we have that $\{d,f(k)\}$, and recall that by assumption $w(f(k))\le w(\lst E_n)$.  For every other element in $\set C$, we have that either it is a member of a pair $\lst P_j$ for $j>i$, \emph{or} it is the second member of a pair $\lst P_j$ with $j<k$ such that $j\notin \set F$, and in either case by assumption we know that it commutes with $f(k)$.  Thus we are done, setting $e:= f(k)$ and $o:=d$.  This completes the proof that $m_{\set S}(\lst P_n)\ge m_{\set S}(\lst P'_n)$.
 
-If $m_{\set S}(\lst P_n) > m_{\set S}(\lst P'_n)$ then we are done, so consider the case where $m_{\set S}(\lst P_n) = m_{\set S}(\lst P'_n)$.  We shall now show using proof by contradiction that for every operator $c\in\set C$ we must have $w(e_{\set S}(c))=m_{\set S}(\lst P_n)$.  Suppose that this were not the case, and let $i$ be the minimum integer $i$ such that, letting $(c,d):=\lst P_l$, either $c\in\set C$ and $w(e_{\set S}(c))<m_{\set S}(\lst P_n)$ or (non-exclusively) $d\in\set C$ and $w(e_{\set S}(d))<m_{\set S}(\lst P_n)$.  If the first case holds then we have that $c$ is the only operator in $\set C$ that anti-commutes with $e_{\set S}(c)$ and so $m(\lst P'_n)\le w(e_{\set S}(c))<m_{\set S}(\lst P_n) < m_{\set S}(\lst P_n)$.  If the first case does not hold but the second case holds then we observe likewise that $d$ is the only operator in $\set C$ that anti-commutes with $e_{\set S}(d)$ and so $m(\lst P'_n)\le w(e_{\set S}(d))<m_{\set S}(\lst P_n) < m_{\set S}(\lst P_n)$.  Either way, we get a contradiction, and so we conclude that every operator $c\in\set C$ we must have $w(e_{\set S}(c))=m_{\set S}(\lst P_n)$.
+If $m_{\set S}(\lst P_n) > m_{\set S}(\lst P'_n)$ then we are done, so consider the case where $m_{\set S}(\lst P_n) = m_{\set S}(\lst P'_n)$.  We shall now show using proof by contradiction that for every operator $c\in\set C$ we must have $w(e_{\set S}(c))=m_{\set S}(\lst P_n)$.  Suppose that this were not the case, and let $i$ be the minimum integer $i$ such that, letting $(c,d):=\lst P_i$, either $c\in\set C$ and $w(e_{\set S}(c))<m_{\set S}(\lst P_n)$ or (non-exclusively) $d\in\set C$ and $w(e_{\set S}(d))<m_{\set S}(\lst P_n)$.  If the first case holds then we have that $c$ is the only operator in $\set C$ that anti-commutes with $e_{\set S}(c)$ and so $m(\lst P'_n)\le w(e_{\set S}(c))<m_{\set S}(\lst P_n) < m_{\set S}(\lst P_n)$.  If the first case does not hold but the second case holds then we observe likewise that $d$ is the only operator in $\set C$ that anti-commutes with $e_{\set S}(d)$ and so $m(\lst P'_n)\le w(e_{\set S}(d))<m_{\set S}(\lst P_n) < m_{\set S}(\lst P_n)$.  Either way, we get a contradiction, and so we conclude that every operator $c\in\set C$ we must have $w(e_{\set S}(c))=m_{\set S}(\lst P_n)$.
 
 \end{proof}
 %@-node:gcross.20090511123440.3:Optimal generators
