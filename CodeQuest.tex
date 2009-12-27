@@ -436,6 +436,8 @@ A pseudo-code representation of the algorithm described by Theorem \ref{theorem-
 
 \label{optimal-generators}
 
+%@+others
+%@+node:gcross.20091221145013.1274:Lemma:  Recombining generators
 In general there are multiple sets of operators that satisfy the properties of \ref{theorem-SG}, as is illustrated by the following Lemma:
 
 \begin{lemma}
@@ -453,19 +455,24 @@ Given conjugal pairs $(a,b)$ and $(c,d)$ in relation to some set $\set X$, we ha
 \item Since $b$ and $c$ are Pauli operators and thus square to the identity, we have that $a\cdot c\cdot c=a$ and $d\cdot b\cdot b=d$, and so $\genfun\paren{\{a,b,c,d\}}=\genfun\paren{\{a\cdot c,b,c,d\cdot b\}}$.
 \end{enumerate}
 \end{proof}
-
+%@-node:gcross.20091221145013.1274:Lemma:  Recombining generators
+%@+node:gcross.20091221145013.1275:Definition: Undetectable error
 As a result of this lemma, we see that we can take pairs of arbitrary conjugal pairs from sets $\set G$ and $\set L$ of Theorem \ref{theorem-SG} and replace them with different pairs per the recipe in Lemma \ref{combining-pairs} such that the properties of the theorem still hold.  So given that these sets are not unique, the natural question is:  What is the best choice of $\set G$ and $\set L$?  To answer this, we observe that another criteria we would like for our code to satisfy is that it be as robust to errors as possible;  in particular, we seek to maximize the difficulty of \emph{undetectable errors}, which is defined as follows:
 
 \begin{definition}
 Given a set $\set S\subseteq\pauligroup$ and operators $l\in\pauligroup$ and $e\in\centralizer_\pauligroup(\set S)$ which anti-commute (i.e., $\{l,e\}=0$), we say that $e$ is an \emph{undetectable error with respect to} $\set S$ \emph{acting on} $l$.
 \end{definition}
-
+%@nonl
+%@-node:gcross.20091221145013.1275:Definition: Undetectable error
+%@+node:gcross.20091221145013.1276:Definition: Weight
 We assume that the `difficulty' of an interaction between our physical system and its environment is related to the number of physical qubits in our system that are participating in the interaction.  Thus, the natural metric for measuring the relative difficulty of an error is given by its weight, which recall is defined as follows:
 
 \begin{definition}
 Given an operator $p\in\pauligroup$---which recalls means that $p$ is the tensor product of single-qubit Pauli unnormalized spin matrices---the \emph{weight} of $p$ is the number of single-qubit operators in the product which are non-trivial (i.e., not the identity).  So for example, the weight of $I\otimes I\otimes I$ is 0, the weight of $I\otimes Z\otimes I\otimes X$ is 2, and the weight of $Z\otimes X\otimes Y$ is 3.
 \end{definition}
-
+%@nonl
+%@-node:gcross.20091221145013.1276:Definition: Weight
+%@+node:gcross.20091221145013.1277:Definition: Additional notation
 For convenience, we introduce the following additional notation:
 
 \begin{definition}
@@ -474,47 +481,68 @@ For convenience, we introduce the following additional notation:
 \item the function $w:\pauligroup\to \mathscr{N}$ is defined such that $w(o)$ gives the weight of $o$;
 \item the function $e_{\set S}:\centralizer_\pauligroup\paren{\set S}\to \centralizer_\pauligroup\paren{\set S}$ is defined such that $e_{\set S}(l)$ is the minimizer of $w$ over the set $\left\{o: o\in \centralizer_\pauligroup\paren{\set S}, \{o,l\}=0\right\}$ --- that is, it gives the undetectable error with respect to $\set S$ acting on $l$ that is of minimum weight;
 \item the function $m_{\set S}:\centralizer_\pauligroup\paren{\set S}\times \centralizer_\pauligroup\paren{\set S} \to \mathscr{N}$ is defined such that $m_{\set S}(l,l'):=\min \{w\paren{e_{\set S}(l)},w\paren{e_{\set S}(l')}\}$ --- that is, it gives the smaller of the weights of the smallest weight errors acting on respectively $\set L$ and $\set L'$;
-\item the function $\set U:\powerset(\pauligroup\times\pauligroup)\to\powerset(\pauligroup)$ is defined (for convenience) such that $\set U\paren{\set X}:=\bigcup_{(a,b)\in\set X} \{a,b\}$ --- that is, it `unpacks' a set of pairs of operators into a set of operators;
-\item a sequence of pairs of operators from the Pauli group, $\lst P$, is said to be a \emph{choice of qubits stabilized by} $\set S$ if 
+\item the function $\vec M^{(N)}_{\set S}$ is defined such that $\vec M^{(N)}_{\set S}\paren{\vec P}$ is the sequence of $N$ integers such that $\vec M^{(N)}_{\set S}\paren{\vec P}_i := m_{\set S}\paren{\vec P_i}$;
+\item the functions $p_1$ and $p_2$ are defined such that, given $(a,b):=x$, we have that $p_1(x):=a$ and $p_2(x):=b$.
+\item the function $\set U:\powerset(\pauligroup\times\pauligroup)\to\powerset(\pauligroup)$ is defined (for convenience) such that $\set U\paren{\set X}:=\bigcup_{x\in\set X} \{p_1(x),p_2(x)\}$ --- that is, it `unpacks' a set of pairs of operators into a set of operators;  in an abuse of notation, we shall also allow $\set U$ to apply to sequences, so that $\set U(\lst P) := \set U\paren{\{\lst P_i\}_i}.$
+\item finally, a \emph{choice of $N$ qubits stabilized by $\set S$}, $\lst P$, is a sequence of $N$ pairs of operators from the Pauli group such that 
 \begin{enumerate}
-\item $\set U\paren{\{\lst P_i\}_i}\cap \set S = \emptyset$ --- that is, the operators in $\lst P$ are not included in $\set S$;
-\item every pair in $\lst P$ is a conjugal pair with respect $\set S \cup \set U\paren{\{\lst P_i\}_i}$;
-\item and for every $i,j\in 1\dots |\lst P_i|$ we have that $m(\lst P_i) \le m(\lst P_j)$ when $i<j$
+\item $\set U(\lst P)\cap \set S = \emptyset$ --- that is, the operators in $\lst P$ are not included in $\set S$;
+\item every pair in $\lst P$ is a conjugal pair with respect $\set S \cup \set U(\lst P)$.
+\item and $\lst M^{(N)}(\lst P)$ is an ordered sequence.
 \end{enumerate}
-\item finally an \emph{optimal choice of qubits stabilized by} $\set S$ is any choice of qubits stabilized by $\set S$, $\lst P$, such that given any other possible choice $\lst P'$ such that $\genfun\paren{\set U\paren{\{\lst P_i\}_i}}=\genfun\paren{\set U\paren{\{\lst P'_i\}_i}}$, we have that $m_{\set S}(\lst P_i)\ge m_{\set S}(\lst P'_i)$ for every $i=1\dots|\lst P|$.
 \end{itemize}
 
 \end{definition}
+%@nonl
+%@-node:gcross.20091221145013.1277:Definition: Additional notation
+%@+node:gcross.20091221145013.1278:Definition: Total ordering => Optimal choice of qubits
+For every integer $N$, we can define a total ordering on the set of ordered sequences of $N$ integers as follows:  given two such sequences $\lst A$ and $\lst B$, $\lst A \le \lst B$ if and only if $\lst A_i \le \lst B_i$ for $i \in 1\dots N$.  Given this ordering and the notation above, we now precisely define what we mean by the ``best choice'' of logical qubits.
 
+\begin{definition}
+An \emph{optimal choice of $N$ qubits stabilized by $\set S$} is any maximizer of $\lst M^{(N)}$ over the set of all choices of $N$ qubits stabilized by $\set S$.
+\end{definition}
+%@-node:gcross.20091221145013.1278:Definition: Total ordering => Optimal choice of qubits
+%@+node:gcross.20091221145013.1280:Big Proposition
+%@+node:gcross.20091221145013.1281:Statement
 Now that we have a precise notion of what it means to have made the best choice of logical qubits, it remains to show that there exists an algorithm that will make this choice.  The key to doing this resides in the following proposition:
 
 \begin{proposition}
 \label{proposition-optimality-condition}
 Suppose we are given
 \begin{itemize}
-\item a sequence $\lst P$ of length $n$ that is a choice of logical qubits with respect to some set $\set S$;
-\item a sequence $\lst E$ of length $n$ of Pauli operators such that for every $i=1\dots n$, we have that
+\item a choice of $N$ qubits with respect to some set $\set S$, $\lst P$;
+\item a sequence $\lst E$ of $N$ Pauli operators such that for every $i\in\{1\dots N\}$, we have that
 \begin{enumerate}
-\item $\lst E_i$ is an undetectable error (with respect to $\set S$) acting on the first operator in the pair $\lst P_i$;
-\item $\lst E_i$ commutes with the second operator in the pair $\lst P_i$;
-\item $w\paren{\lst E_i}=m\paren{\lst P_i}$; and
+\item $\lst E_i$ is an undetectable error (with respect to $\set S$) acting on $p_1(\lst P_i)$;
+\item $\lst E_i$ commutes with $p_2(\lst P_i)$;
+\item $w(\lst E_i)=m(\lst P_i)$; and
 \item $\lst E_i$ commutes with every operator in $\set U\paren{\{\lst P_j\}_{j>i}}$, i.e. with every operator in every pair after the $i$-th pair in the sequence.
 \end{enumerate}
-\item a subset of the integers $1$ through $n$, $\set F\subseteq \{1\dots n\}$ such that if $i\ne \set F$ and $b$ is the second operator in the pair $\lst P_i$ then $w(e_{\set S} (b)) \ge w(\lst E_n)$ --- that is, if $i$ is not a member of $\set F$ then the weight of the minimum weight undetectable error (with respect to $\set S$) on the second operator in $\lst P_i$ is no less than the weight of $\lst E_n$;
-\item and maps $f:\set F\to \pauligroup$ and $g:\set F\to \{1\dots n\}$ such that for every $i\in \set F$,
+\item a subset of the integers $1$ through $N$, $\set F\subseteq \{1\dots N\}$ such that if $i\ne \set F$ then $w\paren{e_{\set S} \paren{p_2(\lst P_i)}} \ge w(\lst E_N)$ --- that is, if $i$ is not a member of $\set F$ then the weight of the minimum weight undetectable error (with respect to $\set S$) on the second operator in $\lst P_i$ is no less than the weight of $\lst E_N$;
+\item and maps $f:\set F\to \pauligroup$ and $g:\set F\to \{1\dots N\}$ such that for every $i\in \set F$,
 \begin{enumerate}
-\item $f(i)$ is an undetectable error (with respect to $\set S$) acting on the second operator in the pair $\lst P_i$;
-\item $w\paren{f(i)}=w(e(b))$, where $b$ is the second operator in the pair $\lst P_i$;
+\item $f(i)$ is an undetectable error (with respect to $\set S$) acting on $p_2(\lst P_i)$;
+\item $w\paren{f(i)}=w\paren{e_{\set S}\paren{p_2(\lst P_i)}}$;
 \item $f(i)$ commutes with every operator in $\set U\paren{\{\lst P_j\}_{j > i}}$, i.e. with every operator in every pair after the $i$-th pair in the sequence;
-\item $f(i)$ commutes with the second operator in every pair $\lst P_j$ such that $j<i$ and $j\notin \set F$;
-\item and $w(f(i))\le w(\lst E_n)$.
+\item $f(i)$ commutes with every operator in $\{p_2(\lst P_j)\}_{j<i, j\notin \set F}$;
+\item and $w(f(i))\le w(\lst E_N)$.
 \end{enumerate}
 \end{itemize}
 Then $\lst P$ is an \emph{optimal choice of qubits stabilized by} $\set S$.
 \end{proposition}
+%@-node:gcross.20091221145013.1281:Statement
+%@+node:gcross.20091221145013.1286:Definition: Generating set
+For convenience, we define the following function:
 
-In order to prove this, we shall need the following lemmas:
-
+\begin{definition}
+Within the context of Proposition \ref{proposition-optimality-condition}, we define the function $\set G:\genfun\paren{\set U(\lst P)}\to\powerset\paren{\set U(\lst P)}$ such that $\set G(o)$ is the \emph{generating set} of $o$, that is the set such that $o=\prod_{g\in\set G(o)} g$.
+\end{definition}
+%@nonl
+%@-node:gcross.20091221145013.1286:Definition: Generating set
+%@+node:gcross.20091221145013.1282:Lemmas
+In order to prove Proposition \ref{proposition-optimality-condition}, we shall need the following lemmas:
+%@nonl
+%@+node:gcross.20091221145013.1283:Combinations cannot make things worse
 \begin{lemma}
 Suppose we are given two operators $a,b\in\pauligroup$ such that $d_a:=w\paren{e_{\set S}(a)}$ and $d_b:=w\paren{e_{\set S}(b)}$.  Then $w\paren{e_{\set S}(a\cdot b)} \ge \text{min}(d_a,d_b)$.
 \end{lemma}
@@ -522,32 +550,60 @@ Suppose we are given two operators $a,b\in\pauligroup$ such that $d_a:=w\paren{e
 \begin{proof}[Proof of Lemma]
 Any undetectable error with respect to $\set S$ acting on $a\cdot b$ must also act on \emph{either} $a$ or $b$, since otherwise it cannot anti-commute with the product.  By assumption, there is no such error satisfying this property that has weight less than $\text{min}(d_a,d_b)$, and so $w\paren{e_{\set S}(a\cdot b)} \ge \text{min}(d_a,d_b)$.
 \end{proof}
-
+%@-node:gcross.20091221145013.1283:Combinations cannot make things worse
+%@+node:gcross.20091221145013.1284:Combinations cannot make things better
 \begin{lemma}
-In the context of Proposition \ref{proposition-optimality-condition}, suppose that we are given an operator $o\in \genfun\paren{\set U\paren{\{\lst P_i\}_i}}$, and let $\set C\subseteq \set U\paren{\{\lst P_i\}_i}$ be the set such that $o=\prod_{c\in \set C} c$.  If there is at least one operator $c\in \set C$ such that $c$ is the first member of a pair in $\lst P$, then $w\paren{e_{\set S}(o)} \le w\paren{e_{\set S}(c)}$ for all $c\in \set C$.
+In the context of Proposition \ref{proposition-optimality-condition}, if we are given an operator $o\in \genfun\paren{\set U(\lst P)}$ such that the set $\set G(o)$ contains at least one operator that is the first member of a pair in $\lst P$, then $o$ is a minimizer of $w\circ e_{\set S}$ over the set $\set G(o)$.
 \end{lemma}
 
 \begin{proof}[Proof of Lemma]
-Let $c$ be the minimizer of $w \circ e_{\set S}$.  Since there might be several minimizers, and we know that each minimizer must be the first or second member of some pair $\lst P_i$, choose $c$ so that the integer index $i$ on the pair $\lst P_i$ to which $c$ belongs is smallest;  if both operators in $\lst P_i$ meet this criteria, then let $c$ be the first one.
+Let $c$ be the minimizer of $w \circ e_{\set S}$ over the set $\set G(o)$ such that the index of the pair $\lst P_i$ to which $c$ belongs is minimized, and if both operators in $\lst P_i$ are minimizers then let $c$ be the first one.  If we can show that $w\paren{e_{\set S}(o)} \le w\paren{e_{\set S}(c)}$.
 
-Suppose that $c$ is the second member of the pair and $i\notin\set F$.  Since for every $i$ we have that $w(\lst E_i) \le w(\lst E_n) \le w\paren{e_{\set S}(c)}$ by the assumptions of the Proposition, due to our choice of $c$ this must mean that there is no operator in $\set C$ which anti-commutes with any operator in the sequence $\lst E$, and hence that no operator in $\set C$ is the first member of a pair in $\lst P$, which contradicts an assumption of this Lemma.  Hence, we conclude that either $c$ is the first member of the pair, or that $c$ is the second member of the pair and $i\in\set F$.
+Suppose that $c$ is the second member of the pair and $i\notin\set F$.  Since for every $i$ we have that $w(\lst E_i) \le w(\lst E_n) \le w\paren{e_{\set S}(c)}$ by the assumptions of the Proposition, due to our choice of $c$ this must mean that there is no operator in $\set G(o)$ which anti-commutes with any operator in the sequence $\lst E$, and hence that no operator in $\set G(o)$ is the first member of a pair in $\lst P$, which contradicts an assumption of this Lemma.  Hence, we conclude that either $c$ is the first member of the pair, or that $c$ is the second member of the pair and $i\in\set F$.
 
-Take any operator $x\in \set C$ that anti-commutes with $e_{\set S}(c)$, and let $\lst P_j$ be the pair of which it is a member.  Since $x$ must satisfy $w\paren{ e_{\set S}(x)}\le w\paren{ e_{\set S}(c)}$, we observe that due to our choice of $c$ we cannot have $j < i$.  Furthermore, observe that by our definition of $c$, the conclusion of the previous paragraph, and the assumptions of the Proposition, we cannot have $j > i$ since every operator in a pair $\lst P_k$ such that $k > i$ must commute with $e_{\set S}(c)$.  Thus, we conclude that $i=j$, and due to our choice of $c$ it must furthermore be the case that $c=x$, which means that $c$ is the only operator in $\set C$ that anti-commutes with $e_{\set S}(c)$.  Thus, $o$ must also anti-commute with $e_{\set S}(c)$, and so $w\paren{e_{\set S}(o)} \le w\paren{e_{\set S}(c)}$.  Since $c$ is the minmizer of $w \circ e_{\set S}$, we conclude that $w\paren{e_{\set S}(o)} \le w\paren{e_{\set S}(c)}$ for all $c\in \set C$.
-
+Take any operator $x\in \set G(o)$ that anti-commutes with $e_{\set S}(c)$, and let $\lst P_j$ be the pair of which it is a member.  Since $x$ must satisfy $w\paren{ e_{\set S}(x)}\le w\paren{ e_{\set S}(c)}$, we observe that due to our choice of $c$ we cannot have $j < i$.  Furthermore, observe that by our definition of $c$, the conclusion of the previous paragraph, and the assumptions of the Proposition, we cannot have $j > i$ since every operator in a pair $\lst P_k$ such that $k > i$ must commute with $e_{\set S}(c)$.  Thus, we conclude that $i=j$, and due to our choice of $c$ it must furthermore be the case that $c=x$, which means that $c$ is the only operator in $\set C$ that anti-commutes with $e_{\set S}(c)$.  Thus, $o$ must also anti-commute with $e_{\set S}(c)$, and so $w\paren{e_{\set S}(o)} \le w\paren{e_{\set S}(c)}$. \qed
 \end{proof}
+%@-node:gcross.20091221145013.1284:Combinations cannot make things better
+%@+node:gcross.20091221145013.1287:Gaussian elimination like procedure
+\begin{lemma}
+Suppose that within the context of Proposition \ref{proposition-optimality-condition}, we are given
+\begin{itemize}
+\item a sequence, $\lst A$, of $k$ independent, commuting elements of $\set U(\lst P)$,
+\item a set, $\set B$, of commuting elements of $\set U(\lst P)$, such that for every $i\in\{1\dots k\}$ there exists a $b\in \set B$ such that $\{\lst A_i,b\}=0$;
+\item a sequence, $\lst Q$, of $k$ conjugal pairs with respect to $\set S$, such that
+\begin{itemize}
+\item $\set U(\lst Q)\subseteq\genfun\paren{\{\lst A_i\}_i \cup \set B};$
+\item the function $m_{\set S}$ is constant over the set $\{\lst Q_i\}_i$; and
+\item $\set G(g)\cap \{\lst O_i\}_i\ne \emptyset$ for every operator $g\in\{p_1(\lst P_i)\}_i$.
+\end{itemize}
+\end{itemize}
+Then there exists a sequence $\set Q'$ of $k$ conjugal pairs with respect to $\set S$ such that
+\begin{itemize}
+\item $\genfun\paren{\set U(\lst Q')}=\genfun\paren{\set U(\lst Q)}$;
+\item $m(\lst Q'_i)=m(\lst Q_i)$ for all $i\in\{1\dots k\}$; and
+\item $\set G\paren{p_1(\lst Q'_i)}=\{\lst O_i\}$ for all $i\in\{1\dots k\}$.
+\end{itemize}
+\end{lemma}
 
+\begin{proof}
+Proof by induction.  Note that the statement of the Lemma holds trivially for $k=1$ by setting $\lst Q':=\lst Q$.
+
+Now suppose we have been given sequences of length $k$.  By the inductive hypothesis, we can find a sequence length $k-1$, $\lst P''$, that satisfies the properties of the Lemma for the first $k-1$ elements of $\lst O$ and $\lst Q$.  Let
+$$q := \lst Q_N \cdot \prod_{\lst O_i \in \set G(\lst Q_N)} \lst Q''_i.$$
+Note that by construction, $\set G(q)\cap \{\lst O_i\}_i \subseteq \{\lst O_N\}$, since any other element from $\lst O$ appears in either no factor in the product above or in exactly two.  Furthermore, 
+\end{proof}
+%@-node:gcross.20091221145013.1287:Gaussian elimination like procedure
+%@-node:gcross.20091221145013.1282:Lemmas
+%@+node:gcross.20091221145013.1285:Proof
 \begin{proof}[Proof of Proposition \ref{proposition-optimality-condition}]
 We shall prove this proposition by using induction on the length of the sequences $\lst P$ and $\lst E$.  For the base case, note that all of the properties hold vacuously for the empty sequence.
 
-Now suppose that we have proven that this proposition holds for sequences of length $n-1$, and have been given sequences of length $n$.  We now need to show that given any other choice of qubits stabilized by $\set S$, $\lst P'$, such that $\genfun\paren{\set U\paren{\{\lst P_i\}_i}}=\genfun\paren{\set U\paren{\{\lst P'_i\}_i}}$, we have that $m_{\set S}(\lst P_i)\ge m_{\set S}(\lst P'_i)$ for every $i=1\dots n$.
-
-The general strategy of this proof is as follows.  First we shall show that $m_{\set S}(\lst P_n)\ge m_{\set S}(\lst P'_n)$.  Since we are done if $m_{\set S}(\lst P_n)> m_{\set S}(\lst P'_n)$, we shall then show that if $m_{\set S}(\lst P_n)= m_{\set S}(\lst P'_n)$ then we can construct a choice of qubits $\lst P''$ such that $\lst P''_i=\lst P_i$ and $m_{\set S}(\lst P''_n)\ge m_{\set S}(\lst P'_n)$.  Finally we shall use the inductive hypothesis to show that $m_{\set S}(\lst P_n)\ge m_{\set S}(\lst P''_n)\ge m_{\set S}(\lst P'_n)$, and we are done.
-
-First we shall show that $m_{\set S}(\lst P_n)\ge m_{\set S}(\lst P'_n)$.  Let $(a,b):=\lst P'_n$, and observe that since $\genfun\paren{\set U\paren{\{\lst P_i\}_i}}=\genfun\paren{\set U\paren{\{\lst P'_i\}_i}}$ we know that $a$ and $b$ can be written as products of operators from $\set U\paren{\{\lst P_i\}_i}$, i.e., $a=\prod_{a'\in \set A} a'$ and $b=\prod_{b'\in \set B} b'$ where $\set A,\set B\subseteq\set U\paren{\{\lst P_i\}_i}$.  Let $\set C := \set A \cup \set B$.  If we can show that there is an undetectable error $e$ (with respect to $\set S$) with a weight no greater than $m_{\set S}(\lst P_n)$ that acts only on a single operator $o\in \set C$, then we are done because either $o\in \set A$ or (non-exclusively) $o\in \set B$ and since no other operator in $\set A \cup \set B$ anti-commmutes with $e$ that means that either $\{e,a\}=0$ or $\{e,b\}=0$, and so we have shown that $m_{\set S}(\lst P_n)\ge m_{\set S}(\lst P'_n)$.  To do this, take the smallest integer $i$ such that, letting $(c,d)\in\lst P_i$, we have that either $c\in \set C$, or (non-exclusively) $d\in \set C$ and $i\in \set F$.  In the first case, we have that $\{c,\lst E_i\}=0$, and since every other operator in $\set C$ is either $d$ or a member of a pair $\lst P_j$ for $j>i$ we know that $\lst E_i$ anti-commutes with only $c$, so we are done with $e:= \lst E_i$ and $o := c$.  In the second case (assuming that the first case did not hold, i.e. $c\notin \set C$), we have that $\{d,f(i)\}$, and recall that by assumption $w(f(i))\le w(\lst E_n)$.  For every other element in $\set C$, we have that either it is a member of a pair $\lst P_j$ for $j>i$, \emph{or} it is the second member of a pair $\lst P_j$ with $j<i$ such that $j\notin \set F$, and in either case by assumption we know that it commutes with $f(i)$.  Thus we are done, setting $e:= f(i)$ and $o:=d$.  This completes the proof that $m_{\set S}(\lst P_n)\ge m_{\set S}(\lst P'_n)$.
-
-If $m_{\set S}(\lst P_n) > m_{\set S}(\lst P'_n)$ then we are done, so consider the case where $m_{\set S}(\lst P_n) = m_{\set S}(\lst P'_n)$.  We shall now show using proof by contradiction that for every operator $c\in\set C$ we must have $w(e_{\set S}(c))=m_{\set S}(\lst P_n)$.  Suppose that this were not the case, and let $i$ be the minimum integer $i$ such that, letting $(c,d):=\lst P_i$, either $c\in\set C$ and $w(e_{\set S}(c))<m_{\set S}(\lst P_n)$ or (non-exclusively) $d\in\set C$ and $w(e_{\set S}(d))<m_{\set S}(\lst P_n)$.  If the first case holds then we have that $c$ is the only operator in $\set C$ that anti-commutes with $e_{\set S}(c)$ and so $m(\lst P'_n)\le w(e_{\set S}(c))<m_{\set S}(\lst P_n) < m_{\set S}(\lst P_n)$.  If the first case does not hold but the second case holds then we observe likewise that $d$ is the only operator in $\set C$ that anti-commutes with $e_{\set S}(d)$ and so $m(\lst P'_n)\le w(e_{\set S}(d))<m_{\set S}(\lst P_n) < m_{\set S}(\lst P_n)$.  Either way, we get a contradiction, and so we conclude that every operator $c\in\set C$ we must have $w(e_{\set S}(c))=m_{\set S}(\lst P_n)$.
+Now suppose that we have proven that this proposition holds for sequences of length $N-1$, and have been given sequences of length $N$.  We now need to show that given any other choice of $N$ qubits stabilized by $\set S$, $\lst P'$, such that $\genfun\paren{\set U\paren{\{\lst P_i\}_i}}=\genfun\paren{\set U\paren{\{\lst P'_i\}_i}}$, we have that $\lst M(\lst P') \le \lst M(\lst P)$.
 
 \end{proof}
+%@-node:gcross.20091221145013.1285:Proof
+%@-node:gcross.20091221145013.1280:Big Proposition
+%@-others
 %@-node:gcross.20090511123440.3:Optimal generators
 %@-node:gcross.20090423002455.2:Algorithm
 %@-others

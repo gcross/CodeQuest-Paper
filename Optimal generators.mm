@@ -9,5 +9,16 @@
 <node CREATED="1255033129386" ID="ID_694618866" MODIFIED="1255033310363" TEXT="=&gt; If a split is not an optimal segregation, then this implies that we can construct a &quot;better&quot; set of generators than G."/>
 <node CREATED="1255033313375" ID="ID_959526833" MODIFIED="1255033331890" TEXT="&lt;= (show that we cannot construct a better set of generators than G)"/>
 </node>
+<node CREATED="1261438974063" ID="ID_1308456547" MODIFIED="1261438980317" POSITION="left" TEXT="Lemma">
+<node CREATED="1261438980658" ID="ID_1690988054" MODIFIED="1261438981494" TEXT="Given">
+<node CREATED="1261438981738" ID="ID_476766304" MODIFIED="1261438991079" TEXT="Sequence of independent Pauli operators"/>
+<node CREATED="1261439054589" ID="ID_228734830" MODIFIED="1261439131748" TEXT="Sequence of conjugal pairs with same value for m(P_i)"/>
+<node CREATED="1261440173440" ID="ID_607738992" MODIFIED="1261440187925" TEXT="g for each first in pair and sequence above intersect"/>
+</node>
+<node CREATED="1261439142138" ID="ID_1457939636" MODIFIED="1261439144237" TEXT="Then exists">
+<node CREATED="1261439146162" ID="ID_1243043685" MODIFIED="1261439153871" TEXT="Sequence of conjugal pairs with same value for m(P_i)"/>
+<node CREATED="1261440191410" ID="ID_1518402574" MODIFIED="1261440201351" TEXT="that generates the same set"/>
+</node>
+</node>
 </node>
 </map>
