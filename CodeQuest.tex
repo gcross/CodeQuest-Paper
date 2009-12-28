@@ -516,16 +516,15 @@ Suppose we are given
 \item $\lst E_i$ is an undetectable error (with respect to $\set S$) acting on $p_1(\lst P_i)$;
 \item $\lst E_i$ commutes with $p_2(\lst P_i)$;
 \item $w(\lst E_i)=m(\lst P_i)$; and
-\item $\lst E_i$ commutes with every operator in $\set U\paren{\{\lst P_j\}_{j>i}}$, i.e. with every operator in every pair after the $i$-th pair in the sequence.
+\item $\lst E_i$ commutes with every operator in $\set U\paren{\{\lst P_j:j>i\}}$, i.e. with every operator in every pair after the $i$-th pair in the sequence.
 \end{enumerate}
-\item a subset of the integers $1$ through $N$, $\set F\subseteq \{1\dots N\}$ such that if $i\ne \set F$ then $w\paren{e_{\set S} \paren{p_2(\lst P_i)}} \ge w(\lst E_N)$ --- that is, if $i$ is not a member of $\set F$ then the weight of the minimum weight undetectable error (with respect to $\set S$) on the second operator in $\lst P_i$ is no less than the weight of $\lst E_N$;
-\item and maps $f:\set F\to \pauligroup$ and $g:\set F\to \{1\dots N\}$ such that for every $i\in \set F$,
+\item a sequence $\lst F$ of $N$ Pauli operators such that for every $i\in\{1\dots N\}$, we have that either $\lst F_i=I$ and $(w \circ e_{\set S} \circ p_2)(\lst P_i) \ge w(\lst E_N)$, or else all of the following properties are satisfied
 \begin{enumerate}
-\item $f(i)$ is an undetectable error (with respect to $\set S$) acting on $p_2(\lst P_i)$;
-\item $w\paren{f(i)}=w\paren{e_{\set S}\paren{p_2(\lst P_i)}}$;
-\item $f(i)$ commutes with every operator in $\set U\paren{\{\lst P_j\}_{j > i}}$, i.e. with every operator in every pair after the $i$-th pair in the sequence;
-\item $f(i)$ commutes with every operator in $\{p_2(\lst P_j)\}_{j<i, j\notin \set F}$;
-\item and $w(f(i))\le w(\lst E_N)$.
+\item $\lst F_i$ is an undetectable error (with respect to $\set S$) acting on $p_2(\lst P_i)$;
+\item $w\paren{\lst F_i}=(w\circ e_{\set S} \circ p_2)(\lst P_i)$;
+\item $\lst F_i$ commutes with every operator in $\set U\paren{\{\lst P_j\}_{j > i}}$, i.e. with every operator in every pair after the $i$-th pair in the sequence;
+\item $\lst F_i$ commutes with every operator in $\{p_2(\lst P_j): j<i, \lst F_j \ne I\}$;
+\item and $w(\lst F_i)\le w(\lst E_N)$.
 \end{enumerate}
 \end{itemize}
 Then $\lst P$ is an \emph{optimal choice of qubits stabilized by} $\set S$.
@@ -553,52 +552,31 @@ Any undetectable error with respect to $\set S$ acting on $a\cdot b$ must also a
 %@-node:gcross.20091221145013.1283:Combinations cannot make things worse
 %@+node:gcross.20091221145013.1284:Combinations cannot make things better
 \begin{lemma}
-In the context of Proposition \ref{proposition-optimality-condition}, if we are given an operator $o\in \genfun\paren{\set U(\lst P)}$ such that the set $\set G(o)$ contains at least one operator that is the first member of a pair in $\lst P$, then $o$ is a minimizer of $w\circ e_{\set S}$ over the set $\set G(o)$.
+In the context of Proposition \ref{proposition-optimality-condition}, if we are given an operator $o\in \genfun\paren{\set U(\lst P)}$ such that $(w\circ e_{\set S})(o)\ge w(\lst E_n)$, then $(w\circ e_{\set S})(g)\ge w(\lst E_n)$ for every $g\in\set G(o)$.
 \end{lemma}
 
 \begin{proof}[Proof of Lemma]
-Let $c$ be the minimizer of $w \circ e_{\set S}$ over the set $\set G(o)$ such that the index of the pair $\lst P_i$ to which $c$ belongs is minimized, and if both operators in $\lst P_i$ are minimizers then let $c$ be the first one.  If we can show that $w\paren{e_{\set S}(o)} \le w\paren{e_{\set S}(c)}$.
-
-Suppose that $c$ is the second member of the pair and $i\notin\set F$.  Since for every $i$ we have that $w(\lst E_i) \le w(\lst E_n) \le w\paren{e_{\set S}(c)}$ by the assumptions of the Proposition, due to our choice of $c$ this must mean that there is no operator in $\set G(o)$ which anti-commutes with any operator in the sequence $\lst E$, and hence that no operator in $\set G(o)$ is the first member of a pair in $\lst P$, which contradicts an assumption of this Lemma.  Hence, we conclude that either $c$ is the first member of the pair, or that $c$ is the second member of the pair and $i\in\set F$.
-
-Take any operator $x\in \set G(o)$ that anti-commutes with $e_{\set S}(c)$, and let $\lst P_j$ be the pair of which it is a member.  Since $x$ must satisfy $w\paren{ e_{\set S}(x)}\le w\paren{ e_{\set S}(c)}$, we observe that due to our choice of $c$ we cannot have $j < i$.  Furthermore, observe that by our definition of $c$, the conclusion of the previous paragraph, and the assumptions of the Proposition, we cannot have $j > i$ since every operator in a pair $\lst P_k$ such that $k > i$ must commute with $e_{\set S}(c)$.  Thus, we conclude that $i=j$, and due to our choice of $c$ it must furthermore be the case that $c=x$, which means that $c$ is the only operator in $\set C$ that anti-commutes with $e_{\set S}(c)$.  Thus, $o$ must also anti-commute with $e_{\set S}(c)$, and so $w\paren{e_{\set S}(o)} \le w\paren{e_{\set S}(c)}$. \qed
+Proof by contradiction.  Let $g\in \set G(o)$ be the operator such that $(w\circ e_{\set S})(g)<w(\lst E_n)$, the pair $\lst P_i$ to which $g$ belongs has minimal $i$, and if both operators in $\lst P_i$ meet these conditions then let $g$ be the first one.  Note that since $(w\circ e_{\set S})(g)<w(\lst E_n)$, we must have that either $g$ is the first member of a pair or $\lst F_i\ne I$.  In either case, we know that there is an operator --- respectively, either $\lst E_i$ or $\lst F_i$ --- which anti-commutes with $g$ but commutes with every other operator in $\set G(o)$.  Thus, the product of all of the operators in $\set G(o)$ must also anti-commute with $\lst E_i$, and thus $o$ anti-commutes with $\lst E_i$.  Since $w(\lst E_i)<w(\lst E_n)$, this contradicts the assumption that $(w\circ e_{\set S})(i)\ge w(\lst E_n)$, and so we conclude that all operators $g\in\set G(o)$ must satisfy $(w\circ e_{\set S})(g)\ge w(\lst E_n)$.\qed
 \end{proof}
 %@-node:gcross.20091221145013.1284:Combinations cannot make things better
-%@+node:gcross.20091221145013.1287:Gaussian elimination like procedure
+%@+node:gcross.20091226225139.1288:Deleting a qubits maintains the properties.
 \begin{lemma}
-Suppose that within the context of Proposition \ref{proposition-optimality-condition}, we are given
-\begin{itemize}
-\item a sequence, $\lst A$, of $k$ independent, commuting elements of $\set U(\lst P)$,
-\item a set, $\set B$, of commuting elements of $\set U(\lst P)$, such that for every $i\in\{1\dots k\}$ there exists a $b\in \set B$ such that $\{\lst A_i,b\}=0$;
-\item a sequence, $\lst Q$, of $k$ conjugal pairs with respect to $\set S$, such that
-\begin{itemize}
-\item $\set U(\lst Q)\subseteq\genfun\paren{\{\lst A_i\}_i \cup \set B};$
-\item the function $m_{\set S}$ is constant over the set $\{\lst Q_i\}_i$; and
-\item $\set G(g)\cap \{\lst O_i\}_i\ne \emptyset$ for every operator $g\in\{p_1(\lst P_i)\}_i$.
-\end{itemize}
-\end{itemize}
-Then there exists a sequence $\set Q'$ of $k$ conjugal pairs with respect to $\set S$ such that
-\begin{itemize}
-\item $\genfun\paren{\set U(\lst Q')}=\genfun\paren{\set U(\lst Q)}$;
-\item $m(\lst Q'_i)=m(\lst Q_i)$ for all $i\in\{1\dots k\}$; and
-\item $\set G\paren{p_1(\lst Q'_i)}=\{\lst O_i\}$ for all $i\in\{1\dots k\}$.
-\end{itemize}
+In the context of Proposition \ref{proposition-optimality-condition}, for any $i\in\{1\dots N\}$, the sequences $\lst P'$, $\lst E'$ and $\lst F'$ defined by deleting the $i$-th element of respectively $\lst P$, $\lst E$ and $\lst F$ satisfy the same properties listed in the Proposition as their non-primed counterparts if we let $N:=N-1$.
 \end{lemma}
 
 \begin{proof}
-Proof by induction.  Note that the statement of the Lemma holds trivially for $k=1$ by setting $\lst Q':=\lst Q$.
-
-Now suppose we have been given sequences of length $k$.  By the inductive hypothesis, we can find a sequence length $k-1$, $\lst P''$, that satisfies the properties of the Lemma for the first $k-1$ elements of $\lst O$ and $\lst Q$.  Let
-$$q := \lst Q_N \cdot \prod_{\lst O_i \in \set G(\lst Q_N)} \lst Q''_i.$$
-Note that by construction, $\set G(q)\cap \{\lst O_i\}_i \subseteq \{\lst O_N\}$, since any other element from $\lst O$ appears in either no factor in the product above or in exactly two.  Furthermore, 
+Most of the properties look only at a single index in one or several sequences, and so the deletion of a different index does not affect them.  The only properties that would be affected by the deletion of an index are those which require that a Pauli operator commute with all of the operators contained in a subsequence, and this property is only made easier to satisfy by the deletion of an index.
 \end{proof}
-%@-node:gcross.20091221145013.1287:Gaussian elimination like procedure
+%@-node:gcross.20091226225139.1288:Deleting a qubits maintains the properties.
 %@-node:gcross.20091221145013.1282:Lemmas
 %@+node:gcross.20091221145013.1285:Proof
 \begin{proof}[Proof of Proposition \ref{proposition-optimality-condition}]
 We shall prove this proposition by using induction on the length of the sequences $\lst P$ and $\lst E$.  For the base case, note that all of the properties hold vacuously for the empty sequence.
 
 Now suppose that we have proven that this proposition holds for sequences of length $N-1$, and have been given sequences of length $N$.  We now need to show that given any other choice of $N$ qubits stabilized by $\set S$, $\lst P'$, such that $\genfun\paren{\set U\paren{\{\lst P_i\}_i}}=\genfun\paren{\set U\paren{\{\lst P'_i\}_i}}$, we have that $\lst M(\lst P') \le \lst M(\lst P)$.
+
+Consider the set $\set O' := \{\lst P'_i:m(\lst P'_i)=\max_i m(\lst P'_i) \}$.  Since each operator in each pair in this set can be expressed as a product of elements of $\set U{paren{\{\lst P_i\}_i}},$ and the the two operators in each pair in $\set O'$ must anti-commute with each other, we conclude that there must be a pair $x\in\set O'$ such that for some $i\in\{1\dots N\}$ and $k\in \{1,2\}$ we have that $p_1(\lst P_i)\in (\set G \circ p_k)(x)$ and $p_2(\lst P_i)\in (\set G \circ p_{3-k})(x)$ --- in other words, for some pair $\lst P_i$ we must have that the generating set of one of the members of $x$ contains one of the members of $\lst P_i$ and the generating set of the other member of $x$ contains the other.
+Without loss of generality, assume that $x=\lst P'_n$, since reordering any subsequence of pairs over which the function $m$ is constant does not affect the value $\lst M(\lst P')$.  Furthermore without loss of generality, assume that $k=1$ --- that is, for some $i$ we have that $p_1(\lst P_i)\in(\set G \circ p_1)(x)$ and $p_2(\lst P_i)\in(\set G \circ p_2)(x)$ --- since flipping the members of a pair likewise does not affect the value of $\lst M(O')$.
 
 \end{proof}
 %@-node:gcross.20091221145013.1285:Proof
