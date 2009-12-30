@@ -442,16 +442,16 @@ In general there are multiple sets of operators that satisfy the properties of \
 
 \begin{lemma}
 \label{combining-pairs}
-Given conjugal pairs $(a,b)$ and $(c,d)$ in relation to some set $\set X$, we have that
+Given conjugal pairs $Q:=(a,b)$ and $R:=(c,d)$ in relation to some set $\set X$, we have that
 \begin{enumerate}
-\item the pairs $(a\cdot c,b)$ and $(c,d\cdot b)$ are also conjugal pairs; and
+\item the pairs $Q':=(a\cdot c,b)$ and $R':=(c,d\cdot b)$ are conjugal pairs with respect to $\set X \backslash \{Q,R\} \cup \{Q',R'\}$; and
 \item $\genfun\paren{\{a,b,c,d\}}=\genfun\paren{\{a\cdot c,b,c,d\cdot b\}}$.
 \end{enumerate}
 \end{lemma}
 
 \begin{proof}
 \begin{enumerate}
-\item Since $[a,c]=[a,d]=[b,c]=[b,d]=\{a,b\}=\{c,d\}=0$, we see therefore that $[a\cdot c,c]=[a\cdot c,d\cdot b]=[b,c]=[b,d\cdot b]=\{a\cdot c,b\}=\{c,d\cdot b\}=0$.  Furthermore, since $a$, $b$, $c$ and $d$ are products of operators which commute with every operator in $\set X$ except for their conjugal partners, so do $a\cdot c$ and $d\cdot b$.
+\item Since $[a,c]=[a,d]=[b,c]=[b,d]=\{a,b\}=\{c,d\}=0$, we see therefore that $[a\cdot c,c]=[a\cdot c,d\cdot b]=[b,c]=[b,d\cdot b]=\{a\cdot c,b\}=\{c,d\cdot b\}=0$.  Furthermore, since $a$, $b$, $c$ and $d$ commute with every operator in $\set X\backslash \{Q,R\}$, so do $a\cdot c$ and $d\cdot b$.
 \item Since $b$ and $c$ are Pauli operators and thus square to the identity, we have that $a\cdot c\cdot c=a$ and $d\cdot b\cdot b=d$, and so $\genfun\paren{\{a,b,c,d\}}=\genfun\paren{\{a\cdot c,b,c,d\cdot b\}}$.
 \end{enumerate}
 \end{proof}
@@ -568,6 +568,58 @@ In the context of Proposition \ref{proposition-optimality-condition}, for any $i
 Most of the properties look only at a single index in one or several sequences, and so the deletion of a different index does not affect them.  The only properties that would be affected by the deletion of an index are those which require that a Pauli operator commute with all of the operators contained in a subsequence, and this property is only made easier to satisfy by the deletion of an index.
 \end{proof}
 %@-node:gcross.20091226225139.1288:Deleting a qubits maintains the properties.
+%@+node:gcross.20091230134131.1288:Single pair rearrangement.
+\begin{lemma}
+\label{single-pair-rearrangement}
+In the context of Proposition \ref{proposition-optimality-condition}, let $A$ be a conjugal pair with respect to some set $\set R$, and $o$ be some Pauli operator such that $o\in\paren{(\set G\circ p_1)(A) \cup (\set G\circ p_2)(A)}$.  Then there exists an operator $B$ such that
+\begin{enumerate}
+\item $a\in p_1(B)$;
+\item $a\notin p_2(B)$;
+\item $B$ is a conjugal pair with respect to $\set R\backslash \{A\}\cup\{B\}$; and
+\item $\genfun\paren{\{p_1(B),p_2(B)\}} = \genfun\paren{\{p_1(A),p_2(A)\}}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Let
+$$
+B:=
+\begin{cases}
+\paren{p_1(A),p_2(A)} & o\in \set G(p_1(A)), o\notin \set G(p_1(A)) \\
+\paren{p_2(A),p_1(A)} & o\notin \set G(p_1(A)), o\in\set G(p_1(A)) \\
+\paren{p_1(A),p_1(A)\cdot p_2(A)} & o\in\set G(p_1(A)), o\in\set G(p_1(A)) \\
+\end{cases}
+$$
+Note that in any of the above cases, properties 1-2 are satisfied by construction, property 3 is satisfied because $p_1(B)$ and $p_2(B)$ are products of $p_1(A)$ and $p_2(A)$ which commute with every element in $\set R\backslash\{A\}$ and $\{p_1(B),p_2(B)\}=0$, and finally property 3 is satisfied because $\{p_1(A),p_2(A)\}\subseteq \genfun\paren{\{p_1(B),p_2(B)\}}$ and $\{p_1(B),p_2(B)\}\subseteq \genfun\paren{\{p_1(A),p_2(A)\}}$.
+\end{proof}
+%@nonl
+%@-node:gcross.20091230134131.1288:Single pair rearrangement.
+%@+node:gcross.20091226225139.1291:newHeadline
+\begin{lemma}
+In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given
+\begin{itemize}
+\item a non-empty set of conjugal pairs, $\set C$, with respect to $\set C \cup \set S$;
+\item and a set $\set A$ such that for any conjugal pair $X\in(\genfun\circ\set U)(\set C)$ we must have that $\paren{(\set G\circ p_1)(X) \cup (\set G\circ p_2)(X)} \cap \set A \ne \emptyset$;
+\end{itemize}
+then there exists
+\begin{itemize}
+\item a conjugal pair $Y$ and set of conjugal pairs $\set D$, all with respect to $\{Y\}\cup \set D \cup \set S$, such that $|\set D| = |\set C|-1$ and $(\genfun\circ\set U)(\{Y\}\cup \set D)=(\genfun\circ\set U)(\set C)$;
+\item and an element $a\in \set A$ such that $a\in (\set G\circ p_1)(Y)$ but $a\notin (\set G\circ p_2)(Y)$;
+\end{itemize}
+such that for any conjugal pair $O\in(\genfun\circ\set U)(\set D)$, we must have that $a\notin\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)}$ and $\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)} \cap \set A\backslash \{a\} \ne \emptyset$.
+\end{itemize}
+\end{lemma}
+
+\begin{proof}
+Proof by induction on the size of $\set C$.  First assume that $\set C=\{Y'\}$, i.e. that it is a singleton set with an element we name $Y'$.  Let $a$ be the element in $\set A$ such that $a\in (\set G\circ p_1)(Y') \cup (\set G\circ p_2)(Y')$.  Applying Lemma \ref{single-pair-rearrangement} letting $o:=a$, $A:=Y'$, and $Y:=B$, we see that we have an operator $Y$ which is a conjugal pair with respect to $\{Y\}\cup\set S$ and also such that $(\genfun\circ\set U)(\{Y\})=(\genfun\circ\set U)(\{Y'\})$.  Let $\set D:=\emptyset$, and we see that the remaining properties hold trivially, so we are done.
+
+Now let us assume that this lemma has been proven for the case where $|\set C|=n-1$, and we are given a set $\set C$ with $n$ elements.  Take any $X''\in\set C$, and apply the lemma to $\set C\backslash \{X''\}$ and $\set A$ to obtain the objects $Y'$, $\set D'$, and $a$ described in the lemma without the primes.  If $a\notin\paren{(\set G\circ p_1)(X) \cup (\set G\circ p_2)(X)}$, then by the assumptions of the Lemma we know that $\paren{(\set G\circ p_1)(X) \cup (\set G\circ p_2)(X)} \cap \set A\backslash \{a\} \ne \emptyset$, so let $Y:=Y'$ and $\set D:=\set D'\cup\{X''\}$, and we are done.
+
+Otherwise, apply Lemma \ref{single-pair-rearrangement}, setting $A:=X''$, $o:=a$, and $X':=B$, and let $X:=\paren{p_1(X')\cdot p_1(Y'),p_2(X')}$ and $Y:=\paren{p_1(Y'),p_2(Y')\cdot p_2(X')}$.  Note $X'$ and $Y'$ are conjugal pairs with respect to $\{X',Y'\}\cup\set D\cup\set S$ and $\{X',Y'\}\cap \paren{\set D\cup\set S}=\emptyset$, and so by Lemma \ref{combining-pairs} we conclude that $X$ and $Y$ are conjugal pairs with respect to $\{X,Y\}\cup\set D\cup\set S$, and also that $(\genfun\circ\set U)(\{X,Y\})=(\genfun\circ\set U)(\{X,Y\})=(\genfun\circ\set U)(\{X',Y'\})$;  since $X'$ was obtained from appling Lemma \ref{single-pair-rearrangement} to $X''$ and $a$, we furthermore conclude that $(\genfun\circ\set U)(\{X,Y\})=(\genfun\circ\set U)(\{X'',Y'\})$.  Since $X'$ was obtained as a result of Lemma \ref{single-pair-rearrangement}, we know that $a\in (\set G \circ p_1)(X')$ but $a\notin (\set G \circ p_2)(X')$, and so since we also know from the earlier recursive application of this Lemma that $a\in (\set G \circ p_1)(Y')$ but $a\notin (\set G \circ p_2)(Y')$.  Thus, we observe that by construction, $a\in (\set G \circ p_1)(Y)$, and $a\notin \paren{(\set G \circ p_2)(Y) \cup (\set G \circ p_1)(X) \cup (\set G \circ p_2)(X)}$.
+
+Let $\set D:=\{X\}\cup\set D'$, and observe that $|\set D|=|\set D'|+1=|\set C\backslash \{X''\}|-1+1=|\set C|-1$, and also that $(\genfun\circ\set U)(\{Y\}\cup\set D)=(\genfun\circ\set U)(\{X,Y\}\cup\set D')=(\genfun\circ\set U)(\{X'',Y'\}\cup\set D')=(\genfun\circ\set U)(\{X''\}\cup(\set C'\backslash\{X''\}))=(\genfun\circ\set U)(\set C)$.  Furthermore, by the earlier recursive application of this Lemma we know that $a\notin\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)}$ for every $O\in \set D'$, so since we have also established that $a\notin \paren{(\set G \circ p_1)(X) \cup (\set G \circ p_2)(X)}$, we conclude that $a\notin\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)}$ for every $O\in \set D$;  since also know that every such $O$ must also satisfy $\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)}\cap \set A \ne \emptyset$, we conclude that every such $O$ satisfies $\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)} \cap A\backslash\{a\}\ne\emptyset$.
+\end{proof}
+%@-node:gcross.20091226225139.1291:newHeadline
 %@-node:gcross.20091221145013.1282:Lemmas
 %@+node:gcross.20091221145013.1285:Proof
 \begin{proof}[Proof of Proposition \ref{proposition-optimality-condition}]
@@ -575,8 +627,7 @@ We shall prove this proposition by using induction on the length of the sequence
 
 Now suppose that we have proven that this proposition holds for sequences of length $N-1$, and have been given sequences of length $N$.  We now need to show that given any other choice of $N$ qubits stabilized by $\set S$, $\lst P'$, such that $\genfun\paren{\set U\paren{\{\lst P_i\}_i}}=\genfun\paren{\set U\paren{\{\lst P'_i\}_i}}$, we have that $\lst M(\lst P') \le \lst M(\lst P)$.
 
-Consider the set $\set O' := \{\lst P'_i:m(\lst P'_i)=\max_i m(\lst P'_i) \}$.  Since each operator in each pair in this set can be expressed as a product of elements of $\set U{paren{\{\lst P_i\}_i}},$ and the the two operators in each pair in $\set O'$ must anti-commute with each other, we conclude that there must be a pair $x\in\set O'$ such that for some $i\in\{1\dots N\}$ and $k\in \{1,2\}$ we have that $p_1(\lst P_i)\in (\set G \circ p_k)(x)$ and $p_2(\lst P_i)\in (\set G \circ p_{3-k})(x)$ --- in other words, for some pair $\lst P_i$ we must have that the generating set of one of the members of $x$ contains one of the members of $\lst P_i$ and the generating set of the other member of $x$ contains the other.
-Without loss of generality, assume that $x=\lst P'_n$, since reordering any subsequence of pairs over which the function $m$ is constant does not affect the value $\lst M(\lst P')$.  Furthermore without loss of generality, assume that $k=1$ --- that is, for some $i$ we have that $p_1(\lst P_i)\in(\set G \circ p_1)(x)$ and $p_2(\lst P_i)\in(\set G \circ p_2)(x)$ --- since flipping the members of a pair likewise does not affect the value of $\lst M(O')$.
+Consider the set $\set O' := \{\lst P'_i:m(\lst P'_i)=\max_i m(\lst P'_i) \}$.  Since each operator in each pair in this set can be expressed as a product of elements of $\set U{paren{\{\lst P_i\}_i}},$ and the the two operators in each pair in $\set O'$ must anti-commute with each other, we conclude that there must be a pair $x\in\set O'$ such that for some $i\in\{1\dots N\}$ and $k\in \{1,2\}$ we have that $p_1(\lst P_i)\in (\set G \circ p_k)(x)$ and $p_2(\lst P_i)\in (\set G \circ p_{3-k})(x)$ --- in other words, for some pair $\lst P_i$ we must have that the generating set of one of the members of $x$ contains one of the members of $\lst P_i$ and the generating set of the other member of $x$ contains the other.  Without loss of generality, assume that $x=\lst P'_n$, since reordering any subsequence of pairs over which the function $m$ is constant does not affect the value $\lst M(\lst P')$.  Furthermore without loss of generality, assume that $k=1$ --- that is, for some $i$ we have that $p_1(\lst P_i)\in(\set G \circ p_1)(x)$ and $p_2(\lst P_i)\in(\set G \circ p_2)(x)$ --- since flipping the members of a pair likewise does not affect the value of $\lst M(O')$.
 
 \end{proof}
 %@-node:gcross.20091221145013.1285:Proof
