@@ -556,7 +556,7 @@ In the context of Proposition \ref{proposition-optimality-condition}, if we are 
 \end{lemma}
 
 \begin{proof}[Proof of Lemma]
-Proof by contradiction.  Let $g\in \set G(o)$ be the operator such that $(w\circ e_{\set S})(g)<w(\lst E_n)$, the pair $\lst P_i$ to which $g$ belongs has minimal $i$, and if both operators in $\lst P_i$ meet these conditions then let $g$ be the first one.  Note that since $(w\circ e_{\set S})(g)<w(\lst E_n)$, we must have that either $g$ is the first member of a pair or $\lst F_i\ne I$.  In either case, we know that there is an operator --- respectively, either $\lst E_i$ or $\lst F_i$ --- which anti-commutes with $g$ but commutes with every other operator in $\set G(o)$.  Thus, the product of all of the operators in $\set G(o)$ must also anti-commute with $\lst E_i$, and thus $o$ anti-commutes with $\lst E_i$.  Since $w(\lst E_i)<w(\lst E_n)$, this contradicts the assumption that $(w\circ e_{\set S})(i)\ge w(\lst E_n)$, and so we conclude that all operators $g\in\set G(o)$ must satisfy $(w\circ e_{\set S})(g)\ge w(\lst E_n)$.\qed
+Proof by contradiction.  Let $g\in \set G(o)$ be the operator such that $(w\circ e_{\set S})(g)<w(\lst E_n)$, the pair $\lst P_i$ to which $g$ belongs has minimal $i$, and if both operators in $\lst P_i$ meet these conditions then let $g$ be the first one.  Note that since $(w\circ e_{\set S})(g)<w(\lst E_n)$, we must have that either $g$ is the first member of a pair or $\lst F_i\ne I$.  In either case, we know that there is an operator --- respectively, either $\lst E_i$ or $\lst F_i$ --- which anti-commutes with $g$ but commutes with every other operator in $\set G(o)$.  Thus, the product of all of the operators in $\set G(o)$ must also anti-commute with $\lst E_i$, and thus $o$ anti-commutes with $\lst E_i$.  Since $w(\lst E_i)<w(\lst E_n)$, this contradicts the assumption that $(w\circ e_{\set S})(i)\ge w(\lst E_n)$, and so we conclude that all operators $g\in\set G(o)$ must satisfy $(w\circ e_{\set S})(g)\ge w(\lst E_n)$.
 \end{proof}
 %@-node:gcross.20091221145013.1284:Combinations cannot make things better
 %@+node:gcross.20091226225139.1288:Deleting a qubits maintains the properties.
@@ -594,8 +594,9 @@ Note that in any of the above cases, properties 1-2 are satisfied by constructio
 \end{proof}
 %@nonl
 %@-node:gcross.20091230134131.1288:Single pair rearrangement.
-%@+node:gcross.20091226225139.1291:newHeadline
+%@+node:gcross.20091226225139.1291:Gaussian elimination
 \begin{lemma}
+\label{gaussian-elimination-of-logicals}
 In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given
 \begin{itemize}
 \item a non-empty set of conjugal pairs, $\set C$, with respect to $\set C \cup \set S$;
@@ -619,7 +620,56 @@ Otherwise, apply Lemma \ref{single-pair-rearrangement}, setting $A:=X''$, $o:=a$
 
 Let $\set D:=\{X\}\cup\set D'$, and observe that $|\set D|=|\set D'|+1=|\set C\backslash \{X''\}|-1+1=|\set C|-1$, and also that $(\genfun\circ\set U)(\{Y\}\cup\set D)=(\genfun\circ\set U)(\{X,Y\}\cup\set D')=(\genfun\circ\set U)(\{X'',Y'\}\cup\set D')=(\genfun\circ\set U)(\{X''\}\cup(\set C'\backslash\{X''\}))=(\genfun\circ\set U)(\set C)$.  Furthermore, by the earlier recursive application of this Lemma we know that $a\notin\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)}$ for every $O\in \set D'$, so since we have also established that $a\notin \paren{(\set G \circ p_1)(X) \cup (\set G \circ p_2)(X)}$, we conclude that $a\notin\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)}$ for every $O\in \set D$;  since also know that every such $O$ must also satisfy $\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)}\cap \set A \ne \emptyset$, we conclude that every such $O$ satisfies $\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)} \cap A\backslash\{a\}\ne\emptyset$.
 \end{proof}
-%@-node:gcross.20091226225139.1291:newHeadline
+%@+node:gcross.20091230212318.1289:Elimination to create sequence
+\begin{corolary}[of Lemma \ref{gaussian-elimination-of-logicals}]
+\label{elimination-to-create-sequence}
+In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given the sets $\set C$ and $\set A$ described in Lemma \ref{gaussian-elimination-of-logicals};  then there exists a sequence of conjugal pairs, $\lst X$, with respect to $\{\lst X_i\}_i\cup\set S$, and a sequence of distinct operators, $\lst O$, both of length $N:=|\set C|$, such that
+\begin{itemize}
+\item $(\genfun \circ \set U)(\lst X)=(\genfun \circ \set U)(\set C)$;
+\item $\{\lst O_i\}_i\subseteq \set A$; and
+\item for every $i=\{1\dots N\}$ we have that $\lst O_i\in(\set G\circ p_1)(\lst X_i)$.
+\end{itemize}
+\end{corolary}
+
+\begin{proof}
+Proof by induction.  If $\set C$ is empty, then the empty sequences trivially satisfy the properties of this Lemma.
+
+Now suppose that we have proven this Lemma for $|\set C|=N-1$, and assume we have been given sets $\set C$ and $\set A$ such that $|\set C|=N$.  Applying Lemma \ref{gaussian-elimination-of-logicals} to $\set C$ and $\set A$ we obtain the conjugal pair $Y$,  the set of conjugal pairs $\set D$, and the element $a$ described in the conclusions of the Lemma.  Apply this Lemma recursively to the set $\set D$ and $\set A\backslash\{a\}$ and we obtain the sequences $\lst X'$ and $\lst O'$ described (without the primes) in this Lemma.  Define
+$$\lst X_i :=
+\begin{cases}
+\lst X'_i & i < N \\
+Y & i = N \\
+\end{cases}
+\quad\text{and}\quad
+\lst O_i :=
+\begin{cases}
+\lst O'_i & i < N \\
+a & i = N \\
+\end{cases}.
+$$
+First, observe that $a\notin \{\lst O'_i\}_i$, so the elements in $\set O$ are distinct.  Next, observe that $a\in \set A$ and $\{\lst O_i'\}_i\subseteq\set A$ by recursive application of this Lemma, and so $\{\lst O_i\}_i\subseteq \set A$.  Furthermore, observe that $(\genfun \circ \set U)(\lst X')=(\genfun \circ \set U)(\set D)$ by the recursive application of this Lemma, and so $(\genfun \circ \set U)(\lst X)=(\genfun \circ \set U)\paren{\{Y\}\cup\{\lst X'\}_i}=(\genfun \circ \set U)(\set D)$ by Lemma \ref{gaussian-elimination-of-logicals}.  Finally, observe that for $i<N$ we have that $\lst O_i\in(\set G\circ p_1)(\lst X_i)$ by recursive application of this Lemma, and for $i=N$ we have that $\lst O_N\in(\set G\circ p_1)(\lst X_N)$ by Proposition \ref{proposition-optimality-condition}.
+\end{proof}
+%@nonl
+%@-node:gcross.20091230212318.1289:Elimination to create sequence
+%@+node:gcross.20091230212318.1290:Upper bound on number of pairs
+\begin{corolary}[of Lemma \ref{gaussian-elimination-of-logicals}]
+In the context of Proposition \ref{proposition-optimality-condition}, there are no sets $\set C$ and $\set A$ as described in Lemma \ref{gaussian-elimination-of-logicals} where $|\set C|>|\set A|$.
+\end{corolary}
+
+\begin{proof}
+Proof by contradiction.  Applying Corolary \ref{elimination-to-create-sequence}, we see that if such sets existed, then there would have to be a sequence of operators $\lst O$ such that $\{\lst O_i\}_i\subseteq \set A$ and yet $|\lst O|>|\set A|$, which is impossible.
+\end{proof}
+%@-node:gcross.20091230212318.1290:Upper bound on number of pairs
+%@+node:gcross.20091230212318.1291:All are present
+\begin{corolary}[of Lemma \ref{gaussian-elimination-of-logicals}]
+In the context of Proposition \ref{proposition-optimality-condition}, given $\set C$ and $\set A$ as described in Lemma \ref{gaussian-elimination-of-logicals} where $|\set C|=|\set A|$, for every element $a\in\set A$ there exists a pair $X\in\set C$ such that either $a\in p_1(X)$ or $a\in p_2(X)$.
+\end{corolary}
+
+\begin{proof}
+By Corolary \ref{elimination-to-create-sequence}, we know that there exists a sequence of conjugal pairs $\lst X$ such that $(\genfun\circ\set U)(\{\lst X_i\}_i)=(\genfun\circ\set U)(\set C)$ and for every $a$ there exists a pair $Y\in \{\lst X_i\}_i$ such that $a\in(\set G\circ p_1)(Y)$.  Thus, we conclude that $\set A \subseteq (\genfun\circ\set U)(\{\lst X_i\}_i)=(\genfun\circ\set U)(\set C)$.
+\end{proof}
+%@-node:gcross.20091230212318.1291:All are present
+%@-node:gcross.20091226225139.1291:Gaussian elimination
 %@-node:gcross.20091221145013.1282:Lemmas
 %@+node:gcross.20091221145013.1285:Proof
 \begin{proof}[Proof of Proposition \ref{proposition-optimality-condition}]
