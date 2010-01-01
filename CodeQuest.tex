@@ -594,36 +594,49 @@ Note that in any of the above cases, properties 1-2 are satisfied by constructio
 \end{proof}
 %@nonl
 %@-node:gcross.20091230134131.1288:Single pair rearrangement.
-%@+node:gcross.20091226225139.1291:Gaussian elimination
+%@+node:gcross.20091226225139.1291:Directed Gaussian elimination
 \begin{lemma}
-\label{gaussian-elimination-of-logicals}
+\label{directed-gaussian-elimination-of-logicals}
 In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given
 \begin{itemize}
 \item a non-empty set of conjugal pairs, $\set C$, with respect to $\set C \cup \set S$;
-\item and a set $\set A$ such that for any conjugal pair $X\in(\genfun\circ\set U)(\set C)$ we must have that $\paren{(\set G\circ p_1)(X) \cup (\set G\circ p_2)(X)} \cap \set A \ne \emptyset$;
+\item a set $\set A$ such that for any conjugal pair $X\in(\genfun\circ\set U)(\set C)$ we must have that $\paren{(\set G\circ p_1)(X) \cup (\set G\circ p_2)(X)} \cap \set A \ne \emptyset$; and
+\item an element $a\in \set A$ such that there exists a pair $Y''\in\set C$ such that $a\in\paren{(\set G\circ p_1)(Y'') \cup (\set G\circ p_2)(Y'')}$
 \end{itemize}
-then there exists
+then there exists a conjugal pair $Y$ and set of conjugal pairs $\set D$, all with respect to $\{Y\}\cup \set D \cup \set S$, such that
 \begin{itemize}
-\item a conjugal pair $Y$ and set of conjugal pairs $\set D$, all with respect to $\{Y\}\cup \set D \cup \set S$, such that $|\set D| = |\set C|-1$ and $(\genfun\circ\set U)(\{Y\}\cup \set D)=(\genfun\circ\set U)(\set C)$;
-\item and an element $a\in \set A$ such that $a\in (\set G\circ p_1)(Y)$ but $a\notin (\set G\circ p_2)(Y)$;
-\end{itemize}
-such that for any conjugal pair $O\in(\genfun\circ\set U)(\set D)$, we must have that $a\notin\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)}$ and $\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)} \cap \set A\backslash \{a\} \ne \emptyset$.
+\item $|\set D| = |\set C|-1$
+\item $(\genfun\circ\set U)(\{Y\})=(\genfun\circ\set U)(\{Y''\})$;
+\item $(\genfun\circ\set U)(\{Y\}\cup \set D)=(\genfun\circ\set U)(\set C)$;
+\item $a\in (\set G\circ p_1)(Y)$ but $a\notin (\set G\circ p_2)(Y)$; and
+\item for any conjugal pair $O\in(\genfun\circ\set U)(\set D)$, we must have that $a\notin\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)}$ and $\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)} \cap \set A\backslash \{a\} \ne \emptyset$.
 \end{itemize}
 \end{lemma}
 
 \begin{proof}
-Proof by induction on the size of $\set C$.  First assume that $\set C=\{Y'\}$, i.e. that it is a singleton set with an element we name $Y'$.  Let $a$ be the element in $\set A$ such that $a\in (\set G\circ p_1)(Y') \cup (\set G\circ p_2)(Y')$.  Applying Lemma \ref{single-pair-rearrangement} letting $o:=a$, $A:=Y'$, and $Y:=B$, we see that we have an operator $Y$ which is a conjugal pair with respect to $\{Y\}\cup\set S$ and also such that $(\genfun\circ\set U)(\{Y\})=(\genfun\circ\set U)(\{Y'\})$.  Let $\set D:=\emptyset$, and we see that the remaining properties hold trivially, so we are done.
+Proof by induction on the size of $\set C$.  If $\set C=\{Y''\}$, then apply Lemma \ref{single-pair-rearrangement} letting $o:=a$, $A:=Y''$, and $Y:=B$, and we see that we have an operator $Y$ which is a conjugal pair with respect to $\{Y\}\cup\set S$ and also such that $(\genfun\circ\set U)(\{Y\})=(\genfun\circ\set U)(\{Y''\})$.  Let $\set D:=\emptyset$, and we see that the remaining properties hold trivially, so we are done.
 
-Now let us assume that this lemma has been proven for the case where $|\set C|=n-1$, and we are given a set $\set C$ with $n$ elements.  Take any $X''\in\set C$, and apply the lemma to $\set C\backslash \{X''\}$ and $\set A$ to obtain the objects $Y'$, $\set D'$, and $a$ described in the lemma without the primes.  If $a\notin\paren{(\set G\circ p_1)(X) \cup (\set G\circ p_2)(X)}$, then by the assumptions of the Lemma we know that $\paren{(\set G\circ p_1)(X) \cup (\set G\circ p_2)(X)} \cap \set A\backslash \{a\} \ne \emptyset$, so let $Y:=Y'$ and $\set D:=\set D'\cup\{X''\}$, and we are done.
+Now let us assume that this lemma has been proven for the case where $|\set C|=n-1$, and we are given a set $\set C$ with $n$ elements.  Take any $X''\in\set C\backslash\{Y''\}$, and apply the lemma to $\set C\backslash \{X''\}$, $\set A$, $a$ and $Y''$ to obtain the objects $Y'$ and $\set D'$ described in this Lemma without the primes.  If $a\notin\paren{(\set G\circ p_1)(X) \cup (\set G\circ p_2)(X)}$, then by the assumptions of the Lemma we know that $\paren{(\set G\circ p_1)(X) \cup (\set G\circ p_2)(X)} \cap \set A\backslash \{a\} \ne \emptyset$, so let $Y:=Y'$ and $\set D:=\set D'\cup\{X''\}$, and we are done.
 
 Otherwise, apply Lemma \ref{single-pair-rearrangement}, setting $A:=X''$, $o:=a$, and $X':=B$, and let $X:=\paren{p_1(X')\cdot p_1(Y'),p_2(X')}$ and $Y:=\paren{p_1(Y'),p_2(Y')\cdot p_2(X')}$.  Note $X'$ and $Y'$ are conjugal pairs with respect to $\{X',Y'\}\cup\set D\cup\set S$ and $\{X',Y'\}\cap \paren{\set D\cup\set S}=\emptyset$, and so by Lemma \ref{combining-pairs} we conclude that $X$ and $Y$ are conjugal pairs with respect to $\{X,Y\}\cup\set D\cup\set S$, and also that $(\genfun\circ\set U)(\{X,Y\})=(\genfun\circ\set U)(\{X,Y\})=(\genfun\circ\set U)(\{X',Y'\})$;  since $X'$ was obtained from appling Lemma \ref{single-pair-rearrangement} to $X''$ and $a$, we furthermore conclude that $(\genfun\circ\set U)(\{X,Y\})=(\genfun\circ\set U)(\{X'',Y'\})$.  Since $X'$ was obtained as a result of Lemma \ref{single-pair-rearrangement}, we know that $a\in (\set G \circ p_1)(X')$ but $a\notin (\set G \circ p_2)(X')$, and so since we also know from the earlier recursive application of this Lemma that $a\in (\set G \circ p_1)(Y')$ but $a\notin (\set G \circ p_2)(Y')$.  Thus, we observe that by construction, $a\in (\set G \circ p_1)(Y)$, and $a\notin \paren{(\set G \circ p_2)(Y) \cup (\set G \circ p_1)(X) \cup (\set G \circ p_2)(X)}$.
 
 Let $\set D:=\{X\}\cup\set D'$, and observe that $|\set D|=|\set D'|+1=|\set C\backslash \{X''\}|-1+1=|\set C|-1$, and also that $(\genfun\circ\set U)(\{Y\}\cup\set D)=(\genfun\circ\set U)(\{X,Y\}\cup\set D')=(\genfun\circ\set U)(\{X'',Y'\}\cup\set D')=(\genfun\circ\set U)(\{X''\}\cup(\set C'\backslash\{X''\}))=(\genfun\circ\set U)(\set C)$.  Furthermore, by the earlier recursive application of this Lemma we know that $a\notin\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)}$ for every $O\in \set D'$, so since we have also established that $a\notin \paren{(\set G \circ p_1)(X) \cup (\set G \circ p_2)(X)}$, we conclude that $a\notin\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)}$ for every $O\in \set D$;  since also know that every such $O$ must also satisfy $\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)}\cap \set A \ne \emptyset$, we conclude that every such $O$ satisfies $\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)} \cap A\backslash\{a\}\ne\emptyset$.
 \end{proof}
+%@+node:gcross.20100101105725.1294:Undirected Gaussian elimination
+\begin{corolary}[of Lemma \ref{directed-gaussian-elimination-of-logicals}]
+\label{undirected-gaussian-elimination-of-logicals}
+In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given the sets $\set C$ and $\set A$ described in Lemma \ref{directed-gaussian-elimination-of-logicals};  then there exists the object $a$, $Y$, and $\set D$ described in Lemma \ref{directed-gaussian-elimination-of-logicals}.
+\end{corolary}
+
+\begin{proof}
+Take any pair $Y'\in\set C$.  By the assumptions of this Lemma, we know that $\paren{(\set G\circ p_1)(Y') \cup (\set G\circ p_2)(Y')} \cap \set A \ne \emptyset$, which implies that there exists an element $a\in A$ such that either $a\in (\set G\circ p_1)(Y')$ or $a\in (\set G\circ p_2)(Y')$.  The existance of $Y$ and $\set D$ then follow immediately from the application of Lemma \ref{directed-gaussian-elimination-of-logicals}.
+\end{proof}
+%@nonl
+%@-node:gcross.20100101105725.1294:Undirected Gaussian elimination
 %@+node:gcross.20091230212318.1289:Elimination to create sequence
-\begin{corolary}[of Lemma \ref{gaussian-elimination-of-logicals}]
+\begin{corolary}[of Lemma \ref{directed-gaussian-elimination-of-logicals}]
 \label{elimination-to-create-sequence}
-In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given the sets $\set C$ and $\set A$ described in Lemma \ref{gaussian-elimination-of-logicals};  then there exists a sequence of conjugal pairs, $\lst X$, with respect to $\{\lst X_i\}_i\cup\set S$, and a sequence of distinct operators, $\lst O$, both of length $N:=|\set C|$, such that
+In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given the sets $\set C$ and $\set A$ described in Lemma \ref{directed-gaussian-elimination-of-logicals};  then there exists a sequence of conjugal pairs, $\lst X$, with respect to $\{\lst X_i\}_i\cup\set S$, and a sequence of distinct operators, $\lst O$, both of length $N:=|\set C|$, such that
 \begin{itemize}
 \item $(\genfun \circ \set U)(\lst X)=(\genfun \circ \set U)(\set C)$;
 \item $\{\lst O_i\}_i\subseteq \set A$; and
@@ -634,7 +647,7 @@ In the context of Proposition \ref{proposition-optimality-condition}, suppose we
 \begin{proof}
 Proof by induction.  If $\set C$ is empty, then the empty sequences trivially satisfy the properties of this Lemma.
 
-Now suppose that we have proven this Lemma for $|\set C|=N-1$, and assume we have been given sets $\set C$ and $\set A$ such that $|\set C|=N$.  Applying Lemma \ref{gaussian-elimination-of-logicals} to $\set C$ and $\set A$ we obtain the conjugal pair $Y$,  the set of conjugal pairs $\set D$, and the element $a$ described in the conclusions of the Lemma.  Apply this Lemma recursively to the set $\set D$ and $\set A\backslash\{a\}$ and we obtain the sequences $\lst X'$ and $\lst O'$ described (without the primes) in this Lemma.  Define
+Now suppose that we have proven this Lemma for $|\set C|=N-1$, and assume we have been given sets $\set C$ and $\set A$ such that $|\set C|=N$.  Applying Lemma \ref{undirected-gaussian-elimination-of-logicals} to $\set C$ and $\set A$ we obtain the conjugal pair $Y$,  the set of conjugal pairs $\set D$, and the element $a$ described in the conclusions of the Lemma.  Apply this Lemma recursively to the set $\set D$ and $\set A\backslash\{a\}$ and we obtain the sequences $\lst X'$ and $\lst O'$ described (without the primes) in this Lemma.  Define
 $$\lst X_i :=
 \begin{cases}
 \lst X'_i & i < N \\
@@ -652,8 +665,8 @@ First, observe that $a\notin \{\lst O'_i\}_i$, so the elements in $\set O$ are d
 %@nonl
 %@-node:gcross.20091230212318.1289:Elimination to create sequence
 %@+node:gcross.20091230212318.1290:Upper bound on number of pairs
-\begin{corolary}[of Lemma \ref{gaussian-elimination-of-logicals}]
-In the context of Proposition \ref{proposition-optimality-condition}, there are no sets $\set C$ and $\set A$ as described in Lemma \ref{gaussian-elimination-of-logicals} where $|\set C|>|\set A|$.
+\begin{corolary}[of Lemma \ref{directed-gaussian-elimination-of-logicals}]
+In the context of Proposition \ref{proposition-optimality-condition}, there are no sets $\set C$ and $\set A$ as described in Lemma \ref{directed-gaussian-elimination-of-logicals} where $|\set C|>|\set A|$.
 \end{corolary}
 
 \begin{proof}
@@ -661,15 +674,15 @@ Proof by contradiction.  Applying Corolary \ref{elimination-to-create-sequence},
 \end{proof}
 %@-node:gcross.20091230212318.1290:Upper bound on number of pairs
 %@+node:gcross.20091230212318.1291:All are present
-\begin{corolary}[of Lemma \ref{gaussian-elimination-of-logicals}]
-In the context of Proposition \ref{proposition-optimality-condition}, given $\set C$ and $\set A$ as described in Lemma \ref{gaussian-elimination-of-logicals} where $|\set C|=|\set A|$, for every element $a\in\set A$ there exists a pair $X\in\set C$ such that either $a\in p_1(X)$ or $a\in p_2(X)$.
+\begin{corolary}[of Lemma \ref{directed-gaussian-elimination-of-logicals}]
+In the context of Proposition \ref{proposition-optimality-condition}, given $\set C$ and $\set A$ as described in Lemma \ref{directed-gaussian-elimination-of-logicals} where $|\set C|=|\set A|$, for every element $a\in\set A$ there exists a pair $X\in\set C$ such that either $a\in p_1(X)$ or $a\in p_2(X)$.
 \end{corolary}
 
 \begin{proof}
 By Corolary \ref{elimination-to-create-sequence}, we know that there exists a sequence of conjugal pairs $\lst X$ such that $(\genfun\circ\set U)(\{\lst X_i\}_i)=(\genfun\circ\set U)(\set C)$ and for every $a$ there exists a pair $Y\in \{\lst X_i\}_i$ such that $a\in(\set G\circ p_1)(Y)$.  Thus, we conclude that $\set A \subseteq (\genfun\circ\set U)(\{\lst X_i\}_i)=(\genfun\circ\set U)(\set C)$.
 \end{proof}
 %@-node:gcross.20091230212318.1291:All are present
-%@-node:gcross.20091226225139.1291:Gaussian elimination
+%@-node:gcross.20091226225139.1291:Directed Gaussian elimination
 %@-node:gcross.20091221145013.1282:Lemmas
 %@+node:gcross.20091221145013.1285:Proof
 \begin{proof}[Proof of Proposition \ref{proposition-optimality-condition}]
