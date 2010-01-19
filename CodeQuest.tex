@@ -484,7 +484,7 @@ For convenience, we introduce the following additional notation:
 \item the function $m_{\set S}:\centralizer_\pauligroup\paren{\set S}\times \centralizer_\pauligroup\paren{\set S} \to \mathscr{N}$ is defined such that $m_{\set S}(l,l'):=\min \{\om_{\set S}(l),\om_{\set S}(l')\}$ --- that is, it gives the smaller of the weights of the smallest weight errors acting on respectively $\set L$ and $\set L'$;
 \item the function $\vec M^{(N)}_{\set S}$ is defined such that $\vec M^{(N)}_{\set S}\paren{\vec P}$ is the sequence of $N$ integers such that $\vec M^{(N)}_{\set S}\paren{\vec P}_i := m_{\set S}\paren{\vec P_i}$;
 \item the functions $p_1$ and $p_2$ are defined such that, given $(a,b):=x$, we have that $p_1(x):=a$ and $p_2(x):=b$.
-\item the function $\set U:\powerset(\pauligroup\times\pauligroup)\to\powerset(\pauligroup)$ is defined (for convenience) such that $\set U\paren{\set X}:=\bigcup_{x\in\set X} \{p_1(x),p_2(x)\}$ --- that is, it `unpacks' a set of pairs of operators into a set of operators;  in an abuse of notation, we shall also allow $\set U$ to apply to sequences, so that $\set U(\lst P) := \set U\paren{\{\lst P_i\}_i}.$
+\item the function $\set U:\powerset(\pauligroup\times\pauligroup)\to\powerset(\pauligroup)$ is defined (for convenience) such that $\set U\paren{\set X}:=\bigcup_{x\in\set X} \{p_1(x),p_2(x)\}$ --- that is, it `unpacks' a set of pairs of operators into a set of operators;  in an abuse of notation, we shall also allow $\set U$ to apply to sequences, so that $\set U(\lst P) := \set U\paren{\{\lst P_i\}_i}$, and to individual pairs, so that if $X$ is a single pair then $\set U(X) := \set U(\{X\})$;
 \item finally, a \emph{choice of $N$ qubits stabilized by $\set S$}, $\lst P$, is a sequence of $N$ pairs of operators from the Pauli group such that 
 \begin{enumerate}
 \item $\set U(\lst P)\cap \set S = \emptyset$ --- that is, the operators in $\lst P$ are not included in $\set S$;
@@ -511,7 +511,7 @@ Now that we have a precise notion of what it means to have made the best choice 
 \label{proposition-optimality-condition}
 Suppose we are given
 \begin{itemize}
-\item a choice of $N$ qubits with respect to some set $\set S$, $\lst P$;
+\item a choice of $N$ qubits, $\lst P$ stabilized by some set $\set S$;
 \item a sequence $\lst E$ of $N$ Pauli operators such that for every $i\in\{1\dots N\}$, we have that
 \begin{enumerate}
 \item $\lst E_i$ is an undetectable error (with respect to $\set S$) acting on $p_1(\lst P_i)$;
@@ -544,6 +544,7 @@ In order to prove Proposition \ref{proposition-optimality-condition}, we shall n
 %@nonl
 %@+node:gcross.20091221145013.1283:Combinations cannot make things worse
 \begin{lemma}
+\label{combinations-can't-make-things-worse}
 Suppose we are given two operators $a,b\in\pauligroup$ such that $d_a:=\om_{\set S}(a)$ and $d_b:=\om_{\set S}(b)$.  Then $\om_{\set S}(a\cdot b) \ge \text{\min}\,(d_a,d_b)$.
 \end{lemma}
 
@@ -553,6 +554,7 @@ Any undetectable error with respect to $\set S$ acting on $a\cdot b$ must also a
 %@-node:gcross.20091221145013.1283:Combinations cannot make things worse
 %@+node:gcross.20091221145013.1284:Combinations cannot make things better
 \begin{lemma}
+\label{combinations-can't-make-things-better}
 In the context of Proposition \ref{proposition-optimality-condition}, if we are given an operator $o\in (\genfun\circ\set U)(\lst P)$ such that $\om_{\set S}(o)\ge w(\lst E_n)$, then $\om_{\set S}(g)\ge w(\lst E_n)$ for every $g\in\set G(o)$.
 \end{lemma}
 
@@ -562,6 +564,7 @@ Proof by contradiction.  Let $g\in \set G(o)$ be the operator such that $\om_{\s
 %@-node:gcross.20091221145013.1284:Combinations cannot make things better
 %@+node:gcross.20091226225139.1288:Deleting a qubits maintains the properties.
 \begin{lemma}
+\label{deleting-pair-maintains-properties}
 In the context of Proposition \ref{proposition-optimality-condition}, for any $i\in\{1\dots N\}$, the sequences $\lst P'$, $\lst E'$ and $\lst F'$ defined by deleting the $i$-th element of respectively $\lst P$, $\lst E$ and $\lst F$ satisfy the same properties listed in the Proposition as their non-primed counterparts if we let $N:=N-1$.
 \end{lemma}
 
@@ -576,8 +579,8 @@ In the context of Proposition \ref{proposition-optimality-condition}, let $A\in(
 \begin{enumerate}
 \item $o\in p_1(B)$;
 \item $o\notin p_2(B)$;
-\item $B$ is a conjugal pair with respect to $(\set R\backslash \{A\})\cup\{B\}$; and
-\item $\genfun\paren{\{p_1(B),p_2(B)\}} = \genfun\paren{\{p_1(A),p_2(A)\}}$.
+\item $B$ is a conjugal pair with respect to $\paren{\set R\backslash \set U(A)}\cup\set U(B)$; and
+\item $(\genfun\circ\set U)(B) = (\genfun\circ\set U)(A)$.
 \end{enumerate}
 \end{lemma}
 
@@ -600,14 +603,13 @@ Note that in any of the above cases, properties 1-2 are satisfied by constructio
 \label{directed-gaussian-elimination-of-logicals}
 In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given
 \begin{itemize}
-\item a non-empty set of conjugal pairs, $\set C$, with respect to $\set C \cup \set S$;
+\item a non-empty set of conjugal pairs, $\set C$, with respect to $\set U(\set C) \cup \set S$;
 \item a set $\set A$ with the property that for any conjugal pair $X$ such that $\{p_1(X),p_2(X)\}\subseteq(\genfun\circ\set U)(\set C)$, we must have that $\set G(X) \cap \set A \ne \emptyset$; and
 \item an element $a\in \set A$ with the property that there exists a pair $Y''\in\set C$ such that $a\in\set G(Y'')$
 \end{itemize}
-then there exists a conjugal pair $Y$ and set of conjugal pairs $\set D$, all with respect to $\{Y\}\cup \set D \cup \set S$, such that
+then there exists a conjugal pair $Y$ and set of conjugal pairs $\set D$, all with respect to $\set U\paren{\{Y\}\cup \set D} \cup \set S$, such that
 \begin{enumerate}
 \item $|\set D| = |\set C|-1$
-%\item $(\genfun\circ\set U)(\{Y\})=(\genfun\circ\set U)(\{Y''\})$;
 \item $(\genfun\circ\set U)(\{Y\}\cup \set D)=(\genfun\circ\set U)(\set C)$;
 \item $a\in (\set G\circ p_1)(Y)$ but $a\notin (\set G\circ p_2)(Y)$;
 \item $a\notin \bigcup_{D\in \set D} \set G(D)$; and
@@ -620,7 +622,7 @@ Proof by induction on the size of $\set C$.  If $\set C=\{Y''\}$, then apply Lem
 
 Now let us assume that this lemma has been proven for the case where $|\set C|=n-1$, and we are given a set $\set C$ with $n$ elements.  Take any $X''\in\set C\backslash\{Y''\}$, and apply the lemma to $\set C\backslash \{X''\}$, $\set A$, $a$ and $Y''$ to obtain the objects $Y'$ and $\set D'$ described in this Lemma without the primes.  If $a\notin\set G(X'')$, then by the assumptions of the Lemma we know that $\set G(X'') \cap \set A\backslash \{a\} \ne \emptyset$, so let $Y:=Y'$ and $\set D:=\set D'\cup\{X''\}$, and we are done.
 
-Otherwise, apply Lemma \ref{single-pair-rearrangement}, setting $A:=X''$, $o:=a$, and $X':=B$, and let $X:=\paren{p_1(X')\cdot p_1(Y'),p_2(X')}$ and $Y:=\paren{p_1(Y'),p_2(Y')\cdot p_2(X')}$.  Note $X'$ and $Y'$ are conjugal pairs with respect to $\{X',Y'\}\cup\set D\cup\set S$ and $\{X',Y'\}\cap \paren{\set D\cup\set S}=\emptyset$, and so by Lemma \ref{combining-pairs} we conclude that $X$ and $Y$ are conjugal pairs with respect to $\{X,Y\}\cup\set D\cup\set S$, and also that $(\genfun\circ\set U)(\{X,Y\})=(\genfun\circ\set U)(\{X',Y'\})$;  since $X'$ was obtained from applying Lemma \ref{single-pair-rearrangement} to $X''$ and $a$, we furthermore conclude that $(\genfun\circ\set U)(\{X,Y\})=(\genfun\circ\set U)(\{X'',Y'\})$.  Since $X'$ was obtained as a result of Lemma \ref{single-pair-rearrangement}, we know that $a\in (\set G \circ p_1)(X')$ but $a\notin (\set G \circ p_2)(X')$, and we also know from the earlier recursive application of this Lemma that $a\in (\set G \circ p_1)(Y')$ but $a\notin (\set G \circ p_2)(Y')$.  Thus, we observe that by construction, $a\in (\set G \circ p_1)(Y)$, and $a\notin \paren{(\set G \circ p_2)(Y) \cup \set G(X)}$.
+Otherwise, apply Lemma \ref{single-pair-rearrangement}, setting $A:=X''$, $o:=a$, and $X':=B$, and let $X:=\paren{p_1(X')\cdot p_1(Y'),p_2(X')}$ and $Y:=\paren{p_1(Y'),p_2(Y')\cdot p_2(X')}$.  Note $X'$ and $Y'$ are conjugal pairs with respect to $\set U\paren{\{X',Y'\}\cup\set D}\cup\set S$ and $\{X',Y'\}\cap \paren{\set D\cup\set S}=\emptyset$, and so by Lemma \ref{combining-pairs} we conclude that $X$ and $Y$ are conjugal pairs with respect to $\set U\parn{e\{X,Y\}\cup\set D}\cup\set S$, and also that $(\genfun\circ\set U)(\{X,Y\})=(\genfun\circ\set U)(\{X',Y'\})$;  since $X'$ was obtained from applying Lemma \ref{single-pair-rearrangement} to $X''$ and $a$, we furthermore conclude that $(\genfun\circ\set U)(\{X,Y\})=(\genfun\circ\set U)(\{X'',Y'\})$.  Since $X'$ was obtained as a result of Lemma \ref{single-pair-rearrangement}, we know that $a\in (\set G \circ p_1)(X')$ but $a\notin (\set G \circ p_2)(X')$, and we also know from the earlier recursive application of this Lemma that $a\in (\set G \circ p_1)(Y')$ but $a\notin (\set G \circ p_2)(Y')$.  Thus, we observe that by construction, $a\in (\set G \circ p_1)(Y)$, and $a\notin \paren{(\set G \circ p_2)(Y) \cup \set G(X)}$.
 
 Let $\set D:=\{X\}\cup\set D'$, and observe that $|\set D|=|\set D'|+1=|\set C\backslash \{X''\}|-1+1=|\set C|-1$, and also that $(\genfun\circ\set U)(\{Y\}\cup\set D)=(\genfun\circ\set U)(\{X,Y\}\cup\set D')=(\genfun\circ\set U)(\{X''\}\cup(\{Y'\}\cup\set D'))=(\genfun\circ\set U)(\{X''\}\cup(\set C'\backslash\{X''\}))=(\genfun\circ\set U)(\set C)$.  Furthermore, by the earlier recursive application of this Lemma we know that $a\notin\set G(O)$ for every $O\in \set D'$, so since we have also established that $a\notin \set G(X)$, we conclude that $a\notin\set G(O)$ for every $O\in \set D$;  since also know that every such $O$ must also satisfy $\set G(O)\cap \set A \ne \emptyset$, we conclude that every such $O$ satisfies $\set G(O) \cap A\backslash\{a\}\ne\emptyset$.
 \end{proof}
@@ -681,7 +683,7 @@ Applying Corolary \ref{elimination-to-create-subset} and the fact that the only 
 %@+node:gcross.20100101105725.1298:Elimination to isolate
 \begin{corolary}[of Lemma \ref{directed-gaussian-elimination-of-logicals}]
 \label{elimination-to-isolate}
-In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given non-empty sets of conjugal pairs, $\set B$ with respect to $\set B\cup\set S$, and $\set C$ with respect to $\set C\cup\set S$, such that $|\set B|=|\set C|$ and for every pair $Y''\in(\genfun\circ\set U)(\set C)$ there exists a pair $(a,b)\in\set B$ such that either $a\in (\set G\circ p_1)(Y'')$ and $b\in (\set G\circ p_2)(Y'')$ or $a\in (\set G\circ p_2)(Y'')$ and $b\in (\set G\circ p_1)(Y'')$, and we don't have $\{a,b\}\cap(\set G\circ p_1)(Y'')=\{a,b\}\cap(\set G\circ p_2)(Y'')=\{a,b\}$.  Then for every $(a,b)\in\set B$ there exists a conjugal pair, $Y$, and a set of conjugal pairs, $\set D$, all with respect to $\{Y\}\cup\set D\cup\set S$, such that
+In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given non-empty sets of conjugal pairs, $\set B$ with respect to $\set B\cup\set S$, and $\set C$ with respect to $\set U(\set C)\cup\set S$, such that $|\set B|=|\set C|$ and for every pair $Y''\in(\genfun\circ\set U)(\set C)$ there exists a pair $(a,b)\in\set B$ such that either $a\in (\set G\circ p_1)(Y'')$ and $b\in (\set G\circ p_2)(Y'')$ or $a\in (\set G\circ p_2)(Y'')$ and $b\in (\set G\circ p_1)(Y'')$, and we don't have $\{a,b\}\cap(\set G\circ p_1)(Y'')=\{a,b\}\cap(\set G\circ p_2)(Y'')=\{a,b\}$.  Then for every $(a,b)\in\set B$ there exists a conjugal pair, $Y$, and a set of conjugal pairs, $\set D$, all with respect to $\set U\paren{\{Y\}\cup\set D}\cup\set S$, such that
 \begin{itemize}
 \item $|\{Y\}\cup \set D| = |\set C|$
 \item $(\genfun\circ\set U)(\{Y\}\cup \set D)=(\genfun\circ\set U)(\set C)$;
@@ -711,25 +713,91 @@ $$\{p_1(O):O\in\set B\}\cap (\set G\circ p_2)(Y)=\emptyset.$$
 %@-node:gcross.20091226225139.1291:Directed Gaussian elimination
 %@+node:gcross.20100101105725.1299:Sequence rearrangement
 \begin{lemma}
-In the context of Proposition \ref{proposition-optimality-condition}, suppose we have a conjugal pair with respect to $\set S$, $(a,b):=O\in(\genfun\circ\set U)(\lst P)$, such that
+In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given an integer $1\le k\le N$ and a conjugal pair with respect to $\set S$, $(a,b):=O\in(\genfun\circ\set U)(\lst P)$, such that
 \begin{itemize}
-\item $m(O)=m(\lst P_n)$;
-\item $\{p_1(\lst P_i)\}_i\cup (\set G\circ p_1)(O)=\{p_1(\lst P_n)\}$; 
-\item $p_2(\lst P_n)\notin (\set G\circ p_1)(O)$; and
-\item $p_2(\lst P_n)\in (\set G\circ p_2)(O)$.
+\item $m(O)\ge m(\lst P_n)$;
+\item $\{p_1(\lst P_i)\}_i\cap (\set G\circ p_1)(O)=\{p_1(\lst P_n)\}$;
+\item $\{p_1(\lst P_i)\}_i\cap (\set G\circ p_2)(O)=\emptyset$;
+\item $p_2(\lst P_n)\notin (\set G\circ p_1)(O)$;
+\item $p_2(\lst P_n)\in (\set G\circ p_2)(O)$; and
+\item $\{p_2(\lst P_i):i<k\}\cap \set G(\set O)=\emptyset$.
 \end{itemize}
-Then there exists a choice of qubits with respect to $\set S$, $\lst P'$, such that
+Then there exists a choice of qubits, $\lst P'$, stabilized by $\set S$, such that
 \begin{itemize}
 \item $\lst P_N=O$;
 \item $(\genfun\circ\set U)(\lst P)=(\genfun\circ\set U)(\lst P')$;
-\item $\lst P'$ satisfies the same properties listed in Proposition \ref{proposition-optimality-condition} as $\lst P$;
-\item $\lst M^{(N)}(\lst P')=\lst M^{(N)}(\lst P)$;
+\item the first $N-1$ elements of $\lst P'$, $\lst E$ and $\lst F$ satisfy the properties listed in Proposition \ref{proposition-optimality-condition};
+\item $\lst M^{(N)}(\lst P')=\lst M^{(N)}(\lst P)$; and
+\item $\lst P_i=\lst P'_i$ for $i<k$.
 \end{lemma}
 
 \begin{proof}
-Proof by reverse induction on the smallest index $k$ such that $p_2(\lst P_k)\in\paren{(\set G\circ p_1)(O)\cup (\set G\circ p_2)(O)}$.  For the base case, suppose that $i=N$; then we are done setting $\lst P''=\lst P$.
+Proof by reverse induction on the $k$.  For the base case, suppose that $k=N$; then we are done setting $\lst P''=\lst P$ and employing the result of Lemma \ref{deleting-pair-maintains-properties}.
 
-Now suppose we have proven this Lemma for all pairs for which the smallest index $k+1$, and we are given an $O$ for which the smallest such index is $k$.  Let $a'$ be $a$ if $p_2(\lst P_k)\notin\set G(a)$ and $a\cdot p_2(\lst P_k)$ otherwise, $b'$ be $b$ if $p_2(\lst P_k)\notin\set G(a)$ and $b\cdot p_2(\lst P_k)$ otherwise, and $O':=(a',b')$.  Note that the smallest index for $O'$ is $k$, and $O'$ satisfies the assumptions of this Lemma;  thus, we apply it recursively to obtain the choice of qubits $\lst P'$.
+Now suppose we have proven this Lemma for all integers $k+1$ and larger and we are given an integer $k$ and a conjugal pair $O$ satisfying the assumptions of this Lemma.  For notational convenience, let $(c,d):=\lst P_k$.
+Define
+$$
+a' :=
+\begin{cases}
+a\cdot d & d\in\set G(a) \\
+a & \text{otherwise} \\
+\end{cases},
+\quad
+b' :=
+\begin{cases}
+b\cdot d & d\in\set G(b) \\
+b & \text{otherwise} \\
+\end{cases}
+$$
+and $O':=(a',b')$.  By Lemma \ref{combinations-can't-make-things-better}, we know that since $m(O)=m(\lst P_n)$ and $d\in\set G(O)$, we have that $\om_{\set S}(d)\ge m(O)$ and thus $m(O')\ge m(O)$.  Note that $O'$ satisfies the assumptions of this Lemma with the integer $k+1$, and so we apply this Lemma recursively to obtain the choice of qubits $\lst P'':=\lst P'$ described in this Lemma;  note in particular that $\lst P''_k=\lst P_k$.
+
+Let 
+$$
+c' :=
+\begin{cases}
+c\cdot y & d\in\set G(a) \\
+c & \text{otherwise}
+\end{cases},
+\,\, \text{and} \,\,
+x' :=
+\begin{cases}
+x\cdot d & d\in\set G(a) \\
+x & \text{otherwise}
+\end{cases}.
+$$
+By Lemma \ref{combining-pairs} we know that $(c',d)$ and $(x',y)$ are conjugal pairs with respect to $(\{\lst P''_i\}_i\backslash \{(c,d),(x,y)\})\cup\{(c',d),(x',y)\}\cup\set S$ and also that $\genfun\paren{\{c,d,x,y\}}=\genfun\paren{\{c',d,x',y\}}$.
+
+Next let
+$$
+c'' :=
+\begin{cases}
+c'\cdot x' & d\in\set G(b) \\
+c' & \text{otherwise}
+\end{cases},
+\,\, \text{and} \,\,
+y' :=
+\begin{cases}
+y\cdot d & d\in\set G(b) \\
+y & \text{otherwise}
+\end{cases}.
+$$
+By Lemma \ref{combining-pairs} we know that $(c'',d)$ and $(x',y')$ are conjugal pairs with respect to $(\{\lst P''_i\}_i\backslash \{(c,d),(x,y)\})\cup\{(c'',d),(x',y')\}\cup\set S$ and also that $\genfun\paren{\{c,d,x,y\}}=\genfun\paren{\{c',d,x',y\}}=\genfun\paren{\{c'',d,x',y'\}}$.  Observe that by construction, $(x',y')=O$.
+
+Define
+$$
+\lst P':=
+\begin{cases}
+\lst P''_i & i < k \\
+(c'',d) & i = k \\
+\lst P''_i & k < i < N \\
+(x',y')\equiv O & k = N.
+\end{cases}
+$$
+First observe that $\set G(O')\subseteq (\genfun\circ\set U)(\{\lst P_i:i>k})$, and hence every operator in $\set G(O')$ must commute with $\lst E_k$ by the assumptions of Proposition \ref{proposition-optimality-condition}.  Thus, $x$, $x'$ (which is $x$ times possibly a factor of $d$, which commutes with $\lst E_k$) and $y$ all commute with $\lst E_k$, and hence $c''$ anti-commutes with $\lst E_k$.  Furthermore, we also know that since $m(O')\ge m(O) \ge m(\lst P_n)$ that therefore $\om_{\set S}(x')\ge m(\lst P_n)$ and $\om_{\set S}(x')\ge m(\lst P_n)$, so by Lemma \ref{combinations-can't-make-things-worse} we know that $\om_{\set S}(c'') \ge \text{\min}\,\paren{\om_{\set S}(c),\om_{\set S}(x'),\om_{\set S}(y)}.$  Thus, $m(\lst P'_k)=m(\lst P''_k)=m(\lst P_k)$, and since $m(O)=m(\lst P'_N)=m(\lst P''_N)=m(\lst P_N)$, and so $M(\lst P')=M(\lst P)$.
+
+Now note that the only difference between $\lst P'$ and $\lst P''$ are the pairs at indices $k$ and $N$.  This, combined with the result from the recursive application of this Lemma used to obtain $\lst P''$, implies that $\lst P_i=\lst P'_i$ for $i < k$.  Furthermore, the transformation used to obtain the new pairs from the old preserves the set of operators generated by the pairs, and also guarantees that they are conjugal pairs with respect to $\set U(\lst P')\cup\set S$.  Thus, since the fact that $M(\lst P')=M(\lst P)$ implies that $M(\lst P')$ is ordered, we conclude that $\lst P'$ is a choice of qubits stabilized by $\set S$ such that $(\genfun\circ\set U)(\lst P)=(\genfun\circ\set U)(\lst P')$.
+
+Finally, recall that $c''$ anti-commutes with $\lst E_i$, and this fact combined with the result from the recursive application of this Lemma used to obtain $\lst P''$ and the fact that only the pair at index $k$ was changed out of the first $N-1$ pairs in the sequence implies that the first $N-1$ elements of $\lst P'$, $\lst E$, and $\lst F$ satisfy the properties listed in Proposition \ref{proposition-optimality-condition}.
 \end{proof}
 %@-node:gcross.20100101105725.1299:Sequence rearrangement
 %@-node:gcross.20091221145013.1282:Lemmas
