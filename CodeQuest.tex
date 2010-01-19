@@ -649,7 +649,7 @@ In the context of Proposition \ref{proposition-optimality-condition}, suppose we
 \begin{proof}
 Proof by induction.  If $\set C$ is empty, then the empty sets trivially satisfy this Corolary.
 
-Now suppose that we have proven this Corolary for $|\set C|=N-1$, and assume we have been given sets $\set C$ and $\set A$ such that $|\set C|=N$.  Applying Corolary \ref{undirected-gaussian-elimination-of-logicals} to $\set C$ and $\set A$ we obtain the conjugal pair $Y$,  the set of conjugal pairs $\set D$, and the element $a$ described in the conclusions of that Corolary.  Apply this Corolary recursively to the respective sets $\set D$ and $\set A\backslash\{a\}$, we obtain the sets $\set X'$ and $\set O'$ described (without the primes) in this Corolary; let $\set X := \set X'\cup\{Y\}$ and $\set O:=\set O'\cup\{a\}$.
+Now suppose that we have proven this Corolary for $|\set C|=N-1$, and assume we have been given sets $\set C$ and $\set A$ such that $|\set C|=N$.  Applying Corolary \ref{undirected-gaussian-elimination-of-logicals} to $\set C$ and $\set A$ we obtain the conjugal pair $Y$,  the set of conjugal pairs $\set D$, and the element $a$ described in the conclusions of that Corolary.  Apply this Corolary recursively to the respective sets $\set D$ and $\set A\backslash\{a\}$, we obtain the sets $\set X'$ and $\set O'$ described (without the primes) in this Corolary; let $\set X := \set X'\cup\{Y\}$ and $\set O:=\set O'\cup\{a\}$.  Note that $\set X$ is a set of conjugal pairs with respect to $\set X\cup\set S$ since $\set X'$ is a set of conjugal pairs with respect to $\set X'\cup\set S$, and we know that the operators in $Y$ commute with every operator in every pair in $\set X'$ since they commute with every operator in $(\genfun\circ\set U)(\set D)=(\genfun\circ\set U)(\set X')$.
 
 First, observe that $|\set O|=|\set O'|+1$ since $a\notin \set O'$.  Futhermore, $a\notin \bigcup_{x\in \set U(\set X')} \set G(x)$ since $a\notin \bigcup_{x\in \set U(\set D)} \set G(x)$ by Corolary \ref{undirected-gaussian-elimination-of-logicals} and $(\genfun\circ\set U)(\set D)=(\genfun\circ\set U)(\set X')$ by recursive application of this Corolary.  Thus, $|\set X|=|\set X'|+1$ since $Y\notin X'$ as $a\in\set G(Y)$, and $|\set X|=|\set O|=|\set D|+1=|\set C|-1+1=|\set C|$.
 
@@ -661,7 +661,7 @@ Finally, observe that for every $o\in\set O$ we either have that $o=a$, in which
 %@-node:gcross.20091230212318.1289:Elimination to create subset
 %@+node:gcross.20091230212318.1290:Upper bound on number of pairs
 \begin{corolary}[of Lemma \ref{directed-gaussian-elimination-of-logicals}]
-In the context of Proposition \ref{proposition-optimality-condition}, there are no sets $\set C$ and $\set A$ as described in Lemma \ref{directed-gaussian-elimination-of-logicals} where $|\set C|>|\set A|$.
+In the context of Proposition \ref{proposition-optimality-condition}, there are no sets $\set C$ and $\set A$ as described in Lemma \ref{directed-gaussian-elimination-of-logicals} such that $|\set C|>|\set A|$.
 \end{corolary}
 
 \begin{proof}
@@ -671,11 +671,11 @@ Proof by contradiction.  By Corolary \ref{elimination-to-create-subset}, there w
 %@+node:gcross.20091230212318.1291:All are present
 \begin{corolary}[of Lemma \ref{directed-gaussian-elimination-of-logicals}]
 \label{all-are-present}
-In the context of Proposition \ref{proposition-optimality-condition}, given $\set C$ and $\set A$ as described in Lemma \ref{directed-gaussian-elimination-of-logicals} where $|\set C|=|\set A|$, for every element $a\in\set A$ there exists a pair $Y\in\set C$ such that $a\in\paren{(\set G\circ p_1)(Y)\cup(\set G\circ p_2)(Y)}$.
+In the context of Proposition \ref{proposition-optimality-condition}, given $\set C$ and $\set A$ as described in Lemma \ref{directed-gaussian-elimination-of-logicals} where $|\set C|=|\set A|$, for every element $a\in\set A$ there exists a pair $Y\in\set C$ such that $a\in\set G(Y)$.
 \end{corolary}
 
 \begin{proof}
-This follows immediately from Corolary \ref{elimination-to-create-subset}, the fact that the only subset of $\set A$ with the same number of elements as $\set A$ is $\set A$ itself, and the fact that $a\in\bigcup_{o\in(\genfun\circ\set U)(\set C)} \set G(o)$ implies that $a\in\paren{(\set G\circ p_1)(Y)\cup(\set G\circ p_2)(Y)}$ for some $Y\in\set C$.
+Applying Corolary \ref{elimination-to-create-subset} and the fact that the only subset of $\set A$ the same size of $\set A$ is $\set A$ itself, we see that for every $a$ there exists an operator $o\in(\genfun\circ\set U)(\set C)$ such that $a\in\set G(o)$, which implies that there must be some pair $Y\in\set C$ such that $a\in\set G(Y)$.
 \end{proof}
 %@-node:gcross.20091230212318.1291:All are present
 %@+node:gcross.20100101105725.1298:Elimination to isolate
@@ -685,19 +685,27 @@ In the context of Proposition \ref{proposition-optimality-condition}, suppose we
 \begin{itemize}
 \item $|\{Y\}\cup \set D| = |\set C|$
 \item $(\genfun\circ\set U)(\{Y\}\cup \set D)=(\genfun\circ\set U)(\set C)$;
-\item $\{p_1(O):O\in\set B\}\cap p_1(Y)=\{a\}$;
-\item $\{p_1(O):O\in\set B\}\cap p_2(Y)=\emptyset$;
-\item $b\in p_2(Y)$; and
-\item $b\notin p_1(Y)$;
+\item $\{p_1(O):O\in\set B\}\cap (\set G\circ p_1)(Y)=\{a\}$;
+\item $\{p_1(O):O\in\set B\}\cap (\set G\circ p_2)(Y)=\emptyset$;
+\item $b\in (\set G\circ p_2)(Y)$; and
+\item $b\notin (\set G\circ p_1)(Y)$;
 \end{itemize}
 \end{corolary}
 
 \begin{proof}
-Proof by induction.  First suppose that $\set B=\{(a,b)\}$ and $\set C=\{A\}$.  Apply Lemma \ref{single-pair-rearrangement} to $A$ and $o:=a$, and let $Y':=B$ be the operator described in the conclusion.  If $b\in p_1(Y')$ then let $Y:=(p_1(Y')\cdot p_2(Y'),p_2(Y')$, otherwise let $Y:=Y'$;  note that by construction and the conclusions of Lemma \ref{single-pair-rearrangement} we know that $a\in p_1(Y)$, $a\notin p_2(Y)$, $b\notin p_1(Y)$, and $b\in p_2(Y)$.  Furthermore observe that since the members of $Y'$ can be recovered from products of the members of $Y$, by Lemma \ref{single-pair-rearrangement} we see that $(\genfun\circ\set U)(\{Y\})=(\genfun\circ\set U)(A)$.  Let $\set D:=\emptyset$, and we see trivially that $|\{Y\}\cup \set D| = |\set C|$, $|\{Y\}\cup \set D| = |\set C|$.
+Proof by induction.  First suppose that $\set B=\{(a,b)\}$ and $\set C=\{A\}$.  Apply Lemma \ref{single-pair-rearrangement} to $A$ and $o:=a$, and let $Y':=B$ be the operator described in the conclusion.  If $b\in (\set G\circ p_1)(Y')$ then let $Y:=(p_1(Y')\cdot p_2(Y'),p_2(Y')$, otherwise let $Y:=Y'$;  note that by construction and the conclusions of Lemma \ref{single-pair-rearrangement} we know that $a\in (\set G \circ p_1)(Y)$, $a\notin (\set G\circ p_2)(Y)$, $b\notin (\set G \circ p_1)(Y)$, and $b\in (\set G \circ p_2)(Y)$.  Furthermore observe that since the members of $Y'$ can be recovered from products of the members of $Y$, by Lemma \ref{single-pair-rearrangement} we see that $(\genfun\circ\set U)(\{Y\})=(\genfun\circ\set U)(A)$.  Let $\set D:=\emptyset$, and we see trivially that $|\{Y\}\cup \set D| = |\set C|$.
 
-Now suppose that we have proven this Lemma for $|\set B|=N-1$, and assume we have been given sets $\set B$ and $\set C$ such that $|\set B|=N>1$.  Let $\set A:=\bigcup_{O\in\set B} p_1(O)$.  By the assumptions of this Lemma, we know that for every $O\in\set C$ we have that $\paren{(\set G\circ p_1)(O) \cup (\set G\circ p_2)(O)} \cap \set A\backslash \{a\} \ne \emptyset$.  Thus, by Corolary \ref{all-are-present} and Lemma \ref{directed-gaussian-elimination-of-logicals}, we know that we may pick arbitrarily some $(c,d)\in\set A\backslash\{(c,d)\}$ and apply Lemma \ref{directed-gaussian-elimination-of-logicals} to $\set A$, $\set C$, and $a:=c$ to obtain the objects $X:=Y$ and $\set C':=\set D$ described in Lemma \ref{directed-gaussian-elimination-of-logicals}.  Note furthermore that a consequence of the assumptions of this Corolary combined with the conclusions of Lemma \ref{directed-gaussian-elimination-of-logicals} is that for every pair $Y''\in(\genfun\circ\set U)(\set C')$ there must exist a pair $(x,y)\in\set B\backslash\{(c,d)\}$ such that either $x\in (\set G\circ p_1)(Y'')$ and $y\in (\set G\circ p_2)(Y'')$ or $x\in (\set G\circ p_2)(Y'')$ and $y\in (\set G\circ p_1)(Y'')$, and we don't have $\{x,y\}\cap(\set G\circ p_1)(Y'')=\{x,y\}\cap(\set G\circ p_2)(Y'')=\{x,y\}$.  Thus, invoking the inductive hypothesis, we recursively apply this Corolary to the sets $\set B:=\set B\backslash\{(x,y)\}$ and $\set C:=\set C'$, obtaining the objects $Y$ and $\set D'$ described (without the primes) in this Corolary.
+Now suppose that we have proven this Lemma for $|\set B|=N-1$, and assume we have been given sets $\set B$ and $\set C$ such that $|\set B|=N>1$.  Let $\set A:=\bigcup_{O\in\set B} p_1(O)$, i.e. the set of first members of pairs in $\set B$.  By the assumptions of this Lemma, we know that for every $O\in\set C$ we have that $\set G(O) \cap \set A \ne \emptyset$.  Thus, by Corolary \ref{all-are-present} and Lemma \ref{directed-gaussian-elimination-of-logicals}, we know that we may pick arbitrarily some pair $(c,d)\in\set B\backslash\{(a,b)\}$ and apply Lemma \ref{directed-gaussian-elimination-of-logicals} to $\set A$, $\set C$, and $a:=c$ to obtain the objects $X:=Y$ and $\set C':=\set D$ described in Lemma \ref{directed-gaussian-elimination-of-logicals}.  Note furthermore that a consequence of the assumptions of this Corolary combined with the conclusions of Lemma \ref{directed-gaussian-elimination-of-logicals} is that for every pair $Y''\in(\genfun\circ\set U)(\set C')\subseteq(\genfun\circ\set U)(\set C)$ there must exist a pair $(x,y)\in\set B\backslash\{(c,d)\}$ such that either $x\in (\set G\circ p_1)(Y'')$ and $y\in (\set G\circ p_2)(Y'')$ or $x\in (\set G\circ p_2)(Y'')$ and $y\in (\set G\circ p_1)(Y'')$, and we don't have $\{x,y\}\cap(\set G\circ p_1)(Y'')=\{x,y\}\cap(\set G\circ p_2)(Y'')=\{x,y\}$.  Thus, invoking the inductive hypothesis, we recursively apply this Corolary to the sets $\set B:=\set B\backslash\{(c,d)\}$ and $\set C:=\set C'$, obtaining the objects $Y$ and $\set D'$ described (without the primes) in this Corolary.
 
-Let $\set D:=\{X\}\cup\set D'$.  Since $(\genfun\circ\set U)(\{Y\}\cup\set D')=(\genfun\circ\set U)(\set C')$ and by Lemma \ref{directed-gaussian-elimination-of-logicals} we know that $X$ is a conjugal pair with respect to $\{X\}\cup\set D'\cup\set S$, which implies that $|\set D|=|\set D'|+1=|\set C|-1$ and thus $|\{Y\}\cup\set D|=|\set C|$, and we also that $(\genfun\circ\set U)(\{Y\}\cup\set D)=(\genfun\circ\set U)(\set C)$.  By a combination of the recursive application of this Corolary we know that $\{p_1(O):O\in\set B\backslash\{(c,d)\}\}\cap p_1(Y)=\{a\}$, $\{p_1(O):O\in\set B\backslash\{(c,d)\}\}\cap p_2(Y)=\emptyset$ $b\in p_2(Y)$ and $b\notin p_1(Y)$.  By Lemma \ref{directed-gaussian-elimination-of-logicals} we know that $c\notin \bigcup_{b\in(\genfun\circ\set U)(\set B)} \set G(b)$, and thus $\{p_1(O):O\in\set B\}\cap p_1(Y)=\{a\}$ and $\{p_1(O):O\in\set B\}\cap p_2(Y)=\emptyset$.
+Let $\set D:=\{X\}\cup\set D'$.  We know that $X$ is a conjugal pair with respect to $\{X\}\cup\set C'\cup\set S$, and we also know that $(\genfun\circ\set U)(\{Y\}\cup\set D')=(\genfun\circ\set U)(\set C')$;  therefore, we know that the operators in $X$ commute with the operators in $Y$ and also the operators in $(\genfun\circ\set U)(\set D')\subset(\genfun\circ\set U)(\set C')$.  Thus, $\{X\}\cup\{Y\}\cup\set D'$ is a set of conjugal pair with respect to $\{Y\}\cup\set D\cup\set S$.   Also, since in particular $X\notin\set D'$, we see that  $|\set D|=|\set D'|+1=|\set C|-1$ and thus $|\{Y\}\cup\set D|=|\set C|$.  Furthermore, we know that $(\genfun\circ\set U)(\{Y\}\cup\set D)=(\genfun\circ\set U)(\{Y\}\cup\{X\}\cup\set D')(\genfun\circ\set U)(\{X\}\cup\set C')=(\genfun\circ\set U)(\set C)$.
+
+By recursive application of this Corolary we know that
+$$\{p_1(O):O\in\set B\backslash\{(c,d)\}\}\cap (\set G\circ p_1)(Y)=\{a\},$$
+$$\{p_1(O):O\in\set B\backslash\{(c,d)\}\}\cap (\set G\circ p_2)(Y)=\emptyset,$$
+$b\in (\set G \circ p_2)(Y)$ and $b\notin (\set G\circ p_1)(Y)$.  By Lemma \ref{directed-gaussian-elimination-of-logicals} we know that $c\notin \bigcup_{b\in(\genfun\circ\set U)(\set B)} \set G(b)$, and thus 
+$$\{p_1(O):O\in\set B\}\cap (\set G\circ p_1)(Y)=\{a\}$$
+and
+$$\{p_1(O):O\in\set B\}\cap (\set G\circ p_2)(Y)=\emptyset.$$
 \end{proof}
 %@-node:gcross.20100101105725.1298:Elimination to isolate
 %@-node:gcross.20091226225139.1291:Directed Gaussian elimination
