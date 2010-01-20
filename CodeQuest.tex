@@ -503,12 +503,10 @@ Given the notation above, we now precisely define what we mean by the ``best cho
 An \emph{optimal choice of $N$ qubits stabilized by $\set S$} is any choice of $N$ qubits, $\lst P$ stabilized by $\set S$, such that given any other choice of $N$ qubits, $\lst P'$, that is also stabilized by $\set S$, such that $(\genfun\circ \set U)(\lst P)=(\genfun\circ \set U)(\lst P')$, we have that $\lst M^{(N)}(\lst P)_i \ge \lst M^{(N)}(\lst P')_i$ for all $1\le i \le N$.
 \end{definition}
 %@-node:gcross.20091221145013.1278:Definition: Total ordering => Optimal choice of qubits
-%@+node:gcross.20091221145013.1280:Big Proposition
-%@+node:gcross.20091221145013.1281:Statement
-Now that we have a precise notion of what it means to have made the best choice of logical qubits, it remains to show that there exists an algorithm that will make this choice.  The key to doing this resides in the following proposition:
+%@+node:gcross.20100119183304.1293:Definition: Certificate
+This last definition gives us a precise notion of what it means to have made the best choice of logical qubits.  However, we now need a way to prove that given choice of qubits is optimal.  We do this by means of a certificate, which is defined as follows:
 
-\begin{proposition}
-\label{proposition-optimality-condition}
+\begin{definition}
 Suppose we are given
 \begin{itemize}
 \item a choice of $N$ qubits, $\lst P$ stabilized by some set $\set S$;
@@ -524,11 +522,20 @@ Suppose we are given
 \item $\lst F_i$ is an undetectable error (with respect to $\set S$) acting on $p_2(\lst P_i)$;
 \item $w\paren{\lst F_i}=(\om_{\set S} \circ p_2)(\lst P_i)$;
 \item $\lst F_i$ commutes with every operator in $\set U\paren{\{\lst P_j:j>i\}}$, i.e. with every operator in every pair after the $i$-th pair in the sequence; and
-\item $\lst F_i$ commutes with every operator in $\{p_2(\lst P_j): j<i\}$;
-%\item and $w(\lst F_i)\le w(\lst E_N)$.
+\item $\lst F_i$ commutes with every operator in $\{p_2(\lst P_j): j<i\}$.
 \end{enumerate}
 \end{itemize}
-Then $\lst P$ is an \emph{optimal choice of qubits stabilized by} $\set S$.
+Then the tuple $(\lst E,\lst F)$ is a \emph{certificate} for $\lst P$.
+\end{definition}
+
+Now we shall prove that the presence of a certificate signals optimality via the following Proposition.
+%@nonl
+%@-node:gcross.20100119183304.1293:Definition: Certificate
+%@+node:gcross.20091221145013.1280:Proposition: Certificate = Optimality
+%@+node:gcross.20091221145013.1281:Statement
+\begin{proposition}
+\label{proposition-optimality-condition}
+If $\lst P$ has a certificate $(\lst E,\lst F)$, then it is an \emph{optimal choice of qubits stabilized by} $\set S$.
 \end{proposition}
 %@-node:gcross.20091221145013.1281:Statement
 %@+node:gcross.20091221145013.1286:Definition: Generating set
@@ -682,7 +689,54 @@ We now have the tools that we need to prove the main proposition.
 Proof by contradiction.  Let $\lst P'$ be some choice of qubits stabilized by $\set S$ such that $(\genfun\circ\set U)(\lst P)=(\genfun\circ\set U)(\lst P')$ and there exists some integer $l$ such that $M(\lst P')_l > M(\lst P)_l$.  Let $\set C:=\{\lst P'_i : i \ge l\}$.  Let $m$ be the smallest integer such that $\om_{\set S}(\lst E_m)\ge M(\lst P')_l$, and $\set A := \{p_1(\lst P_i) : i \ge m\}$; note that since $M(\lst P')_l > M(\lst P)_l$ we must have $m>l$, and hence $|\set C| > |\set A|$.  By our construction of $\set A$ and Lemma \ref{restricted-subset-can-be-used-to-generate}, we know that for every pair $O\in\set C$ we must have $\set G(O)\cup\set A \ne\emptyset$.  Observe that this means that sets $\set C$ and $\set A$ match the descriptions in Lemma \ref{directed-gaussian-elimination-of-logicals}, and thus by Corolary \ref{death-stroke}, we see that it is impossible for $|\set C|>|\set A|$, and so we have a contradiction.  We thus conclude that there is no such choice $\lst P'$.
 \end{proof}
 %@-node:gcross.20091221145013.1285:Proof
-%@-node:gcross.20091221145013.1280:Big Proposition
+%@-node:gcross.20091221145013.1280:Proposition: Certificate = Optimality
+%@+node:gcross.20100119183304.1292:Proposition: Creation of certificate
+%@+node:gcross.20100119183304.1294:Statement
+We have shown that if we have a certificate for a choice of qubits then it is an optimal choice.  However, this is useless to us unless we can show that a choice of qubits can be constructed that has a certificate.  This is done via the following Proposition.
+
+\begin{proposition}
+\label{certificate-creation}
+Suppose we are given a set of pairs $\set L$ and a set of Pauli operators $\set S$ such that every pair in $\set L$ is a conjugal pair with respect to $\set U(\set L)\cup\set S$.  Then for every integer $k\in\{0\dots 2N\}$, there exists a choice of qubits $\lst P$ stabilized by $\set S$, a set of conjugul pairs $\set Q$, and a certificate $(\lst E,\lst F)$ for $\lst P$ such that
+\begin{itemize}
+\item the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $U(\lst P)\cup U(\set Q)\cup \set S$;
+\item $\genfun\paren{U(\lst P)\cup U(\set Q)}=(\genfun\circ\set U)(\set L)$;
+\item every member of every pair in $\set Q$ commutes with every operator in $\lst E$ and $\lst F$;
+\item $m(X)\ge\om_{\set S}(o)$ for every $o\in\lst E$;
+\item $|\lst E|+|\{\lst F_i : \lst F_i\ne I\}|=k$;
+\end{itemize}
+\end{proposition}
+%@nonl
+%@-node:gcross.20100119183304.1294:Statement
+%@+node:gcross.20100119183304.1296:Lemma: Multiple recombinations
+First, we need the following Lemma:
+
+\begin{lemma}
+Suppose we are given a pair $(a,b)$ conjugal to some set $\set S$, and a set of conjugal pairs $\set O$.  Let $b':=b\cdot \prod_{o\in\set O} o)$ and $O':=\{o\cdot a: o\in\set O}$.  Then the pair $(a,b')$ is conjugal to $(\set S\backslash\{b\})\cup\{b'\}$, and $\genfun(\{a,b'\}\cup\set O'=\genfun(\{a,b\}\cup\set O$.
+\end{lemma}
+
+\begin{proof}
+Proof by induction.  For the base case, note that statement trivially holds for $\set O=\emptyset$.
+
+Now suppose we have proven this for $|\set O|=N-1$, and we are given a $\set O$ such that $|\set O|=N$.  Take any element $o\in\set O$.   and let $\set P:=\set O\backslash\{o\}$.
+%@nonl
+%@-node:gcross.20100119183304.1296:Lemma: Multiple recombinations
+%@+node:gcross.20100119183304.1295:Proof
+Now to prove Proposition \ref{certificate-creation}.
+
+\begin{proof}[of Proposition \ref{certificate-creation}]
+
+Proof by induction.  For the base case, $k=0$, observe that the listed properties hold vacuously for $\set E=\lst F=\lst P=\emptyset$ and $\set Q=\set L$.
+
+Now suppose that we have proven this Proposition for the sets $\set L$, $\set S$, and the integer $k-1$.  We shall now prove it for the integer $k$.
+
+By recursive application of this Proposition, we obtain the objects (without the primes) $\lst P'$, $\set Q'$, $\lst E'$, and $\lst F'$.  Now consider the minimizer of $\om_{\set S}$ over $\set U(\set Q) \cup \{p_2(\lst P_i):\lst F_i \ne I\}$.  There are two cases:  either the minimizer is in $\set U(\set Q)$, or the minimizer is in $\{p_2(\lst P_i):\lst F_i \ne I\}$.
+
+First we consider the first case.  
+
+\end{proof}
+%@nonl
+%@-node:gcross.20100119183304.1295:Proof
+%@-node:gcross.20100119183304.1292:Proposition: Creation of certificate
 %@-others
 %@-node:gcross.20090511123440.3:Optimal generators
 %@-node:gcross.20090423002455.2:Algorithm
