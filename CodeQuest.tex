@@ -711,7 +711,9 @@ Suppose we are given a set of pairs $\set L$ and a set of Pauli operators $\set 
 First, we need the following Lemma:
 
 \begin{lemma}
-Suppose we are given a pair $(a,b)$ and a seqence of $N$ pairs $\lst P$ all conjugal to some set $\set S$, and two sequences of elements from $\{0,1\}$, $\lst l^{(1)}$ and $\lst l^{(2)}$.  Define $b':=b\cdot\prod_{o\in \{p_{3-k}(\lst P_i) : k \in \{1,2\}, l^{(k)}=1\}}o$ and $\lst Q_i := (q^{(1)}_i,q^{(2)}_i)$ where
+Suppose we are given a pair $(a,b)$ and a seqence of $N$ pairs $\lst P$ all conjugal to some set $\set S$, and two sequences of elements from $\{0,1\}$, $\lst l^{(1)}$ and $\lst l^{(2)}$.  Define
+$$b':=b\cdot\prod_{o\in \{p_{3-k}(\lst P_i) : k \in \{1,2\}, i\in\{1\dots N\}, l^{(k)}_i=1\}}o,$$
+$\lst Q_i := (q^{(1)}_i,q^{(2)}_i)$ where
 $$q^{(k)}_i :=
 \begin{cases}
 p_k(\lst P_i) & l^{(k)}_i = 0\\
@@ -747,7 +749,7 @@ p_1(\lst P_N) \cdot a &  l^{(1)}_N = 1,\\
 \end{cases}
 $$
 and
-$$\set R := \left[\set S'\backslash\paren{\{(a,b''),\lst P_N\}}\right]\cup \{(a,c)\} \cup \{(d_1,p_2(\lst P_N)\}.$$
+$$\set R := \left[\set S''\backslash\{(a,b''),\lst P_N\}\right]\cup \{(a,c),(d_1,p_2(\lst P_N))\}.$$
 Note that for either value of $l^{(1)}$ we have that the pairs $(a,c)$ and $(d_1,p_2(\lst P_N))$ are conjugal with respect to $\set R$ and that $\genfun\paren{\{a,c,d_1,p_2(\lst P_N)\}}=\genfun\paren{\{a,b'',p_1(\lst P_N),p_2(\lst P_N)\}}$; for $l^{(1)}=0$ this conclusion is trivial since $b''=c$ and $d_1=p_1(\lst P_N)$, and for $l^{(1)}=1$ we obtain this conclusion by applying Lemma \ref{combining-pairs}.
 
 Now let
@@ -765,7 +767,7 @@ p_2(\lst P_N) \cdot a &  l^{(2)}_N = 1,\\
 \end{cases}
 $$
 and
-$$\set R' := \left[\set R\backslash\paren{\{(a,c),(d_1,p_2(\lst P_N)\}}\right]\cup \{(a,c')\} \cup \{(d_1,d_2\}.$$
+$$\set R' := \left[\set R\backslash\{(a,c),(d_1,p_2(\lst P_N))\}\right]\cup \{(a,c'),(d_1,d_2)\}.$$
 Applying the same reasoning as before, we conclude that the pairs $(a,c')$ and $(d_1,d_2)$ are conjugal with respect to $\set R'$ and that $\genfun\paren{\{a,c',d_1,d_2\}}=\genfun\paren{\{a,c,d_1,p_2(\lst P_N)\}}$.
 
 Finally, let
@@ -778,14 +780,14 @@ $$
 and
 $$
 \set R'':=
-\left[\set R\backslash\paren{\{(a,c')\}}\right]\cup \{(a,c'')\}.
+\left[\set R'\backslash\paren{\{(a,c')\}}\right]\cup \{(a,c'')\}.
 $$
-Observe that $\{a,c''\}=0$ and that $a$ and $c''$ are products of $a$ and $c$;  thus, $a$ and $c''$ commute with every operator in $\set R''$ save each other and so $\{(a,c'')\} \cup \{(d_1,d_2\}$ are conjugal pairs with respect to $\set R''$, and also $\genfun\paren{\{a,c'',d_1,d_2\}}=\genfun\paren{\{a,c',d_1,d_2\}}$.
+Observe that $\{a,c''\}=0$ and that $a$ and $c''$ are products of $a$ and $c$;  thus, $\genfun\paren{\{a,c'',d_1,d_2\}}=\genfun\paren{\{a,c',d_1,d_2\}}$, and furthermore $a$ and $c''$ commute with every operator in $\set R''$ save each other and so $\{(a,c'')\} \cup \{(d_1,d_2\}$ are conjugal pairs with respect to $\set R''$.
 
 Note, however, that by construction we have that $b'=c''$, $\set S'=\set R''$, and
-$$\lst Q'_i :=
+$$\lst Q_i :=
 \begin{cases}
-\lst Q & i < N \\
+\lst Q'_i & i < N \\
 (d_1,d_2) & i = N.\\
 \end{cases}
 $$
