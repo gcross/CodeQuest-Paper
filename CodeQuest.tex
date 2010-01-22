@@ -711,14 +711,86 @@ Suppose we are given a set of pairs $\set L$ and a set of Pauli operators $\set 
 First, we need the following Lemma:
 
 \begin{lemma}
-Suppose we are given a pair $(a,b)$ conjugal to some set $\set S$, and a set of conjugal pairs $\set O$.  Let $b':=b\cdot \prod_{o\in\set O} o)$ and $O':=\{o\cdot a: o\in\set O}$.  Then the pair $(a,b')$ is conjugal to $(\set S\backslash\{b\})\cup\{b'\}$, and $\genfun(\{a,b'\}\cup\set O'=\genfun(\{a,b\}\cup\set O$.
+Suppose we are given a pair $(a,b)$ and a seqence of $N$ pairs $\lst P$ all conjugal to some set $\set S$, and two sequences of elements from $\{0,1\}$, $\lst l^{(1)}$ and $\lst l^{(2)}$.  Define $b':=b\cdot\prod_{o\in \{p_{3-k}(\lst P_i) : k \in \{1,2\}, l^{(k)}=1\}}o$ and $\lst Q_i := (q^{(1)}_i,q^{(2)}_i)$ where
+$$q^{(k)}_i :=
+\begin{cases}
+p_k(\lst P_i) & l^{(k)}_i = 0\\
+p_k(\lst P_i) \cdot a & l^{(k)}_i = 1,
+\end{cases}
+$$
+and
+$$\set S' := \left[\set S\backslash\paren{\{(a,b)\} \cup \{\lst P_i\}_i)}\right]\cup \{(a,b')\} \cup \{\lst Q_i\}_i.$$
+Then
+\begin{enumerate}
+\item the pair $(a,b')$ and the sequence of pairs $\lst Q$ are all conjugal pairs with respect to $\set S'$; and
+\item $\genfun\paren{\{a,b'\}\cup \set U(\lst Q)}=\genfun\paren{\{a,b\}\cup \set U(\lst P)}$
+\end{enumerate}
 \end{lemma}
 
 \begin{proof}
-Proof by induction.  For the base case, note that statement trivially holds for $\set O=\emptyset$.
+Proof by induction.  For the base case, note that statement trivially holds for $N=0$.
 
-Now suppose we have proven this for $|\set O|=N-1$, and we are given a $\set O$ such that $|\set O|=N$.  Take any element $o\in\set O$.   and let $\set P:=\set O\backslash\{o\}$.
-%@nonl
+Now suppose we have proven this for all sequences of $N-1$ pairs, and we are given a sequence of $N$ pairs.  Invoking the inductive hypothesis, apply this Lemma recursively to the first $N-1$ elements of $\lst P$ and $\lst l$, and let $b''$, $\lst Q'$ and $\set S''$ refer to the objects described in the Lemma (without the extra primes) as applied to these $N-1$ elements.
+
+Let
+$$
+c := 
+\begin{cases}
+b'' & l^{(1)}_N = 0\\
+b'' \cdot p_2(\lst P_N)  &  l^{(1)}_N = 1,\\
+\end{cases}
+\quad
+d_1 :=
+\begin{cases}
+p_1(\lst P_N) & l^{(1)}_N = 0\\
+p_1(\lst P_N) \cdot a &  l^{(1)}_N = 1,\\
+\end{cases}
+$$
+and
+$$\set R := \left[\set S'\backslash\paren{\{(a,b''),\lst P_N\}}\right]\cup \{(a,c)\} \cup \{(d_1,p_2(\lst P_N)\}.$$
+Note that for either value of $l^{(1)}$ we have that the pairs $(a,c)$ and $(d_1,p_2(\lst P_N))$ are conjugal with respect to $\set R$ and that $\genfun\paren{\{a,c,d_1,p_2(\lst P_N)\}}=\genfun\paren{\{a,b'',p_1(\lst P_N),p_2(\lst P_N)\}}$; for $l^{(1)}=0$ this conclusion is trivial since $b''=c$ and $d_1=p_1(\lst P_N)$, and for $l^{(1)}=1$ we obtain this conclusion by applying Lemma \ref{combining-pairs}.
+
+Now let
+$$
+c' := 
+\begin{cases}
+c & l^{(2)}_N = 0\\
+c \cdot d_1  &  l^{(2)}_N = 1,\\
+\end{cases}
+\quad
+d_2 :=
+\begin{cases}
+p_2(\lst P_N) & l^{(2)}_N = 0\\
+p_2(\lst P_N) \cdot a &  l^{(2)}_N = 1,\\
+\end{cases}
+$$
+and
+$$\set R' := \left[\set R\backslash\paren{\{(a,c),(d_1,p_2(\lst P_N)\}}\right]\cup \{(a,c')\} \cup \{(d_1,d_2\}.$$
+Applying the same reasoning as before, we conclude that the pairs $(a,c')$ and $(d_1,d_2)$ are conjugal with respect to $\set R'$ and that $\genfun\paren{\{a,c',d_1,d_2\}}=\genfun\paren{\{a,c,d_1,p_2(\lst P_N)\}}$.
+
+Finally, let
+$$c'' :=
+\begin{cases}
+c' \cdot a & l^{(1)}_N = 1 \,\,\text{and}\,\, l^{(2)}_N = 1 \\
+c' & \text{otherwise},\\
+\end{cases}
+$$
+and
+$$
+\set R'':=
+\left[\set R\backslash\paren{\{(a,c')\}}\right]\cup \{(a,c'')\}.
+$$
+Observe that $\{a,c''\}=0$ and that $a$ and $c''$ are products of $a$ and $c$;  thus, $a$ and $c''$ commute with every operator in $\set R''$ save each other and so $\{(a,c'')\} \cup \{(d_1,d_2\}$ are conjugal pairs with respect to $\set R''$, and also $\genfun\paren{\{a,c'',d_1,d_2\}}=\genfun\paren{\{a,c',d_1,d_2\}}$.
+
+Note, however, that by construction we have that $b'=c''$, $\set S'=\set R''$, and
+$$\lst Q'_i :=
+\begin{cases}
+\lst Q & i < N \\
+(d_1,d_2) & i = N.\\
+\end{cases}
+$$
+Thus, we are done.
+\end{proof}
 %@-node:gcross.20100119183304.1296:Lemma: Multiple recombinations
 %@+node:gcross.20100119183304.1295:Proof
 Now to prove Proposition \ref{certificate-creation}.
