@@ -521,8 +521,7 @@ Suppose we are given
 \begin{enumerate}
 \item $\lst F_i$ is an undetectable error (with respect to $\set S$) acting on $p_2(\lst P_i)$;
 \item $w\paren{\lst F_i}=(\om_{\set S} \circ p_2)(\lst P_i)$;
-\item $\lst F_i$ commutes with every operator in $\set U\paren{\{\lst P_j:j>i\}}$, i.e. with every operator in every pair after the $i$-th pair in the sequence; and
-\item $\lst F_i$ commutes with every operator in $\{p_2(\lst P_j): j<i\}$.
+\item $\lst F_i$ commutes with every operator in $\set U\paren{\{\lst P_j:j>i\}}$, i.e. with every operator in every pair after the $i$-th pair in the sequence.
 \end{enumerate}
 \end{itemize}
 Then the tuple $(\lst E,\lst F)$ is a \emph{certificate} for $\lst P$.
@@ -697,60 +696,69 @@ We have shown that if we have a certificate for a choice of qubits then it is an
 \begin{proposition}
 \label{certificate-creation}
 Suppose we are given a set of pairs $\set L$ and a set of Pauli operators $\set S$ such that every pair in $\set L$ is a conjugal pair with respect to $\set U(\set L)\cup\set S$.  Then for every integer $k\in\{0\dots 2N\}$, there exists a choice of qubits $\lst P$ stabilized by $\set S$, a set of conjugul pairs $\set Q$, and a certificate $(\lst E,\lst F)$ for $\lst P$ such that
-\begin{itemize}
+\begin{enumerate}
 \item the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $U(\lst P)\cup U(\set Q)\cup \set S$;
 \item $\genfun\paren{U(\lst P)\cup U(\set Q)}=(\genfun\circ\set U)(\set L)$;
 \item every member of every pair in $\set Q$ commutes with every operator in $\lst E$ and $\lst F$;
 \item $m(X)\ge\om_{\set S}(o)$ for every $o\in\lst E$;
 \item $|\lst E|+|\{\lst F_i : \lst F_i\ne I\}|=k$;
-\end{itemize}
+\end{enumerate}
 \end{proposition}
 %@nonl
 %@-node:gcross.20100119183304.1294:Statement
+%@+node:gcross.20100122140843.1282:Definition
+For convenience, we introduce the following definitions:
+
+\begin{definition}
+Given any two sequences of integers taken from $\{0,1\}$, $\lst l^{(1)$ and $\lst l^{(2)}$, we define the (indexed) function $\set X_{\lst l}$ as a map from a sequence of pairs of Pauli operators of length $|\lst l^{(k)}|$ to $\powerset(\pauligroup)$ such that
+$$\set X_{\lst l}(\lst P) := \{p_{3-k}(\lst P_i) : k \in \{1,2\}, i \in \{1\dots |\lst P|}, l^{(k)}_i=1\}.$$
+\end{definition}
+%@-node:gcross.20100122140843.1282:Definition
 %@+node:gcross.20100119183304.1296:Lemma: Multiple recombinations
 First, we need the following Lemma:
 
 \begin{lemma}
-Suppose we are given a pair $(a,b)$ and a seqence of $N$ pairs $\lst P$ all conjugal to some set $\set S$, and two sequences of elements from $\{0,1\}$, $\lst l^{(1)}$ and $\lst l^{(2)}$.  Define
-$$b':=b\cdot\prod_{o\in \{p_{3-k}(\lst P_i) : k \in \{1,2\}, i\in\{1\dots N\}, l^{(k)}_i=1\}}o,$$
-$\lst Q_i := (q^{(1)}_i,q^{(2)}_i)$ where
-$$q^{(k)}_i :=
+\label{multiple-recombinations}
+Suppose we are given a pair $(a,b)$ and a seqence of $N$ pairs $\lst O$ all conjugal to some set $\set S$, and two sequences of elements from $\{0,1\}$, $\lst l^{(1)}$ and $\lst l^{(2)}$.  Define
+$$b':=b\cdot\prod_{o\in \set X_{\lst l}(\lst P)}o,$$
+$\lst O'_i := (o'^{(1)}_i,o'^{(2)}_i)$ where
+$$o'^{(k)}_i :=
 \begin{cases}
-p_k(\lst P_i) & l^{(k)}_i = 0\\
-p_k(\lst P_i) \cdot a & l^{(k)}_i = 1,
+p_k(\lst O_i) & l^{(k)}_i = 0\\
+p_k(\lst O_i) \cdot a & l^{(k)}_i = 1,
 \end{cases}
 $$
 and
-$$\set S' := \left[\set S\backslash\paren{\{(a,b)\} \cup \{\lst P_i\}_i)}\right]\cup \{(a,b')\} \cup \{\lst Q_i\}_i.$$
+$$\set S' := \left[\set S\backslash\paren{\{a,b\} \cup \set U(\lst O)}\right]\cup \{a,b'\} \cup \set U(\lst O').$$
 Then
 \begin{enumerate}
-\item the pair $(a,b')$ and the sequence of pairs $\lst Q$ are all conjugal pairs with respect to $\set S'$; and
-\item $\genfun\paren{\{a,b'\}\cup \set U(\lst Q)}=\genfun\paren{\{a,b\}\cup \set U(\lst P)}$
+\item the pair $(a,b')$ and the sequence of pairs $\lst O'$ are all conjugal pairs with respect to $\set S'$; and
+\item $\genfun\paren{\{a,b'\}\cup \set U(\lst O')}=\genfun\paren{\{a,b\}\cup \set U(\lst O)}$
 \end{enumerate}
 \end{lemma}
 
 \begin{proof}
 Proof by induction.  For the base case, note that statement trivially holds for $N=0$.
 
-Now suppose we have proven this for all sequences of $N-1$ pairs, and we are given a sequence of $N$ pairs.  Invoking the inductive hypothesis, apply this Lemma recursively to the first $N-1$ elements of $\lst P$ and $\lst l$, and let $b''$, $\lst Q'$ and $\set S''$ refer to the objects described in the Lemma (without the extra primes) as applied to these $N-1$ elements.
+Now suppose we have proven this for all sequences of $N-1$ pairs, and we are given a sequence of $N$ pairs.  Invoking the inductive hypothesis, apply this Lemma recursively to the first $N-1$ elements of $\lst O$ and $\lst l$, and let $b''$, $\lst Q''$ and $\set S''$ refer to the objects described in the Lemma (without the extra primes) as applied to these $N-1$ elements.
 
 Let
 $$
 c := 
 \begin{cases}
 b'' & l^{(1)}_N = 0\\
-b'' \cdot p_2(\lst P_N)  &  l^{(1)}_N = 1,\\
+b'' \cdot p_2(\lst O_N)  &  l^{(1)}_N = 1,\\
 \end{cases}
 \quad
 d_1 :=
 \begin{cases}
-p_1(\lst P_N) & l^{(1)}_N = 0\\
-p_1(\lst P_N) \cdot a &  l^{(1)}_N = 1,\\
+p_1(\lst O_N) & l^{(1)}_N = 0\\
+p_1(\lst O_N) \cdot a &  l^{(1)}_N = 1,\\
 \end{cases}
 $$
 and
-$$\set R := \left[\set S''\backslash\{(a,b''),\lst P_N\}\right]\cup \{(a,c),(d_1,p_2(\lst P_N))\}.$$
-Note that for either value of $l^{(1)}$ we have that the pairs $(a,c)$ and $(d_1,p_2(\lst P_N))$ are conjugal with respect to $\set R$ and that $\genfun\paren{\{a,c,d_1,p_2(\lst P_N)\}}=\genfun\paren{\{a,b'',p_1(\lst P_N),p_2(\lst P_N)\}}$; for $l^{(1)}=0$ this conclusion is trivial since $b''=c$ and $d_1=p_1(\lst P_N)$, and for $l^{(1)}=1$ we obtain this conclusion by applying Lemma \ref{combining-pairs}.
+$$\set R := \left[\set S''\backslash\{a,b'',p_1(\lst O_N),p_2(\lst O_N)\}\right]\cup \{a,c,d_1,p_2(\lst O_N)\}.$$
+Note that for either value of $l^{(1)}$ we have that the pairs $(a,c)$ and $(d_1,p_2(\lst O_N))$ are conjugal with respect to $\set R$ and that $\genfun\paren{\{a,c,d_1,p_2(\lst O_N)\}}=\genfun\paren{\{a,b'',p_1(\lst O_N),p_2(\lst O_N)\}}$; for $l^{(1)}=0$ this conclusion is trivial since $b''=c$ and $d_1=p_1(\lst O_N)$, and for $l^{(1)}=1$ we obtain this conclusion by applying Lemma \ref{combining-pairs}.
 
 Now let
 $$
@@ -762,12 +770,12 @@ c \cdot d_1  &  l^{(2)}_N = 1,\\
 \quad
 d_2 :=
 \begin{cases}
-p_2(\lst P_N) & l^{(2)}_N = 0\\
-p_2(\lst P_N) \cdot a &  l^{(2)}_N = 1,\\
+p_2(\lst O_N) & l^{(2)}_N = 0\\
+p_2(\lst O_N) \cdot a &  l^{(2)}_N = 1,\\
 \end{cases}
 $$
 and
-$$\set R' := \left[\set R\backslash\{(a,c),(d_1,p_2(\lst P_N))\}\right]\cup \{(a,c'),(d_1,d_2)\}.$$
+$$\set R' := \left[\set R\backslash\{a,c,d_1,p_2(\lst P_N)\}\right]\cup \{a,c',d_1,d_2\}.$$
 Applying the same reasoning as before, we conclude that the pairs $(a,c')$ and $(d_1,d_2)$ are conjugal with respect to $\set R'$ and that $\genfun\paren{\{a,c',d_1,d_2\}}=\genfun\paren{\{a,c,d_1,p_2(\lst P_N)\}}$.
 
 Finally, let
@@ -780,14 +788,14 @@ $$
 and
 $$
 \set R'':=
-\left[\set R'\backslash\paren{\{(a,c')\}}\right]\cup \{(a,c'')\}.
+\left[\set R'\backslash\{a,c'\}\right]\cup \{a,c''\}.
 $$
 Observe that $\{a,c''\}=0$ and that $a$ and $c''$ are products of $a$ and $c$;  thus, $\genfun\paren{\{a,c'',d_1,d_2\}}=\genfun\paren{\{a,c',d_1,d_2\}}$, and furthermore $a$ and $c''$ commute with every operator in $\set R''$ save each other and so $\{(a,c'')\} \cup \{(d_1,d_2\}$ are conjugal pairs with respect to $\set R''$.
 
 Note, however, that by construction we have that $b'=c''$, $\set S'=\set R''$, and
-$$\lst Q_i :=
+$$\lst O'_i :=
 \begin{cases}
-\lst Q'_i & i < N \\
+\lst O''_i & i < N \\
 (d_1,d_2) & i = N.\\
 \end{cases}
 $$
@@ -803,10 +811,39 @@ Proof by induction.  For the base case, $k=0$, observe that the listed propertie
 
 Now suppose that we have proven this Proposition for the sets $\set L$, $\set S$, and the integer $k-1$.  We shall now prove it for the integer $k$.
 
-By recursive application of this Proposition, we obtain the objects (without the primes) $\lst P'$, $\set Q'$, $\lst E'$, and $\lst F'$.  Now consider the minimizer of $\om_{\set S}$ over $\set U(\set Q) \cup \{p_2(\lst P_i):\lst F_i \ne I\}$.  There are two cases:  either the minimizer is in $\set U(\set Q)$, or the minimizer is in $\{p_2(\lst P_i):\lst F_i \ne I\}$.
+By recursive application of this Proposition, we obtain the objects (without the primes) $\lst P'$, $\set Q'$, $\lst E'$, and $\lst F'$.  Let
+$$o :=\min_{x\in\set U(\set Q') \cup \{p_2(\lst P_i'):\lst F_i' \ne I\}} \om_{\set S}(x).$$
+There are two cases:  either $o\in\{p_2(\lst P_i'):\lst F_i' \ne I\}$, or $o\notin\{p_2(\lst P_i):\lst F_i' \ne I\}$ and $o\in\set U(\set Q')$.
 
-First we consider the first case.  
-
+We start by considering the first case.  Let $k$ be the smallest integer such that $\{o,\lst F_k'\}$, and let $(b,a):=\lst P'_k$.  Place some arbitrary ordering on $\set Q'$ to form the sequence $\lst Q'$, and then let
+$$\lst O_i :=
+\begin{cases}
+\lst P'_{k+i} & 1 \le i \le N-k \\
+\lst Q'_{i-N-k} & N-k+1 \le i \le N-k+|\lst Q|, \\
+\end{cases}
+$$
+and
+$$\lst l^{(k)}_i :=
+\begin{cases}
+0 & [p_k(\lst O_i),o] = 0 \\
+1 & \{p_k(\lst O_i),o\} = 0. \\
+\end{cases}
+$$
+Apply Lemma \ref{multiple-recombinations} to respectively the pair $(a,b)$, the sequence $\lst O$, and the set $U(\lst P')\cup U(\set Q')\cup \set S$, and let $(a,b')$ refer to $\lst O'$ the object with the same names in Lemma \ref{multiple-recombinations}.  Now let $\lst E':= \lst E$,
+$$\lst F_i := 
+\begin{cases}
+o & i = k \\
+\lst F'_i & \text{otherwise},
+\end{cases}
+\quad
+\lst P_i :=
+\begin{cases}
+\lst P'_i & i < k \\
+(b',a) & i = k \\
+\lst O'_{i-k} & i > k, \\
+\end{cases}
+$$
+and $\set Q := \{\lst O'_i : i \ge N-k+1\}$.
 \end{proof}
 %@nonl
 %@-node:gcross.20100119183304.1295:Proof
