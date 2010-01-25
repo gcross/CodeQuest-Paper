@@ -479,8 +479,8 @@ For convenience, we introduce the following additional notation:
 
 \begin{itemize}
 \item the function $w:\pauligroup\to \mathscr{N}$ is defined such that $w(o)$ gives the weight of $o$;
-\item the function $e_{\set S}:\centralizer_\pauligroup\paren{\set S}\to \centralizer_\pauligroup\paren{\set S}$ is defined such that $e_{\set S}(l)$ is the minimizer of $w$ over the set $\left\{o: o\in \centralizer_\pauligroup\paren{\set S}, \{o,l\}=0\right\}$ --- that is, it gives the undetectable error with respect to $\set S$ acting on $l$ that is of minimum weight;
-\item the function $\om_{\set S}:\centralizer_\pauligroup\paren{\set S}\to\mathscr{N}$ is defined such that $\om_{\set S}:=w\circ e_{\set S}$.
+\item the function $e_{\set S}:\centralizer_\pauligroup\paren{\set S}\to \paren{\powerset\circ\centralizer_\pauligroup}\paren{\set S}$ is defined such that $\set e_{\set S}(l)$ is the set of minimizers of $w$ over the set $\left\{o: o\in \centralizer_\pauligroup\paren{\set S}, \{o,l\}=0\right\}$ --- that is, it gives the undetectable errors with respect to $\set S$ acting on $l$ that are of minimum weight;
+\item the function $\om_{\set S}:\centralizer_\pauligroup\paren{\set S}\to\mathscr{N}$ is defined such that $\om_{\set S}:=w(o)$ for an arbitrarily chosen $o\in\circ \set e_{\set S}$ --- note that function is well-defiend since all operators in the set $\set e_{\set S}$ have the same weight;
 \item the function $m_{\set S}:\centralizer_\pauligroup\paren{\set S}\times \centralizer_\pauligroup\paren{\set S} \to \mathscr{N}$ is defined such that $m_{\set S}(l,l'):=\min \{\om_{\set S}(l),\om_{\set S}(l')\}$ --- that is, it gives the smaller of the weights of the smallest weight errors acting on respectively $\set L$ and $\set L'$;
 \item the function $\vec M^{(N)}_{\set S}$ is defined such that $\vec M^{(N)}_{\set S}\paren{\vec P}$ is the sequence of $N$ integers such that $\vec M^{(N)}_{\set S}\paren{\vec P}_i := m_{\set S}\paren{\vec P_i}$;
 \item the functions $p_1$ and $p_2$ are defined such that, given $(a,b):=x$, we have that $p_1(x):=a$ and $p_2(x):=b$.
@@ -710,8 +710,8 @@ Suppose we are given a set of pairs $\set L$ and a set of Pauli operators $\set 
 For convenience, we introduce the following definitions:
 
 \begin{definition}
-Given any two sequences of integers taken from $\{0,1\}$, $\lst l^{(1)$ and $\lst l^{(2)}$, we define the (indexed) function $\set X_{\lst l}$ as a map from a sequence of pairs of Pauli operators of length $|\lst l^{(k)}|$ to $\powerset(\pauligroup)$ such that
-$$\set X_{\lst l}(\lst P) := \{p_{3-k}(\lst P_i) : k \in \{1,2\}, i \in \{1\dots |\lst P|}, l^{(k)}_i=1\}.$$
+Given any two sequences of integers taken from $\{0,1\}$, $\lst l^{(1)}$ and $\lst l^{(2)}$, we define the (indexed) function $\set X_{\lst l}$ as a map from a sequence of pairs of Pauli operators of length $|\lst l^{(k)}|$ to $\powerset(\pauligroup)$ such that
+$$\set X_{\lst l}(\lst P) := \{p_{3-k}(\lst P_i) : k \in \{1,2\}, i \in \{1\dots |\lst P|\}, l^{(k)}_i=1\}.$$
 \end{definition}
 %@-node:gcross.20100122140843.1282:Definition
 %@+node:gcross.20100119183304.1296:Lemma: Multiple recombinations
@@ -802,6 +802,16 @@ $$
 Thus, we are done.
 \end{proof}
 %@-node:gcross.20100119183304.1296:Lemma: Multiple recombinations
+%@+node:gcross.20100123143948.1298:Lemma: Unchanged error weight
+\begin{lemma}
+\label{unchanged-error-weight}
+Suppose we are given a set $\set S$, an operator $x$ such that $\om_{\set S}(x)=d$, and an operator $y$ such that $\om_{\set S}(y) \ge \om_{\set S}(x)$ and $[y,o]=0$ for some $o\in\set e_{\set S}(x)$.  Then $\om_{\set S}(x\cdot y)=\om_{\set S}(x)$.
+\end{lemma}
+
+\begin{proof}
+Since $[x,o]=0$ for some $o\in\set e_{\set S}(x)$, we have that $\{o\cdot x,e_{\set S}(o)\}=0$.  Furthermore, we know that there is no undetectable error with weight less than $\om_{\set S}(x)$ that acts on either $x$ or $y$ and hence on the product $x\cdot y$.  Thus, $o$ is the undetectable error acting on $x\cdot y$ of minimum weight and so $\om_{\set S}(x\cdot y)=w(o)=\om_{\set S}(x)$.
+\end{proof}
+%@-node:gcross.20100123143948.1298:Lemma: Unchanged error weight
 %@+node:gcross.20100119183304.1295:Proof
 Now to prove Proposition \ref{certificate-creation}.
 
@@ -845,7 +855,7 @@ o & i = k \\
 $$
 and $\set Q := \{\lst O'_i : i \ge N-k+1\}$.
 \end{proof}
-%@nonl
+
 %@-node:gcross.20100119183304.1295:Proof
 %@-node:gcross.20100119183304.1292:Proposition: Creation of certificate
 %@-others
