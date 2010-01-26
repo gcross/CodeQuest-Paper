@@ -350,7 +350,7 @@ Finally, to see that property \ref{L-completes-the-generators} holds, observe th
 %@+node:gcross.20090520163423.15:Prove main theorem
 With these building blocks in place, we now prove the main theorem:
 
-\begin{proof}[Theorem \ref{theorem-SG}]
+\begin{proof}[Proof of Theorem \ref{theorem-SG}]
 By Proposition \ref{proposition-SG}, we know that there exists a list of operators $\lst S$ and a set of independent operators $\set G$ satisfying the properties that are listed there.  By Proposition \ref{make-independent-using-elimination}, we know that there is an independent set of operators $\set S$ that generate the same subgroup as $\lst S$.  
 
 Now let $\set F$ be a maximal subset of commuting operators in $\set G$ --- i.e., for each conjugal pair in $\set G$ take one of the two operators --- and then let $\set O := \set F \cup \set S$.  Since all of the operators in $\set O$ commute, we apply Proposition \ref{make-independent-using-elimination} again to conclude the existance of the objects listed there, and then we immediately apply Proposition \ref{construction-of-logicals} to show that a set $\set M$ exists with the properties listed there.  We are not done yet, however, since there might be operators in $\set G$ with which operators in $\set M$ anti-commute, so we let
@@ -476,8 +476,10 @@ Given an operator $p\in\pauligroup$---which recalls means that $p$ is the tensor
 For convenience, we introduce the following additional notation:
 
 \begin{definition}
+$\quad$
 
 \begin{itemize}
+\item assuming we have a set of independent operators, $\set Q$, the function $\set G_{\set Q}:\genfun(\set Q)\to\powerset(\set Q)$ is defined (uniquely) such that for every $q\in\set Q$ we have that $q=\prod_{o\in\set G_{\set Q}(q)} o$;
 \item the function $w:\pauligroup\to \mathscr{N}$ is defined such that $w(o)$ gives the weight of $o$;
 \item the function $e_{\set S}:\centralizer_\pauligroup\paren{\set S}\to \paren{\powerset\circ\centralizer_\pauligroup}\paren{\set S}$ is defined such that $\set e_{\set S}(l)$ is the set of minimizers of $w$ over the set $\left\{o: o\in \centralizer_\pauligroup\paren{\set S}, \{o,l\}=0\right\}$ --- that is, it gives the undetectable errors with respect to $\set S$ acting on $l$ that are of minimum weight;
 \item the function $\om_{\set S}:\centralizer_\pauligroup\paren{\set S}\to\mathscr{N}$ is defined such that $\om_{\set S}:=w(o)$ for an arbitrarily chosen $o\in\circ \set e_{\set S}$ --- note that function is well-defiend since all operators in the set $\set e_{\set S}$ have the same weight;
@@ -488,8 +490,9 @@ For convenience, we introduce the following additional notation:
 \item finally, a \emph{choice of $N$ qubits stabilized by $\set S$}, $\lst P$, is a sequence of $N$ pairs of operators from the Pauli group such that 
 \begin{enumerate}
 \item $\set U(\lst P)\cap \set S = \emptyset$ --- that is, the operators in $\lst P$ are not included in $\set S$;
-\item every pair in $\lst P$ is a conjugal pair with respect $\set S \cup \set U(\lst P)$.
-\item and $\lst M^{(N)}(\lst P)$ is an ordered sequence.
+\item every pair in $\lst P$ is a conjugal pair with respect $\set S \cup \set U(\lst P)$;
+\item $(\om_{\set S}\circ p_1)(\lst P_i)=m_{\set S}(\lst P_i)$; and
+\item $\lst M^{(N)}(\lst P)$ is an ordered sequence.
 \end{enumerate}
 \end{itemize}
 
@@ -503,6 +506,158 @@ Given the notation above, we now precisely define what we mean by the ``best cho
 An \emph{optimal choice of $N$ qubits stabilized by $\set S$} is any choice of $N$ qubits, $\lst P$ stabilized by $\set S$, such that given any other choice of $N$ qubits, $\lst P'$, that is also stabilized by $\set S$, such that $(\genfun\circ \set U)(\lst P)=(\genfun\circ \set U)(\lst P')$, we have that $\lst M^{(N)}(\lst P)_i \ge \lst M^{(N)}(\lst P')_i$ for all $1\le i \le N$.
 \end{definition}
 %@-node:gcross.20091221145013.1278:Definition: Total ordering => Optimal choice of qubits
+%@+node:gcross.20100125183648.1308:Theorem: Optimality condition
+%@+node:gcross.20100125183648.1309:Statement
+How do we know that a choice of qubits is optimal?  It turns out that there is a very simple condition that is sufficient for demonstrating this.
+
+\begin{theorem}
+\label{optimality-condition}
+If $\lst P$ is a choice of $N$ logical qubits stabilized by $\set S$ such that for every subset $\set O\subset\set U(\lst P)$ satisfying the property that $\om_{\set S}(o)<m_{\set S}(\lst P_N)$ for every $o$ in $\set O$, we have that $\om_{\set S}\paren{\prod_{\set O} o}\le \text{max}_{\set O}\,\, \om_{\set S}(o)$, then $\lst P$ is an optimal choice of qubits.
+\end{theorem}
+
+Before we can prove this Theorem, we need a couple of Lemmas and a Proposition.
+%@-node:gcross.20100125183648.1309:Statement
+%@+node:gcross.20100125183648.1306:Lemma: Combinations can't make things worse
+\begin{lemma}
+\label{combinations-can't-make-things-worse}
+For any set of operators $\set O$, we have that $\om_{\set S}\paren{\prod_{o\in\set O} o} \ge \text{min}_{o\in \set O}\,\om_{\set S}\paren{o}$.
+\end{lemma}
+
+\begin{proof}[Proof of Lemma]
+Any undetectable error with respect to $\set S$ acting on $\om_{\set S}\paren{\prod_{o\in\set O} o}$ must also act at least one of the operators in $\set O$ since otherwise it cannot anti-commute with the product. \end{proof}
+%@-node:gcross.20100125183648.1306:Lemma: Combinations can't make things worse
+%@+node:gcross.20100125183648.1304:Lemma: The lesser operator wins
+\begin{lemma}
+\label{lesser-operator-wins}
+Suppose we are given two operators $a,b\in\pauligroup$ such that $\om_{\set S}(a)<\om_{\set S}(b)$;  then $\om_{\set S}(a\cdot b) = \om_{\set S}(a)$.
+\end{lemma}
+
+\begin{proof}[Proof of Lemma]
+Since $\om_{\set S}(a)<\om_{\set S}(b)$, there must be an undetectable error with respect to $\set S$ that acts on $a$ but not on $b$;  thus, it must anti-commute with and hence act on the product $a\cdot b$, so that $\om_{\set S}(a\cdot b)\le \om_{\set S}(a)$.  Since $\om_{\set S}(a\cdot b)\ge \om_{\set S}(a)$ by Lemma , we conclude that $\om_{\set S}(a\cdot b) = \om_{\set S}(a)$.
+\end{proof}
+%@nonl
+%@-node:gcross.20100125183648.1304:Lemma: The lesser operator wins
+%@+node:gcross.20100125183648.1319:Proposition: Bound on recombinations
+%@+node:gcross.20100125183648.1320:Statement
+\begin{proposition}
+\label{bound-on-recombinations}
+Suppose we are given
+\begin{enumerate}
+\item sets of Pauli operators $\set Q$ and $\set S$;
+\item a non-empty set of conjugal pairs, $\set C$, with respect to $\set U(\set C) \cup \set S$, such that $U(\set C)\subseteq \genfun(\set Q)$; and \item a set $\set A$ with the property that for any conjugal pair $X:=(a,b)$ such that $\{a,b\}\subseteq(\genfun\circ\set U)(\set C)$, we must have that $\set G_{\set Q}(X) \cap \set A \ne \emptyset$.
+\end{enumerate}
+Then $|\set C|\le|\set A|$.
+\end{proposition}
+
+In order to prove this Proposition, we will first need some additional Lemmas.
+%@-node:gcross.20100125183648.1320:Statement
+%@+node:gcross.20100125183648.1321:Single pair rearrangement.
+\begin{lemma}
+\label{single-pair-rearrangement}
+Let $A:=(a,b)$ with $\{a,b\}\subseteq\genfun(\set Q)$ be a conjugal pair with respect to some set $\set S$, and $o$ be some Pauli operator such that $o\in\set G_{\set Q}(A)$.  Then there exists a pair $B:=(c,d)$ such that
+\begin{enumerate}
+\item $\{c,d\}\subseteq\genfun(\set Q)$;
+\item $o\in \set G_{\set Q}(c)$;
+\item $o\notin \set G_{\set Q}(d)$;
+\item $(c,d)$ is a conjugal pair with respect to $\paren{\set S\backslash \{a,b\}}\cup\{c,d\}$; and
+\item $(\genfun\circ\set U)(B) = (\genfun\circ\set U)(A)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Let
+$$
+(c,d):=
+\begin{cases}
+\paren{a,b} & o\in \set G_{\set Q}(a), o\notin \set G_{\set Q}(b) \\
+\paren{b,a} &  o\notin \set G_{\set Q}(a), o\in \set G_{\set Q}(b) \\
+\paren{a,b\cdot a} & o\in \set G_{\set Q}(a), o\in \set G_{\set Q}(b) \\
+\end{cases}
+$$
+Note that in any of the above cases, properties 1-3 are satisfied by construction, property 4 is satisfied because $c$ and $d$ are products of $a$ and $b$ which commute with every element in $\set S\backslash \{a,b\}$ and $\{c,d\}=0$, and finally property 5 is satisfied because $\{a,b\}\subseteq \genfun\paren{\{c,d\}}$ and $\{c,d\}\subseteq \genfun\paren{\{a,b\}}$.
+\end{proof}
+%@nonl
+%@-node:gcross.20100125183648.1321:Single pair rearrangement.
+%@+node:gcross.20100125183648.1322:Directed Gaussian elimination
+\begin{lemma}
+\label{directed-gaussian-elimination-of-logicals}
+In the context of Proposition \ref{bound-on-recombinations}, suppose we are given an element $a\in \set A$ with the property that there exists a pair $Y''\in\set C$ such that $a\in\set G(Y'')$. Then there exists a conjugal pair $Y$ and set of conjugal pairs $\set D$, all with respect to $\set U\paren{\{Y\}\cup \set D} \cup \set S$, such that
+\begin{enumerate}
+\item $|\set D| = |\set C|-1$
+\item $(\genfun\circ\set U)(\{Y\}\cup \set D)=(\genfun\circ\set U)(\set C)$;
+\item $a\in (\set G_{\set Q}\circ p_1)(Y)$ but $a\notin (\set G_{\set Q}\circ p_2)(Y)$;
+\item $a\notin \bigcup_{D\in \set D} \set G_{\set Q}(D)$; and
+\item for every conjugal pair $O\in\set D$, we have that $\set G_{\set Q}(O) \cap \set A\backslash \{a\} \ne \emptyset$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Proof by induction on the size of $\set C$.  If $\set C=\{Y''\}$, then apply Lemma \ref{single-pair-rearrangement} letting $o:=a$, $A:=Y''$, and $Y:=B$, and we see that we have a pair $Y$ which is conjugal with respect to $\{Y\}\cup\set S$ and also such that $(\genfun\circ\set U)(\{Y\})=(\genfun\circ\set U)(\{Y''\})$.  Let $\set D:=\emptyset$, and we see that the remaining properties hold trivially, so we are done.
+
+Now let us assume that this lemma has been proven for the case where $|\set C|=n-1$, and we are given a set $\set C$ with $n$ elements.  Take any $X''\in\set C\backslash\{Y''\}$, and apply the lemma to $\set C\backslash \{X''\}$, $\set A$, $a$ and $Y''$ to obtain the objects $Y'$ and $\set D'$ described in this Lemma without the primes.  If $a\notin\set G(X'')$, then by the assumptions of the Lemma we know that $\set G(X'') \cap \set A\backslash \{a\} \ne \emptyset$, so let $Y:=Y'$ and $\set D:=\set D'\cup\{X''\}$, and we are done.
+
+Otherwise, apply Lemma \ref{single-pair-rearrangement}, setting $A:=X''$, $o:=a$, and $X':=B$, and let $X:=\paren{p_1(X')\cdot p_1(Y'),p_2(X')}$ and $Y:=\paren{p_1(Y'),p_2(Y')\cdot p_2(X')}$.  Note $X'$ and $Y'$ are conjugal pairs with respect to $\set U\paren{\{X',Y'\}\cup\set D}\cup\set S$ and $\{X',Y'\}\cap \paren{\set D\cup\set S}=\emptyset$, and so by Lemma \ref{combining-pairs} we conclude that $X$ and $Y$ are conjugal pairs with respect to $\set U\paren{\{X,Y\}\cup\set D}\cup\set S$, and also that $(\genfun\circ\set U)(\{X,Y\})=(\genfun\circ\set U)(\{X',Y'\})$;  since $X'$ was obtained from applying Lemma \ref{single-pair-rearrangement} to $X''$ and $a$, we furthermore conclude that $(\genfun\circ\set U)(\{X,Y\})=(\genfun\circ\set U)(\{X'',Y'\})$.  Since $X'$ was obtained as a result of Lemma \ref{single-pair-rearrangement}, we know that $a\in (\set G \circ p_1)(X')$ but $a\notin (\set G_{\set Q} \circ p_2)(X')$, and we also know from the earlier recursive application of this Lemma that $a\in (\set G \circ p_1)(Y')$ but $a\notin (\set G_{\set Q} \circ p_2)(Y')$.  Thus, we observe that by construction, $a\in (\set G_{\set Q} \circ p_1)(Y)$, and $a\notin \paren{(\set G_{\set Q} \circ p_2)(Y) \cup \set G_{\set Q}(X)}$.
+
+Let $\set D:=\{X\}\cup\set D'$, and observe that $|\set D|=|\set D'|+1=|\set C\backslash \{X''\}|-1+1=|\set C|-1$, and also that $(\genfun\circ\set U)(\{Y\}\cup\set D)=(\genfun\circ\set U)(\{X,Y\}\cup\set D')=(\genfun\circ\set U)(\{X''\}\cup(\{Y'\}\cup\set D'))=(\genfun\circ\set U)(\{X''\}\cup(\set C'\backslash\{X''\}))=(\genfun\circ\set U)(\set C)$.  Furthermore, by the earlier recursive application of this Lemma we know that $a\notin\set G_{\set Q}(O)$ for every $O\in \set D'$, so since we have also established that $a\notin \set G_{\set Q}(X)$, we conclude that $a\notin\set G_{\set Q}(O)$ for every $O\in \set D$;  since also know that every such $O$ must also satisfy $\set G_{\set Q}(O)\cap \set A \ne \emptyset$, we conclude that every such $O$ satisfies $\set G_{\set Q}(O) \cap A\backslash\{a\}\ne\emptyset$.
+\end{proof}
+%@-node:gcross.20100125183648.1322:Directed Gaussian elimination
+%@+node:gcross.20100125183648.1323:Undirected Gaussian elimination
+\begin{lemma}
+\label{undirected-gaussian-elimination-of-logicals}
+In the context of Proposition \ref{bound-on-recombinations}, there exists a Pauli operator $a$ satisfying the assumption of Lemma \ref{directed-gaussian-elimination-of-logicals}.
+\end{lemma}
+
+\begin{proof}
+Take any pair $Y'\in\set C$.  By the assumptions of Proposition \ref{bound-on-recombinations}, we know that $\set G(Y')\cap \set A \ne \emptyset$, which implies that there exists an element $a\in A$ such that either $a\in (\set G_{\set Q}\circ p_1)(Y')$ or $a\in (\set G_{\set Q}\circ p_2)(Y')$.  The existance of $Y$ and $\set D$ then follow immediately from the application of Lemma \ref{directed-gaussian-elimination-of-logicals}.
+\end{proof}
+%@nonl
+%@-node:gcross.20100125183648.1323:Undirected Gaussian elimination
+%@+node:gcross.20100125183648.1324:Elimination to create subset
+\begin{lemma}
+\label{elimination-to-create-subset}
+In the context of Proposition \ref{bound-on-recombinations}, there exists a set of conjugal pairs, $\set X$, with respect to $\set X\cup\set S$, and a subset of operators, $\set O\subseteq \set A$, such that
+\begin{enumerate}
+\item $|\set X|=|\set O|=|\set C|$;
+\item $(\genfun\circ\set U)(\set X)=(\genfun\circ\set U)(\set C)$; and
+\item for every $o\in\set O$, there is a conjugal pair $Y\in\set X$ such that $o\in\set G_{\set Q}(Y)$;
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Proof by induction.  If $\set C$ is empty, then the empty sets trivially satisfy this Lemma.
+
+Now suppose that we have proven this Lemma for $|\set C|=N-1$, and assume we have been given sets $\set C$ and $\set A$ such that $|\set C|=N$.  Applying Lemma \ref{undirected-gaussian-elimination-of-logicals} to $\set C$ and $\set A$ we obtain the conjugal pair $Y$,  the set of conjugal pairs $\set D$, and the element $a$ described in the conclusions of that Lemma.  Apply this Lemma recursively to the respective sets $\set D$ and $\set A\backslash\{a\}$, we obtain the sets $\set X'$ and $\set O'$ described (without the primes) in this Lemma; let $\set X := \set X'\cup\{Y\}$ and $\set O:=\set O'\cup\{a\}$.  Note that $\set X$ is a set of conjugal pairs with respect to $\set X\cup\set S$ since $\set X'$ is a set of conjugal pairs with respect to $\set X'\cup\set S$, and we know that the operators in $Y$ commute with every operator in every pair in $\set X'$ since they commute with every operator in $(\genfun\circ\set U)(\set D)=(\genfun\circ\set U)(\set X')$.
+
+First, observe that $|\set O|=|\set O'|+1$ since $a\notin \set O'$.  Futhermore, $a\notin \bigcup_{x\in \set U(\set X')} \set G(x)$ since $a\notin \bigcup_{x\in \set U(\set D)} \set G_{\set Q}(x)$ by Lemma \ref{undirected-gaussian-elimination-of-logicals} and $(\genfun\circ\set U)(\set D)=(\genfun\circ\set U)(\set X')$ by recursive application of this Corolary.  Thus, $|\set X|=|\set X'|+1$ since $Y\notin X'$ as $a\in\set G(Y)$, and $|\set X|=|\set O|=|\set D|+1=|\set C|-1+1=|\set C|$.
+
+Second, observe that since $(\genfun\circ\set U)(\set X')=(\genfun\circ\set U)(\set D)=(\genfun\circ\set U)(\set C)$ by recursive application of this Lemma and $(\genfun\circ\set U)(\{Y\}\cup\set D)=(\genfun\circ\set U)(\set C)$ by Lemma \ref{undirected-gaussian-elimination-of-logicals}, we conclude that $(\genfun\circ\set U)(\set X) = (\genfun\circ\set U)(\{Y\}\cup\set X') = (\genfun\circ\set U)(\{Y\}\cup\set D) = (\genfun\circ\set U)(\set C)$.
+
+Finally, observe that for every $o\in\set O$ we either have that $o=a$, in which case $Y\in\set X$ and $o\in\set G_{\set Q}(Y)$, or $o\in \set A\backslash\{a\}$, in which case by recursive application of this Lemma we know that there is an operator $Z\in \set X'\subseteq \set X$ such that $o\in\set G_{\set Q}(Z)$.
+\end{proof}
+%@nonl
+%@-node:gcross.20100125183648.1324:Elimination to create subset
+%@+node:gcross.20100125183648.1325:Proof
+With these Lemmas having performed the heavy lifting, the Proof of Proposition {bound-on-recombinations} is quite simple.
+
+\begin{proof}[Proof of Proposition \ref{bound-on-recombinations}]
+Proof by contradiction.  By Lemma \ref{elimination-to-create-subset}, there would have to exist a subset $\set O\subseteq\set A$ such that $|\set C|=|\set O|>|\set A|$, which is impossible.
+\end{proof}
+%@-node:gcross.20100125183648.1325:Proof
+%@-node:gcross.20100125183648.1319:Proposition: Bound on recombinations
+%@+node:gcross.20100125183648.1326:Proof
+We now have all of the tools that we need to prove Theorem \ref{optimality-condition}.
+
+\begin{proof}[Proof of Theorem \ref{optimality-condition}]
+Proof by contradiction.  Let $\lst P'$ be some choice of qubits stabilized by $\set S$ such that $(\genfun\circ\set U)(\lst P)=(\genfun\circ\set U)(\lst P')$ and there exists some integer $k$ such that $M^{(N)}_{\set S}(\lst P')_k > M^{(N)}_{\set S}(\lst P)_k$;  in particular, let $k$ be the smallest such integer, and let $\set C:=\{\lst P'_i : i \ge k\}$.  Let $l$ be the smallest integer such that $M^{(N)}_{\set S}(\lst E_l)\ge M^{(N)}_{\set S}(\lst P')_k$ or $N+1$ if there is no such integer, and $\set A := \{p_1(\lst P_i) : i \ge l\}$; note that since $M^{(N)}(\lst P')_k > M^{(N)}(\lst P)_k$ we must have $l>k$, and hence $|\set C| > |\set A|$.
+
+Take any pair $(a,b)\in\set C$.  Let $\set X:=\{x : x\in \set G_{\set U(\lst P)}(a),\,\, \om_{\set S}(x) < \om_{\set S}(a)\}$, $\set Y:=\set G_{\set U(\lst P)}(a)\backslash \set X$, $x := \prod_{o\in\set X} o$ and $y := \prod_{o\in\set Y} o$;  note that by construction we have that $a=x\cdot y$.  Now, if $\set X$ were non-empty, then $\om_{\set S}(x) \le \max_{o\in \set X} \om_{\set S}(o) < \om_{\set S}(a)$ by the assumptions of this Theorem, and so we would conclude that $\om_{\set S}(x\cdot y) = \om_{\set S}(x) < \om_{\set S}(a)$ since either $y$ is the identity or $\om_{\set S}(x)<\om_{\set S}(a)\le \om_{\set S}(y)$ by construction and so we reach the same conclusion from Lemma \ref{lesser-operator-wins}.  Thus, we see that $\set X$ must be empty since otherwise we would have that $\om_{\set S}(a)=\om_{\set S}(x\cdot y)<\om_{\set S}(a)$, which is nonsense, and so we conclude that $\om_{\set S}(o)\ge \om_{\set S}(a)$ for every $o\in\set G_{\set U(\lst P)}(a)$; using the same reasoning process we likewise conclude that $\om_{\set S}(o)\ge \om_{\set S}(b)\ge \om_{\set S}(a)$ for every $o\in\set G_{\set U(\lst P)}(b)$.  (Recall that the condition $\om_{\set S}(b)\ge \om_{\set S}(a)$ comes from the definition of a choice of qubits.)
+
+Since $a$ and $b$ anti-commute, it must be the case that there is an integer $i$ such that $o:=p_1(\lst P)\in \set G_{\set U(\lst P)}(O)$, because if every operator in $\set G_{\set U(\lst P)}(O)$ were the second member of a pair in $\lst P$ then $a$ and $b$ would commute.  Furthermore, we know that $i\ge l$ since otherwise $\om_{\set S}(o) < \om_{\set S}(a)$, which would contradict the conclusion of the previous paragraph;  thus, we conclude that $o\in \set A$.
+
+We have now demonstrated that for every pair $O\in\set C$, we must have $\set G(O)\cup\set A \ne\emptyset$.  Observe that this means that sets $\set C$ and $\set A$ match the descriptions in Proposition \ref{bound-on-recombinations}, and thus we see that it is impossible for $|\set C|>|\set A|$, and so we have a contradiction.  We thus conclude that no such choice $\lst P'$ can exist.
+\end{proof}
+%@-node:gcross.20100125183648.1326:Proof
+%@-node:gcross.20100125183648.1308:Theorem: Optimality condition
 %@+node:gcross.20100119183304.1293:Definition: Certificate
 This last definition gives us a precise notion of what it means to have made the best choice of logical qubits.  However, we now need a way to prove that given choice of qubits is optimal.  We do this by means of a certificate, which is defined as follows:
 
@@ -530,165 +685,6 @@ Then the tuple $(\lst E,\lst F)$ is a \emph{certificate} for $\lst P$.
 Now we shall prove that the presence of a certificate signals optimality via the following Proposition.
 %@nonl
 %@-node:gcross.20100119183304.1293:Definition: Certificate
-%@+node:gcross.20091221145013.1280:Proposition: Certificate = Optimality
-%@+node:gcross.20091221145013.1281:Statement
-\begin{proposition}
-\label{proposition-optimality-condition}
-If $\lst P$ has a certificate $(\lst E,\lst F)$, then it is an \emph{optimal choice of qubits stabilized by} $\set S$.
-\end{proposition}
-%@-node:gcross.20091221145013.1281:Statement
-%@+node:gcross.20091221145013.1286:Definition: Generating set
-For convenience, we define the following function:
-
-\begin{definition}
-Within the context of Proposition \ref{proposition-optimality-condition}, we define the function $\set G:(\genfun\circ\set U)(\lst P)\to(\powerset\circ\set U)(\lst P)$ such that $\set G(o)$ is the \emph{generating set} of $o$, that is the set such that $o=\prod_{g\in\set G(o)} g$.  For convenience, we shall abuse this notation by letting $\set G$ also apply to pairs of operators so that $\set G(X):=(\set G\circ p_1)(X)\cup(\set G\circ p_2)(X).$
-\end{definition}
-%@nonl
-%@-node:gcross.20091221145013.1286:Definition: Generating set
-%@+node:gcross.20091221145013.1282:Lemmas
-In order to prove Proposition \ref{proposition-optimality-condition}, we shall need the following lemmas:
-%@nonl
-%@+node:gcross.20091221145013.1284:Combinations cannot make things better
-\begin{lemma}
-\label{combinations-can't-make-things-better}
-In the context of Proposition \ref{proposition-optimality-condition}, if we are given an operator $o\in (\genfun\circ\set U)(\lst P)$ such that $\om_{\set S}(o)\ge w(\lst E_k)$ for some $1\le k \le N$, then $\om_{\set S}(g)\ge w(\lst E_k)$ for every $g\in\set G(o)$.
-\end{lemma}
-
-\begin{proof}[Proof of Lemma]
-Proof by contradiction.  Let $g\in \set G(o)$ be the operator such that $\om_{\set S}(g)<w(\lst E_k)$, the pair $\lst P_i$ to which $g$ belongs has minimal $i$, and if both operators in $\lst P_i$ meet these conditions then let $g$ be the first one.  Note that since $\om_{\set S}(g)<w(\lst E_k)$, by the assumptions of Proposition \ref{proposition-optimality-condition} we must have that either $g$ is the first member of a pair or $\lst F_i\ne I$.  In either case, we know that there is an operator --- respectively, either $\lst E_i$ or $\lst F_i$ --- which anti-commutes with $g$ but commutes with every other operator in $\set G(o)$.  Thus, the product of all of the operators in $\set G(o)$ must also anti-commute with $\lst E_i$, and thus $o$ anti-commutes with $\lst E_i$.  Since $w(\lst E_i)<w(\lst E_k)$, this contradicts the assumption that $\om_{\set S}(o)\ge w(\lst E_k)$, and so we conclude that all operators $g\in\set G(o)$ must satisfy $\om_{\set S}(g)\ge w(\lst E_k)$.
-\end{proof}
-%@-node:gcross.20091221145013.1284:Combinations cannot make things better
-%@+node:gcross.20100119121615.1280:Each pair must contain a top and a bottom
-\begin{lemma}
-\label{each-pair-must-contain-a-top-and-a-bottom}
-In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given a pair of operators, $a,b\in(\genfun\circ\set U)(\lst P)$, such that $\{a,b\}=0$.  Then there is some $i\in\{1\dots N\}$ and $k\in \{1,2\}$ such that $p_k(\lst P_i)\in \set G(a)$ and $p_{3-k}(\lst P_i)\in \set G(b)$.
-\end{lemma}
-
-\begin{proof}
-If this were not the case, then every operator in $\set G(a)$ would commute with every operator in $\set G(b)$, and thus $[a,b]=0$, leading to a contradiction.
-\end{proof}
-%@nonl
-%@-node:gcross.20100119121615.1280:Each pair must contain a top and a bottom
-%@+node:gcross.20100119121615.1279:Restricted subset can be used to generate
-\begin{lemma}
-\label{restricted-subset-can-be-used-to-generate}
-In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given a pair of operators, $a,b\in(\genfun\circ\set U)(\lst P)$, such that $\{a,b\}=0$.  Let $k$ be the smallest index such that $m(\lst E_k)\ge M(a,b).$  Then $\set G\cap \{p_1(\lst P_i): i\ge k\}\ne\emptyset$.
-\end{lemma}
-
-\begin{proof}
-By Lemma \ref{each-pair-must-contain-a-top-and-a-bottom}, we know that there must be some operator $o\in\{p_1(\lst P_i)\}_i$ such that $g\in\set G(a)\cup\set G(b)$.  By Lemma \ref{combinations-can't-make-things-better}, we know that all operators $g\in \set G(a)\cup \set G(b)$ must satisfy $\om_{\set S}(g)\ge m(\lst E_k)$.  Thus, we conclude that there must exist an operator $o\in\{p_1(\lst P_i): i\ge k\}$ such that $O\in \set G(a)\cup\set G(b)$, and hence $\set G\cap \{p_1(\lst P_i): i\ge k\}\ne\emptyset$.
-\end{proof}
-%@-node:gcross.20100119121615.1279:Restricted subset can be used to generate
-%@+node:gcross.20091230134131.1288:Single pair rearrangement.
-\begin{lemma}
-\label{single-pair-rearrangement}
-In the context of Proposition \ref{proposition-optimality-condition}, let $A\in(\genfun\circ\set U)(\lst P)$ be a conjugal pair with respect to some set $\set R$, and $o$ be some Pauli operator such that $o\in\set G(A)$.  Then there exists an operator $B$ such that
-\begin{enumerate}
-\item $o\in p_1(B)$;
-\item $o\notin p_2(B)$;
-\item $B$ is a conjugal pair with respect to $\paren{\set R\backslash \set U(A)}\cup\set U(B)$; and
-\item $(\genfun\circ\set U)(B) = (\genfun\circ\set U)(A)$.
-\end{enumerate}
-\end{lemma}
-
-\begin{proof}
-Let
-$$
-B:=
-\begin{cases}
-\paren{p_1(A),p_2(A)} & o\in \set G(p_1(A)), o\notin \set G(p_1(A)) \\
-\paren{p_2(A),p_1(A)} & o\notin \set G(p_1(A)), o\in\set G(p_1(A)) \\
-\paren{p_1(A),p_1(A)\cdot p_2(A)} & o\in\set G(p_1(A)), o\in\set G(p_1(A)) \\
-\end{cases}
-$$
-Note that in any of the above cases, properties 1-2 are satisfied by construction, property 3 is satisfied because $p_1(B)$ and $p_2(B)$ are products of $p_1(A)$ and $p_2(A)$ which commute with every element in $\set R\backslash\{A\}$ and $\{p_1(B),p_2(B)\}=0$, and finally property 4 is satisfied because $\{p_1(A),p_2(A)\}\subseteq \genfun\paren{\{p_1(B),p_2(B)\}}$ and $\{p_1(B),p_2(B)\}\subseteq \genfun\paren{\{p_1(A),p_2(A)\}}$.
-\end{proof}
-%@nonl
-%@-node:gcross.20091230134131.1288:Single pair rearrangement.
-%@+node:gcross.20091226225139.1291:Directed Gaussian elimination
-\begin{lemma}
-\label{directed-gaussian-elimination-of-logicals}
-In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given
-\begin{itemize}
-\item a non-empty set of conjugal pairs, $\set C$, with respect to $\set U(\set C) \cup \set S$;
-\item a set $\set A$ with the property that for any conjugal pair $X$ such that $\{p_1(X),p_2(X)\}\subseteq(\genfun\circ\set U)(\set C)$, we must have that $\set G(X) \cap \set A \ne \emptyset$; and
-\item an element $a\in \set A$ with the property that there exists a pair $Y''\in\set C$ such that $a\in\set G(Y'')$
-\end{itemize}
-then there exists a conjugal pair $Y$ and set of conjugal pairs $\set D$, all with respect to $\set U\paren{\{Y\}\cup \set D} \cup \set S$, such that
-\begin{enumerate}
-\item $|\set D| = |\set C|-1$
-\item $(\genfun\circ\set U)(\{Y\}\cup \set D)=(\genfun\circ\set U)(\set C)$;
-\item $a\in (\set G\circ p_1)(Y)$ but $a\notin (\set G\circ p_2)(Y)$;
-\item $a\notin \bigcup_{D\in \set D} \set G(D)$; and
-\item for every conjugal pair $O\in\set D$, we have that $\set G(O) \cap \set A\backslash \{a\} \ne \emptyset$.
-\end{enumerate}
-\end{lemma}
-
-\begin{proof}
-Proof by induction on the size of $\set C$.  If $\set C=\{Y''\}$, then apply Lemma \ref{single-pair-rearrangement} letting $o:=a$, $A:=Y''$, and $Y:=B$, and we see that we have an operator $Y$ which is a conjugal pair with respect to $\{Y\}\cup\set S$ and also such that $(\genfun\circ\set U)(\{Y\})=(\genfun\circ\set U)(\{Y''\})$.  Let $\set D:=\emptyset$, and we see that the remaining properties hold trivially, so we are done.
-
-Now let us assume that this lemma has been proven for the case where $|\set C|=n-1$, and we are given a set $\set C$ with $n$ elements.  Take any $X''\in\set C\backslash\{Y''\}$, and apply the lemma to $\set C\backslash \{X''\}$, $\set A$, $a$ and $Y''$ to obtain the objects $Y'$ and $\set D'$ described in this Lemma without the primes.  If $a\notin\set G(X'')$, then by the assumptions of the Lemma we know that $\set G(X'') \cap \set A\backslash \{a\} \ne \emptyset$, so let $Y:=Y'$ and $\set D:=\set D'\cup\{X''\}$, and we are done.
-
-Otherwise, apply Lemma \ref{single-pair-rearrangement}, setting $A:=X''$, $o:=a$, and $X':=B$, and let $X:=\paren{p_1(X')\cdot p_1(Y'),p_2(X')}$ and $Y:=\paren{p_1(Y'),p_2(Y')\cdot p_2(X')}$.  Note $X'$ and $Y'$ are conjugal pairs with respect to $\set U\paren{\{X',Y'\}\cup\set D}\cup\set S$ and $\{X',Y'\}\cap \paren{\set D\cup\set S}=\emptyset$, and so by Lemma \ref{combining-pairs} we conclude that $X$ and $Y$ are conjugal pairs with respect to $\set U\paren{\{X,Y\}\cup\set D}\cup\set S$, and also that $(\genfun\circ\set U)(\{X,Y\})=(\genfun\circ\set U)(\{X',Y'\})$;  since $X'$ was obtained from applying Lemma \ref{single-pair-rearrangement} to $X''$ and $a$, we furthermore conclude that $(\genfun\circ\set U)(\{X,Y\})=(\genfun\circ\set U)(\{X'',Y'\})$.  Since $X'$ was obtained as a result of Lemma \ref{single-pair-rearrangement}, we know that $a\in (\set G \circ p_1)(X')$ but $a\notin (\set G \circ p_2)(X')$, and we also know from the earlier recursive application of this Lemma that $a\in (\set G \circ p_1)(Y')$ but $a\notin (\set G \circ p_2)(Y')$.  Thus, we observe that by construction, $a\in (\set G \circ p_1)(Y)$, and $a\notin \paren{(\set G \circ p_2)(Y) \cup \set G(X)}$.
-
-Let $\set D:=\{X\}\cup\set D'$, and observe that $|\set D|=|\set D'|+1=|\set C\backslash \{X''\}|-1+1=|\set C|-1$, and also that $(\genfun\circ\set U)(\{Y\}\cup\set D)=(\genfun\circ\set U)(\{X,Y\}\cup\set D')=(\genfun\circ\set U)(\{X''\}\cup(\{Y'\}\cup\set D'))=(\genfun\circ\set U)(\{X''\}\cup(\set C'\backslash\{X''\}))=(\genfun\circ\set U)(\set C)$.  Furthermore, by the earlier recursive application of this Lemma we know that $a\notin\set G(O)$ for every $O\in \set D'$, so since we have also established that $a\notin \set G(X)$, we conclude that $a\notin\set G(O)$ for every $O\in \set D$;  since also know that every such $O$ must also satisfy $\set G(O)\cap \set A \ne \emptyset$, we conclude that every such $O$ satisfies $\set G(O) \cap A\backslash\{a\}\ne\emptyset$.
-\end{proof}
-%@+node:gcross.20100101105725.1294:Undirected Gaussian elimination
-\begin{corolary}[of Lemma \ref{directed-gaussian-elimination-of-logicals}]
-\label{undirected-gaussian-elimination-of-logicals}
-In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given the sets $\set C$ and $\set A$ described in Lemma \ref{directed-gaussian-elimination-of-logicals};  then there exists the objects $a$, $Y$, and $\set D$ described in Lemma \ref{directed-gaussian-elimination-of-logicals}.
-\end{corolary}
-
-\begin{proof}
-Take any pair $Y'\in\set C$.  By the assumptions of this Lemma, we know that $\set G(Y')\cap \set A \ne \emptyset$, which implies that there exists an element $a\in A$ such that either $a\in (\set G\circ p_1)(Y')$ or $a\in (\set G\circ p_2)(Y')$.  The existance of $Y$ and $\set D$ then follow immediately from the application of Lemma \ref{directed-gaussian-elimination-of-logicals}.
-\end{proof}
-%@nonl
-%@-node:gcross.20100101105725.1294:Undirected Gaussian elimination
-%@+node:gcross.20091230212318.1289:Elimination to create subset
-\begin{corolary}[of Lemma \ref{directed-gaussian-elimination-of-logicals}]
-\label{elimination-to-create-subset}
-In the context of Proposition \ref{proposition-optimality-condition}, suppose we are given the sets $\set C$ and $\set A$ described in Lemma \ref{directed-gaussian-elimination-of-logicals};  then there exists a set of conjugal pairs, $\set X$, with respect to $\set X\cup\set S$, and a subset of operators, $\set O\subseteq \set A$, such that
-\begin{enumerate}
-\item $|\set X|=|\set O|=|\set C|$;
-\item $(\genfun\circ\set U)(\set X)=(\genfun\circ\set U)(\set C)$; and
-\item for every $o\in\set O$, there is a conjugal pair $Y\in\set X$ such that $o\in\set G(Y)$;
-\end{enumerate}
-\end{corolary}
-
-\begin{proof}
-Proof by induction.  If $\set C$ is empty, then the empty sets trivially satisfy this Corolary.
-
-Now suppose that we have proven this Corolary for $|\set C|=N-1$, and assume we have been given sets $\set C$ and $\set A$ such that $|\set C|=N$.  Applying Corolary \ref{undirected-gaussian-elimination-of-logicals} to $\set C$ and $\set A$ we obtain the conjugal pair $Y$,  the set of conjugal pairs $\set D$, and the element $a$ described in the conclusions of that Corolary.  Apply this Corolary recursively to the respective sets $\set D$ and $\set A\backslash\{a\}$, we obtain the sets $\set X'$ and $\set O'$ described (without the primes) in this Corolary; let $\set X := \set X'\cup\{Y\}$ and $\set O:=\set O'\cup\{a\}$.  Note that $\set X$ is a set of conjugal pairs with respect to $\set X\cup\set S$ since $\set X'$ is a set of conjugal pairs with respect to $\set X'\cup\set S$, and we know that the operators in $Y$ commute with every operator in every pair in $\set X'$ since they commute with every operator in $(\genfun\circ\set U)(\set D)=(\genfun\circ\set U)(\set X')$.
-
-First, observe that $|\set O|=|\set O'|+1$ since $a\notin \set O'$.  Futhermore, $a\notin \bigcup_{x\in \set U(\set X')} \set G(x)$ since $a\notin \bigcup_{x\in \set U(\set D)} \set G(x)$ by Corolary \ref{undirected-gaussian-elimination-of-logicals} and $(\genfun\circ\set U)(\set D)=(\genfun\circ\set U)(\set X')$ by recursive application of this Corolary.  Thus, $|\set X|=|\set X'|+1$ since $Y\notin X'$ as $a\in\set G(Y)$, and $|\set X|=|\set O|=|\set D|+1=|\set C|-1+1=|\set C|$.
-
-Second, observe that since $(\genfun\circ\set U)(\set X')=(\genfun\circ\set U)(\set D)=(\genfun\circ\set U)(\set C)$ by recursive application of this Corolary and $(\genfun\circ\set U)(\{Y\}\cup\set D)=(\genfun\circ\set U)(\set C)$ by Corolary \ref{undirected-gaussian-elimination-of-logicals}, we conclude that $(\genfun\circ\set U)(\set X) = (\genfun\circ\set U)(\{Y\}\cup\set X') = (\genfun\circ\set U)(\{Y\}\cup\set D) = (\genfun\circ\set U)(\set C)$.
-
-Finally, observe that for every $o\in\set O$ we either have that $o=a$, in which case $Y\in\set X$ and $o\in\set G(Y)$, or $o\in \set A\backslash\{a\}$, in which case by recursive application of this Corolary we know that there is an operator $Z\in \set X'\subseteq \set X$ such that $o\in\set G(Z)$.
-\end{proof}
-%@nonl
-%@-node:gcross.20091230212318.1289:Elimination to create subset
-%@+node:gcross.20091230212318.1290:Upper bound on number of pairs
-\begin{corolary}[of Lemma \ref{directed-gaussian-elimination-of-logicals}]
-\label{death-stroke}
-In the context of Proposition \ref{proposition-optimality-condition}, there are no sets $\set C$ and $\set A$ as described in Lemma \ref{directed-gaussian-elimination-of-logicals} such that $|\set C|>|\set A|$.
-\end{corolary}
-
-\begin{proof}
-Proof by contradiction.  By Corolary \ref{elimination-to-create-subset}, there would have to exist a subset $\set O\subseteq\set A$ such that $|\set C|=|\set O|>|\set A|$, which is impossible.
-\end{proof}
-%@-node:gcross.20091230212318.1290:Upper bound on number of pairs
-%@-node:gcross.20091226225139.1291:Directed Gaussian elimination
-%@-node:gcross.20091221145013.1282:Lemmas
-%@+node:gcross.20091221145013.1285:Proof
-We now have the tools that we need to prove the main proposition.
-
-\begin{proof}[Proof of Proposition \ref{proposition-optimality-condition}]
-
-Proof by contradiction.  Let $\lst P'$ be some choice of qubits stabilized by $\set S$ such that $(\genfun\circ\set U)(\lst P)=(\genfun\circ\set U)(\lst P')$ and there exists some integer $l$ such that $M(\lst P')_l > M(\lst P)_l$.  Let $\set C:=\{\lst P'_i : i \ge l\}$.  Let $m$ be the smallest integer such that $\om_{\set S}(\lst E_m)\ge M(\lst P')_l$, and $\set A := \{p_1(\lst P_i) : i \ge m\}$; note that since $M(\lst P')_l > M(\lst P)_l$ we must have $m>l$, and hence $|\set C| > |\set A|$.  By our construction of $\set A$ and Lemma \ref{restricted-subset-can-be-used-to-generate}, we know that for every pair $O\in\set C$ we must have $\set G(O)\cup\set A \ne\emptyset$.  Observe that this means that sets $\set C$ and $\set A$ match the descriptions in Lemma \ref{directed-gaussian-elimination-of-logicals}, and thus by Corolary \ref{death-stroke}, we see that it is impossible for $|\set C|>|\set A|$, and so we have a contradiction.  We thus conclude that there is no such choice $\lst P'$.
-\end{proof}
-%@-node:gcross.20091221145013.1285:Proof
-%@-node:gcross.20091221145013.1280:Proposition: Certificate = Optimality
 %@+node:gcross.20100119183304.1292:Proposition: Creation of certificate
 %@+node:gcross.20100119183304.1294:Statement
 We have shown that if we have a certificate for a choice of qubits then it is an optimal choice.  However, this is useless to us unless we can show that a choice of qubits can be constructed that has a certificate.  This is done via the following Proposition.
@@ -715,17 +711,6 @@ $$\set X_{\lst l}(\lst P) := \{p_{3-k}(\lst P_i) : k \in \{1,2\}, i \in \{1\dots
 %@-node:gcross.20100122140843.1282:Definition
 %@+node:gcross.20100125114620.1284:Lemmas
 First, we need the following Lemmas:
-%@+node:gcross.20100125114620.1283:Lemma: Combinations can't make things worse
-\begin{lemma}
-\label{combinations-can't-make-things-worse}
-Suppose we are given two operators $a,b\in\pauligroup$ such that $d_a:=\om_{\set S}(a)$ and $d_b:=\om_{\set S}(b)$.  Then $\om_{\set S}(a\cdot b) \ge \text{\min}\,(d_a,d_b)$.
-\end{lemma}
-
-\begin{proof}[Proof of Lemma]
-Any undetectable error with respect to $\set S$ acting on $a\cdot b$ must also act on \emph{either} $a$ or $b$, since otherwise it cannot anti-commute with the product.  By assumption, there is no such error satisfying this property that has weight less than $\text{min}\,(d_a,d_b)$, and so $\om_{\set S}(a\cdot b) \ge \text{min}\,(d_a,d_b)$.
-\end{proof}
-%@nonl
-%@-node:gcross.20100125114620.1283:Lemma: Combinations can't make things worse
 %@+node:gcross.20100123143948.1298:Lemma: Unchanged error weight
 \begin{lemma}
 \label{unchanged-error-weight}
