@@ -699,12 +699,11 @@ Suppose we are given a set of pairs $\set L$ and a set of Pauli operators $\set 
 \begin{enumerate}
 \item the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $U(\lst P)\cup U(\set Q)\cup \set S$;
 \item $\genfun\paren{U(\lst P)\cup U(\set Q)}=(\genfun\circ\set U)(\set L)$;
-\item every member of every pair in $\set Q$ commutes with every operator in $\lst E$ and $\lst F$;
-\item $m(X)\ge\om_{\set S}(o)$ for every $o\in\lst E$;
+\item every operator in $\set U(\set Q)$ commutes with every operator in $\lst E$ and $\lst F$;
+\item $m(X)\ge w(\lst E_n)$ for every $X\in\set Q$;
 \item $|\lst E|+|\{\lst F_i : \lst F_i\ne I\}|=k$;
 \end{enumerate}
 \end{proposition}
-%@nonl
 %@-node:gcross.20100119183304.1294:Statement
 %@+node:gcross.20100122140843.1282:Definition
 For convenience, we introduce the following definitions:
@@ -714,9 +713,30 @@ Given any two sequences of integers taken from $\{0,1\}$, $\lst l^{(1)}$ and $\l
 $$\set X_{\lst l}(\lst P) := \{p_{3-k}(\lst P_i) : k \in \{1,2\}, i \in \{1\dots |\lst P|\}, l^{(k)}_i=1\}.$$
 \end{definition}
 %@-node:gcross.20100122140843.1282:Definition
-%@+node:gcross.20100119183304.1296:Lemma: Multiple recombinations
-First, we need the following Lemma:
+%@+node:gcross.20100125114620.1284:Lemmas
+First, we need the following Lemmas:
+%@+node:gcross.20100125114620.1283:Lemma: Combinations can't make things worse
+\begin{lemma}
+\label{combinations-can't-make-things-worse}
+Suppose we are given two operators $a,b\in\pauligroup$ such that $d_a:=\om_{\set S}(a)$ and $d_b:=\om_{\set S}(b)$.  Then $\om_{\set S}(a\cdot b) \ge \text{\min}\,(d_a,d_b)$.
+\end{lemma}
 
+\begin{proof}[Proof of Lemma]
+Any undetectable error with respect to $\set S$ acting on $a\cdot b$ must also act on \emph{either} $a$ or $b$, since otherwise it cannot anti-commute with the product.  By assumption, there is no such error satisfying this property that has weight less than $\text{min}\,(d_a,d_b)$, and so $\om_{\set S}(a\cdot b) \ge \text{min}\,(d_a,d_b)$.
+\end{proof}
+%@nonl
+%@-node:gcross.20100125114620.1283:Lemma: Combinations can't make things worse
+%@+node:gcross.20100123143948.1298:Lemma: Unchanged error weight
+\begin{lemma}
+\label{unchanged-error-weight}
+Suppose we are given a set $\set S$, an operator $x$ such that $\om_{\set S}(x)=d$, and an operator $y$ such that $\om_{\set S}(y) \ge \om_{\set S}(x)$ and $[y,o]=0$ for some $o\in\set e_{\set S}(x)$.  Then $\om_{\set S}(x\cdot y)=\om_{\set S}(x)$.
+\end{lemma}
+
+\begin{proof}
+Since $[x,o]=0$ for some $o\in\set e_{\set S}(x)$, we have that $\{o\cdot x,e_{\set S}(o)\}=0$.  Furthermore, we know that there is no undetectable error with weight less than $\om_{\set S}(x)$ that acts on either $x$ or $y$ and hence on the product $x\cdot y$.  Thus, $o$ is the undetectable error acting on $x\cdot y$ of minimum weight and so $\om_{\set S}(x\cdot y)=w(o)=\om_{\set S}(x)$.
+\end{proof}
+%@-node:gcross.20100123143948.1298:Lemma: Unchanged error weight
+%@+node:gcross.20100119183304.1296:Lemma: Multiple recombinations
 \begin{lemma}
 \label{multiple-recombinations}
 Suppose we are given a pair $(a,b)$ and a seqence of $N$ pairs $\lst O$ all conjugal to some set $\set S$, and two sequences of elements from $\{0,1\}$, $\lst l^{(1)}$ and $\lst l^{(2)}$.  Define
@@ -802,16 +822,7 @@ $$
 Thus, we are done.
 \end{proof}
 %@-node:gcross.20100119183304.1296:Lemma: Multiple recombinations
-%@+node:gcross.20100123143948.1298:Lemma: Unchanged error weight
-\begin{lemma}
-\label{unchanged-error-weight}
-Suppose we are given a set $\set S$, an operator $x$ such that $\om_{\set S}(x)=d$, and an operator $y$ such that $\om_{\set S}(y) \ge \om_{\set S}(x)$ and $[y,o]=0$ for some $o\in\set e_{\set S}(x)$.  Then $\om_{\set S}(x\cdot y)=\om_{\set S}(x)$.
-\end{lemma}
-
-\begin{proof}
-Since $[x,o]=0$ for some $o\in\set e_{\set S}(x)$, we have that $\{o\cdot x,e_{\set S}(o)\}=0$.  Furthermore, we know that there is no undetectable error with weight less than $\om_{\set S}(x)$ that acts on either $x$ or $y$ and hence on the product $x\cdot y$.  Thus, $o$ is the undetectable error acting on $x\cdot y$ of minimum weight and so $\om_{\set S}(x\cdot y)=w(o)=\om_{\set S}(x)$.
-\end{proof}
-%@-node:gcross.20100123143948.1298:Lemma: Unchanged error weight
+%@-node:gcross.20100125114620.1284:Lemmas
 %@+node:gcross.20100119183304.1295:Proof
 Now to prove Proposition \ref{certificate-creation}.
 
@@ -821,41 +832,80 @@ Proof by induction.  For the base case, $k=0$, observe that the listed propertie
 
 Now suppose that we have proven this Proposition for the sets $\set L$, $\set S$, and the integer $k-1$.  We shall now prove it for the integer $k$.
 
-By recursive application of this Proposition, we obtain the objects (without the primes) $\lst P'$, $\set Q'$, $\lst E'$, and $\lst F'$.  Let
-$$o :=\min_{x\in\set U(\set Q') \cup \{p_2(\lst P_i'):\lst F_i' \ne I\}} \om_{\set S}(x).$$
-There are two cases:  either $o\in\{p_2(\lst P_i'):\lst F_i' \ne I\}$, or $o\notin\{p_2(\lst P_i):\lst F_i' \ne I\}$ and $o\in\set U(\set Q')$.
+By recursive application of this Proposition, we obtain the objects (without the primes) $\lst P'$, $\set Q'$, $\lst E'$, and $\lst F'$.  Let $o$ be the minimizer of $\om_{\set S}$ over the set $\set U(\set Q') \cup \{p_2(\lst P_i'):\lst F_i' \ne I\}$.  There are two cases that shall be addressed separately; either
 
-We start by considering the first case.  Let $k$ be the smallest integer such that $\{o,\lst F_k'\}$, and let $(b,a):=\lst P'_k$.  Place some arbitrary ordering on $\set Q'$ to form the sequence $\lst Q'$, and then let
+\begin{enumerate}
+\item $o\in\{p_2(\lst P_i'):\lst F_i' \ne I\}$, or
+\item $o\notin\{p_2(\lst P_i):\lst F_i' \ne I\}$ and $o\in\set U(\set Q')$.
+\end{enumerate}
+
+\begin{description}
+
+\item[Case 1 $\Rightarrow o\in\{p_2(\lst P_i'):\lst F_i' \ne I\}$]
+%@<< Case 1: fill in a value of F >>
+%@+node:gcross.20100125114620.1285:<< Case 1: fill in a value of F >>
+Let $m$ be the smallest integer such that $\{o,\lst F_m'\}=0$, and let $(b,a):=\lst P'_m$.  Place some arbitrary ordering on $\set Q'$ to form the sequence $\lst Q'$, and then let
 $$\lst O_i :=
 \begin{cases}
-\lst P'_{k+i} & 1 \le i \le N-k \\
-\lst Q'_{i-N-k} & N-k+1 \le i \le N-k+|\lst Q|, \\
+\lst P'_{m+i} & 1 \le i \le N-m \\
+\lst Q'_{i-N-m} & N-m+1 \le i \le N-m+|\lst Q|, \\
 \end{cases}
 $$
 and
-$$\lst l^{(k)}_i :=
+$$\lst l^{(j)}_i :=
 \begin{cases}
-0 & [p_k(\lst O_i),o] = 0 \\
-1 & \{p_k(\lst O_i),o\} = 0. \\
+0 & [p_j(\lst O_i),o] = 0 \\
+1 & \{p_j(\lst O_i),o\} = 0. \\
 \end{cases}
 $$
 Apply Lemma \ref{multiple-recombinations} to respectively the pair $(a,b)$, the sequence $\lst O$, and the set $U(\lst P')\cup U(\set Q')\cup \set S$, and let $(a,b')$ refer to $\lst O'$ the object with the same names in Lemma \ref{multiple-recombinations}.  Now let $\lst E':= \lst E$,
 $$\lst F_i := 
 \begin{cases}
-o & i = k \\
+o & i = m \\
 \lst F'_i & \text{otherwise},
 \end{cases}
 \quad
 \lst P_i :=
 \begin{cases}
-\lst P'_i & i < k \\
-(b',a) & i = k \\
-\lst O'_{i-k} & i > k, \\
+\lst P'_i & i < m \\
+(b',a) & i = m \\
+\lst O'_{i-k} & i > m, \\
 \end{cases}
 $$
 and $\set Q := \{\lst O'_i : i \ge N-k+1\}$.
-\end{proof}
 
+Now we need to prove that these objects satisfy the conclusions of this Lemma.  First, note that since the only change in $\lst E$ and $\lst F$ from $\lst E'$ and $\lst F'$ was the change of $\lst F_m$ from the identity to $o$;  we know that $o$ is not the identity because it anti-commutes with another operator, and hence since this is the only change we conclude that $|\lst E|+|\{\lst F_i : \lst F_i\ne I\}|=|\lst E'|+|\{\lst F_i' : \lst F_i'\ne I\}|+1=k-1+1=k$.
+
+Next we observe that all the elements of $\lst P$ and $\set Q$ which were changed from $\lst P'$ and $\set Q'$ did so by passing through Lemma \ref{multiple-recombinations};  thus, we conclude that $\lst P$ and $\set Q$ are sets of conjugal pairs with respect to $U(\lst P)\cup U(\set Q)\cup \set S$, and also that $\genfun\paren{U(\lst P)\cup U(\set Q)}=\genfun\paren{U(\lst P')\cup U(\set Q')}=(\genfun\circ\set U)(\set L)$.
+
+Now observe that every operator in $\set U(\set Q')$ commutes with every element in $\lst E$ and $\lst F$ except for possibly $\lst F_m$, and every operator in $\set U(\set Q)$ corresponds to either an element in $\set U(\set Q')$ which commutes with $\lst F_m$ or an element in $\set U(\set Q')$ which anti-commutes with $\lst F_m$ but was multipled by $p_2(\lst P_m)$, and we know that $p_2(\lst P_m)=p_2(\lst P_m')$ anti-commutes with $\lst F_m$ (by the definition of $m$) and commutes with every other member of $\lst E$ and $\lst F$ (by recursive application of this Lemma).  Thus, $\set Q$ satisfies the property that every operator in $\set U(\set Q)$ commutes with every operator in $\lst E$ and $\lst F$.
+
+By recursive application of this Lemma we know that $(\lst F',\lst E')$ is a certificate for $\lst P'$, and so since $\lst F'_m=I$ by our choice of $m$ we know that $(\om_{\set S}\circ p_2)(\lst P_m)=(\om_{\set S}\circ p_2)(\lst P_m')\ge w(\lst E_n)$;  furthermore, we also know that $m(X)\ge w(\lst E_n)$ for every $X\in \set Q'$.  Since every operator in $\set U(\set Q)$ is either an operator or a product of two operators whose minimum weight error has a weight no less than $w(\lst E_n)$, by Lemma \ref{combinations-can't-make-things-worse} we conclude that $m(X)\ge w(\lst E_n)$ for every $X\in \set Q$.
+
+It remains to prove that $\lst P$ is a choice of qubits stabilized by $\set S$ and that $(\lst E,\lst F)$ are a certificate for it.  Observe that to prove $\lst P$ is a choice of qubits it suffices at this point for us to show that $m(\lst P_i)=m(\lst P'_i)$, and for this there are three cases to consider: $i<m$, $i=m$, and $i>m$:
+
+\begin{description}
+\item[Case 1 $\Rightarrow i < m$]
+In this case, we have that $\lst P_i=\lst P'_i$ and so $m(\lst P_i)=m(\lst P'_i)$.
+
+\item[Case 2 $\Rightarrow i = m$]
+In this case, we have that $p_2(\lst P_m)=p_2(\lst P'_m)$ and $p_1(\lst P_m)$ is a product of $p_1(\lst P_m)$ and a set of operators selected from the subset $\set O := \set U\paren{\{\lst P_i' : i > m \}}$, for which we know that $[o,\lst E_i]=0$ and $\om_{\set S}(o)\ge \om_{\set S}(p_1(\lst P'_m))=w(\lst E_m)$ for every $o\in \set O$;  thus, by Lemma \ref{unchanged-error-weight} we conclude that $\om_{\set S}(\lst P_m)=\om_{\set S}(\lst P'_m)$ and hence $m(\lst P_m)=m(\lst P'_m).$
+
+\item[Case 3 $\Rightarrow i > m$]
+In this case, we have that $p_2(\lst P_i)=p_2(\lst P'_i)$ and $p_1(\lst P_i)$ is either $p_1(\lst P'_i)$ or a product of $p_1(\lst P'_i)$ and $\lst F_m$, and 
+\end{description}
+%@-node:gcross.20100125114620.1285:<< Case 1: fill in a value of F >>
+%@nl
+
+\item[Case 2]
+%@<< Case 2: extract a qubit >>
+%@+node:gcross.20100125114620.1286:<< Case 2: extract a qubit >>
+%@-node:gcross.20100125114620.1286:<< Case 2: extract a qubit >>
+%@nl
+
+\end{description}
+
+\end{proof}
 %@-node:gcross.20100119183304.1295:Proof
 %@-node:gcross.20100119183304.1292:Proposition: Creation of certificate
 %@-others
