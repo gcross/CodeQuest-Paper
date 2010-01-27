@@ -658,6 +658,177 @@ We have now demonstrated that for every pair $O\in\set C$, we must have $\set G(
 \end{proof}
 %@-node:gcross.20100125183648.1326:Proof
 %@-node:gcross.20100125183648.1308:Theorem: Optimality condition
+%@+node:gcross.20100126164527.1285:Corolary: Alternative optimality condition
+%@-node:gcross.20100126164527.1285:Corolary: Alternative optimality condition
+%@+node:gcross.20100126164527.1288:Lemma: Multiple recombinations
+\begin{lemma}
+\label{multiple-recombinations}
+Suppose we are given a pair $(a,b)$ and a seqence of $N$ pairs $\lst Q$ all conjugal to some set $\set S$, and two sequences of elements from $\{0,1\}$, $\lst f^{(1)}$ and $\lst f^{(2)}$.  Define
+$$b':=b\cdot\prod_{1 \le i \le N, k \in \{0,1\}, f^{(k)}_i=1}p_{(3-k)}(\lst Q_i),$$
+$\lst O'_i := (o'^{(1)}_i,o'^{(2)}_i)$ where
+$$o'^{(k)}_i :=
+\begin{cases}
+p_k(\lst O_i) & l^{(k)}_i = 0\\
+p_k(\lst O_i) \cdot a & l^{(k)}_i = 1,
+\end{cases}
+$$
+and
+$$\set S' := \left[\set S\backslash\paren{\{a,b\} \cup \set U(\lst Q)}\right]\cup \{a,b'\} \cup \set U(\lst Q').$$
+Then
+\begin{enumerate}
+\item the pair $(a,b')$ and the sequence of pairs $\lst Q'$ are all conjugal pairs with respect to $\set S'$; and
+\item $\genfun\paren{\{a,b'\}\cup \set U(\lst Q')}=\genfun\paren{\{a,b\}\cup \set U(\lst Q)}$
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Proof by induction.  For the base case, note that statement trivially holds for $N=0$.
+
+Now suppose we have proven this for all sequences of $N-1$ pairs, and we are given a sequence of $N$ pairs.  Invoking the inductive hypothesis, apply this Lemma recursively to the first $N-1$ elements of $\lst Q$ and $\lst f$, and let $b''$, $\lst Q''$ and $\set S''$ refer to the objects described in this Lemma (without the extra primes) as applied to these $N-1$ elements.
+
+Let
+$$
+c := 
+\begin{cases}
+b'' & l^{(1)}_N = 0\\
+b'' \cdot p_2(\lst Q_N)  &  l^{(1)}_N = 1,\\
+\end{cases}
+\quad
+d_1 :=
+\begin{cases}
+p_1(\lst Q_N) & l^{(1)}_N = 0\\
+p_1(\lst Q_N) \cdot a &  l^{(1)}_N = 1,\\
+\end{cases}
+$$
+and
+$$\set R := \left[\set S''\backslash\{a,b'',p_1(\lst Q_N),p_2(\lst Q_N)\}\right]\cup \{a,c,d_1,p_2(\lst Q_N)\}.$$
+Note that for either value of $f^{(1)}$ we have that the pairs $(a,c)$ and $(d_1,p_2(\lst Q_N))$ are conjugal with respect to $\set R$ and that $\genfun\paren{\{a,c,d_1,p_2(\lst Q_N)\}}=\genfun\paren{\{a,b'',p_1(\lst Q_N),p_2(\lst Q_N)\}}$; for $f^{(1)}=0$ this conclusion is trivial since $b''=c$ and $d_1=p_1(\lst Q_N)$, and for $f^{(1)}=1$ we obtain this conclusion by applying Lemma \ref{combining-pairs}.
+
+Now let
+$$
+c' := 
+\begin{cases}
+c & l^{(2)}_N = 0\\
+c \cdot d_1  &  f^{(2)}_N = 1,\\
+\end{cases}
+\quad
+d_2 :=
+\begin{cases}
+p_2(\lst Q_N) & f^{(2)}_N = 0\\
+p_2(\lst Q_N) \cdot a &  f^{(2)}_N = 1,\\
+\end{cases}
+$$
+and
+$$\set R' := \left[\set R\backslash\{a,c,d_1,p_2(\lst P_N)\}\right]\cup \{a,c',d_1,d_2\}.$$
+Applying the same reasoning as before, we conclude that the pairs $(a,c')$ and $(d_1,d_2)$ are conjugal with respect to $\set R'$ and that $\genfun\paren{\{a,c',d_1,d_2\}}=\genfun\paren{\{a,c,d_1,p_2(\lst P_N)\}}$.
+
+Finally, let
+$$c'' :=
+\begin{cases}
+c' \cdot a & f^{(1)}_N = 1 \,\,\text{and}\,\, f^{(2)}_N = 1 \\
+c' & \text{otherwise},\\
+\end{cases}
+$$
+and
+$$
+\set R'':=
+\left[\set R'\backslash\{a,c'\}\right]\cup \{a,c''\}.
+$$
+Observe that $\{a,c''\}=0$ and that $a$ and $c''$ are products of $a$ and $c$;  thus, $\genfun\paren{\{a,c'',d_1,d_2\}}=\genfun\paren{\{a,c',d_1,d_2\}}$, and furthermore $a$ and $c''$ commute with every operator in $\set R''$ save each other and so $\{(a,c'')\} \cup \{(d_1,d_2\}$ are conjugal pairs with respect to $\set R''$.
+
+Note, however, that by construction we have that $b'=c''$, $\set S'=\set R''$, and
+$$\lst Q'_i :=
+\begin{cases}
+\lst Q''_i & i < N \\
+(d_1,d_2) & i = N.\\
+\end{cases}
+$$
+Thus, we are done.
+\end{proof}
+%@-node:gcross.20100126164527.1288:Lemma: Multiple recombinations
+%@+node:gcross.20100126164527.1286:Proposition: Creation of certificate
+\begin{proposition}
+Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\set S$ such that every pair in $\set L$ is conjugal with respect to $\set U(\set L)\cup\set S$.  Then for every $0\le k \le 2N$, there exist
+\begin{itemize}
+\item a choice of qubits $\lst P$ stabilized by $\set S$;
+\item a set of qubits, $\set Q$;
+\item and a sequence of $n$ sequences $\lst O^{(l)}$ of Pauli operators;
+\end{itemize}
+such that
+\begin{enumerate}
+\item the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $\set R := \set U(\lst P)\cup \set U(\set Q)\cup \set S$;
+\item $\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}=(\genfun\circ\set U)(\set L)$;
+\item every operator in $\set U(\set Q)$ commutes with every operator in $\{\lst O^{(l)}_i\}_{l,i}$;
+\item $n \ge m_{\set S}(\lst P_{|\lst P|})$ if $\lst P'$ is non-empty;
+\item $\sum_{l=1}^{n} |\lst O^{(l)}| = k$;
+\item \label{certificate is subset of the choice of qubits} $\{\lst O^{(l)}_i\}_{l,i}\subseteq \set U(\lst P)$
+\item \label{all first pairs are present in the certificate} for every $1 \le i \le |\lst P|$ there exists integers $j$ and $l$ such that $p_1(\lst P'_i)=\lst O^{(l)}_j$.
+\item $\{\lst O^{(l)}_i\}_i=\{o:o\in\set U(\lst P), \om_{\set S}(o)=l\}$ for $l<m_{\set S}(\lst P_{|\lst P|})$;
+\item for every $1\le l\le n$ and $1 \le j \le |\lst O^{(l)}|$ there exists an undetectable error (with respect to $\set S$) of weight $l$ that acts on $\lst O^{(l)}_j$ but not on any operator after $\lst O^{(l)}_j$, i.e. any operator in $\{\lst O^{(l)}_i : i > j\}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Proof by induction.  For the base case, let $n=0$ and $\lst P'$ be the empty sequence;  then the conclusions are satisfied vacuously.
+
+Now assume that this Proposition has been proven for some integer $k-1$;  let $\lst P'$, $\lst Q'$ and $\lst O^{(l)'}$ be the named objects (without the primes) obtained by recursively applying this Proposition to the integer $k-1$  Let $o$ be the minimizer of $\om_{\set S}$ over the set $\paren{\set U(\lst P') \cup \set U(\set Q')} \backslash \paren{\bigcup_l \set U(\lst O^{(l)})}$, and $d:=\om_{\set S}(o)$.  Note that since the operators in $\set Q'$ commute with every operator in $\{\lst O^{(l)}_i\}_{l,i}$, by the construction of $\lst O^{(l)}$ we know that $d\ge n$;
+
+There are two cases;  either
+\begin{enumerate}
+\item $o\in \set U(\lst P)$;
+\item or $o\notin \set U(\lst P)$ and $o\in\set U(\set Q)$.
+\end{enumerate}
+
+\begin{description}
+
+\item[Case 1 $\Rightarrow o\in\set U(\lst P)$]
+By properties \ref{certificate is subset of the choice of qubits} and \ref{all first pairs are present in the certificate} we know that $o$ must be the second member of a pair in $\lst P$;  let $j$ be the index of the pair such that $p_2(\lst P_j)=o$.  Let $a := o$ and $b := p_1(\lst P_i)$.  
+Place some arbitrary ordering on $\set Q'$ to form the sequence $\lst Q$ (the lack of prime is intentional), and then define the sequences $f^{(1)}$ and $f^{(2)}$ such that
+$$\lst f^{(j)}_i :=
+\begin{cases}
+0 & [p_j(\lst O_i),o] = 0 \\
+1 & \{p_j(\lst O_i),o\} = 0. \\
+\end{cases}
+$$
+Let $b'$ and $\lst Q'$ be as defined in Lemma \ref{multiple-recombinations} given the pair $(a,b)$ and the sequence $\lst Q$.  Now let $\set Q := \{\lst Q'_i\}_i$,
+$$\lst P_i :=
+\begin{cases}
+\lst P'_i & i \ne j \\
+(b',a) & i = j
+\end{cases}
+$$
+and
+$$
+\lst O^{(l)}_i :=
+\begin{cases}
+\lst O'^{(l)}_i & l < n\\
+\begin{cases}
+\lst O'^{(l)}_i & l = n, i \le |\lst O'^{(l)}_i|\\
+o & l = n, i = |\lst O'^{(l)}_i|\\
+\end{cases} & d = n \\
+\begin{cases}
+\lst O'^{(l)}_i & l = n\\
+o & l = d, i = 1
+\end{cases} & d > n
+\end{cases}
+$$
+(Note that $\lst O^{(l)}$ is the empty sequence for $d>n$ and $n < l < d$.)
+
+We shall now prove that all of the listed conclusions hold.
+\begin{enumerate}
+\item By the inductive hypothesis we know that the pairs in $\lst P'$ and $\set Q'$ are all conjugal with respect to $\set R' := \set U(\lst P')\cup \set U(\set Q')\cup \set S$, and by Lemma \ref{multiple-recombinations} we know that the pair $(a,b')$ and the set of pairs $\set Q$ are all conjugal pairs with respect to
+$$\left[\set R'\backslash\paren{\{a,b\} \cup \set U(\set Q')}\right]\cup \{a,b'\} \cup \set U(\set Q)=\set R.$$
+\item By the inductive hypothesis we know that $\genfun\paren{\set U(\lst P')\cup \set U(\set Q')}=(\genfun\circ\set U)(\set L)$, and by Lemma \ref{multiple-recombinations} we know that $\genfun\paren{\{a,b'\}\cup \set U(\lst Q')}=\genfun\paren{\{a,b\}\cup \set U(\lst Q)}$.  Hence we conclude that $\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}=(\genfun\circ\set U)(\set L)$.
+\item 
+\end{enumerate}
+
+  First observe that  we know that the pair $(a,b')$ and the sequence of pairs $\lst Q'$ are all conjugal pairs with respect to $\set S'$, 
+
+
+\end{description}
+
+\end{proof}
+%@-node:gcross.20100126164527.1286:Proposition: Creation of certificate
 %@+node:gcross.20100119183304.1293:Definition: Certificate
 This last definition gives us a precise notion of what it means to have made the best choice of logical qubits.  However, we now need a way to prove that given choice of qubits is optimal.  We do this by means of a certificate, which is defined as follows:
 
@@ -721,92 +892,6 @@ Suppose we are given a set $\set S$, an operator $x$ such that $\om_{\set S}(x)=
 Since $[x,o]=0$ for some $o\in\set e_{\set S}(x)$, we have that $\{o\cdot x,e_{\set S}(o)\}=0$.  Furthermore, we know that there is no undetectable error with weight less than $\om_{\set S}(x)$ that acts on either $x$ or $y$ and hence on the product $x\cdot y$.  Thus, $o$ is the undetectable error acting on $x\cdot y$ of minimum weight and so $\om_{\set S}(x\cdot y)=w(o)=\om_{\set S}(x)$.
 \end{proof}
 %@-node:gcross.20100123143948.1298:Lemma: Unchanged error weight
-%@+node:gcross.20100119183304.1296:Lemma: Multiple recombinations
-\begin{lemma}
-\label{multiple-recombinations}
-Suppose we are given a pair $(a,b)$ and a seqence of $N$ pairs $\lst O$ all conjugal to some set $\set S$, and two sequences of elements from $\{0,1\}$, $\lst l^{(1)}$ and $\lst l^{(2)}$.  Define
-$$b':=b\cdot\prod_{o\in \set X_{\lst l}(\lst P)}o,$$
-$\lst O'_i := (o'^{(1)}_i,o'^{(2)}_i)$ where
-$$o'^{(k)}_i :=
-\begin{cases}
-p_k(\lst O_i) & l^{(k)}_i = 0\\
-p_k(\lst O_i) \cdot a & l^{(k)}_i = 1,
-\end{cases}
-$$
-and
-$$\set S' := \left[\set S\backslash\paren{\{a,b\} \cup \set U(\lst O)}\right]\cup \{a,b'\} \cup \set U(\lst O').$$
-Then
-\begin{enumerate}
-\item the pair $(a,b')$ and the sequence of pairs $\lst O'$ are all conjugal pairs with respect to $\set S'$; and
-\item $\genfun\paren{\{a,b'\}\cup \set U(\lst O')}=\genfun\paren{\{a,b\}\cup \set U(\lst O)}$
-\end{enumerate}
-\end{lemma}
-
-\begin{proof}
-Proof by induction.  For the base case, note that statement trivially holds for $N=0$.
-
-Now suppose we have proven this for all sequences of $N-1$ pairs, and we are given a sequence of $N$ pairs.  Invoking the inductive hypothesis, apply this Lemma recursively to the first $N-1$ elements of $\lst O$ and $\lst l$, and let $b''$, $\lst Q''$ and $\set S''$ refer to the objects described in the Lemma (without the extra primes) as applied to these $N-1$ elements.
-
-Let
-$$
-c := 
-\begin{cases}
-b'' & l^{(1)}_N = 0\\
-b'' \cdot p_2(\lst O_N)  &  l^{(1)}_N = 1,\\
-\end{cases}
-\quad
-d_1 :=
-\begin{cases}
-p_1(\lst O_N) & l^{(1)}_N = 0\\
-p_1(\lst O_N) \cdot a &  l^{(1)}_N = 1,\\
-\end{cases}
-$$
-and
-$$\set R := \left[\set S''\backslash\{a,b'',p_1(\lst O_N),p_2(\lst O_N)\}\right]\cup \{a,c,d_1,p_2(\lst O_N)\}.$$
-Note that for either value of $l^{(1)}$ we have that the pairs $(a,c)$ and $(d_1,p_2(\lst O_N))$ are conjugal with respect to $\set R$ and that $\genfun\paren{\{a,c,d_1,p_2(\lst O_N)\}}=\genfun\paren{\{a,b'',p_1(\lst O_N),p_2(\lst O_N)\}}$; for $l^{(1)}=0$ this conclusion is trivial since $b''=c$ and $d_1=p_1(\lst O_N)$, and for $l^{(1)}=1$ we obtain this conclusion by applying Lemma \ref{combining-pairs}.
-
-Now let
-$$
-c' := 
-\begin{cases}
-c & l^{(2)}_N = 0\\
-c \cdot d_1  &  l^{(2)}_N = 1,\\
-\end{cases}
-\quad
-d_2 :=
-\begin{cases}
-p_2(\lst O_N) & l^{(2)}_N = 0\\
-p_2(\lst O_N) \cdot a &  l^{(2)}_N = 1,\\
-\end{cases}
-$$
-and
-$$\set R' := \left[\set R\backslash\{a,c,d_1,p_2(\lst P_N)\}\right]\cup \{a,c',d_1,d_2\}.$$
-Applying the same reasoning as before, we conclude that the pairs $(a,c')$ and $(d_1,d_2)$ are conjugal with respect to $\set R'$ and that $\genfun\paren{\{a,c',d_1,d_2\}}=\genfun\paren{\{a,c,d_1,p_2(\lst P_N)\}}$.
-
-Finally, let
-$$c'' :=
-\begin{cases}
-c' \cdot a & l^{(1)}_N = 1 \,\,\text{and}\,\, l^{(2)}_N = 1 \\
-c' & \text{otherwise},\\
-\end{cases}
-$$
-and
-$$
-\set R'':=
-\left[\set R'\backslash\{a,c'\}\right]\cup \{a,c''\}.
-$$
-Observe that $\{a,c''\}=0$ and that $a$ and $c''$ are products of $a$ and $c$;  thus, $\genfun\paren{\{a,c'',d_1,d_2\}}=\genfun\paren{\{a,c',d_1,d_2\}}$, and furthermore $a$ and $c''$ commute with every operator in $\set R''$ save each other and so $\{(a,c'')\} \cup \{(d_1,d_2\}$ are conjugal pairs with respect to $\set R''$.
-
-Note, however, that by construction we have that $b'=c''$, $\set S'=\set R''$, and
-$$\lst O'_i :=
-\begin{cases}
-\lst O''_i & i < N \\
-(d_1,d_2) & i = N.\\
-\end{cases}
-$$
-Thus, we are done.
-\end{proof}
-%@-node:gcross.20100119183304.1296:Lemma: Multiple recombinations
 %@-node:gcross.20100125114620.1284:Lemmas
 %@+node:gcross.20100119183304.1295:Proof
 Now to prove Proposition \ref{certificate-creation}.
