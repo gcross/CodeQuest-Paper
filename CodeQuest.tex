@@ -746,6 +746,39 @@ $$
 Thus, we are done.
 \end{proof}
 %@-node:gcross.20100126164527.1288:Lemma: Multiple recombinations
+%@+node:gcross.20100127132544.1287:Corolary: Recombination to make commute
+\begin{corolary}
+\label{recombination-to-make-commute}
+Suppose a pair $(a,b)$ and a set of pairs $\set R$ all conjugal to some set $\set S$, and a Pauli operator $x$ such that $\{a,x\}=0$.  Let $b' := b\cdot \prod_{X\in\set R, \{p_k(X),a\}=0} p_{(3-k)}(X)$, $\set R':=\{\paren{f(c),f(d)}: (c,d)\in\set R\}$ where
+$$
+f(o) :=
+\begin{cases}
+o & [o,x]=0 \\
+o\cdot a & \{o,x\}=0, \\
+\end{cases}
+$$
+and
+$$\set S' := \left[\set S\backslash\paren{\{a,b\} \cup \set U(\set R)}\right]\cup \{a,b'\} \cup \set U(\set R').$$
+Then
+\begin{enumerate}
+\item the pair $(a,b')$ and the set of pairs $\set R'$ are all conjugal pairs with respect to $\set S'$;
+\item $\genfun\paren{\{a,b'\}\cup \set U(\set R')}=\genfun\paren{\{a,b\}\cup \set U(\set R)}$;
+\item and $x$ commutes with every operator in $\set R'$.
+\end{enumerate}
+Then
+\end{corolary}
+
+\begin{proof}
+Place any arbitrary ordering in $\set R$, and the define then sequences $f^{(1)}$ and $f^{(2)}$ such that
+$$\lst f^{(j)}_i :=
+\begin{cases}
+0 & [p_j(\lst R_i),x] = 0 \\
+1 & \{p_j(\lst R_i),x\} = 0. \\
+\end{cases}
+$$
+The first two conclusions of this Corolary follows immediately from Lemma \ref{multiple-recombinations}, dropping the ordering on $\lst R'$.  The third comes from the fact that every element in $\set R'$ is either an element from $\set R$ that commutes with $x$ or the product of an element from $\set R$ that anti-commutes with $x$ and $a$ ,which 
+\end{proof}
+%@-node:gcross.20100127132544.1287:Corolary: Recombination to make commute
 %@+node:gcross.20100126164527.1286:Proposition: Creation of certificate
 \begin{proposition}
 Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\set S$ such that every pair in $\set L$ is conjugal with respect to $\set U(\set L)\cup\set S$.  Then for every $0\le k \le 2N$, there exist
@@ -759,7 +792,7 @@ such that, letting $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash
 \item \label{pairs are all conjugal to R} the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $\set R := \set U(\lst P)\cup \set U(\set Q)\cup \set S$;
 \item $\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}=(\genfun\circ\set U)(\set L)$;
 \item \label{nothing smaller in Q} if $\lst P$ is non-empty, then $n \ge m_{\set S}(\lst P_{|\lst P|})$ and $\om_{\set S}(o)\ge m_{\set S}(\lst P_{|\lst P|})$ for all $o\in\set X$;
-\item $\left|\{\lst O^{(l)\}_{l,i}\right| = k$;
+\item $\left|\{\lst O^{(l)}_i\}_{l,i}\right| = k$;
 \item \label{certificate is subset of the choice of qubits} $\{\lst O^{(l)}_i\}_{l,i}\subseteq \set U(\lst P)$
 \item \label{all first pairs are present in the certificate} for every $1 \le i \le |\lst P|$ there exists integers $j$ and $l$ such that $p_1(\lst P'_i)=\lst O^{(l)}_j$.
 \item \label{O has the certificate property} $\{\lst O^{(l)}_i\}_i=\{o:o\in\set U(\lst P), \om_{\set S}(o)=l\}$ for $l<m_{\set S}(\lst P_{|\lst P|})$;
@@ -781,22 +814,9 @@ There are two cases;  either
 \begin{description}
 
 \item[Case 1 $\Rightarrow o\in\set U(\lst P)$]
-By properties \ref{certificate is subset of the choice of qubits} and \ref{all first pairs are present in the certificate} we know that $o$ must be the second member of a pair in $\lst P$;  let $j$ be the index of the pair such that $p_2(\lst P_j)=o$.  Let $a := o$ and $b := p_1(\lst P_i)$.  
-Place some arbitrary ordering on $\set Q'$ to form the sequence $\lst Q$ (the lack of prime is intentional), and then define the sequences $f^{(1)}$ and $f^{(2)}$ such that
-$$\lst f^{(j)}_i :=
-\begin{cases}
-0 & [p_j(\lst O_i),o] = 0 \\
-1 & \{p_j(\lst O_i),o\} = 0. \\
-\end{cases}
-$$
-Let $b'$ and $\lst Q'$ be as defined in Lemma \ref{multiple-recombinations} given the pair $(a,b)$ and the sequence $\lst Q$.  Now let $\set Q := \{\lst Q'_i\}_i$,
-$$\lst P_i :=
-\begin{cases}
-\lst P'_i & i \ne j \\
-(b',a) & i = j
-\end{cases}
-$$
-and $\lst O^{(l)}_i=b'$ if $\lst O^{(l)}_i=b$, and otherwise 
+By properties \ref{certificate is subset of the choice of qubits} and \ref{all first pairs are present in the certificate} we know that $o$ must be the second member of a pair in $\lst P$;  let $j$ be the index of the pair such that $p_2(\lst P_j)=o$.  Let $a := o$ and $b := p_1(\lst P_i)$.
+
+Let $b'$ and $\set Q := \set R'$ be as defined in Corolary \ref{recombination-to-make-commute} given the pair $(a,b)$ and the sequence $\set R := \set Q'$.  Let $\lst O^{(l)}_i=b'$ if $\lst O^{(l)}_i=b$, and otherwise 
 $$
 \lst O^{(l)}_i :=
 \begin{cases}
@@ -822,9 +842,9 @@ $$\left[\set R'\backslash\paren{\{a,b\} \cup \set U(\set Q')}\right]\cup \{a,b'\
 
 \item By the inductive hypothesis we know that $\genfun\paren{\set U(\lst P')\cup \set U(\set Q')}=(\genfun\circ\set U)(\set L)$, and by Lemma \ref{multiple-recombinations} we know that $\genfun\paren{\{a,b'\}\cup \set U(\lst Q')}=\genfun\paren{\{a,b\}\cup \set U(\lst Q)}$.  Hence we conclude that $\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}=(\genfun\circ\set U)(\set L)$.
 
-\item Since $M^{(|\lst P|)}(\lst P)=M^{(|\lst P|)}(\lst P')$ (as we showed earlier), we conclude immediately that $n \ge n' \ge m_{\set S}(\lst P_{|\lst P|})$.  Since $o\notin \{\lst O^{(l)'}\}_{l,i}$ we know that $\om_{\set S}(o)\ge m_{\set S}(\lst P_{|\lst P|})$, and since $\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ for all $x\in\set U(\set Q')$ we conclude from Lemma \ref{combinations-can't-make-things-worse} that $\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ for all $x\in\set U(\set Q)$.
+\item Since $M^{(|\lst P|)}(\lst P)=M^{(|\lst P|)}(\lst P')$ (as we showed earlier), we conclude immediately that $n \ge n' \ge m_{\set S}(\lst P_{|\lst P|})$.  Since $o\notin \{\lst O'^{(l)}\}_{l,i}$ we know that $\om_{\set S}(o)\ge m_{\set S}(\lst P_{|\lst P|})$, and since $\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ for all $x\in\set U(\set Q')$ we conclude from Lemma \ref{combinations-can't-make-things-worse} that $\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ for all $x\in\set U(\set Q)$.  From Corolary \ref{recombination-to-make-commute} we also know that 
 
-\item This follows from the fact that $\left|\{\lst O^{(l)'}\}_{l,i}\right| = k-1$ by the inductive hypothesis and by construction the set $\{\lst O^{(l)}\}_{l,i}$ has one changed element and one additional element.
+\item This follows from the fact that $\left|\{\lst O'^{(l)}\}_{l,i}\right| = k-1$ by the inductive hypothesis and by construction the set $\{\lst O^{(l)}\}_{l,i}$ has one changed element and one additional element.
 
 \item This follows from the construction of $\lst O^{(l)}$ from $\lst O^{(l)}$, in which we added an element in $\set U(\lst P)$ and changed the only element that had changed from $\set U(\lst P')$ to $\set U(\lst P)$.
 
@@ -833,11 +853,11 @@ $$\left[\set R'\backslash\paren{\{a,b\} \cup \set U(\set Q')}\right]\cup \{a,b'\
 \item This also using the same argument used to show property \ref{certificate is subset of the choice of qubits}.
 
 \item
-Note that every operator in $\set X$ is the product of operators in $\set X'$;  hence, for every operator $\lst O^{(l)')_i$ the undetectable error that acts on $\lst O^{(l)'}_i$ but not on any operator in $\lst X'$ that we know exists from the inductive hypothesis must also not act on any operator $\lst X$.  Thus, we conclude that this property is immediately satisfied for every sequence $\lst O^{(l)}$ such that $\lst O^{(l)}=\lst O^{(l)'}$.  Furthermore, we also conclude that this property is satisfied vacuously for every empty sequence.  Thus, there are only two sequences remaining for us to consider:  the one that contains $b'$, and the one to which we added $o$;  note that it is possible that these are the same sequence.
+Note that every operator in $\set X$ is the product of operators in $\set X'$;  hence, for every operator $\lst O'^{(l)}_i$ the undetectable error that acts on $\lst O'^{(l)}_i$ but not on any operator in $\lst X'$ that we know exists from the inductive hypothesis must also not act on any operator $\lst X$.  Thus, we conclude that this property is immediately satisfied for every sequence $\lst O^{(l)}$ such that $\lst O^{(l)}=\lst O'^{(l)}$.  Furthermore, we also conclude that this property is satisfied vacuously for every empty sequence.  Thus, there are only two sequences remaining for us to consider:  the one that contains $b'$, and the one to which we added $o$;  note that it is possible that these are the same sequence.
 
-Let $l$ and $i$ be the integers such that $\lst O^{(l)'}_i=b$.  From the inductive hypothesis we know from property \ref{O has the certificate property, extending to X} that there exists an undetectable error $y$ of weight $l$ that acts on $b$ but not on any element in $\{\lst O^{(l)'}_i : i > j\} \cup \set X$.  There are two consequences of this.  first, since $b'$ is a product of $b$ and elements from $\set U(\set Q')\subseteq\set X$, this means that $y$ must anti-commute with and hence act on $b'$.  Thus, by the inductive hypothesis, $y$ must commute with and hence not act on every element in $\{\lst O^{(l)}_i : i > j\}$;  note that this continues to be true even if $o$ appears at the end of $\lst O^{(l)}$, since $o\in\set X'$.  Furthermore, by the same reasoning used in the previous paragraph, $y$ must commute with and hence not act on every operator in $\set X$.
+Let $l$ and $i$ be the integers such that $\lst O'^{(l)}_i=b$.  From the inductive hypothesis we know from property \ref{O has the certificate property, extending to X} that there exists an undetectable error $y$ of weight $l$ that acts on $b$ but not on any element in $\{\lst O'^{(l)}_i : i > j\} \cup \set X$.  There are two consequences of this.  first, since $b'$ is a product of $b$ and elements from $\set U(\set Q')\subseteq\set X$, this means that $y$ must anti-commute with and hence act on $b'$.  Thus, by the inductive hypothesis, $y$ must commute with and hence not act on every element in $\{\lst O^{(l)}_i : i > j\}$;  note that this continues to be true even if $o$ appears at the end of $\lst O^{(l)}$, since $o\in\set X'$.  Furthermore, by the same reasoning used in the previous paragraph, $y$ must commute with and hence not act on every operator in $\set X$.
 
-Now let $l$ be the integer such that $\lst O^{(l)}_{|\lst O^{(l)}|}=o$.  For every operator $\lst O^{(l)}_i$ such that $i<|\lst O^{(l)}|$ we know that there must be an undetectable error that acts on $\lst O^{(l)}_i$ but not on $o$ since $\lst O^{(l)}_i=\lst O^{(l)'}_i$ and $o\in \set X'$.  Furthermore, every operator in $\set X$ is either an operator in $\set X'$ that commutes with $x$ or the product of $o$ with an operator that anti-commutes with $x$;  hence, there exists an undetectable error --- namely, $x$ --- that acts on $o$ but not on any operator in $\set X$.
+Now let $l$ be the integer such that $\lst O^{(l)}_{|\lst O^{(l)}|}=o$.  For every operator $\lst O^{(l)}_i$ such that $i<|\lst O^{(l)}|$ we know that there must be an undetectable error that acts on $\lst O^{(l)}_i$ but not on $o$ since $\lst O^{(l)}_i=\lst O'^{(l)}_i$ and $o\in \set X'$.  Furthermore, every operator in $\set X$ is either an operator in $\set X'$ that commutes with $x$ or the product of $o$ with an operator that anti-commutes with $x$;  hence, there exists an undetectable error --- namely, $x$ --- that acts on $o$ but not on any operator in $\set X$.
 \end{enumerate}
 \end{description}
 
