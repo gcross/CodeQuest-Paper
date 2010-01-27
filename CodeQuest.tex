@@ -756,22 +756,21 @@ Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\
 \end{itemize}
 such that
 \begin{enumerate}
-\item the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $\set R := \set U(\lst P)\cup \set U(\set Q)\cup \set S$;
+\item \label{pairs are all conjugal to R} the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $\set R := \set U(\lst P)\cup \set U(\set Q)\cup \set S$;
 \item $\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}=(\genfun\circ\set U)(\set L)$;
-\item every operator in $\set U(\set Q)$ commutes with every operator in $\{\lst O^{(l)}_i\}_{l,i}$;
-\item $n \ge m_{\set S}(\lst P_{|\lst P|})$ if $\lst P'$ is non-empty;
-\item $\sum_{l=1}^{n} |\lst O^{(l)}| = k$;
+\item \label{nothing smaller in Q} if $\lst P$ is non-empty, then $n \ge m_{\set S}(\lst P_{|\lst P|})$ and $\om_{\set S}(o)\ge m_{\set S}(\lst P_{|\lst P|})$ for all $o\in\set U(\set Q)$;
+\item $\left|\{\lst O^{(l)\}_{l,i}\right| = k$;
 \item \label{certificate is subset of the choice of qubits} $\{\lst O^{(l)}_i\}_{l,i}\subseteq \set U(\lst P)$
 \item \label{all first pairs are present in the certificate} for every $1 \le i \le |\lst P|$ there exists integers $j$ and $l$ such that $p_1(\lst P'_i)=\lst O^{(l)}_j$.
-\item $\{\lst O^{(l)}_i\}_i=\{o:o\in\set U(\lst P), \om_{\set S}(o)=l\}$ for $l<m_{\set S}(\lst P_{|\lst P|})$;
-\item for every $1\le l\le n$ and $1 \le j \le |\lst O^{(l)}|$ there exists an undetectable error (with respect to $\set S$) of weight $l$ that acts on $\lst O^{(l)}_j$ but not on any operator after $\lst O^{(l)}_j$, i.e. any operator in $\{\lst O^{(l)}_i : i > j\}$.
+\item \label{O has the certificate property} $\{\lst O^{(l)}_i\}_i=\{o:o\in\set U(\lst P), \om_{\set S}(o)=l\}$ for $l<m_{\set S}(\lst P_{|\lst P|})$;
+\item for every $1\le l\le n$ and $1 \le j \le |\lst O^{(l)}|$ there exists an undetectable error (with respect to $\set S$) of weight $l$ that acts on $\lst O^{(l)}_j$ but not on any operator in $\{\lst O^{(l)}_i : i > j\} \cup \set U(\set Q)$.
 \end{enumerate}
 \end{proposition}
 
 \begin{proof}
 Proof by induction.  For the base case, let $n=0$ and $\lst P'$ be the empty sequence;  then the conclusions are satisfied vacuously.
 
-Now assume that this Proposition has been proven for some integer $k-1$;  let $\lst P'$, $\lst Q'$ and $\lst O^{(l)'}$ be the named objects (without the primes) obtained by recursively applying this Proposition to the integer $k-1$  Let $o$ be the minimizer of $\om_{\set S}$ over the set $\paren{\set U(\lst P') \cup \set U(\set Q')} \backslash \paren{\bigcup_l \set U(\lst O^{(l)})}$, and $d:=\om_{\set S}(o)$.  Note that since the operators in $\set Q'$ commute with every operator in $\{\lst O^{(l)}_i\}_{l,i}$, by the construction of $\lst O^{(l)}$ we know that $d\ge n$;
+Now assume that this Proposition has been proven for some integer $k-1$;  let $\lst P'$, $\lst Q'$, $n'$ and $\lst O^{(l)'}$ be the named objects (without the primes) obtained by recursively applying this Proposition to the integer $k-1$  Let $o$ be the minimizer of $\om_{\set S}$ over the set $\paren{\set U(\lst P') \cup \set U(\set Q')} \backslash \paren{\bigcup_l \set U(\lst O^{(l)})}$, and $d:=\om_{\set S}(o)$.  Note that since the operators in $\set Q'$ commute with every operator in $\{\lst O^{(l)}_i\}_{l,i}$, by the construction of $\lst O^{(l)}$ we know that $d\ge n$;
 
 There are two cases;  either
 \begin{enumerate}
@@ -797,34 +796,34 @@ $$\lst P_i :=
 (b',a) & i = j
 \end{cases}
 $$
-and
+and $\lst O^{(l)}_i=b'$ if $\lst O^{(l)}_i=b$, and otherwise 
 $$
 \lst O^{(l)}_i :=
 \begin{cases}
-\lst O'^{(l)}_i & l < n\\
+\lst O'^{(l)}_i & l < n'\\
 \begin{cases}
-\lst O'^{(l)}_i & l = n, i \le |\lst O'^{(l)}_i|\\
-o & l = n, i = |\lst O'^{(l)}_i|\\
-\end{cases} & d = n \\
+\lst O'^{(l)}_i & l = n', i \le |\lst O'^{(l)}_i|\\
+o & l = n, i = |\lst O'^{(l)}_i|+1\\
+\end{cases} & n = n' \\
 \begin{cases}
-\lst O'^{(l)}_i & l = n\\
-o & l = d, i = 1
-\end{cases} & d > n
+\lst O'^{(l)}_i & l = n'\\
+o & l = n, i = 1
+\end{cases} & n > n'
 \end{cases}
 $$
-(Note that $\lst O^{(l)}$ is the empty sequence for $d>n$ and $n < l < d$.)
+(Note that $\lst O^{(l)}$ is the empty sequence for $n>n'$ and $n' < l < n$.)
+
+First we need to establish that $\lst P$ is a choice of qubits.  We shall defer the proof that the pairs are conjugal until we prove property \ref{pairs are all conjugal to R}, so it remains only to show that $M^{(|\lst P|)}(\lst P)$ is ordered.  To do this, we note that by the inductive hypothesis we conclude from properties \ref{all first pairs are present in the certificate} and \ref{O has the certificate property} that there is an  undetectable error of weight $\om_{\set S}(b)$ that acts on $b$ but not on any operator in $\set U(\set Q')$, and furthermore by property \ref{nothing smaller in Q} we observe that there is no undetectable error acting on any operator in $\set U(\set Q')$ that has a smaller weight than this error;  hence, $\om_{\set S}(b')=\om_{\set S}(b)$, and so $M^{(|\lst P|)}(\lst P)=M^{(|\lst P|)}(\lst P')$.
 
 We shall now prove that all of the listed conclusions hold.
 \begin{enumerate}
 \item By the inductive hypothesis we know that the pairs in $\lst P'$ and $\set Q'$ are all conjugal with respect to $\set R' := \set U(\lst P')\cup \set U(\set Q')\cup \set S$, and by Lemma \ref{multiple-recombinations} we know that the pair $(a,b')$ and the set of pairs $\set Q$ are all conjugal pairs with respect to
 $$\left[\set R'\backslash\paren{\{a,b\} \cup \set U(\set Q')}\right]\cup \{a,b'\} \cup \set U(\set Q)=\set R.$$
 \item By the inductive hypothesis we know that $\genfun\paren{\set U(\lst P')\cup \set U(\set Q')}=(\genfun\circ\set U)(\set L)$, and by Lemma \ref{multiple-recombinations} we know that $\genfun\paren{\{a,b'\}\cup \set U(\lst Q')}=\genfun\paren{\{a,b\}\cup \set U(\lst Q)}$.  Hence we conclude that $\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}=(\genfun\circ\set U)(\set L)$.
-\item 
+\item Since $M^{(|\lst P|)}(\lst P)=M^{(|\lst P|)}(\lst P')$ (as we showed earlier), we conclude immediately that $n \ge n' \ge m_{\set S}(\lst P_{|\lst P|})$.  Since $o\notin \{\lst O^{(l)'}\}_{l,i}$ we know that $\om_{\set S}(o)\ge m_{\set S}(\lst P_{|\lst P|})$, and since $\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ for all $x\in\set U(\set Q')$ we conclude from Lemma \ref{combinations-can't-make-things-worse} that $\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ for all $x\in\set U(\set Q)$.
+\item This follows from the fact that $\left|\{\lst O^{(l)'}\}_{l,i}\right| = k-1$ by the inductive hypothesis and by construction the set $\{\lst O^{(l)}\}_{l,i}$ has one changed element and one additional element.
+\item This follow from the construction of $\lst O^{(l)}$ from $\lst O^{(l)}$, in which we added an element in $\set U(\lst P)$ and changed the only element that had changed from $\set U(\lst P')$ to $\set U(\lst P)$.
 \end{enumerate}
-
-  First observe that  we know that the pair $(a,b')$ and the sequence of pairs $\lst Q'$ are all conjugal pairs with respect to $\set S'$, 
-
-
 \end{description}
 
 \end{proof}
