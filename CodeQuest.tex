@@ -661,8 +661,8 @@ We have now demonstrated that for every pair $O\in\set C$, we must have $\set G(
 %@+node:gcross.20100126164527.1288:Lemma: Multiple recombinations
 \begin{lemma}
 \label{multiple-recombinations}
-Suppose we are given a pair $(a,b)$ and a seqence of $N$ pairs $\lst Q$ all conjugal to some set $\set S$, and two sequences of elements from $\{0,1\}$, $\lst f^{(1)}$ and $\lst f^{(2)}$.  Define
-$$b':=b\cdot\prod_{1 \le i \le N, k \in \{0,1\}, f^{(k)}_i=1}p_{(3-k)}(\lst Q_i),$$
+Suppose we are given a pair $(a,b)$ and a seqence of $N$ pairs $\lst R$ all conjugal to some set $\set S$, and two sequences of elements from $\{0,1\}$, $\lst f^{(1)}$ and $\lst f^{(2)}$.  Define
+$$b':=b\cdot\prod_{1 \le i \le N, k \in \{0,1\}, f^{(k)}_i=1}p_{(3-k)}(\lst R_i),$$
 $\lst O'_i := (o'^{(1)}_i,o'^{(2)}_i)$ where
 $$o'^{(k)}_i :=
 \begin{cases}
@@ -671,36 +671,36 @@ p_k(\lst O_i) \cdot a & l^{(k)}_i = 1,
 \end{cases}
 $$
 and
-$$\set S' := \left[\set S\backslash\paren{\{a,b\} \cup \set U(\lst Q)}\right]\cup \{a,b'\} \cup \set U(\lst Q').$$
+$$\set S' := \left[\set S\backslash\paren{\{a,b\} \cup \set U(\lst R)}\right]\cup \{a,b'\} \cup \set U(\lst R').$$
 Then
 \begin{enumerate}
-\item the pair $(a,b')$ and the sequence of pairs $\lst Q'$ are all conjugal pairs with respect to $\set S'$; and
-\item $\genfun\paren{\{a,b'\}\cup \set U(\lst Q')}=\genfun\paren{\{a,b\}\cup \set U(\lst Q)}$
+\item the pair $(a,b')$ and the sequence of pairs $\lst R'$ are all conjugal pairs with respect to $\set S'$; and
+\item $\genfun\paren{\{a,b'\}\cup \set U(\lst R')}=\genfun\paren{\{a,b\}\cup \set U(\lst R)}$
 \end{enumerate}
 \end{lemma}
 
 \begin{proof}
 Proof by induction.  For the base case, note that statement trivially holds for $N=0$.
 
-Now suppose we have proven this for all sequences of $N-1$ pairs, and we are given a sequence of $N$ pairs.  Invoking the inductive hypothesis, apply this Lemma recursively to the first $N-1$ elements of $\lst Q$ and $\lst f$, and let $b''$, $\lst Q''$ and $\set S''$ refer to the objects described in this Lemma (without the extra primes) as applied to these $N-1$ elements.
+Now suppose we have proven this for all sequences of $N-1$ pairs, and we are given a sequence of $N$ pairs.  Invoking the inductive hypothesis, apply this Lemma recursively to the first $N-1$ elements of $\lst R$ and $\lst f$, and let $b''$, $\lst R''$ and $\set S''$ refer to the objects described in this Lemma (without the extra primes) as applied to these $N-1$ elements.
 
 Let
 $$
 c := 
 \begin{cases}
 b'' & l^{(1)}_N = 0\\
-b'' \cdot p_2(\lst Q_N)  &  l^{(1)}_N = 1,\\
+b'' \cdot p_2(\lst R_N)  &  l^{(1)}_N = 1,\\
 \end{cases}
 \quad
 d_1 :=
 \begin{cases}
-p_1(\lst Q_N) & l^{(1)}_N = 0\\
-p_1(\lst Q_N) \cdot a &  l^{(1)}_N = 1,\\
+p_1(\lst R_N) & l^{(1)}_N = 0\\
+p_1(\lst R_N) \cdot a &  l^{(1)}_N = 1,\\
 \end{cases}
 $$
 and
-$$\set R := \left[\set S''\backslash\{a,b'',p_1(\lst Q_N),p_2(\lst Q_N)\}\right]\cup \{a,c,d_1,p_2(\lst Q_N)\}.$$
-Note that for either value of $f^{(1)}$ we have that the pairs $(a,c)$ and $(d_1,p_2(\lst Q_N))$ are conjugal with respect to $\set R$ and that $\genfun\paren{\{a,c,d_1,p_2(\lst Q_N)\}}=\genfun\paren{\{a,b'',p_1(\lst Q_N),p_2(\lst Q_N)\}}$; for $f^{(1)}=0$ this conclusion is trivial since $b''=c$ and $d_1=p_1(\lst Q_N)$, and for $f^{(1)}=1$ we obtain this conclusion by applying Lemma \ref{combining-pairs}.
+$$\set T := \left[\set S''\backslash\{a,b'',p_1(\lst R_N),p_2(\lst R_N)\}\right]\cup \{a,c,d_1,p_2(\lst R_N)\}.$$
+Note that for either value of $f^{(1)}$ we have that the pairs $(a,c)$ and $(d_1,p_2(\lst R_N))$ are conjugal with respect to $\set R$ and that $\genfun\paren{\{a,c,d_1,p_2(\lst R_N)\}}=\genfun\paren{\{a,b'',p_1(\lst R_N),p_2(\lst R_N)\}}$; for $f^{(1)}=0$ this conclusion is trivial since $b''=c$ and $d_1=p_1(\lst R_N)$, and for $f^{(1)}=1$ we obtain this conclusion by applying Lemma \ref{combining-pairs}.
 
 Now let
 $$
@@ -712,12 +712,12 @@ c \cdot d_1  &  f^{(2)}_N = 1,\\
 \quad
 d_2 :=
 \begin{cases}
-p_2(\lst Q_N) & f^{(2)}_N = 0\\
-p_2(\lst Q_N) \cdot a &  f^{(2)}_N = 1,\\
+p_2(\lst R_N) & f^{(2)}_N = 0\\
+p_2(\lst R_N) \cdot a &  f^{(2)}_N = 1,\\
 \end{cases}
 $$
 and
-$$\set R' := \left[\set R\backslash\{a,c,d_1,p_2(\lst P_N)\}\right]\cup \{a,c',d_1,d_2\}.$$
+$$\set T' := \left[\set T\backslash\{a,c,d_1,p_2(\lst P_N)\}\right]\cup \{a,c',d_1,d_2\}.$$
 Applying the same reasoning as before, we conclude that the pairs $(a,c')$ and $(d_1,d_2)$ are conjugal with respect to $\set R'$ and that $\genfun\paren{\{a,c',d_1,d_2\}}=\genfun\paren{\{a,c,d_1,p_2(\lst P_N)\}}$.
 
 Finally, let
@@ -729,20 +729,21 @@ c' & \text{otherwise},\\
 $$
 and
 $$
-\set R'':=
-\left[\set R'\backslash\{a,c'\}\right]\cup \{a,c''\}.
+\set T'':=
+\left[\set T'\backslash\{a,c'\}\right]\cup \{a,c''\}.
 $$
-Observe that $\{a,c''\}=0$ and that $a$ and $c''$ are products of $a$ and $c$;  thus, $\genfun\paren{\{a,c'',d_1,d_2\}}=\genfun\paren{\{a,c',d_1,d_2\}}$, and furthermore $a$ and $c''$ commute with every operator in $\set R''$ save each other and so $\{(a,c'')\} \cup \{(d_1,d_2\}$ are conjugal pairs with respect to $\set R''$.
+Observe that $\{a,c''\}=0$ and that $a$ and $c''$ are products of $a$ and $c$;  thus, $\genfun\paren{\{a,c'',d_1,d_2\}}=\genfun\paren{\{a,c',d_1,d_2\}}$, and furthermore $a$ and $c''$ commute with every operator in $\set T''$ save each other and so $\{(a,c'')\} \cup \{(d_1,d_2\}$ are conjugal pairs with respect to $\set T''$.
 
-Note, however, that by construction we have that $b'=c''$, $\set S'=\set R''$, and
-$$\lst Q'_i :=
+Note, however, that by construction we have that $b'=c''$, $\set S'=\set T''$, and
+$$\lst R'_i :=
 \begin{cases}
-\lst Q''_i & i < N \\
+\lst R''_i & i < N \\
 (d_1,d_2) & i = N.\\
 \end{cases}
 $$
 Thus, we are done.
 \end{proof}
+%@nonl
 %@-node:gcross.20100126164527.1288:Lemma: Multiple recombinations
 %@+node:gcross.20100127132544.1287:Corolary: Recombination to make commute
 \begin{corolary}
@@ -779,7 +780,7 @@ The first two conclusions of this Corolary follows immediately from Lemma \ref{m
 %@-node:gcross.20100127132544.1287:Corolary: Recombination to make commute
 %@+node:gcross.20100127211423.1361:Theorem: Creation of certificate
 \begin{theorem}
-Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\set S$ such that every pair in $\set L$ is conjugal with respect to $\set U(\set L)\cup\set S$.  Then for every $0\le l \le 2N$, there exist
+Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\set S$ such that every pair in $\set L$ is conjugal with respect to $\set U(\set L)\cup\set S$.  Then for every $0\le n \le 2N$, there exist
 \begin{itemize}
 \item a choice of qubits $\lst P$ stabilized by $\set S$;
 \item a set of pairs, $\set Q$;
@@ -791,8 +792,14 @@ such that, letting $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash
 \item \label{pairs are all conjugal to R} the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $\set R := \set U(\lst P)\cup \set U(\set Q)\cup \set S$;
 % 2
 \item $\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}=(\genfun\circ\set U)(\set L)$;
-\item for every $x\in\set X$ and $o\in\set O$ we have that $[o,x]=0$;
-\item and $|\set O|=l$.
+% 3
+\item \label{first members are all in O} $p_1(\lst P_i)\in \set O$ for every $1 \le i \le |\lst P_i|$;
+% 4
+\item \label{any product has undetectable error not acting on X} for any product of elements from $\set O$, $o:=\prod_{o'\in \set O} o'$, there exists an undetectable error of weight $\om_{\set S}(o)$ that acts on $o$ but not on any $x\in\set X$;
+% 5
+\item \label{size of O matches arbitrarily chosen integer} and $|\set O|=n$;
+% 6
+\item \label{operators in X are no worse than the best qubit in P} $\min_{x\in\set X}\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$.
 \end{enumerate}
 \end{theorem}
 
@@ -800,7 +807,7 @@ such that, letting $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash
 
 Proof by induction.  For the base case, let $\lst P'$ be the empty sequence;  then the conclusions are satisfied vacuously.
 
-Now assume that this Proposition has been proven for some integer $k-1$;  let $\lst P'$, $\lst Q'$, $\set O$ and $\set X'$ be the named objects (without the primes) obtained by recursively applying this Proposition to the integer $k-1$  Let $h$ be the minimizer of $w$ over the set $\bigcup_{o\in\set X'} \set e_{\set S}(o)$.  Let $x$ be either $p_2(\lst P_i)$ for the smallest $k$ such that $\{p_2(\lst P_i),h\}=0$, or if there is no such $i$ then let $x$ be any arbitrarily chosen operator such that $x\in \set e_{\set S}(o)$.  Finally, let  $d:=\om_{\set S}(o)$.
+Now assume that this Proposition has been proven for some integer $n-1$;  let $\lst P'$, $\lst Q'$, $\set O$ and $\set X'$ be the named objects (without the primes) obtained by recursively applying this Proposition to the integer $k-1$  Let $h$ be the minimizer of $w$ over the set $\bigcup_{o\in\set X'} \set e_{\set S}(o)$.  Let $x$ be either $p_2(\lst P_i)$ for the smallest $k$ such that $\{p_2(\lst P_i),h\}=0$, or if there is no such $i$ then let $x$ be any arbitrarily chosen operator from $\set X'$ such that $\{x,h\}=0$.  Finally, let  $d:=\om_{\set S}(x)$.
 
 There are two cases;  either
 \begin{enumerate}
@@ -810,14 +817,25 @@ There are two cases;  either
 
 \begin{description}
 
-\item[Case 1 $\Rightarrow o\in\set U(\lst P)$]
-Let $k$ be the integer such that $o=p_2(\lst P'_k)$.  Let $a := o$, $b:=p_1(\lst P'_k)$, $\lst f^{(1)}$ be a sequence of $|\lst P'_i|$ $1$'s, and
+\item[Case 1 $\Rightarrow o\in\set U(\lst P')$]
+Let $k$ be the integer such that $o=p_2(\lst P'_k)$, $a := o$ and $b:=p_1(\lst P'_k)$.  Let $\set Q:=\set R'$ and $b'$ be the objects named in Corolary \ref{recombination-to-make-commute} given the pair $(a,b)$, the sequences $\lst f^{(l)}$ and the set $\set R=\set Q'$.
+
+Now let $\lst f^{(1)}$ be a sequence of $1$'s repeated $|\lst P'_i|$ times, and
 $$\lst f^{(2)}_i :=
 \begin{cases}
-1 & i > k, \{p_j(\lst P'_i),x\} = 0;
+1 & i > k, p_2(\lst P'_i)\in\set X', \{p_2(\lst P'_i),x\} = 0; \\
 0 & \text{otherwise}.
 \end{cases}
 $$
+Let $\lst P:=\lst R'$ and $b''$ be the objects named in Lemma \ref{multiple-recombinations} given the pair $(a,b):=(a,b')$, the sequences $\lst f^{(l)}$ and the sequence $\lst R=\lst P'$.
+
+Now observe we know that the set $\set O'':=\paren{\set O'\backslash\{b\}}\cup\{b''\}$ is an unimprovable set by Lemma X since $b''$ is a product of elements from $\set O'$, as by assumption $p_1(\lst P_i)\in\set O'$ for every $1 \le i \le |\lst P_i|$.  Note that conclusion \ref{any product has undetectable error not acting on X} of this Theorem continues to hold for $\set O''$ as we have simply replaced an element in $\set O'$ with a product of elements from $\set O'$ to form $\set O''$.
+
+Let $\set O:=\set O''\cup\{x\}$.  By Lemma X we know that $\set O$ is an unimprovable set since by assumption for every product of elements in $\set O'$ there is an undetectable error that acts on the product but not on $x$.  Now consider any product of elements in $\set O$.  If the product does not contain a factor of $x$, then there exists an undetectable error that acts on it but not on any element in $\set X$ since $\set X$ contains only products of elements from $\set X'$.  If the product contains a factor of $x$ in addition to other elements, then we know that this is still the case since the fact that the error does not act on $x$ means that it must commute with $x$ and hence act on the product containing $x$;  note also that this error must have weight less than or equal to $x$ and so the addition of $x$ to the product cannot change its weight.  Finally, if the product contains only $x$ then we observe that $f$ is an undetectable error of weight $\om_{\set S}(x)$ that by construction commutes with every operator in $\set X$, as every operator in $\set X$ is either an operator from $\set X'$ that commutes with $f$ or the product of $o$ with an operator from $\set X'$ that does not commute.  Thus, property \ref{any product has undetectable error not acting on X} is satisfied.  Also note that since $\set O$ was formed by removing one element from $\set O'$ and adding two, we see that $|\set O|=|\set O'|+1=n-1+1=n$, and so property \ref{size of O matches arbitrarily chosen integer}.
+
+Now observe that $p_1(\lst P_k)$ is a product of elements from an unimprovable set such that $p_1(\lst P_k')$ has the lowest weight undetectable error;  therefore we conclude that $\om_{\set S}\paren{p_1(\lst P_k)}=\om_{\set S}\paren{p_1(\lst P'_k)}$, and so $m(\lst P_k)=m(\lst P_k')$.  Every other change from $\lst P'$ to $\lst P$ involves replacing an element from $\set X'$ with a product of elements from $\set X'$, and so we conclude that for every resulting operator $o\in\set X \cup \set U(\lst P)$ we have that $\om_{\set S}(o)\ge m_{\set S}(\lst P_{|\lst P|})$.  Thus, $m(\lst P_i)=m(\lst P_i')$ for every $1 \le i \le |\lst P'$, and so $M^{(|\lst P|)}(\lst P)=M^{(|\lst P'|)}(\lst P')$, which means in particular that the sequence $M^{(|\lst P|)}(\lst P)=M^{(|\lst P'|)}(\lst P')$ is ordered.  Furthermore, since $\set X$ contains only products of operators in $\set X'$, therefore by Lemma \ref{combinations-can't-make-things-worse} we conclude that $\min_{o\in\set X}\om_{\set S}(o)\ge \min_{o\in\set X'}\om_{\set S}(o)\ge m_{\set S}(\lst P'_{|\lst P'|})=m_{\set S}(\lst P_{|\lst P|})$.  Thus, property \ref{operators in X are no worse than the best qubit in P} is satisfied.  Also note that $p_1(\lst P_k)\in\set O$, as this was true for $\lst P'$ and the only operator we changed, $b\to b''$, was also updated changing $\set O'\to\set O$;  thus property \ref{first members are all in O} is satisfied.
+
+
 
 \end{description}
 
