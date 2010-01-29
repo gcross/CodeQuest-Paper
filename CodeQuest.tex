@@ -882,6 +882,45 @@ Now let $l$ be the integer such that $\lst O^{(l)}_{|\lst O^{(l)}|}=o$.  For eve
 
 \end{comment}
 %@-node:gcross.20100126164527.1286:Proposition: Creation of certificate
+%@+node:gcross.20100127211423.1361:Proposition: Creation of certificate
+\begin{theorem}
+Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\set S$ such that every pair in $\set L$ is conjugal with respect to $\set U(\set L)\cup\set S$.  Then for every $0\le k \le 2N$, there exist
+\begin{itemize}
+\item a choice of qubits $\lst P$ stabilized by $\set S$;
+\item a set of pairs, $\set Q$;
+\item and an unimproveable set of operators $\set O$ with respect to $\set S$;
+\end{itemize}
+such that, letting $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash \bigcup_l \set U(\lst O^{(l)})}$, we have that
+\begin{enumerate}
+% 1
+\item \label{pairs are all conjugal to R} the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $\set R := \set U(\lst P)\cup \set U(\set Q)\cup \set S$;
+% 2
+\item $\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}=(\genfun\circ\set U)(\set L)$;
+\item and for every $x\in\set X$ and $o\in\set O$ we have that $[o,x]=0$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+
+Proof by induction.  For the base case, let $n=0$ and $\lst P'$ be the empty sequence;  then the conclusions are satisfied vacuously.
+
+Now assume that this Proposition has been proven for some integer $k-1$;  let $\lst P'$, $\lst Q'$, $\set O$ and $\set X'$ be the named objects (without the primes) obtained by recursively applying this Proposition to the integer $k-1$  Let $f$ be the minimizer of $w$ over the set $\bigcup_{o\in\set X'} \set e_{\set S}(o)$.  Let $x$ be either $p_2(\lst P_i)$ for the smallest $i$ such that $\{p_2(\lst P_i),w\}=0$, or if there is no such $i$ then let $x$ be any arbitrarily chosen operator such that $x\in \set e_{\set S}(o)$.  Finally, let  $d:=\om_{\set S}(o)$.
+
+There are two cases;  either
+\begin{enumerate}
+\item $o\in \set U(\lst P)$;
+\item or $o\notin \set U(\lst P)$ and $o\in\set U(\set Q)$.
+\end{enumerate}
+
+\begin{description}
+
+\item[Case 1 $\Rightarrow o\in\set U(\lst P)$]
+
+\end{description}
+
+\end{proof}
+%@nonl
+%@-node:gcross.20100127211423.1361:Proposition: Creation of certificate
 %@+node:gcross.20100119183304.1293:Definition: Certificate
 This last definition gives us a precise notion of what it means to have made the best choice of logical qubits.  However, we now need a way to prove that given choice of qubits is optimal.  We do this by means of a certificate, which is defined as follows:
 
