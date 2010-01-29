@@ -781,13 +781,49 @@ $$
 The first two conclusions of this Corolary follows immediately from Lemma \ref{multiple-recombinations}, dropping the ordering on $\lst R'$.  The third comes from the fact that every element in $\set R'$ is either an element from $\set R$ that commutes with $x$ or the product of $a$ with an element from $\set R$ that anti-commutes with $x$, which must also commute with $x$.  The fourth comes directly from Lemma \ref{combinations-can't-make-things-worse}.
 \end{proof}
 %@-node:gcross.20100127132544.1287:Corolary: Recombination to make commute
+%@+node:gcross.20100129120448.1279:Lemma: Replacing element with product preserves unimprovability
+\begin{lemma}
+\label{replacing element with product preserves unimprovability}
+Suppose we are given an unimprovable set $\set O$ with respect to $\set S$.  Let $o$ be any element in $\set O$, and $\set Y\subseteq \set O$ such that $o\in y$ and $\min_{y\in\set Y}(y)=\om_{\set S}(o)$.  Let $o':=\prod_{y\in\set Y}y$.  Then $\set O' := \paren{\set O\backslash\{o\}}\cup\{o'}$ is also an unimprovable set with respect to $\set S$, as well as satisfying the property that $\genfun(\set O)=\genfun(\set O')$.
+\end{lemma}
+
+\begin{proof}
+The only element changed from $\set O$ to $\set O'$ is the replacement of $o$ with a product of elements including $o$;  since every factor besides $o$ in the new product is also contained in $\set O'$, we conclude that we can obtain $o$ from a product of elements in $\set O'$, and so $\genfun(\set O)=\genfun(\set O')$.
+
+Take any subset of elements $\set X'\subseteq\set O'$, and let $x' := \prod_{y\in \set X'} y$ and $d_{x'}:=\min_{y\in\set X'}\om_{\set S}(y)$.  We need to show that $\om_{\set S}(x') = d_{x'}$.  If $o'\notin\set X'$, then this follows from the fact that $\set X'\subseteq\set O$ and $\set O$ is an unimprovable set.
+
+Suppose that $o'\in\set X'$. Since we showed in the first paragraph that $\genfun(\set O)=\genfun(\set O')$, we conclude that there exists a subset $\set X\subseteq\set O$ such that $x=\prod_{y\in \set X'}y$.  For every $a\in\set X'$ such that $\om_{\set S}(a)<\om_{\set S}(o')$, we know that $a\in\set X$ because $a\notin\set Y$ since $\om_{\set S}(o)=\om_{\set S}(o')$ and $\set O$ is an unimprovable set.  Thus, if there exists at least one such $a$, then $\min_{y\in\set X'}\om_{\set S}(y)=\min_{y\in\set X}\om_{\set S}(y)=\om_{\set S}(x')$.  If there is no such $a$, then $\min_{y\in\set X'}\om_{\set S}(y)=\om_{\set S}(o')$, and so $\min_{y\in\set X'}\om_{\set S}(y)=\om_{\set S}(o)=\min_{y\in\set X'}\om_{\set S}(y)$.  We have thus proven that $\set O'$ is an unimprovable set.
+
+\end{proof}
+%@nonl
+%@-node:gcross.20100129120448.1279:Lemma: Replacing element with product preserves unimprovability
+%@+node:gcross.20100129120448.1281:Lemma: Recombining elements preserves extension
+\begin{lemma}
+\label{recombining elements preserves extension}
+Suppose $\set O$ and $\set O'$ are unimprovable sets with respect to $\set S$ such that $\genfun(\set O)=\genfun(\set O')$.  Then if $\set O$ extends to $\set Q$, so does $\set O'$.
+\end{lemma}
+
+\begin{proof}
+Take any subset $\set X \subseteq \set O\cup\set Q$ such that $\set A' := \set X\cap \set O' \ne \emptyset$.  We need to show that $\om_{\set S}(x)=\min_{y\in\set A'}\om_{\set S}(y)$, where $x := \prod_{y\in\set X} y$.  Let $\set B := \set X \backslash \set A'$, $a := \prod_{y\in\set A'} y$, $b := \prod_{y\in\set B} y$ and $\set A$ be the subset of $\set O$ such that $\prod_{y\in\set A} y =a$.  Since $\set O$ and $\set O'$ are unimprovable sets, we know that $\min_{y\in\set A'}\om_{\set S}(y)=\om_{\set S}(a)=\min_{y\in\set A}\om_{\set S}(y)$.  Since $x=a\cdot b$, we see that $x$ is equal to the product of a set of elements $\set C := \set A \cup\set B$ such that $B\subseteq \set Q$ and $\set C\cap\set O=\set A$, and since $\set O$ extends to $\set Q$ we conclude that $\om_{\set S}(x)=\min_{y\in\set A}\om_{\set S}(y)=\min_{y\in\set A'}\om_{\set S}(y)$.  Thus, $\set O'$ extends to $\set Q$.
+\end{proof}
+%@-node:gcross.20100129120448.1281:Lemma: Recombining elements preserves extension
+%@+node:gcross.20100129120448.1283:Lemma: Recombining extension elements preserves extension
+\begin{lemma}
+\label{recombining extension elements preserves extension}
+If $\set O$ is an unimprovable set with respect to $\set S$ that extends to $\set Q$, and $\set Q'$ is a set such that $\set Q'\subseteq\genfun(\set Q)$, then $\set O$ also extends to $\set Q'$.
+\end{lemma}
+
+\begin{proof}
+Take any subset $\set X' \subseteq \set O\cup\set Q'$ such that $\set A := \set X'\cap \set O \ne \emptyset$.  We need to show that $\om_{\set S}(x)=\min_{y\in\set A}\om_{\set S}(y)$, where $x := \prod_{y\in\set X} y$.  Note that since $\set Q'\subseteq\genfun(\set Q)$, there exists a set $\set B\subseteq \set Q$ such that $x = \prod_{y\in\set A\cup\set B} y$, and so since $\set O$ extends to $\set Q$ we conclude that $\om_{\set S}(x)=\min_{y\in\set A}\om_{\set S}(y)$.
+\end{proof}
+%@-node:gcross.20100129120448.1283:Lemma: Recombining extension elements preserves extension
 %@+node:gcross.20100127211423.1361:Theorem: Creation of certificate
 \begin{theorem}
 Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\set S$ such that every pair in $\set L$ is conjugal with respect to $\set U(\set L)\cup\set S$.  Then for every $0\le n \le 2N$, there exist
 \begin{itemize}
 \item a choice of qubits $\lst P$ stabilized by $\set S$;
 \item a set of pairs, $\set Q$;
-\item and an unimproveable set of operators $\set O$ with respect to $\set S$ that extends to $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash \bigcup_l \set U(\lst O^{(l)})}$;
+\item and an unimproveable set of operators $\set O$ with respect to $\set S$ that extends to $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash \set O}$;
 \end{itemize}
 such that
 \begin{enumerate}
@@ -798,28 +834,28 @@ such that
 % 3
 \item \label{first members are all in O} $p_1(\lst P_i)\in \set O$ for every $1 \le i \le |\lst P_i|$;
 % 4
-\item \label{size of O matches arbitrarily chosen integer} and $|\set O|=n$;
+\item \label{size of O matches arbitrarily chosen integer} $|\set O|=n$;
 % 5
-\item \label{operators in X are no worse than the best qubit in P} $\min_{x\in\set X}\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$.
+\item \label{operators in X are no worse than the best qubit in P} and $\min_{x\in\set X}\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ (if $\lst P$ is non-empty).
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
 
-Proof by induction.  For the base case, let $\lst P'$ be the empty sequence;  then the conclusions are satisfied vacuously.
+Proof by induction.  For the base case, let $\lst P$ be the empty sequence, $\set Q:=\set L$, and $\set O:=\emptyset$;  then the conclusions are satisfied vacuously.
 
-Now assume that this Proposition has been proven for some integer $n-1$;  let $\lst P'$, $\lst Q'$, $\set O$ and $\set X'$ be the named objects (without the primes) obtained by recursively applying this Proposition to the integer $k-1$  Let $h$ be the minimizer of $w$ over the set $\bigcup_{o\in\set X'} \set e_{\set S}(o)$.  Let $x$ be either $p_2(\lst P_i)$ for the smallest $k$ such that $\{p_2(\lst P_i),h\}=0$, or if there is no such $i$ then let $x$ be any arbitrarily chosen operator from $\set X'$ such that $\{x,h\}=0$.  Finally, let  $d:=\om_{\set S}(x)$.
+Now assume that this Proposition has been proven for some integer $n-1$;  let $\lst P'$, $\lst Q'$, $\set O'$ and $\set X'$ be the named objects (without the primes) obtained by recursively applying this Theorem to the integer $n-1$  Let $h$ be the minimizer of $w$ over the set $\bigcup_{o\in\set X'} \set e_{\set S}(o)$.  Let $x$ be either $p_2(\lst P_k)$ for the smallest $k$ such that $\{p_2(\lst P_k),h\}=0$, or if there is no such $k$ then let $x$ be any arbitrarily chosen operator from $\set X'$ such that $\{x,h\}=0$.  Finally, let  $d:=\om_{\set S}(x)$.
 
 There are two cases;  either
 \begin{enumerate}
-\item $o\in \set U(\lst P)$;
-\item or $o\notin \set U(\lst P)$ and $o\in\set U(\set Q)$.
+\item $x\in \set U(\lst P')$;
+\item or $x\notin \set U(\lst P')$ and $o\in\set U(\set Q')$.
 \end{enumerate}
 
 \begin{description}
 
-\item[Case 1 $\Rightarrow o\in\set U(\lst P')$]
-Let $k$ be the integer such that $o=p_2(\lst P'_k)$, $a := o$ and $b:=p_1(\lst P'_k)$.  Let $\set Q:=\set R'$ and $b'$ be the objects named in Corolary \ref{recombination-to-make-commute} given the pair $(a,b)$, the sequences $\lst f^{(l)}$ and the set $\set R=\set Q'$.
+\item[Case 1 $\Rightarrow x\in\set U(\lst P')$]
+Let $k$ be the integer such that $x=p_2(\lst P'_k)$.  Let $a := x$, $b:=p_1(\lst P'_k)$, and let $\set Q:=\set R'$ and $b'$ be the objects named in Corolary \ref{recombination-to-make-commute} given the pair $(a,b)$ and the set $\set R=\set Q'$.
 
 Now let $\lst f^{(1)}$ be a sequence of $1$'s repeated $|\lst P'_i|$ times, and
 $$\lst f^{(2)}_i :=
@@ -830,18 +866,15 @@ $$\lst f^{(2)}_i :=
 $$
 Let $\lst P:=\lst R'$ and $b''$ be the objects named in Lemma \ref{multiple-recombinations} given the pair $(a,b):=(a,b')$, the sequences $\lst f^{(l)}$ and the sequence $\lst R=\lst P'$.
 
-Now observe we know that the set $\set O'':=\paren{\set O'\backslash\{b\}}\cup\{b''\}$ is an unimprovable set by Lemma X since $b''$ is a product of elements from $\set O'$, as by assumption $p_1(\lst P_i)\in\set O'$ for every $1 \le i \le |\lst P_i|$.  Note that conclusion \ref{any product has undetectable error not acting on X} of this Theorem continues to hold for $\set O''$ as we have simply replaced an element in $\set O'$ with a product of elements from $\set O'$ to form $\set O''$.
+Now observe we know that the set $\set O'':=\paren{\set O'\backslash\{b\}}\cup\{b''\}$ is an unimprovable set by Lemma \ref{replacing element with product preserves unimprovability} since $b''$ is a product of elements from $\set O'$, as by the inductive hypothesis and specifically property \ref{first members are all in O} we know that $p_1(\lst P_i)\in\set O'$ for every $1 \le i \le |\lst P_i|$.
 
-Let $\set O:=\set O''\cup\{x\}$.  By Lemma X we know that $\set O$ is an unimprovable set that extends to $\set X'$, since by assumption for every product of elements in $\set O'$ there is an undetectable error that acts on the product but not on $x$.  Now consider any product of elements in $\set O$.  If the product does not contain a factor of $x$, then there exists an undetectable error that acts on it but not on any element in $\set X$ since $\set X$ contains only products of elements from $\set X'$.  If the product contains a factor of $x$ in addition to other elements, then we know that this is still the case since the fact that the error does not act on $x$ means that it must commute with $x$ and hence act on the product containing $x$;  note also that this error must have weight less than or equal to $x$ and so the addition of $x$ to the product cannot change its weight.  Finally, if the product contains only $x$ then we observe that $f$ is an undetectable error of weight $\om_{\set S}(x)$ that by construction commutes with every operator in $\set X$, as every operator in $\set X$ is either an operator from $\set X'$ that commutes with $f$ or the product of $o$ with an operator from $\set X'$ that does not commute.  Thus, property \ref{any product has undetectable error not acting on X} is satisfied.  Also note that since $\set O$ was formed by removing one element from $\set O'$ and adding two, we see that $|\set O|=|\set O'|+1=n-1+1=n$, and so property \ref{size of O matches arbitrarily chosen integer}.
+Note that $\set X\subseteq\genfun(\set X')$ and $\genfun(\set O')=\genfun(\set O'')$, and so by Lemma \ref{recombining elements preserves extension} and Lemma {recombining extension elements preserves extension} we know that $\set O''$ extends to $\set X'$ and also $\set X$.  Let $\set O:=\set O''\cup\{x\}$.  Consider any product of elements $\set C\subseteq \set O\cup\set X$, and let $c:=\prod_{y\in\set C} y$ and $\set A := \set C\cap\set O$.  In order to show that $\set O$ is an unimprovable set that extends to $\set X$, we need to show that $\om_{\set S}(c)=\min_{y\in\set A}$. \dots
 
 Now observe that $p_1(\lst P_k)$ is a product of elements from an unimprovable set such that $p_1(\lst P_k')$ has the lowest weight undetectable error;  therefore we conclude that $\om_{\set S}\paren{p_1(\lst P_k)}=\om_{\set S}\paren{p_1(\lst P'_k)}$, and so $m(\lst P_k)=m(\lst P_k')$.  Every other change from $\lst P'$ to $\lst P$ involves replacing an element from $\set X'$ with a product of elements from $\set X'$, and so we conclude that for every resulting operator $o\in\set X \cup \set U(\lst P)$ we have that $\om_{\set S}(o)\ge m_{\set S}(\lst P_{|\lst P|})$.  Thus, $m(\lst P_i)=m(\lst P_i')$ for every $1 \le i \le |\lst P'$, and so $M^{(|\lst P|)}(\lst P)=M^{(|\lst P'|)}(\lst P')$, which means in particular that the sequence $M^{(|\lst P|)}(\lst P)=M^{(|\lst P'|)}(\lst P')$ is ordered.  Furthermore, since $\set X$ contains only products of operators in $\set X'$, therefore by Lemma \ref{combinations-can't-make-things-worse} we conclude that $\min_{o\in\set X}\om_{\set S}(o)\ge \min_{o\in\set X'}\om_{\set S}(o)\ge m_{\set S}(\lst P'_{|\lst P'|})=m_{\set S}(\lst P_{|\lst P|})$.  Thus, property \ref{operators in X are no worse than the best qubit in P} is satisfied.  Also note that $p_1(\lst P_k)\in\set O$, as this was true for $\lst P'$ and the only operator we changed, $b\to b''$, was also updated changing $\set O'\to\set O$;  thus property \ref{first members are all in O} is satisfied.
-
-
 
 \end{description}
 
 \end{proof}
-%@nonl
 %@-node:gcross.20100127211423.1361:Theorem: Creation of certificate
 %@-others
 %@-node:gcross.20090511123440.3:Optimal generators
