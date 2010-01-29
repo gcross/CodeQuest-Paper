@@ -506,13 +506,18 @@ Given the notation above, we now precisely define what we mean by the ``best cho
 An \emph{optimal choice of $N$ qubits stabilized by $\set S$} is any choice of $N$ qubits, $\lst P$ stabilized by $\set S$, such that given any other choice of $N$ qubits, $\lst P'$, that is also stabilized by $\set S$, such that $(\genfun\circ \set U)(\lst P)=(\genfun\circ \set U)(\lst P')$, we have that $\lst M^{(N)}(\lst P)_i \ge \lst M^{(N)}(\lst P')_i$ for all $1\le i \le N$.
 \end{definition}
 %@-node:gcross.20091221145013.1278:Definition: Total ordering => Optimal choice of qubits
+%@+node:gcross.20100128212359.1294:Definition: Unimprovable set
+How do we know that a choice of qubits is optimal?  It turns out that there is a very simple condition that is sufficient for demonstrating this.  First, we need the following definition:
+
+\begin{definition}
+An \emph{unimprovable set with respect to $\set S$} is a set of Pauli operators, $\set O$, such that for any subset, $\set X\subseteq \set O$, we have that $\om_{\set S}\paren{\prod_{x\in \set X} x} = \min_{x\in\set X}\om_{\set S}(x)$.  We say that an unimprovable set $\set O$ \emph{extends to $\lst Q$} if for all subsets $\set X \subseteq \set O\cup\set Q$ such that $\set X\cap \set O \ne \emptyset$ we have that $\om_{\set S}\paren{\prod_{x\in \set X} x} = \min_{x\in\set X\cap \set O}\om_{\set S}(x)$.
+\end{definition}
+%@-node:gcross.20100128212359.1294:Definition: Unimprovable set
 %@+node:gcross.20100125183648.1308:Theorem: Optimality condition
 %@+node:gcross.20100125183648.1309:Statement
-How do we know that a choice of qubits is optimal?  It turns out that there is a very simple condition that is sufficient for demonstrating this.
-
 \begin{theorem}
 \label{optimality-condition}
-If $\lst P$ is a choice of $N$ logical qubits stabilized by $\set S$ such that for every subset $\set O\subset\set U(\lst P)$ satisfying the property that $\om_{\set S}(o)<m_{\set S}(\lst P_N)$ for every $o$ in $\set O$, we have that $\om_{\set S}\paren{\prod_{\set O} o}\le \text{max}_{\set O}\,\, \om_{\set S}(o)$, then $\lst P$ is an optimal choice of qubits.
+If $\lst P$ is a choice of $N$ logical qubits stabilized by $\set S$ such that $\{p_1(\lst P_i)\}_i\}$ is an unimprovable set with respect to $\set S$ that extends to $\{p_2(\lst P_i)\}_i\}$, then $\lst P$ is an optimal choice of qubits.
 \end{theorem}
 
 Before we can prove this Theorem, we need a couple of Lemmas and a Proposition.
@@ -544,7 +549,7 @@ Since $\om_{\set S}(a)<\om_{\set S}(b)$, there must be an undetectable error wit
 Suppose we are given
 \begin{enumerate}
 \item sets of Pauli operators $\set Q$ and $\set S$;
-\item a non-empty set of conjugal pairs, $\set C$, with respect to $\set U(\set C) \cup \set S$, such that $U(\set C)\subseteq \genfun(\set Q)$; and \item a set $\set A$ with the property that for any conjugal pair $X:=(a,b)$ such that $\{a,b\}\subseteq(\genfun\circ\set U)(\set C)$, we must have that $\set G_{\set Q}(X) \cap \set A \ne \emptyset$.
+\item a non-empty set of conjugal pairs, $\set C$, with respect to $\set U(\set C) \cup \set S$, such that $U(\set C)\subseteq \genfun(\set Q)$; and \item a set $\set A$ with the property that for any conjugal pair $X:=(a,b)$ such that $\{a,b\}\in\genfun(\set C)$, we must have that $\set G_{\set Q}(X) \cap \set A \ne \emptyset$.
 \end{enumerate}
 Then $|\set C|\le|\set A|$.
 \end{proposition}
@@ -648,13 +653,11 @@ Proof by contradiction.  By Lemma \ref{elimination-to-create-subset}, there woul
 We now have all of the tools that we need to prove Theorem \ref{optimality-condition}.
 
 \begin{proof}[Proof of Theorem \ref{optimality-condition}]
-Proof by contradiction.  Let $\lst P'$ be some choice of qubits stabilized by $\set S$ such that $(\genfun\circ\set U)(\lst P)=(\genfun\circ\set U)(\lst P')$ and there exists some integer $k$ such that $M^{(N)}_{\set S}(\lst P')_k > M^{(N)}_{\set S}(\lst P)_k$;  in particular, let $k$ be the smallest such integer, and let $\set C:=\{\lst P'_i : i \ge k\}$.  Let $l$ be the smallest integer such that $M^{(N)}_{\set S}(\lst E_l)\ge M^{(N)}_{\set S}(\lst P')_k$ or $N+1$ if there is no such integer, and $\set A := \{p_1(\lst P_i) : i \ge l\}$; note that since $M^{(N)}(\lst P')_k > M^{(N)}(\lst P)_k$ we must have $l>k$, and hence $|\set C| > |\set A|$.
+Proof by contradiction.  Let $\lst P'$ be some choice of qubits stabilized by $\set S$ such that $(\genfun\circ\set U)(\lst P)=(\genfun\circ\set U)(\lst P')$ and there exists some integer $k$ such that $M^{(N)}_{\set S}(\lst P')_k > M^{(N)}_{\set S}(\lst P)_k$;  in particular, let $k$ be the smallest such integer, and let $\set C:=\{\lst P'_i : i \ge k\}$.  Let $l$ be the smallest integer such that $M^{(N)}_{\set S}(\lst P)_l\ge M^{(N)}_{\set S}(\lst P')_k$ or $N+1$ if there is no such integer, and $\set A := \{p_1(\lst P_i) : i \ge l\}$; note that since $M^{(N)}(\lst P')_k > M^{(N)}(\lst P)_k$ we must have $l>k$, and hence $|\set C| > |\set A|$.
 
-Take any pair $(a,b)\in\set C$.  Let $\set X:=\{x : x\in \set G_{\set U(\lst P)}(a),\,\, \om_{\set S}(x) < \om_{\set S}(a)\}$, $\set Y:=\set G_{\set U(\lst P)}(a)\backslash \set X$, $x := \prod_{o\in\set X} o$ and $y := \prod_{o\in\set Y} o$;  note that by construction we have that $a=x\cdot y$.  Now, if $\set X$ were non-empty, then $\om_{\set S}(x) \le \max_{o\in \set X} \om_{\set S}(o) < \om_{\set S}(a)$ by the assumptions of this Theorem, and so we would conclude that $\om_{\set S}(x\cdot y) = \om_{\set S}(x) < \om_{\set S}(a)$ since either $y$ is the identity or $\om_{\set S}(x)<\om_{\set S}(a)\le \om_{\set S}(y)$ by construction and so we reach the same conclusion from Lemma \ref{lesser-operator-wins}.  Thus, we see that $\set X$ must be empty since otherwise we would have that $\om_{\set S}(a)=\om_{\set S}(x\cdot y)<\om_{\set S}(a)$, which is nonsense, and so we conclude that $\om_{\set S}(o)\ge \om_{\set S}(a)$ for every $o\in\set G_{\set U(\lst P)}(a)$; using the same reasoning process we likewise conclude that $\om_{\set S}(o)\ge \om_{\set S}(b)\ge \om_{\set S}(a)$ for every $o\in\set G_{\set U(\lst P)}(b)$.  (Recall that the condition $\om_{\set S}(b)\ge \om_{\set S}(a)$ comes from the definition of a choice of qubits.)
+Take any pair $O:=(a,b)$ such that $\{a,b\}\in\genfun(\set C)$.  Since $a$ and $b$ anti-commute, it must be the case that there is an integer $i$ such that $o:=p_1(\lst P_i)\in \set G_{\set U(\lst P)}(O)$, because if every operator in $\set G_{\set U(\lst P)}(O)$ were the second member of a pair in $\lst P$ then $a$ and $b$ would commute.  Let $c$ be the choice of $a$ or $b$ such that $o\in \set G_{\set U(\lst P)}(c)$.  By Lemma \ref{combinations-can't-make-things-worse} we know that $\om_{\set S}(c)\ge M^{(N)}_{\set S}(\lst P')_k$, and since we also know by the assumptions of this Theorem that $M^{(N)}_{\set S}(\lst P')_k \le \om_{\set S}(c)=\min_{x\in\{p_1(\lst P_j) : 1 \le j \le N, p_1(\lst P_j)\}} \om_{\set S}(x)$, we conclude we must have that $o\in\set A$. 
 
-Since $a$ and $b$ anti-commute, it must be the case that there is an integer $i$ such that $o:=p_1(\lst P)\in \set G_{\set U(\lst P)}(O)$, because if every operator in $\set G_{\set U(\lst P)}(O)$ were the second member of a pair in $\lst P$ then $a$ and $b$ would commute.  Furthermore, we know that $i\ge l$ since otherwise $\om_{\set S}(o) < \om_{\set S}(a)$, which would contradict the conclusion of the previous paragraph;  thus, we conclude that $o\in \set A$.
-
-We have now demonstrated that for every pair $O\in\set C$, we must have $\set G(O)\cup\set A \ne\emptyset$.  Observe that this means that sets $\set C$ and $\set A$ match the descriptions in Proposition \ref{bound-on-recombinations}, and thus we see that it is impossible for $|\set C|>|\set A|$, and so we have a contradiction.  We thus conclude that no such choice $\lst P'$ can exist.
+We have now demonstrated that for every pair $O:=(a,b)$ such that $\{a,b\}\in\set \genfun(\set C)$, we must have $\set G(O)\cup\set A \ne\emptyset$.  Observe that this means that sets $\set C$ and $\set A$ match the descriptions in Proposition \ref{bound-on-recombinations} (letting set $\set Q:=\{\set P_i\}_i$), and thus we see that it is impossible for $|\set C|>|\set A|$, and so we have a contradiction.  We thus conclude that no such choice $\lst P'$ can exist.
 \end{proof}
 %@-node:gcross.20100125183648.1326:Proof
 %@-node:gcross.20100125183648.1308:Theorem: Optimality condition
@@ -784,9 +787,9 @@ Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\
 \begin{itemize}
 \item a choice of qubits $\lst P$ stabilized by $\set S$;
 \item a set of pairs, $\set Q$;
-\item and an unimproveable set of operators $\set O$ with respect to $\set S$;
+\item and an unimproveable set of operators $\set O$ with respect to $\set S$ that extends to $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash \bigcup_l \set U(\lst O^{(l)})}$;
 \end{itemize}
-such that, letting $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash \bigcup_l \set U(\lst O^{(l)})}$, we have that
+such that
 \begin{enumerate}
 % 1
 \item \label{pairs are all conjugal to R} the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $\set R := \set U(\lst P)\cup \set U(\set Q)\cup \set S$;
@@ -795,10 +798,8 @@ such that, letting $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash
 % 3
 \item \label{first members are all in O} $p_1(\lst P_i)\in \set O$ for every $1 \le i \le |\lst P_i|$;
 % 4
-\item \label{any product has undetectable error not acting on X} for any product of elements from $\set O$, $o:=\prod_{o'\in \set O} o'$, there exists an undetectable error of weight $\om_{\set S}(o)$ that acts on $o$ but not on any $x\in\set X$;
-% 5
 \item \label{size of O matches arbitrarily chosen integer} and $|\set O|=n$;
-% 6
+% 5
 \item \label{operators in X are no worse than the best qubit in P} $\min_{x\in\set X}\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$.
 \end{enumerate}
 \end{theorem}
@@ -831,7 +832,7 @@ Let $\lst P:=\lst R'$ and $b''$ be the objects named in Lemma \ref{multiple-reco
 
 Now observe we know that the set $\set O'':=\paren{\set O'\backslash\{b\}}\cup\{b''\}$ is an unimprovable set by Lemma X since $b''$ is a product of elements from $\set O'$, as by assumption $p_1(\lst P_i)\in\set O'$ for every $1 \le i \le |\lst P_i|$.  Note that conclusion \ref{any product has undetectable error not acting on X} of this Theorem continues to hold for $\set O''$ as we have simply replaced an element in $\set O'$ with a product of elements from $\set O'$ to form $\set O''$.
 
-Let $\set O:=\set O''\cup\{x\}$.  By Lemma X we know that $\set O$ is an unimprovable set since by assumption for every product of elements in $\set O'$ there is an undetectable error that acts on the product but not on $x$.  Now consider any product of elements in $\set O$.  If the product does not contain a factor of $x$, then there exists an undetectable error that acts on it but not on any element in $\set X$ since $\set X$ contains only products of elements from $\set X'$.  If the product contains a factor of $x$ in addition to other elements, then we know that this is still the case since the fact that the error does not act on $x$ means that it must commute with $x$ and hence act on the product containing $x$;  note also that this error must have weight less than or equal to $x$ and so the addition of $x$ to the product cannot change its weight.  Finally, if the product contains only $x$ then we observe that $f$ is an undetectable error of weight $\om_{\set S}(x)$ that by construction commutes with every operator in $\set X$, as every operator in $\set X$ is either an operator from $\set X'$ that commutes with $f$ or the product of $o$ with an operator from $\set X'$ that does not commute.  Thus, property \ref{any product has undetectable error not acting on X} is satisfied.  Also note that since $\set O$ was formed by removing one element from $\set O'$ and adding two, we see that $|\set O|=|\set O'|+1=n-1+1=n$, and so property \ref{size of O matches arbitrarily chosen integer}.
+Let $\set O:=\set O''\cup\{x\}$.  By Lemma X we know that $\set O$ is an unimprovable set that extends to $\set X'$, since by assumption for every product of elements in $\set O'$ there is an undetectable error that acts on the product but not on $x$.  Now consider any product of elements in $\set O$.  If the product does not contain a factor of $x$, then there exists an undetectable error that acts on it but not on any element in $\set X$ since $\set X$ contains only products of elements from $\set X'$.  If the product contains a factor of $x$ in addition to other elements, then we know that this is still the case since the fact that the error does not act on $x$ means that it must commute with $x$ and hence act on the product containing $x$;  note also that this error must have weight less than or equal to $x$ and so the addition of $x$ to the product cannot change its weight.  Finally, if the product contains only $x$ then we observe that $f$ is an undetectable error of weight $\om_{\set S}(x)$ that by construction commutes with every operator in $\set X$, as every operator in $\set X$ is either an operator from $\set X'$ that commutes with $f$ or the product of $o$ with an operator from $\set X'$ that does not commute.  Thus, property \ref{any product has undetectable error not acting on X} is satisfied.  Also note that since $\set O$ was formed by removing one element from $\set O'$ and adding two, we see that $|\set O|=|\set O'|+1=n-1+1=n$, and so property \ref{size of O matches arbitrarily chosen integer}.
 
 Now observe that $p_1(\lst P_k)$ is a product of elements from an unimprovable set such that $p_1(\lst P_k')$ has the lowest weight undetectable error;  therefore we conclude that $\om_{\set S}\paren{p_1(\lst P_k)}=\om_{\set S}\paren{p_1(\lst P'_k)}$, and so $m(\lst P_k)=m(\lst P_k')$.  Every other change from $\lst P'$ to $\lst P$ involves replacing an element from $\set X'$ with a product of elements from $\set X'$, and so we conclude that for every resulting operator $o\in\set X \cup \set U(\lst P)$ we have that $\om_{\set S}(o)\ge m_{\set S}(\lst P_{|\lst P|})$.  Thus, $m(\lst P_i)=m(\lst P_i')$ for every $1 \le i \le |\lst P'$, and so $M^{(|\lst P|)}(\lst P)=M^{(|\lst P'|)}(\lst P')$, which means in particular that the sequence $M^{(|\lst P|)}(\lst P)=M^{(|\lst P'|)}(\lst P')$ is ordered.  Furthermore, since $\set X$ contains only products of operators in $\set X'$, therefore by Lemma \ref{combinations-can't-make-things-worse} we conclude that $\min_{o\in\set X}\om_{\set S}(o)\ge \min_{o\in\set X'}\om_{\set S}(o)\ge m_{\set S}(\lst P'_{|\lst P'|})=m_{\set S}(\lst P_{|\lst P|})$.  Thus, property \ref{operators in X are no worse than the best qubit in P} is satisfied.  Also note that $p_1(\lst P_k)\in\set O$, as this was true for $\lst P'$ and the only operator we changed, $b\to b''$, was also updated changing $\set O'\to\set O$;  thus property \ref{first members are all in O} is satisfied.
 
