@@ -763,9 +763,9 @@ Then
 \begin{enumerate}
 \item the pair $(a,b')$ and the set of pairs $\set R'$ are all conjugal pairs with respect to $\set S'$;
 \item $\genfun\paren{\{a,b'\}\cup \set U(\set R')}=\genfun\paren{\{a,b\}\cup \set U(\set R)}$;
-\item and $x$ commutes with every operator in $\set R'$.
+\item $x$ commutes with every operator in $\set R'$;
+\item and $\min_{r'\in \set U(\set R')}\om_{\set S}(r')\ge \min\paren{\om_{\set S}(a),\min_{r\in \set U(\set R)}\om_{\set S}(r)}$;
 \end{enumerate}
-Then
 \end{corolary}
 
 \begin{proof}
@@ -776,10 +776,12 @@ $$\lst f^{(j)}_i :=
 1 & \{p_j(\lst R_i),x\} = 0. \\
 \end{cases}
 $$
-The first two conclusions of this Corolary follows immediately from Lemma \ref{multiple-recombinations}, dropping the ordering on $\lst R'$.  The third comes from the fact that every element in $\set R'$ is either an element from $\set R$ that commutes with $x$ or the product of an element from $\set R$ that anti-commutes with $x$ and $a$ ,which 
+The first two conclusions of this Corolary follows immediately from Lemma \ref{multiple-recombinations}, dropping the ordering on $\lst R'$.  The third comes from the fact that every element in $\set R'$ is either an element from $\set R$ that commutes with $x$ or the product of $a$ with an element from $\set R$ that anti-commutes with $x$, which must also commute with $x$.  The fourth comes directly from Lemma \ref{combinations-can't-make-things-worse}.
 \end{proof}
 %@-node:gcross.20100127132544.1287:Corolary: Recombination to make commute
 %@+node:gcross.20100126164527.1286:Proposition: Creation of certificate
+\begin{comment}
+
 \begin{proposition}
 Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\set S$ such that every pair in $\set L$ is conjugal with respect to $\set U(\set L)\cup\set S$.  Then for every $0\le k \le 2N$, there exist
 \begin{itemize}
@@ -789,21 +791,29 @@ Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\
 \end{itemize}
 such that, letting $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash \bigcup_l \set U(\lst O^{(l)})}$, we have that
 \begin{enumerate}
+% 1
 \item \label{pairs are all conjugal to R} the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $\set R := \set U(\lst P)\cup \set U(\set Q)\cup \set S$;
+% 2
 \item $\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}=(\genfun\circ\set U)(\set L)$;
+% 3
 \item \label{nothing smaller in Q} if $\lst P$ is non-empty, then $n \ge m_{\set S}(\lst P_{|\lst P|})$ and $\om_{\set S}(o)\ge m_{\set S}(\lst P_{|\lst P|})$ for all $o\in\set X$;
+% 4
 \item $\left|\{\lst O^{(l)}_i\}_{l,i}\right| = k$;
+% 5
 \item \label{certificate is subset of the choice of qubits} $\{\lst O^{(l)}_i\}_{l,i}\subseteq \set U(\lst P)$
+% 6
 \item \label{all first pairs are present in the certificate} for every $1 \le i \le |\lst P|$ there exists integers $j$ and $l$ such that $p_1(\lst P'_i)=\lst O^{(l)}_j$.
+% 7
 \item \label{O has the certificate property} $\{\lst O^{(l)}_i\}_i=\{o:o\in\set U(\lst P), \om_{\set S}(o)=l\}$ for $l<m_{\set S}(\lst P_{|\lst P|})$;
-\item \label{O has the certificate property, extending to X} for every $1\le l\le n$ and $1 \le j \le |\lst O^{(l)}|$ there exists an undetectable error (with respect to $\set S$) of weight $l$ that acts on $\lst O^{(l)}_j$ but not on any operator in $\{\lst O^{(l)}_i : i > j\} \cup \set X$.
+% 8
+\item \label{O has the certificate property, extending to X} and for every $1\le l\le n$ and $1 \le j \le |\lst O^{(l)}|$ there exists an undetectable error (with respect to $\set S$) of weight $l$ that acts on $\lst O^{(l)}_j$ but not on any operator in $\{\lst O^{(l)}_i : i > j\}\cup\set U(\set Q)$;  furthermore, if $\lst O^{(l)}$ is the first member of a pair in $\lst P$, then this same error acts on no operator in $\set X$.
 \end{enumerate}
 \end{proposition}
 
 \begin{proof}
 Proof by induction.  For the base case, let $n=0$ and $\lst P'$ be the empty sequence;  then the conclusions are satisfied vacuously.
 
-Now assume that this Proposition has been proven for some integer $k-1$;  let $\lst P'$, $\lst Q'$, $n'$, $\lst O^{(l)'}$ and $\set X$ be the named objects (without the primes) obtained by recursively applying this Proposition to the integer $k-1$  Let $x$ be the minimizer of $w$ over the set $\bigcup_{o\in\set X'} \set e_{\set S}(o)$, let $o\in\set X'$ be some arbitrarily chose operator such that $x\in \set e_{\set S}(o)$, and let  $d:=\om_{\set S}(o)$;  note that by the inductive hypthosis we know from property \ref{nothing smaller in Q} that $d\ge n$.
+Now assume that this Proposition has been proven for some integer $k-1$;  let $\lst P'$, $\lst Q'$, $n'$, $\lst O^{(l)'}$ and $\set X'$ be the named objects (without the primes) obtained by recursively applying this Proposition to the integer $k-1$  Let $x$ be the minimizer of $w$ over the set $\bigcup_{o\in\set X'} \set e_{\set S}(o)$, let $o\in\set X'$ be some arbitrarily chose operator such that $x\in \set e_{\set S}(o)$, and let  $d:=\om_{\set S}(o)$;  note that by the inductive hypthosis we know from property \ref{nothing smaller in Q} that $d\ge n$.
 
 There are two cases;  either
 \begin{enumerate}
@@ -837,21 +847,28 @@ First we need to establish that $\lst P$ is a choice of qubits.  We shall defer 
 
 We shall now prove that all of the listed conclusions hold.
 \begin{enumerate}
+% 1
 \item By the inductive hypothesis we know that the pairs in $\lst P'$ and $\set Q'$ are all conjugal with respect to $\set R' := \set U(\lst P')\cup \set U(\set Q')\cup \set S$, and by Lemma \ref{multiple-recombinations} we know that the pair $(a,b')$ and the set of pairs $\set Q$ are all conjugal pairs with respect to
 $$\left[\set R'\backslash\paren{\{a,b\} \cup \set U(\set Q')}\right]\cup \{a,b'\} \cup \set U(\set Q)=\set R.$$
-
+% 2
 \item By the inductive hypothesis we know that $\genfun\paren{\set U(\lst P')\cup \set U(\set Q')}=(\genfun\circ\set U)(\set L)$, and by Lemma \ref{multiple-recombinations} we know that $\genfun\paren{\{a,b'\}\cup \set U(\lst Q')}=\genfun\paren{\{a,b\}\cup \set U(\lst Q)}$.  Hence we conclude that $\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}=(\genfun\circ\set U)(\set L)$.
+% 3
+\item Since $M^{(|\lst P|)}(\lst P)=M^{(|\lst P|)}(\lst P')$ (as we showed earlier), we conclude immediately that $n \ge n' \ge m_{\set S}(\lst P_{|\lst P|})$.
 
-\item Since $M^{(|\lst P|)}(\lst P)=M^{(|\lst P|)}(\lst P')$ (as we showed earlier), we conclude immediately that $n \ge n' \ge m_{\set S}(\lst P_{|\lst P|})$.  Since $o\notin \{\lst O'^{(l)}\}_{l,i}$ we know that $\om_{\set S}(o)\ge m_{\set S}(\lst P_{|\lst P|})$, and since $\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ for all $x\in\set U(\set Q')$ we conclude from Lemma \ref{combinations-can't-make-things-worse} that $\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ for all $x\in\set U(\set Q)$.  From Corolary \ref{recombination-to-make-commute} we also know that 
+Next, note that the only difference between $\paren{\set U(\lst P') \backslash \bigcup_l \set U(\lst O'^{(l)})}$ and $\paren{\set U(\lst P) \backslash \bigcup_l \set U(\lst O^{(l)})}$ is the removal of an operator, so we conclude from the inductive hypothesis that $\om_{\set S}(y)\ge m_{\set S}(\lst P_{|\lst P|})$ for all $y\in \paren{\set U(\lst P) \backslash \bigcup_l \set U(\lst O^{(l)})}$
 
+Finally, from Corolary \ref{recombination-to-make-commute} we also know that $\min_{y\in \set U(\set Q)}\om_{\set S}(y)\ge \min\paren{\om_{\set S}(o),\min_{y\in \set U(\set Q;)}\om_{\set S}(y)}$.  Since $o$ and every element of $\set Q'$ are members of $\set X'$, we conclude from the inductive hypothesis that $\om_{\set S}(y)\ge m_{\set S}(\lst P_{|\lst P|}$ for every $y\in \set U(\set Q)$.
+
+From the results of the previous two paragraphs, we conclude that $\om_{\set S}(y)\ge m_{\set S}(\lst P_{|\lst P|}$ for every $y\in \set X$.
+% 4
 \item This follows from the fact that $\left|\{\lst O'^{(l)}\}_{l,i}\right| = k-1$ by the inductive hypothesis and by construction the set $\{\lst O^{(l)}\}_{l,i}$ has one changed element and one additional element.
-
+% 5
 \item This follows from the construction of $\lst O^{(l)}$ from $\lst O^{(l)}$, in which we added an element in $\set U(\lst P)$ and changed the only element that had changed from $\set U(\lst P')$ to $\set U(\lst P)$.
-
+% 6
 \item This follows using the same argument used to show property \ref{certificate is subset of the choice of qubits}.
-
+% 7
 \item This also using the same argument used to show property \ref{certificate is subset of the choice of qubits}.
-
+% 8
 \item
 Note that every operator in $\set X$ is the product of operators in $\set X'$;  hence, for every operator $\lst O'^{(l)}_i$ the undetectable error that acts on $\lst O'^{(l)}_i$ but not on any operator in $\lst X'$ that we know exists from the inductive hypothesis must also not act on any operator $\lst X$.  Thus, we conclude that this property is immediately satisfied for every sequence $\lst O^{(l)}$ such that $\lst O^{(l)}=\lst O'^{(l)}$.  Furthermore, we also conclude that this property is satisfied vacuously for every empty sequence.  Thus, there are only two sequences remaining for us to consider:  the one that contains $b'$, and the one to which we added $o$;  note that it is possible that these are the same sequence.
 
@@ -862,6 +879,8 @@ Now let $l$ be the integer such that $\lst O^{(l)}_{|\lst O^{(l)}|}=o$.  For eve
 \end{description}
 
 \end{proof}
+
+\end{comment}
 %@-node:gcross.20100126164527.1286:Proposition: Creation of certificate
 %@+node:gcross.20100119183304.1293:Definition: Certificate
 This last definition gives us a precise notion of what it means to have made the best choice of logical qubits.  However, we now need a way to prove that given choice of qubits is optimal.  We do this by means of a certificate, which is defined as follows:
