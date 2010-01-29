@@ -762,7 +762,7 @@ Then
 \item the pair $(a,b')$ and the set of pairs $\set R'$ are all conjugal pairs with respect to $\set S'$;
 \item $\genfun\paren{\{a,b'\}\cup \set U(\set R')}=\genfun\paren{\{a,b\}\cup \set U(\set R)}$;
 \item $x$ commutes with every operator in $\set R'$;
-\item and $\min_{r'\in \set U(\set R')}\om_{\set S}(r')\ge \min\paren{\om_{\set S}(a),\min_{r\in \set U(\set R)}\om_{\set S}(r)}$;
+\item and $$\min_{r'\in \set U(\set R')}\om_{\set S}(r')\ge \min\paren{\om_{\set S}(a),\min_{r\in \set U(\set R)}\om_{\set S}(r)};$$
 \end{enumerate}
 \end{corolary}
 
@@ -779,7 +779,7 @@ The first two conclusions of this Corolary follows immediately from Lemma \ref{m
 %@-node:gcross.20100127132544.1287:Corolary: Recombination to make commute
 %@+node:gcross.20100127211423.1361:Theorem: Creation of certificate
 \begin{theorem}
-Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\set S$ such that every pair in $\set L$ is conjugal with respect to $\set U(\set L)\cup\set S$.  Then for every $0\le k \le 2N$, there exist
+Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\set S$ such that every pair in $\set L$ is conjugal with respect to $\set U(\set L)\cup\set S$.  Then for every $0\le l \le 2N$, there exist
 \begin{itemize}
 \item a choice of qubits $\lst P$ stabilized by $\set S$;
 \item a set of pairs, $\set Q$;
@@ -791,15 +791,16 @@ such that, letting $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash
 \item \label{pairs are all conjugal to R} the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $\set R := \set U(\lst P)\cup \set U(\set Q)\cup \set S$;
 % 2
 \item $\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}=(\genfun\circ\set U)(\set L)$;
-\item and for every $x\in\set X$ and $o\in\set O$ we have that $[o,x]=0$.
+\item for every $x\in\set X$ and $o\in\set O$ we have that $[o,x]=0$;
+\item and $|\set O|=l$.
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
 
-Proof by induction.  For the base case, let $n=0$ and $\lst P'$ be the empty sequence;  then the conclusions are satisfied vacuously.
+Proof by induction.  For the base case, let $\lst P'$ be the empty sequence;  then the conclusions are satisfied vacuously.
 
-Now assume that this Proposition has been proven for some integer $k-1$;  let $\lst P'$, $\lst Q'$, $\set O$ and $\set X'$ be the named objects (without the primes) obtained by recursively applying this Proposition to the integer $k-1$  Let $f$ be the minimizer of $w$ over the set $\bigcup_{o\in\set X'} \set e_{\set S}(o)$.  Let $x$ be either $p_2(\lst P_i)$ for the smallest $i$ such that $\{p_2(\lst P_i),w\}=0$, or if there is no such $i$ then let $x$ be any arbitrarily chosen operator such that $x\in \set e_{\set S}(o)$.  Finally, let  $d:=\om_{\set S}(o)$.
+Now assume that this Proposition has been proven for some integer $k-1$;  let $\lst P'$, $\lst Q'$, $\set O$ and $\set X'$ be the named objects (without the primes) obtained by recursively applying this Proposition to the integer $k-1$  Let $h$ be the minimizer of $w$ over the set $\bigcup_{o\in\set X'} \set e_{\set S}(o)$.  Let $x$ be either $p_2(\lst P_i)$ for the smallest $k$ such that $\{p_2(\lst P_i),h\}=0$, or if there is no such $i$ then let $x$ be any arbitrarily chosen operator such that $x\in \set e_{\set S}(o)$.  Finally, let  $d:=\om_{\set S}(o)$.
 
 There are two cases;  either
 \begin{enumerate}
@@ -810,6 +811,13 @@ There are two cases;  either
 \begin{description}
 
 \item[Case 1 $\Rightarrow o\in\set U(\lst P)$]
+Let $k$ be the integer such that $o=p_2(\lst P'_k)$.  Let $a := o$, $b:=p_1(\lst P'_k)$, $\lst f^{(1)}$ be a sequence of $|\lst P'_i|$ $1$'s, and
+$$\lst f^{(2)}_i :=
+\begin{cases}
+1 & i > k, \{p_j(\lst P'_i),x\} = 0;
+0 & \text{otherwise}.
+\end{cases}
+$$
 
 \end{description}
 
