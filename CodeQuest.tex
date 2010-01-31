@@ -442,7 +442,7 @@ In general there are multiple sets of operators that satisfy the properties of \
 
 \begin{lemma}
 \label{combining-pairs}
-Given conjugal pairs $Q:=(a,b)$ and $R:=(c,d)$ in relation to some set $\set X$, we have that
+Given conjugal pairs $Q:=(a,b)$ and $R:=(c,d)$ in relation to some set $\set X$ such that $a\ne c$ and $b\ne d$, we have that
 \begin{enumerate}
 \item the pairs $Q':=(a\cdot c,b)$ and $R':=(c,d\cdot b)$ are conjugal pairs with respect to $\set X \backslash \{Q,R\} \cup \{Q',R'\}$; and
 \item $\genfun\paren{\{a,b,c,d\}}=\genfun\paren{\{a\cdot c,b,c,d\cdot b\}}$.
@@ -510,14 +510,14 @@ An \emph{optimal choice of $N$ qubits stabilized by $\set S$} is any choice of $
 How do we know that a choice of qubits is optimal?  It turns out that there is a very simple condition that is sufficient for demonstrating this.  First, we need the following definition:
 
 \begin{definition}
-An \emph{unimprovable set with respect to $\set S$} is a set of Pauli operators, $\set O$, such that for any subset, $\set X\subseteq \set O$, we have that $\om_{\set S}\paren{\prod_{x\in \set X} x} = \min_{x\in\set X}\om_{\set S}(x)$.  We say that an unimprovable set $\set O$ \emph{extends to $\lst Q$} if for all subsets $\set X \subseteq \set O\cup\set Q$ such that $\set X\cap \set O \ne \emptyset$ we have that $\om_{\set S}\paren{\prod_{x\in \set X} x} = \min_{x\in\set X\cap \set O}\om_{\set S}(x)$.
+An \emph{unimprovable set with respect to $\set S$} is a set of Pauli operators, $\set O$, such that for any subset, $\set X\subseteq \set O$, we have that $\om_{\set S}\paren{\prod_{x\in \set X} x} = \min_{x\in\set X}\om_{\set S}(x)$.  We say that an unimprovable set $\set O$ \emph{extends to $\lst Q$} if for all subsets $\set X \subseteq \set O\cup\set Q$ such that $\set X\cap \set O \ne \emptyset$ we have that $\om_{\set S}\paren{\prod_{x\in \set X} x} \le \min_{x\in\set X\cap \set O}\om_{\set S}(x)$.
 \end{definition}
 %@-node:gcross.20100128212359.1294:Definition: Unimprovable set
 %@+node:gcross.20100125183648.1308:Theorem: Optimality condition
 %@+node:gcross.20100125183648.1309:Statement
 \begin{theorem}
 \label{optimality-condition}
-If $\lst P$ is a choice of $N$ logical qubits stabilized by $\set S$ such that $\{p_1(\lst P_i)\}_i\}$ is an unimprovable set with respect to $\set S$ that extends to $\{p_2(\lst P_i)\}_i\}$, then $\lst P$ is an optimal choice of qubits.
+If $\lst P$ is a choice of $N$ logical qubits stabilized by $\set S$ such that $\set T:=\{p_1(\lst P_i)\}_i\}$ is an unimprovable set with respect to $\set S$ that extends to $\set U(\lst P)$, then $\lst P$ is an optimal choice of qubits.
 \end{theorem}
 
 Before we can prove this Theorem, we need a couple of Lemmas and a Proposition.
@@ -653,11 +653,11 @@ Proof by contradiction.  By Lemma \ref{elimination-to-create-subset}, there woul
 We now have all of the tools that we need to prove Theorem \ref{optimality-condition}.
 
 \begin{proof}[Proof of Theorem \ref{optimality-condition}]
-Proof by contradiction.  Let $\lst P'$ be some choice of qubits stabilized by $\set S$ such that $(\genfun\circ\set U)(\lst P)=(\genfun\circ\set U)(\lst P')$ and there exists some integer $k$ such that $M^{(N)}_{\set S}(\lst P')_k > M^{(N)}_{\set S}(\lst P)_k$;  in particular, let $k$ be the smallest such integer, and let $\set C:=\{\lst P'_i : i \ge k\}$.  Let $l$ be the smallest integer such that $M^{(N)}_{\set S}(\lst P)_l\ge M^{(N)}_{\set S}(\lst P')_k$ or $N+1$ if there is no such integer, and $\set A := \{p_1(\lst P_i) : i \ge l\}$; note that since $M^{(N)}(\lst P')_k > M^{(N)}(\lst P)_k$ we must have $l>k$, and hence $|\set C| > |\set A|$.
+Proof by contradiction.  Let $\lst P'$ be some choice of qubits stabilized by $\set S$ such that $(\genfun\circ\set U)(\lst P)=(\genfun\circ\set U)(\lst P')$ and there exists some integer $k$ such that $M^{(N)}_{\set S}(\lst P')_k > M^{(N)}_{\set S}(\lst P)_k$;  in particular, let $k$ be the smallest such integer, and let $\set C:=\{\lst P'_i : i \ge k\}$.  Let $l$ be the smallest integer such that $M^{(N)}_{\set S}(\lst P)_l\ge M^{(N)}_{\set S}(\lst P')_k$ or $N+1$ if there is no such integer, and $\set A := \{p_1(\lst P_i) : i \ge l\}$; note that since $M^{(N)}(\lst P')_k > M^{(N)}(\lst P)_k$ we must have $l>k$, and hence $|\set C| > |\set A|$.  Note that by Lemmas \ref{recombining extension elements preserves extension} and \ref{taking subsets of extension elements preserves extension} we see that $\set T$ is an unimprovable set with respect to $\set S$ that extends to $\set C$.
 
-Take any pair $O:=(a,b)$ such that $\{a,b\}\in\genfun(\set C)$.  Since $a$ and $b$ anti-commute, it must be the case that there is an integer $i$ such that $o:=p_1(\lst P_i)\in \set G_{\set U(\lst P)}(O)$, because if every operator in $\set G_{\set U(\lst P)}(O)$ were the second member of a pair in $\lst P$ then $a$ and $b$ would commute.  Let $c$ be the choice of $a$ or $b$ such that $o\in \set G_{\set U(\lst P)}(c)$.  By Lemma \ref{combinations-can't-make-things-worse} we know that $\om_{\set S}(c)\ge M^{(N)}_{\set S}(\lst P')_k$, and since we also know by the assumptions of this Theorem that $M^{(N)}_{\set S}(\lst P')_k \le \om_{\set S}(c)=\min_{x\in\{p_1(\lst P_j) : 1 \le j \le N, p_1(\lst P_j)\}} \om_{\set S}(x)$, we conclude we must have that $o\in\set A$. 
+Take any pair $O:=(a,b)$ such that $\{a,b\}\in\genfun(\set C)$.  Since $a$ and $b$ anti-commute, it must be the case that $\set G_{\set U(\lst P)}(O)\cap\set T\ne\emptyset$, because if every operator in $\set G_{\set U(\lst P)}(O)$ were the second member of a pair in $\lst P$ then $a$ and $b$ would commute.  Let $c$ be the choice of $a$ or $b$ such that $\set G_{\set U(\lst P)}(c)\cap\set T\ne\emptyset$.  Since $c \in \genfun(\set C)$, by Lemma \ref{combinations-can't-make-things-worse} we know that $M^{(N)}_{\set S}(\lst P')_k \le \om_{\set S}(c)$.  Since $\set T$ extends to $\set C$, we have that $M^{(N)}_{\set S}(\lst P')_k \le \om_{\set S}(c)\le\min_{x\in\set G_{\set U(\lst P)}(O)\cap\set T\}} \om_{\set S}(x)$, which implies that $\om_{\set S}(x)\ge M^{(N)}_{\set S}(\lst P')_k$ for every $x\in\set G_{\set U(\lst P)}(O)\cap\set T$ and hence $\emptyset\ne\set G_{\set U(\lst P)}(O)\cap\set T=\set G_{\set U(\lst P)}(O)\cap\set A$.
 
-We have now demonstrated that for every pair $O:=(a,b)$ such that $\{a,b\}\in\set \genfun(\set C)$, we must have $\set G(O)\cup\set A \ne\emptyset$.  Observe that this means that sets $\set C$ and $\set A$ match the descriptions in Proposition \ref{bound-on-recombinations} (letting set $\set Q:=\{\set P_i\}_i$), and thus we see that it is impossible for $|\set C|>|\set A|$, and so we have a contradiction.  We thus conclude that no such choice $\lst P'$ can exist.
+We have now demonstrated that for every pair $O:=(a,b)$ such that $\{a,b\}\in\set \genfun(\set C)$, we must have $\set G(O)\cap\set A \ne\emptyset$.  Observe that this means that sets $\set C$ and $\set A$ match the descriptions in Proposition \ref{bound-on-recombinations} (letting set $\set Q:=\{\set P_i\}_i$), and thus we see that it is impossible for $|\set C|>|\set A|$, and so we have a contradiction.  We thus conclude that no such choice $\lst P'$ can exist.
 \end{proof}
 %@-node:gcross.20100125183648.1326:Proof
 %@-node:gcross.20100125183648.1308:Theorem: Optimality condition
@@ -665,17 +665,17 @@ We have now demonstrated that for every pair $O:=(a,b)$ such that $\{a,b\}\in\se
 \begin{lemma}
 \label{multiple-recombinations}
 Suppose we are given a pair $(a,b)$ and a seqence of $N$ pairs $\lst R$ all conjugal to some set $\set S$, and two sequences of elements from $\{0,1\}$, $\lst f^{(1)}$ and $\lst f^{(2)}$.  Define
-$$b':=b\cdot\prod_{1 \le i \le N, k \in \{0,1\}, f^{(k)}_i=1}p_{(3-k)}(\lst R_i),$$
-$\lst O'_i := (o'^{(1)}_i,o'^{(2)}_i)$ where
+$$b':=b\cdot\prod_{1 \le i \le N, k \in \{0,1\}, f^{(k)}_i=1}p_{3-k}(\lst R_i),$$
+$\lst R'_i := (o'^{(1)}_i,o'^{(2)}_i)$ where
 $$o'^{(k)}_i :=
 \begin{cases}
-p_k(\lst O_i) & l^{(k)}_i = 0\\
-p_k(\lst O_i) \cdot a & l^{(k)}_i = 1,
+p_k(\lst R_i) & l^{(k)}_i = 0\\
+p_k(\lst R_i) \cdot a & l^{(k)}_i = 1,
 \end{cases}
 $$
 and
 $$\set S' := \left[\set S\backslash\paren{\{a,b\} \cup \set U(\lst R)}\right]\cup \{a,b'\} \cup \set U(\lst R').$$
-Then
+Then as long as there are no integers $i$ and $k$ such that $l_i^{(k)}=1$, $p_{k}(\lst R_i)=a$ and $p_{3-k}(\lst R_i)=b$, then
 \begin{enumerate}
 \item the pair $(a,b')$ and the sequence of pairs $\lst R'$ are all conjugal pairs with respect to $\set S'$; and
 \item $\genfun\paren{\{a,b'\}\cup \set U(\lst R')}=\genfun\paren{\{a,b\}\cup \set U(\lst R)}$
@@ -817,6 +817,16 @@ If $\set O$ is an unimprovable set with respect to $\set S$ that extends to $\se
 Take any subset $\set X' \subseteq \set O\cup\set Q'$ such that $\set A := \set X'\cap \set O \ne \emptyset$.  We need to show that $\om_{\set S}(x)=\min_{y\in\set A}\om_{\set S}(y)$, where $x := \prod_{y\in\set X} y$.  Note that since $\set Q'\subseteq\genfun(\set Q)$, there exists a set $\set B\subseteq \set Q$ such that $x = \prod_{y\in\set A\cup\set B} y$, and so since $\set O$ extends to $\set Q$ we conclude that $\om_{\set S}(x)=\min_{y\in\set A}\om_{\set S}(y)$.
 \end{proof}
 %@-node:gcross.20100129120448.1283:Lemma: Recombining extension elements preserves extension
+%@+node:gcross.20100130142759.1299:Lemma: Taking subsets of extension elements preserves extension
+\begin{lemma}
+\label{taking subsets of extension elements preserves extension}
+If $\set O$ is an unimprovable set with respect to $\set S$ that extends to $\set Q$, and $\set Q'\subset \set Q$, then $\set O$ also extends to $\set Q'$.
+\end{lemma}
+
+\begin{proof}
+Take any subset $\set X' \subseteq \set O\cup\set Q'$ such that $\set A := \set X'\cap \set O \ne \emptyset$.  Since $\set X' \subseteq \set O\cup\set Q$ and $\set O$ extends to $\set Q$, we have that $\om_{\set S}\paren{\prod_{y\in\set X} y}=\min_{y\in\set A}\om_{\set S}(y)$.
+\end{proof}
+%@-node:gcross.20100130142759.1299:Lemma: Taking subsets of extension elements preserves extension
 %@+node:gcross.20100127211423.1361:Theorem: Creation of certificate
 \begin{theorem}
 Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\set S$ such that every pair in $\set L$ is conjugal with respect to $\set U(\set L)\cup\set S$.  Then for every $0\le n \le 2N$, there exist
@@ -866,9 +876,9 @@ $$\lst f^{(2)}_i :=
 $$
 Let $\lst P:=\lst R'$ and $b''$ be the objects named in Lemma \ref{multiple-recombinations} given the pair $(a,b):=(a,b')$, the sequences $\lst f^{(l)}$ and the sequence $\lst R=\lst P'$.
 
-Now observe we know that the set $\set O'':=\paren{\set O'\backslash\{b\}}\cup\{b''\}$ is an unimprovable set by Lemma \ref{replacing element with product preserves unimprovability} since $b''$ is a product of elements from $\set O'$, as by the inductive hypothesis and specifically property \ref{first members are all in O} we know that $p_1(\lst P_i)\in\set O'$ for every $1 \le i \le |\lst P_i|$.
+Now observe we know that the set $\set O'':=\paren{\set O'\backslash\{b\}}\cup\{b''\}$ is an unimprovable set by Lemma \ref{replacing element with product preserves unimprovability} as $b''$ is a product of elements from $\set O'$ since by the inductive hypothesis and specifically property \ref{first members are all in O} we know that $p_1(\lst P_i)\in\set O'$ for every $1 \le i \le |\lst P_i|$.
 
-Note that $\set X\subseteq\genfun(\set X')$ and $\genfun(\set O')=\genfun(\set O'')$, and so by Lemma \ref{recombining elements preserves extension} and Lemma {recombining extension elements preserves extension} we know that $\set O''$ extends to $\set X'$ and also $\set X$.  Let $\set O:=\set O''\cup\{x\}$.  Consider any product of elements $\set C\subseteq \set O\cup\set X$, and let $c:=\prod_{y\in\set C} y$ and $\set A := \set C\cap\set O$.  In order to show that $\set O$ is an unimprovable set that extends to $\set X$, we need to show that $\om_{\set S}(c)=\min_{y\in\set A}$. \dots
+Let $\set X'':=\set X\cup\{x\}$.  Note that $\set X\subseteq\genfun(\set X')$, $\set X''\subseteq\genfun(\set X')$ and $\genfun(\set O')=\genfun(\set O'')$, and so by Lemmas \ref{recombining elements preserves extension} and \ref{recombining extension elements preserves extension} we know that $\set O''$ extends to $\set X$, $\set X'$ and $\set X''$.  Let $\set O:=\set O''\cup\{x\}$, and observe that $\set O\cup\set X=\set O''\cup\set X''$.  Consider any subset of elements $\set C\subseteq \set O\cup\set X$, such that $\set A := \set C \cap\set O\ne \emptyset$, and let $c:=\prod_{y\in\set C} y$.  In order to show that $\set O$ is an unimprovable set that extends to $\set X$, we need to show that $\om_{\set S}(c)\le\min_{y\in\set A} \om_{\set S}(y)$. Let $\set A'' := \set A\backslash \{x\} \equiv \set C\cap \set O''$.  Since $\set O''$ extends to $\set X''$, we know that $\om_{\set S}(c)\le\min_{y\in\set A''} \om_{\set S}(y)$.  If $\min_{y\in\set A''} \om_{\set S}(y)\le\min_{y\in\set A} \om_{\set S}(y)$ then we are done.  Otherwise, it must be the case that $x\in \set A$ and $\om_{\set S}(x)<\min_{y\in\set A''} \om_{\set S}(y)$; since we know that there exists an undetectable error of weight $\om_{\set S}(x)$ that acts on $x$ but not on any operator in $\set X$ (by the way we constructed $\lst P$ and $\lst Q$) --- namely, $h$ --- and since this same error must not act on any operator in $\set A''$ as $\om_{\set S}(x)<\min_{y\in\set A''} \om_{\set S}(y)$, we conclude that it acts on $c$ and hence $\om_{\set S}(c)=\om_{\set S}(x)\le\min_{y\in\set A} y$.  Thus we conclude that $\set O$ is an unimprovable set that extends to $\set X$.
 
 Now observe that $p_1(\lst P_k)$ is a product of elements from an unimprovable set such that $p_1(\lst P_k')$ has the lowest weight undetectable error;  therefore we conclude that $\om_{\set S}\paren{p_1(\lst P_k)}=\om_{\set S}\paren{p_1(\lst P'_k)}$, and so $m(\lst P_k)=m(\lst P_k')$.  Every other change from $\lst P'$ to $\lst P$ involves replacing an element from $\set X'$ with a product of elements from $\set X'$, and so we conclude that for every resulting operator $o\in\set X \cup \set U(\lst P)$ we have that $\om_{\set S}(o)\ge m_{\set S}(\lst P_{|\lst P|})$.  Thus, $m(\lst P_i)=m(\lst P_i')$ for every $1 \le i \le |\lst P'$, and so $M^{(|\lst P|)}(\lst P)=M^{(|\lst P'|)}(\lst P')$, which means in particular that the sequence $M^{(|\lst P|)}(\lst P)=M^{(|\lst P'|)}(\lst P')$ is ordered.  Furthermore, since $\set X$ contains only products of operators in $\set X'$, therefore by Lemma \ref{combinations-can't-make-things-worse} we conclude that $\min_{o\in\set X}\om_{\set S}(o)\ge \min_{o\in\set X'}\om_{\set S}(o)\ge m_{\set S}(\lst P'_{|\lst P'|})=m_{\set S}(\lst P_{|\lst P|})$.  Thus, property \ref{operators in X are no worse than the best qubit in P} is satisfied.  Also note that $p_1(\lst P_k)\in\set O$, as this was true for $\lst P'$ and the only operator we changed, $b\to b''$, was also updated changing $\set O'\to\set O$;  thus property \ref{first members are all in O} is satisfied.
 
