@@ -849,6 +849,16 @@ Suppose we are given two sets, $\set A$ and $\set B$, of pairs of Paili operator
 Since every operator in $\set U(\set A)$ commutes with every operator in $\set U(\set B)$, they must also commute with every operator in $\set U(\set B')$.
 \end{proof}
 %@-node:gcross.20100203143542.1282:Lemma: Recombining elements preserves conjugal property for third parties
+%@+node:gcross.20100204111315.1302:Lemma
+\begin{lemma}
+If $\set O$ is an unimprovable set with respect to $\set S$ that extends to $\{q\}\cup\set Q$, and there exists an undetectable error of weight $\om_{\set S}(q)$ that acts on $q$ but not on any operator in $\set Q$, then $\set O\cup\{q\}$ is an unimprovable set with respect to $\set S$ that extends to $\set Q$.
+\end{lemma}
+
+\begin{proof}
+Take any subset $\set X\subseteq \set O\cup\{q\}\cup\set S$.  We need to show that if $\set X\cap\paren{\set O\cup\set \{q\}}\ne\emptyset$, then $\om_{\set S}\paren{\prod_{x\in \set X} x} \le \min_{x\in\set X}\om_{\set S}(x)$.
+\end{proof}
+%@nonl
+%@-node:gcross.20100204111315.1302:Lemma
 %@+node:gcross.20100127211423.1361:Theorem: Creation of certificate
 \begin{theorem}
 Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\set S$ such that every pair in $\set L$ is conjugal with respect to $\set U(\set L)\cup\set S$.  Then for every $0\le n \le 2N$, there exist
