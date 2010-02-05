@@ -851,11 +851,18 @@ Since every operator in $\set U(\set A)$ commutes with every operator in $\set U
 %@-node:gcross.20100203143542.1282:Lemma: Recombining elements preserves conjugal property for third parties
 %@+node:gcross.20100204111315.1302:Lemma
 \begin{lemma}
-If $\set O$ is an unimprovable set with respect to $\set S$ that extends to $\{q\}\cup\set Q$, and there exists an undetectable error of weight $\om_{\set S}(q)$ that acts on $q$ but not on any operator in $\set Q$, then $\set O\cup\{q\}$ is an unimprovable set with respect to $\set S$ that extends to $\set Q$.
+\label{move-it-over}
+If $\set O$ is an unimprovable set with respect to $\set S$ that extends to $\{q\}\cup\set Q$, and there exists an undetectable error, $h$, of weight $\om_{\set S}(q)$ that acts on $q$ but not on any operator in $\set Q$, then $\set O\cup\{q\}$ is an unimprovable set with respect to $\set S$ that extends to $\set Q$.
 \end{lemma}
 
 \begin{proof}
-Take any subset $\set X\subseteq \set O\cup\{q\}\cup\set S$.  We need to show that if $\set X\cap\paren{\set O\cup\set \{q\}}\ne\emptyset$, then $\om_{\set S}\paren{\prod_{x\in \set X} x} \le \min_{x\in\set X}\om_{\set S}(x)$.
+Take any subset $\set X\subseteq \set O\cup\{q\}\cup\set Q$ such that $\set X\cap\paren{\set O\cup\set \{q\}}\ne\emptyset$.  We need to show that $\om_{\set S}\paren{x} \le \min_{y\in\set X\cap\set O\cup\{q\}}\om_{\set S}(y)$ where $x:=\prod_{y\in \set X} y$.
+
+First consider the case where $q\notin \set X$;  then the conclusion follows from the fact that $\set O$ extends to $\set Q$ by Lemma \ref{recombining extension elements preserves extension}.
+
+Now consider the case where $\set X\cap\paren{\set O\cup\{q\}}=\{q\}$.  In this case, by the assumptions of this Lemma, we know $h$ acts on $x$, and so $\om_{\set S}\paren{x} \le w(h)\le\om_{\set S}(q)=\min_{y\in\set X\cap\set O\cup\{q\}}\om_{\set S}(y)$.
+
+Finally we consider the remaining case where $\{q\}\subset\set X\cap\paren{\set O\cup\{q\}}$. Let $\set Z := \set X\backslash\{q\}\ne\emptyset$.  Since $\set O$ extends to $\{q\}\cup\set Q$, we know that $\om_{\set S}(x)\le \min_{y\in\set Z}\om_{\set S}(y)=:d_Z$.  If $d_Z \le \om_{\set S}(q)$, then $d_Z=\om_{\set S}(x)\min_{y\in\set X\cap\set O}\om_{\set S}(y)$, and we are done.  Otherwise, since $d_Z> \om_{\set S}(q)$ we know that $h$ acts on $x$ since there can be no other operator in $\set Z$ that anti-commutes with $h$, and so $\om_{\set S}\paren{x} \le w(h)\le\om_{\set S}(q)=\min_{y\in\set X\cap\set O\cup\{q\}}\om_{\set S}(y)$
 \end{proof}
 %@nonl
 %@-node:gcross.20100204111315.1302:Lemma
@@ -925,13 +932,13 @@ by Lemma \ref{recombining elements preserves conjugal property for third parties
 
 Observe that $b''$ is a product of elements from $\{p_1(\lst P_i') : i \ge k\}_i\cup\set U(\set Q)$, and by the inductive hypothesis and specifically properties \ref{first members are all in O} and \ref{operators in X are no worse than the best qubit in P} we see that it is a product of elements $\set Y\subseteq\set O'$ such that $\min_{y\in\set Y}\om_{\set S}(y)=\om_{\set S}(b)$.  Hence, by Lemma \ref{replacing element with product preserves unimprovability} we conclude that $\om_{\set S}(b)=\om_{\set S}(b'')$, the set $\set O'':=\paren{\set O'\backslash\{b\}}\cup\{b''\}$ is an unimprovable set and $\genfun(\set O')=\genfun(\set O'')$;  from the last equality we see from Lemma \ref{recombining elements preserves extension} that $\set O''$ extends to $\set X'$.
 
-Note that, by construction, every element in $\set X$ is either an element of $\set X'$ or an element of $\set X'$ multiplied by $x\in\set X'$.  Thus $\set X\subseteq \genfun(\set X')$, and so by Lemma \ref{recombining extension elements preserves extension} we see that $\set O''$ extends to $\set X$.  Furthermore, by Lemma \ref{combinations-can't-make-things-worse} and conclusion \ref{operators in X are no worse than the best qubit in P} from the inductive hypothesis we see that $\min_{y\in\set X}(y) \ge \min_{y\in\set X'}(y) \ge m_{\set S}(\lst P'_{|\lst P'|})$.
+Note that, by construction, every element in $\set X$ is either an element of $\set X'$ or an element of $\set X'$ multiplied by $x\in\set X'$.  Thus $\set X\subseteq \genfun(\set X')$, and so by Lemma \ref{combinations-can't-make-things-worse} and conclusion \ref{operators in X are no worse than the best qubit in P} from the inductive hypothesis we see that $\min_{y\in\set X}(y) \ge \min_{y\in\set X'}(y) \ge m_{\set S}(\lst P'_{|\lst P'|})$.
 
 Note that there are only two kinds of changes from $\lst P'$ to $\lst P$:  the change in the first member of a pair at $k$, and changes in the second members of pairs from being an element of $\set X'$ to an element of $\set X$.  Since we have already shown that $(\om_{\set S}\circ p_1)(\lst P_k) = (\om_{\set S}\circ p_1)(\lst P_k')$ and $\min_{y\in\set X}(y) \ge m_{\set S}(\lst P'_{|\lst P'|})$, we conclude that Thus, $m(\lst P_i)=m(\lst P_i')$ for every $1 \le i \le |\lst P'$, and so $M^{(|\lst P|)}(\lst P)=M^{(|\lst P'|)}(\lst P')$, which means in particular that the sequence $M^{(|\lst P|)}(\lst P)=M^{(|\lst P'|)}(\lst P')$ is ordered and hence $\lst P$ is a choice of qubits.  Furthermore, since in particular $m_{\set S}(\lst P'_{|\lst P'|})=m_{\set S}(\lst P_{|\lst P|})$, we conclude that $\min_{y\in\set X}(y)\gem_{\set S}(\lst P_{|\lst P|})$, proving property \ref{operators in X are no worse than the best qubit in P}.
 
 Let $\set O:=\set O''\cup\{x\}$.  Since $|\set O''|=|\set O|=n-1$, we see that $|\set O|=|\set O''|+1=n$, and so conclusion \ref{size of O matches arbitrarily chosen integer} holds.  Since we replaced $b$ with $b''$ in going from $\set O'$ to $\set O$, and $b$ is the only first member of any pair that changed from $\lst P'$ to $\lst P$, we conclude that conclusion \ref{first members are all in O} from the inductive hypothesis continues to hold for $\set O$ and $\lst P$.
 
-It remains only to show that $\set O$ extends to $\set X$;  recall that we have already shown that $\set O''$ extends to $\set X$.
+It remains only to show that $\set O$ extends to $\set X$;  recall that we have already shown that $\set O''$ extends to $\set X$. Note that $\{x\}\cup\set X\subseteq \genfun(\set X')$ (recall we earlier showed that $\set X\subseteq \genfun(\set X')$, and hence by Lemma \ref{recombining extension elements preserves extension} we see that $\set O''$ extends to $\{x\}\cup\set X$.  By construction, there exists an undetectable error $h$ of weight $\om_{\set S}(x)$ that acts on $x$ but not on any operator in $\set X$.  Thus, by Lemma \ref{move-it-over} we see that $\set O=\set O''\cup\{x\}$ extends to $\set X$, and so we are done.
 
 \end{description}
 
@@ -943,6 +950,5 @@ It remains only to show that $\set O$ extends to $\set X$;  recall that we have 
 %@-others
 
 \end{document}
-%@nonl
 %@-node:gcross.20090405101642.3:@thin CodeQuest.tex
 %@-leo
