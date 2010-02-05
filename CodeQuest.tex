@@ -849,7 +849,7 @@ Suppose we are given two sets, $\set A$ and $\set B$, of pairs of Paili operator
 Since every operator in $\set U(\set A)$ commutes with every operator in $\set U(\set B)$, they must also commute with every operator in $\set U(\set B')$.
 \end{proof}
 %@-node:gcross.20100203143542.1282:Lemma: Recombining elements preserves conjugal property for third parties
-%@+node:gcross.20100204111315.1302:Lemma
+%@+node:gcross.20100204111315.1302:Lemma: An element can be moved from the extension to the unimprovable set
 \begin{lemma}
 \label{move-it-over}
 If $\set O$ is an unimprovable set with respect to $\set S$ that extends to $\{q\}\cup\set Q$, and there exists an undetectable error, $h$, of weight $\om_{\set S}(q)$ that acts on $q$ but not on any operator in $\set Q$, then $\set O\cup\{q\}$ is an unimprovable set with respect to $\set S$ that extends to $\set Q$.
@@ -865,8 +865,9 @@ Now consider the case where $\set X\cap\paren{\set O\cup\{q\}}=\{q\}$.  In this 
 Finally we consider the remaining case where $\{q\}\subset\set X\cap\paren{\set O\cup\{q\}}$. Let $\set Z := \set X\backslash\{q\}\ne\emptyset$.  Since $\set O$ extends to $\{q\}\cup\set Q$, we know that $\om_{\set S}(x)\le \min_{y\in\set Z}\om_{\set S}(y)=:d_Z$.  If $d_Z \le \om_{\set S}(q)$, then $d_Z=\om_{\set S}(x)\min_{y\in\set X\cap\set O}\om_{\set S}(y)$, and we are done.  Otherwise, since $d_Z> \om_{\set S}(q)$ we know that $h$ acts on $x$ since there can be no other operator in $\set Z$ that anti-commutes with $h$, and so $\om_{\set S}\paren{x} \le w(h)\le\om_{\set S}(q)=\min_{y\in\set X\cap\set O\cup\{q\}}\om_{\set S}(y)$
 \end{proof}
 %@nonl
-%@-node:gcross.20100204111315.1302:Lemma
+%@-node:gcross.20100204111315.1302:Lemma: An element can be moved from the extension to the unimprovable set
 %@+node:gcross.20100127211423.1361:Theorem: Creation of certificate
+%@+node:gcross.20100204174120.1285:Statement
 \begin{theorem}
 Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\set S$ such that every pair in $\set L$ is conjugal with respect to $\set U(\set L)\cup\set S$.  Then for every $0\le n \le 2N$, there exist
 \begin{itemize}
@@ -883,12 +884,16 @@ such that
 % 3
 \item \label{first members are all in O} $p_1(\lst P_i)\in \set O$ for every $1 \le i \le |\lst P_i|$;
 % 4
-\item \label{size of O matches arbitrarily chosen integer} $|\set O|=n$;
+\item \label{Q does not intersect with O} $\genfun(\set Q) \cap \set O = \emptyset$;
 % 5
+\item \label{size of O matches arbitrarily chosen integer} $|\set O|=n$;
+% 6
 \item \label{operators in X are no worse than the best qubit in P} and $\min_{x\in\set X}\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ (if $\lst P$ is non-empty).
 \end{enumerate}
 \end{theorem}
-
+%@nonl
+%@-node:gcross.20100204174120.1285:Statement
+%@+node:gcross.20100204174120.1286:Proof
 \begin{proof}
 
 Proof by induction.  For the base case, let $\lst P$ be the empty sequence, $\set Q:=\set L$, and $\set O:=\emptyset$;  then the conclusions are satisfied vacuously.
@@ -902,7 +907,8 @@ There are two cases;  either
 \end{enumerate}
 
 \begin{description}
-
+%@+others
+%@+node:gcross.20100204174120.1284:Case 1
 \item[Case 1 $\Rightarrow x\in\set U(\lst P')$]
 Let $k$ be the integer such that $x=p_2(\lst P'_k)$, $a := x$, and $b:=p_1(\lst P'_k)$.  Now let $\set Q:=\set R'$ and $b'$ be the objects named in Corolary \ref{recombination-to-make-commute} given the pair $(a,b)$, the set $\set R=\set Q'$, the set $\set S$, and the operator $x:=h$.  Note that by Corolary \ref{recombination-to-make-commute} we know that $(a,b')$ and every pair in $\set Q$ are conjugal to
 $$\left[\set T'\backslash\paren{\{a,b\} \cup \set U(\set Q')}\right]\cup \{a,b'\} \cup \set U(\set Q)=\set T''$$
@@ -936,13 +942,43 @@ Note that, by construction, every element in $\set X$ is either an element of $\
 
 Note that there are only two kinds of changes from $\lst P'$ to $\lst P$:  the change in the first member of a pair at $k$, and changes in the second members of pairs from being an element of $\set X'$ to an element of $\set X$.  Since we have already shown that $(\om_{\set S}\circ p_1)(\lst P_k) = (\om_{\set S}\circ p_1)(\lst P_k')$ and $\min_{y\in\set X}(y) \ge m_{\set S}(\lst P'_{|\lst P'|})$, we conclude that Thus, $m(\lst P_i)=m(\lst P_i')$ for every $1 \le i \le |\lst P'$, and so $M^{(|\lst P|)}(\lst P)=M^{(|\lst P'|)}(\lst P')$, which means in particular that the sequence $M^{(|\lst P|)}(\lst P)=M^{(|\lst P'|)}(\lst P')$ is ordered and hence $\lst P$ is a choice of qubits.  Furthermore, since in particular $m_{\set S}(\lst P'_{|\lst P'|})=m_{\set S}(\lst P_{|\lst P|})$, we conclude that $\min_{y\in\set X}(y)\gem_{\set S}(\lst P_{|\lst P|})$, proving property \ref{operators in X are no worse than the best qubit in P}.
 
-Let $\set O:=\set O''\cup\{x\}$.  Since $|\set O''|=|\set O|=n-1$, we see that $|\set O|=|\set O''|+1=n$, and so conclusion \ref{size of O matches arbitrarily chosen integer} holds.  Since we replaced $b$ with $b''$ in going from $\set O'$ to $\set O$, and $b$ is the only first member of any pair that changed from $\lst P'$ to $\lst P$, we conclude that conclusion \ref{first members are all in O} from the inductive hypothesis continues to hold for $\set O$ and $\lst P$.
+Let $\set O:=\set O''\cup\{x\}$.  Note that $x\notin \genfun(\set Q)$ since its conjugal partner commutes with every element in $\set Q$, and so since $\genfun(\set Q'\cup\{x\})=\genfun(\set Q)$ (by construction), by the inductive hypothesis and property \ref{Q does not intersect with O} we conclude that $\genfun(\set Q)\cap\set O=\emptyset$, so that property \ref{Q does not intersect with O} continues to hold.  We furthermore have that $x\notin \set O''$ since $x\in \set U(\lst P')\backslash \set O'$ and thus $|\set O|=|\set O''|+1$;  since $|\set O''|=|\set O'|=n-1$, we see that $|\set O|=n$, and so conclusion \ref{size of O matches arbitrarily chosen integer} holds.  Since we replaced $b$ with $b''$ in going from $\set O'$ to $\set O$, and $b$ is the only first member of any pair that changed from $\lst P'$ to $\lst P$, we conclude that conclusion \ref{first members are all in O} from the inductive hypothesis continues to hold for $\set O$ and $\lst P$.
 
 It remains only to show that $\set O$ extends to $\set X$;  recall that we have already shown that $\set O''$ extends to $\set X$. Note that $\{x\}\cup\set X\subseteq \genfun(\set X')$ (recall we earlier showed that $\set X\subseteq \genfun(\set X')$, and hence by Lemma \ref{recombining extension elements preserves extension} we see that $\set O''$ extends to $\{x\}\cup\set X$.  By construction, there exists an undetectable error $h$ of weight $\om_{\set S}(x)$ that acts on $x$ but not on any operator in $\set X$.  Thus, by Lemma \ref{move-it-over} we see that $\set O=\set O''\cup\{x\}$ extends to $\set X$, and so we are done.
+%@nonl
+%@-node:gcross.20100204174120.1284:Case 1
+%@+node:gcross.20100204174120.1287:Case 2
+\item[Case 2 $\Rightarrow$ $x\notin \set U(\lst P')$ and $o\in\set U(\set Q')$]
 
+Let $(a,b)$ be the pair in $\set Q'$ such that $h$ acts on one of its members, and let $\set R:=\set Q'\backslash\{(a,b)\}$;  without loss of generality we may assume that $h$ acts on $a$ but not on $b$, as if this is not the case we can make it be the case by flipping the two members of the pair and/or multiplying the second operator by the first.  Now let $\set Q:=\set R'$ and $b'$ be the objects named in Corolary \ref{recombination-to-make-commute} given the pair $(a,b)$, the set $\set R$, the set $\set S$, and the operator $x:=h$.  Note that by Corolary \ref{recombination-to-make-commute} we know that $(a,b')$ and every pair in $\set Q$ are conjugal to
+$$\left[\set T'\backslash\paren{\{a,b\} \cup \set U(\set Q')}\right]\cup \{a,b'\} \cup \set U(\set Q)=\set T''$$
+where
+$$\set T'':=\set U(\lst P')\cup \{a,b'\} \cup \set U(\set Q)\cup \set S;$$
+we also know that $\genfun\paren{\set U(\set Q')}=\genfun\paren{\{a,b'\}\cup \set U(\set Q)}$, and so we see that every operator in $\set U(\lst P')$ must commute with every operator in $\{a,b'\}\cup \set U(\set Q')$, and hence $(a,b')$ and every pair in $\lst P'$ and $\set Q$ are all conjugal with respect to $T''$.
+
+Define $\lst P$ to be a length $|\lst P'|+1$ sequence such that
+$$
+\lst P_i :=
+\begin{cases}
+\lst P'_i & i \le |\lst P'| \\
+(a,b') & i = |\lst P'|+1.
+\end{cases}
+$$
+Based on this definition, we see that every pair in $\lst P$ and $\set Q$ are all conjugal with respect to $$\set U(\lst P) \cup \set U(\set Q)\cup \set S,$$ satisfying property \ref{pairs are all conjugal to T}.  Furthermore, since  $\genfun\paren{\set U(\lst P)} = \genfun(\set U(\lst P')\cup\{(a,b')\})$, we see that this combined with the earlier conclusion that $\genfun\paren{\set U(\set Q')}=\genfun\paren{\set U(\set Q)\cup\{(a,b')\}}$ implies that $\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}=\genfun\paren{\set U(\lst P')\cup \set U(\set Q')}=(\genfun\circ\set U)(\set L)$, satisfying property \ref{P and Q generate the same set as L}.
+
+Let $\set O := \set O'\cup\{a\}$, and it immediately follows from the inductive hypothesis and the fact that $\lst P$ is identical to $\lst O'$ except for the addition of $(a,b')$ that property \ref{first members are all in O} holds.  We furthermore see that $a\notin \genfun(\set Q)$ as $b'$ commutes with every operator in $\genfun(\set Q)$, and since $\genfun(\set Q)\subset\genfun(\set Q')$ we conclude from conclusion \ref{Q does not intersect with O} from the inductive hypothesis that $\genfun(\set Q)\cap\set O=\emptyset$, and thus conclusion {Q does not intersect with O} is satisfied.  Finally, since $a\notin \set O'$ we conclude by conclusion \ref{Q does not intersect with O} from the inductive hypothesis that $a\in\genfun(\set Q')$, and hence $|\set O|=|\set O'|+1=n-1+1=n$.
+
+Note that by property \ref{operators in X are no worse than the best qubit in P} of the inductive hypothesis we know that $\om_{\set S}(a)\ge m_{\set S}\paren{\lst P'_{|\lst P'|}}$;  thus, we see that $M^{(|\lst P|)}_{\set S}(\lst P)$ is ordered, and so $\lst P$ is a choice of qubits.  Furthermore, note that $\set X\subseteq \genfun(\set X')$ --- i.e., every operator in $\set X$ is a product of operators from $\set X'$ --- and therefore by Lemma \ref{combinations-can't-make-things-worse} we see that $\min_{y\in\set X}\om_{\set S}(y)\ge \min_{y\in\set X'}\om_{\set S}(y)=m_{\set S}\paren{\lst P'_{|\lst P'|}}$, which proves \ref{operators in X are no worse than the best qubit in P} holds.
+
+It remains only to show that $\set O$ is an unimprovable set that extends to $\set X$.  We know from the inductive hypothesis that $\set O'$ is an unimprovable set that extends to $\set X'$.  Since $\{a\}\cup\set X\subseteq \genfun(\set X')$, we conclude from Lemma \ref{recombining extension elements preserves extension} that $\set O'$ extends to $\{a\}\cup\set X$.  Since $a$ has an undetectable error of weight $\om_{\set S}(a)$, namely $h$ that acts on it but on no operator in $\set X'$ by construction and the fact that we are in Case 2, we conclude from Lemma \ref{move-it-over} that $\{a\}\cup \set O'\equiv \set O$ extends to $\set X$, and so we are done.
+%@nonl
+%@-node:gcross.20100204174120.1287:Case 2
+%@-others
 \end{description}
 
 \end{proof}
+%@nonl
+%@-node:gcross.20100204174120.1286:Proof
 %@-node:gcross.20100127211423.1361:Theorem: Creation of certificate
 %@-others
 %@-node:gcross.20090511123440.3:Optimal generators
