@@ -29,7 +29,7 @@
     
   </head>
   <body>
-    <img src="280px-Tiling_Regular_4-4_Square.svg.png" />
+    <img src="images/280px-Tiling_Regular_4-4_Square.svg.png" />
   </body>
 </html></richcontent>
 </node>
@@ -42,7 +42,7 @@
   </head>
   <body>
     <p>
-      <img src="280px-Tiling_Semiregular_4-8-8_Truncated_Square.svg.png" />
+      <img src="images/280px-Tiling_Semiregular_4-8-8_Truncated_Square.svg.png" />
     </p>
   </body>
 </html></richcontent>
@@ -56,7 +56,7 @@
   </head>
   <body>
     <p>
-      <img src="280px-Tiling_Semiregular_3-3-4-3-4_Snub_Square.svg.png" />
+      <img src="images/280px-Tiling_Semiregular_3-3-4-3-4_Snub_Square.svg.png" />
     </p>
   </body>
 </html></richcontent>
@@ -70,7 +70,7 @@
   </head>
   <body>
     <p>
-      <img src="280px-Tiling_Regular_6-3_Hexagonal.svg.png" />
+      <img src="images/280px-Tiling_Regular_6-3_Hexagonal.svg.png" />
     </p>
   </body>
 </html></richcontent>
@@ -84,7 +84,7 @@
   </head>
   <body>
     <p>
-      <img src="280px-Tiling_Semiregular_3-6-3-6_Trihexagonal.svg.png" />
+      <img src="images/280px-Tiling_Semiregular_3-6-3-6_Trihexagonal.svg.png" />
     </p>
   </body>
 </html></richcontent>
@@ -98,7 +98,7 @@
   </head>
   <body>
     <p>
-      <img src="280px-Tiling_Semiregular_3-12-12_Truncated_Hexagonal.svg.png" />
+      <img src="images/280px-Tiling_Semiregular_3-12-12_Truncated_Hexagonal.svg.png" />
     </p>
   </body>
 </html></richcontent>
@@ -112,13 +112,13 @@
   </head>
   <body>
     <p>
-      <img src="280px-Tiling_Regular_3-6_Triangular.svg.png" />
+      <img src="images/280px-Tiling_Regular_3-6_Triangular.svg.png" />
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node CREATED="1266020342505" FOLDED="true" ID="ID_723089861" MODIFIED="1266020907285" TEXT="Rhombitrihexagonal tiling (rhombihexadeltille)">
+<node CREATED="1266020342505" FOLDED="true" ID="ID_723089861" MODIFIED="1266021042005" TEXT="Rhombitrihexagonal tiling (rhombihexadeltille)">
 <node CREATED="1266019848115" ID="ID_1744503475" MODIFIED="1266020340641">
 <richcontent TYPE="NODE"><html>
   <head>
@@ -126,7 +126,7 @@
   </head>
   <body>
     <p>
-      <img src="280px-Tiling_Semiregular_3-4-6-4_Small_Rhombitrihexagonal.svg.png" />
+      <img src="images/280px-Tiling_Semiregular_3-4-6-4_Small_Rhombitrihexagonal.svg.png" />
     </p>
   </body>
 </html></richcontent>
@@ -140,7 +140,7 @@
   </head>
   <body>
     <p>
-      <img src="280px-Tiling_Semiregular_4-6-12_Great_Rhombitrihexagonal.svg.png" />
+      <img src="images/280px-Tiling_Semiregular_4-6-12_Great_Rhombitrihexagonal.svg.png" />
     </p>
   </body>
 </html></richcontent>
@@ -154,7 +154,7 @@
   </head>
   <body>
     <p>
-      <img src="280px-Tiling_Semiregular_3-3-3-3-6_Snub_Hexagonal.svg.png" />
+      <img src="images/280px-Tiling_Semiregular_3-3-3-3-6_Snub_Hexagonal.svg.png" />
     </p>
   </body>
 </html></richcontent>
@@ -167,10 +167,9 @@
     
   </head>
   <body>
-    <img src="280px-Tiling_Semiregular_3-3-3-4-4_Elongated_Triangular.svg.png" />
+    <img src="images/280px-Tiling_Semiregular_3-3-3-4-4_Elongated_Triangular.svg.png" />
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
