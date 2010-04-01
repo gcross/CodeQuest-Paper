@@ -7,3 +7,5 @@
 prv_*
 *~
 .scons*
+*.bbl
+*.blg
