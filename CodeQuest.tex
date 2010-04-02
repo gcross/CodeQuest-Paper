@@ -437,20 +437,26 @@ An \emph{optimal choice of $N$ qubits stabilized by $\set S$} is any choice of $
 \end{definition}
 %@-node:gcross.20091221145013.1278:Definition: Total ordering => Optimal choice of qubits
 %@+node:gcross.20100128212359.1294:Definition: Unimprovable set
-How do we know that a choice of qubits is optimal?  It turns out that there is a very simple condition that is sufficient for demonstrating this.  First, we need the following definition:
+How do we know that a choice of qubits is optimal?  Intuitively, it should be sufficient to prove that a choice of qubits is optimal if we can show that there is no way that we can recombine some number qubits in the choice to form a qubit that is more robust than its component factors --- that is, there is no way that any qubit can be "improved" by its involvement in such a product.  This condition is stated formally in the following definition:
 
 \begin{definition}
 An \emph{unimprovable set with respect to $\set S$} is a set of Pauli operators, $\set O$, such that for any subset, $\set X\subseteq \set O$, we have that $\om_{\set S}\paren{\prod_{x\in \set X} x} = \min_{x\in\set X}\om_{\set S}(x)$.  We say that an unimprovable set $\set O$ \emph{extends to $\lst Q$} if for all subsets $\set X \subseteq \set O\cup\set Q$ such that $\set X\cap \set O \ne \emptyset$ we have that $\om_{\set S}\paren{\prod_{x\in \set X} x} \le \min_{x\in\set X\cap \set O}\om_{\set S}(x)$.
 \end{definition}
+
 %@-node:gcross.20100128212359.1294:Definition: Unimprovable set
 %@+node:gcross.20100125183648.1308:Theorem: Optimality condition
+The following Theorem proves that this condition is indeed sufficient to show that a choice of logical qubits is optimal.
+%@nonl
 %@+node:gcross.20100125183648.1309:Statement
 \begin{theorem}
 \label{optimality-condition}
 If $\lst P$ is a choice of $N$ logical qubits stabilized by $\set S$ such that $\{p_1(\lst P_i)\}_i\}$ is an unimprovable set with respect to $\set S$ that extends to $\set U(\lst P)$, then $\lst P$ is an optimal choice of qubits.
 \end{theorem}
 
-Before we can prove this Theorem, we need a couple of Lemmas and a Proposition.
+\begin{remark}
+Before embarking on our proof of this Theorem, we shall first prove some useful Lemmas and Propositions.  We shall begin by presenting Lemmas \ref{combinations-can't-make-things-worse} and \ref{lesser-operator-wins}, which make statements about the weight of the minimum weight undetectable error acting on a \emph{product} of operators in terms of the weights of the minimum weight undetectable error acting on the factors of the product.  Following this, we shall present Proposition \ref{bound-on-recombinations}, which essentially allows us to place a bound on the number of independent conjugal pairs that can be generated from a given set of operators;  the proof of this Proposition will itself additionally include the statement and proof of Lemmas {single-pair-rearrangement}-{elimination-to-create-subset}.
+\end{remark}
+%@nonl
 %@-node:gcross.20100125183648.1309:Statement
 %@+node:gcross.20100125183648.1306:Lemma: Combinations can't make things worse
 \begin{lemma}
