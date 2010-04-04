@@ -961,9 +961,11 @@ It remains only to show that $\set O$ is an unimprovable set that extends to $\s
 %@-node:gcross.20100204174120.1286:Proof
 %@-node:gcross.20100127211423.1361:Theorem: Creation of certificate
 %@+node:gcross.20100402142648.1317:Pseudo-code
+
+%@+node:gcross.20100403145800.1484:Optimize-Logical-Qubits
 \begin{table}
 \begin{codebox}
-\Procname{$\proc{Compute-Subsystem-Code}(\lst S,\lst G,\lst L)$}
+\Procname{$\proc{Optimize-Logical-Qubits}(\lst S,\lst G,\lst L)$}
 \li $N \gets |\lst L|$
 \li $k \gets 0$
 \li $\lst m \gets [\const{true}]*|\lst L|$
@@ -1006,7 +1008,7 @@ It remains only to show that $\set O$ is an unimprovable set that extends to $\s
 \li     $(q_X,q_Z)\gets \lst L[l]$
 \li     \If $c = 1$
 \li     \Then
-\li         $\lst m[i] \gets \const{false}$
+\li         $\lst m[l] \gets \const{false}$
 \li         \For $i\gets l+1$ \To $k$,  $(l_X,l_Z) \gets \lst L[i]$
 \li         \Do
 \li             \If $m[i]$ and $\{e,l_Z\}$
@@ -1015,28 +1017,66 @@ It remains only to show that $\set O$ is an unimprovable set that extends to $\s
 \li                 $\lst L[i] \gets (l_X,l_Z\cdot q_Z)$
                 \End
             \End
-\li         \For $i\gets k+1$ \To $N$,  $(l_X,l_Z) \gets \lst L[i]$
-\li         \Do
-\li             \If $\{e,l_Z\}$ and $\{e,l_X\}$
-\li             \Then
-\li                 $q_X \gets q_X \cdot l_X \cdot l_Z$
-\li                 $\lst L[i] \gets (l_X\cdot q_Z,l_Z\cdot q_Z)$
-\li             \ElseIf $\{e,l_Z\}$
-\li             \Then
-\li                 $q_X \gets q_X \cdot l_X$
-\li                 $\lst L[i] \gets (l_X,l_Z\cdot q_Z)$
-\li             \ElseIf $\{e,l_X\}$
-\li             \Then
-\li                 $q_X \gets q_X \cdot l_Z$
-\li                 $\lst L[i] \gets (l_X\cdot q_Z,l_Z)$
-                \End
+\li         $(q_Z,q_X) \gets \kw{call}$
+            \Indentmore
+\zi         $\proc{Fix-Logical-Qubits}$
+            \Indentmore
+\zi         $(\lst L,k,e,q_Z,q_X)$
             \End
+            \End
+\li         $L[l] \gets (q_X,q_Z)$
 \li     \Else
-        \End
+\li         \If $\func{commute}(e,q_X)$
+\li         \Then
+\li             Swap $q_X$ and $q_Z$
+            \End
+\li         $(q_X,q_Z) \gets \lst L[l]$
+\li         $\lst L[l] \gets \lst L[k]$
+\li         $k \gets k+1$
+\li         $(q_X,q_Z) \gets \kw{call}$
+            \Indentmore
+\zi         $\proc{Fix-Logical-Qubits}$
+            \Indentmore
+\zi         $(\lst L,k,e,q_X,q_Z)$
+            \End
+            \End
+\li         $L[k] \gets (q_X,q_Z)$
+        \EndIf
     \End
 \end{codebox}
 \caption{Algorithm which optimizes the logical qubits for a given subsystem code.} \label{table:algorithm-optimization}
 \end{table}
+%@-node:gcross.20100403145800.1484:Optimize-Logical-Qubits
+%@+node:gcross.20100403145800.1485:Fix-Logical-Qubits
+\begin{table}
+\begin{codebox}
+\Procname{$\proc{Fix-Logical-Qubits}(\lst L,k,e,q_A,q_B)$}
+\li \For $i\gets k$ \To $|\lst L|$,  $(l_X,l_Z) \gets \lst L[i]$
+\li \Do
+\li     \If $\func{anti}(e,l_Z)$ and $\func{anti}(e,l_X)$
+\li     \Then
+\li         $q_A \gets q_A \cdot l_X \cdot l_Z$
+\li         $\lst L[i] \gets (l_X\cdot q_B,l_Z\cdot q_B)$
+\li     \ElseIf $\func{anti}(e,l_Z)$
+\li     \Then
+\li         $q_A \gets q_A \cdot l_X$
+\li         $\lst L[i] \gets (l_X,l_Z\cdot q_B)$
+\li     \ElseIf $\func{anti}(e,l_X)$
+\li     \Then
+\li         $q_A \gets q_A \cdot l_Z$
+\li         $\lst L[i] \gets (l_X\cdot q_B,l_Z)$
+        \End
+        \End
+\li \If $anti(e,q_A)$
+\li \Then
+        $q_A \gets q_A \cdot q_B$
+    \End
+\li \Return $(q_A,q_B)$
+    \End
+\end{codebox}
+\caption{Algorithm which `fixes' a subset of the logical qubits so that they are robust to a given error.} \label{table:algorithm-optimization}
+\end{table}
+%@-node:gcross.20100403145800.1485:Fix-Logical-Qubits
 %@-node:gcross.20100402142648.1317:Pseudo-code
 %@-others
 %@-node:gcross.20100402140750.1314:Optimalization procedure
