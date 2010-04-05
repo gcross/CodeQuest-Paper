@@ -667,11 +667,17 @@ Given a set of Pauli operators $\set O$ acting on $N$ physical qubits and a test
 %@-node:gcross.20100405123649.1326:Statement
 %@+node:gcross.20100405123649.1327:Definition: Psuedo-generators
 \begin{remark}
-This Proposition follows from the results in [ref].  We shall include the proof here for completeness and also to show specifically how the results in [ref] specialize to our case.
+The core idea behind the algorithm is the Brouwer-Zimmermann search algorithmm, which searches for the minimum weight binary string satisfying some property given a set of binary strings generators endowed with a multiplication operation defined to be the exclusive-or operation.  The Brouwer-Zimmermann algorithm works by using a Gaussian elimination analogue to express the generators in reduced row eschelon form;  it then performs its search by examining all products of $r$ generators for increasing $r$.  When all of the products of $r$ generators have been enumerated, one knows that the set of strings that has yet to be enumerated hsa weight $r+1$ or greater, since the row-eschelon form means that every string has a column for which it is the only string with a 1 in that column, and so a product of $k$ strings must have a weight of at least $k$.  Thus, as the search proceeds, there is a growing lower-bound on the weight of the binary string, and the search halts when a string has been found that matches this bound.
+
+This algorithm cannot be immediately applied to the current problem because we are not working with binary strings, and in particular Pauli operators have a more complicated multiplication operation that binary strings.  Fortunately, in ref. White and Grassl showed that the Brouwer-Zimmermann enumeration can be generalized.  This Proposition thus follows from the results in [ref].  We include the proof here for completeness and also to show specifically how the results in [ref] specialize to our case.
+
+The key difference between binary strings and Pauli operators is that binary strings only have two possible values in a given column, whereas Pauli operators have four.  Thus, whereas we only need one element to generate all of the possible values in a given column for a binary string, we need \emph{two} elements to generate all of the possible values in a given column for a Pauli operator.  Thus, rather than working with generators, we instead work with a generalization we call \emph{pseudo-generators}, which are defined as follows.
 \end{remark}
 
-\begin{lemma}
-\end{lemma}
+\begin{definition}
+A \emph{pseudo-generator of length $k$} is a sequence of $k$ Pauli operators with $k\in\{1,2\}$.
+\begin{cases}
+\end{definition}
 %@-node:gcross.20100405123649.1327:Definition: Psuedo-generators
 %@-node:gcross.20100405123649.1325:Proposition: Minimal weight operator
 %@+node:gcross.20100126164527.1288:Lemma: Multiple recombinations
