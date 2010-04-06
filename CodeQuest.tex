@@ -684,19 +684,33 @@ Unlike `normal' generators --- i.e., Pauli operators --- a product of generators
 \end{remark}
 
 \begin{definition}
+\label{definition:pseudo-product}
 Suppose we are given a set of $r$ pseudo-generators $\set G$.  Let $\set X:=\{(\genfun\circ\set u)(g)\backslash\{I\}: g\in\set G\}$, $\set Y$ be the $r-$ary Caresian product of the $r$ sets contained in $\set X$, and $\set Z$ be the set consisting of the normal quantum operator product of the $r$ operators in each $r-$tuple in $\set Y$.  Then $\set Z$ is defined to be the \emph{pseudo-product} of the pseudo-generators in $\set G$. 
 \end{definition}
 
 \begin{remark}
-We also need to extend our notion of acting ``trivially'' and ``non-trivially'' from Pauli operators to pseudo-generators.
+The following Lemma places a bound on the size of the pseudo-product.
+\end{remark}
+
+\begin{lemma}
+The pseudo-product of $r$ generators contains at most $3^r$ operators.
+\end{lemma}
+
+\begin{proof}
+Every set in $\set X$ described in Definition \ref{definition:pseudo-product} has a cardinality of either 1 or 3, and the size of $\set Y$ is equal to the product of the sizes of all the sets in $\set X$;  since $|\set X|=r$, we therefore conclude that the cardinality of $\set Y$ and hence the number of operators in the pseudo-product is at most $3^r$.
+\end{proof}
+
+\begin{remark}
+Recall that we say that a Pauli operator acts \emph{trivially on a physical qubit} if it has the identity operator in the tensor product at the location corresponding to that qubit, and that it acts \emph{non-trivially on a physical qubit} if it does not have an identity operator at that location.  Since pseudo-generators are more complicated than Pauli operators, we need to extend these terms to apply to them, which is done in the following definition.
 \end{remark}
 
 \begin{definition}
-A pseudo-generator \emph{acts non-trivially on a physical qubit} if either it is length 1 and the single contained Pauli operator acts non-trivially on said physical qubit (that is, it is an operator which does not have a single-qubit identity operator in the tensor product at the location corresponding to that qubit), or if it is length 2 and both operators and their product all act non-trivially on said physical qubit.  A pseudo-generator \emph{acts trivially on a physical qubit} if all of the operators in the sequence act trivially on the physical qubit (that is, it is an operator which has a single-qubit identity operator in the tensor product at the location corresponding to that qubit).
+A pseudo-generator \emph{acts trivially on a physical qubit} if all of the operators in the sequence act trivially on the physical qubit.
+A pseudo-generator \emph{acts non-trivially on a physical qubit} if either it is length 1 and the single contained Pauli operator acts non-trivially on said physical qubit, or if it is length 2 and both operators as well as their product all act non-trivially on said physical qubit.  
 \end{definition}
 
 \begin{remark}
-Note that our definitions are such that they do not exclude the possibility of there being pseudo-generators which act neither trivially nor non-trivially on a given physical qubit;  such operators are not of interest to us in this discussion.
+Note that our definitions are such that they do not exclude the possibility of there being pseudo-generators which act neither trivially nor non-trivially on a given physical qubit, since it is possible for a pseudo-generator to consist of two operators which have the same Pauli single-qubit operator at the same location so that their product contains the identity at that location;  such cases will not be of interest to us.
 
 For convenence, we also introduce the following definition to capture the notion of a set of pseudo-generators with the property that each pseudo-generator has a qubit such that it is the only pseudo-generator that allows you to generate an operator acting non-trivially on that qubit.
 \end{remark}
