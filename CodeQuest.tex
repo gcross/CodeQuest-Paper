@@ -670,7 +670,7 @@ Given a set of Pauli operators $\set O$ acting on $N$ physical qubits and a test
 \begin{remark}
 This algorithm is based on the Brouwer-Zimmermann search algorithmm, which searches for the minimum weight binary string satisfying some property given a set of binary string generators endowed with a multiplication operation defined to be the exclusive-or operation.  The Brouwer-Zimmermann algorithm works by using a Gaussian elimination analogue to express the generators in reduced row eschelon form;  it then performs its search by examining all products of $r$ generators for increasing $r$.  When all of the products of $r$ generators have been enumerated, one knows that the set of strings that has yet to be enumerated hsa weight $r+1$ or greater, since the row-eschelon form means that every string has a column for which it is the only string with a 1 in that column, and so a product of $k$ strings must have a weight of at least $k$.  Thus, as the search proceeds, there is a growing lower-bound on the weight of the binary string, and the search halts when a string has been found that matches this bound.
 
-This algorithm cannot be immediately applied to the current problem because we are not working with binary strings, and in particular Pauli operators have a more complicated multiplication operation that binary strings.  Fortunately, in ref. White and Grassl showed that the Brouwer-Zimmermann enumeration can be generalized.  Proposition \ref{minimal-weight-search} thus follows from the results in [ref].  We include the proof here for completeness and also to show specifically how the results in [ref] specialize to our case.
+This algorithm cannot be immediately applied to the current problem because we are not working with binary strings, and in particular Pauli operators have a more complicated multiplication operation that binary strings.  Fortunately, in ref. White and Grassl showed that the Brouwer-Zimmermann enumeration can be generalized.  Proposition \ref{minimal-weight-search} thus follows from the results in [ref].  We include the proof here for completeness and also to show specifically how the results in [ref] specialize to our case.  Before presenting the proof of Proposition \ref{minimal-weight-search}, we shall first define some additional terms and prove some additional Lemmas that will prove useful.
 
 The key difference between binary strings and Pauli operators is that binary strings only have two possible values in a given column, whereas Pauli operators have four.  Thus, whereas we only need one element to generate all of the possible values in a given column for a binary string, we need \emph{two} elements to generate all of the possible values in a given column for a Pauli operator.  Thus, rather than working with generators, we instead work with a generalization we call \emph{pseudo-generators}, which are defined as follows.
 \end{remark}
@@ -684,9 +684,40 @@ Unlike `normal' generators --- i.e., Pauli operators --- a product of generators
 \end{remark}
 
 \begin{definition}
-Suppose we are given a set of $r$ pseudo-generators $\set G$.  Let $\set X:=\{(\genfun\circ\set u)(g)\backslash\{I\}: g\in\set G\}$, $\set Y$ be the $r-$ary Caresian product of the $r$ sets contained in $\set X$, and $\set Z$ be the set consisting of the normal quantum operator product of the $r$ operators in each $r-$tuple in $\set Y$.  Then $\set Z$ is defined to be the \emph{pseudo-product} of the generators in $\set G$. 
+Suppose we are given a set of $r$ pseudo-generators $\set G$.  Let $\set X:=\{(\genfun\circ\set u)(g)\backslash\{I\}: g\in\set G\}$, $\set Y$ be the $r-$ary Caresian product of the $r$ sets contained in $\set X$, and $\set Z$ be the set consisting of the normal quantum operator product of the $r$ operators in each $r-$tuple in $\set Y$.  Then $\set Z$ is defined to be the \emph{pseudo-product} of the pseudo-generators in $\set G$. 
+\end{definition}
+
+\begin{remark}
+We also need to extend our notion of acting ``trivially'' and ``non-trivially'' from Pauli operators to pseudo-generators.
+\end{remark}
+
+\begin{definition}
+A pseudo-generator \emph{acts non-trivially on a physical qubit} if either it is length 1 and the single contained Pauli operator acts non-trivially on said physical qubit (that is, it is an operator which does not have a single-qubit identity operator in the tensor product at the location corresponding to that qubit), or if it is length 2 and both operators and their product all act non-trivially on said physical qubit.  A pseudo-generator \emph{acts trivially on a physical qubit} if all of the operators in the sequence act trivially on the physical qubit (that is, it is an operator which has a single-qubit identity operator in the tensor product at the location corresponding to that qubit).
+\end{definition}
+
+\begin{remark}
+Note that our definitions are such that they do not exclude the possibility of there being pseudo-generators which act neither trivially nor non-trivially on a given physical qubit;  such operators are not of interest to us in this discussion.
+
+For convenence, we also introduce the following definition to capture the notion of a set of pseudo-generators with the property that each pseudo-generator has a qubit such that it is the only pseudo-generator that allows you to generate an operator acting non-trivially on that qubit.
+\end{remark}
+
+\begin{definition}
+A set of pseudo-generators is said to be \emph{disjoint} if each pseudo-generator has a physical qubit on which it acts non-trivially and every other pseudo-generator acts trivially.
 \end{definition}
 %@-node:gcross.20100405123649.1327:Definition: Psuedo-generators
+%@+node:gcross.20100405161134.1328:Lemma: Product has minimal weight
+\begin{remark}
+Now that we have the concept of pseudo-generators, we present the key result needed for Proposition \ref{minimal-weight-search}.
+\end{remark}
+
+\begin{lemma}
+Every operator in the pseudo-product of a set of $r$ disjoint pseudo-generators has a weight of at least $r$.
+\end{lemma}
+
+\begin{proof}
+To show that every operator has a weight of at least $r$, we need to prove that every operator acts non-trivially on at least $r$ physical qubits.  Observe that every operator in the pseudo-product of the pseudo-generators comes from a product of operators that includes a factor for each pseudo-generator;  furthermore, each factor must have a physical qubit such that acts non-trivially and futhermore it is the only factor that acts non-trivially on that physical qubits.  Thus, the product of all $r$ factors must act non-trivially on at least $r$ physical qubits (since there can be no cancellations), and so it must have a weight of at least $r$.
+\end{proof}
+%@-node:gcross.20100405161134.1328:Lemma: Product has minimal weight
 %@-node:gcross.20100405123649.1325:Proposition: Minimal weight operator
 %@+node:gcross.20100126164527.1288:Lemma: Multiple recombinations
 \begin{remark}
