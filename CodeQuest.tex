@@ -653,6 +653,8 @@ Given the sets $\set S$, $\set G$, and $\set L$ described in Theorem \ref{theore
 \end{theorem}
 %@-node:gcross.20100402140750.1315:Introduce theorem
 %@+node:gcross.20100405123649.1325:Proposition: Minimal weight operator
+
+%@+node:gcross.20100405123649.1326:Statement
 \begin{remark}
 The proof of this Theorem is constructive and hence shall not only prove that the optimal choice can be contructed but shall also implicitly describe the construction algorithm.  For an explicit description of the algorithm in terms of pseudo-code, see the listing in table \ref{table:algorithm-optimization}.  Before presenting the proof this Theorem, we will first present a number of related Lemmas and Propositions which will assist us.
 
@@ -663,10 +665,85 @@ The key insight upon which the algorithm is built is that undetectable errors ac
 \label{minimal-weight-search}
 Given a set of Pauli operators $\set O$ acting on $N$ physical qubits and a test function $f:\pauligroup\to\{0,1\}$, the operator $o := \min_{o'\in \genfunc(\set O), f(o')=1} w(o')$ can be computed in time $O\paren{3^{w(o)}\choose{N}{w(o)}}$.
 \end{proposition}
+%@-node:gcross.20100405123649.1326:Statement
+%@+node:gcross.20100406122411.1326:Definitions
+%@+node:gcross.20100406122411.1327:pseudo-generator
+\begin{remark}
+This algorithm is based on the Brouwer-Zimmermann search algorithmm, which searches for the minimum weight binary string satisfying some property given a set of binary string generators endowed with a multiplication operation defined to be the exclusive-or operation.  The Brouwer-Zimmermann algorithm works by using a Gaussian elimination analogue to express the generators in reduced row eschelon form;  it then performs its search by examining all products of $r$ generators for increasing $r$.  When all of the products of $r$ generators have been enumerated, one knows that the set of strings that has yet to be enumerated hsa weight $r+1$ or greater, since the row-eschelon form means that every string has a column for which it is the only string with a 1 in that column, and so a product of $k$ strings must have a weight of at least $k$.  Thus, as the search proceeds, there is a growing lower-bound on the weight of the binary string, and the search halts when a string has been found that matches this bound.
+
+This algorithm cannot be immediately applied to the current problem because we are not working with binary strings, and in particular Pauli operators have a more complicated multiplication operation that binary strings.  Fortunately, in ref. White and Grassl showed that the Brouwer-Zimmermann enumeration can be generalized.  Proposition \ref{minimal-weight-search} thus follows from the results in [ref].  We include the proof here for completeness and also to show specifically how the results in [ref] specialize to our case.  Before presenting the proof of Proposition \ref{minimal-weight-search}, we shall first define some additional terms and prove some additional Lemmas that will prove useful.
+
+The key difference between binary strings and Pauli operators is that binary strings only have two possible values in a given column, whereas Pauli operators have four.  Thus, whereas we only need one element to generate all of the possible values in a given column for a binary string, we need \emph{two} elements to generate all of the possible values in a given column for a Pauli operator.  Thus, rather than working with generators, we instead work with a generalization we call \emph{pseudo-generators}, which are defined as follows.
+\end{remark}
+
+\begin{definition}
+A \emph{pseudo-generator of length $k$}, where $k$ is either 1 or 2, is a sequence of $k$ Pauli operators.  The function $\set u$ is defined to be the function which maps a pseudo-generator to the set of Pauli operators contained in its sequence, and in an abuse of notation we define the function $\set U$ to be $\set G\mapsto \bigcup_{g\in\set G}\set u(g)$ when applied to a set of pseudo-generators.
+\end{definition}
+%@nonl
+%@-node:gcross.20100406122411.1327:pseudo-generator
+%@+node:gcross.20100406122411.1328:pseudo-product (plus bounding Lemma)
+\begin{remark}
+Unlike `normal' generators --- i.e., Pauli operators --- a product of generators is not a Pauli operator but rather a set of Pauli operators, defined as follows.
+\end{remark}
+
+\begin{definition}
+\label{definition:pseudo-product}
+Suppose we are given a set of $r$ pseudo-generators $\set G$.  Let $\set X:=\{(\genfun\circ\set u)(g)\backslash\{I\}: g\in\set G\}$, $\set Y$ be the $r-$ary Caresian product of the $r$ sets contained in $\set X$, and $\set Z$ be the set consisting of the normal quantum operator product of the $r$ operators in each $r-$tuple in $\set Y$.  Then $\set Z$ is defined to be the \emph{pseudo-product} of the pseudo-generators in $\set G$. 
+\end{definition}
+
+\begin{remark}
+The following Lemma places a bound on the size of the pseudo-product.
+\end{remark}
+
+\begin{lemma}
+The pseudo-product of $r$ pseudo-generators contains at most $3^r$ operators.
+\end{lemma}
 
 \begin{proof}
-The proof of this is implicit as a special case of the results presented in~\cite{White:2006fj}.
+Every set in $\set X$ described in Definition \ref{definition:pseudo-product} has a cardinality of either 1 or 3, and the size of $\set Y$ is equal to the product of the sizes of all the sets in $\set X$;  since $|\set X|=r$, we therefore conclude that the cardinality of $\set Y$ and hence the number of operators in the pseudo-product is at most $3^r$.
 \end{proof}
+%@-node:gcross.20100406122411.1328:pseudo-product (plus bounding Lemma)
+%@+node:gcross.20100406122411.1329:trivial/non-trivial actions
+\begin{remark}
+Recall that we say that a Pauli operator acts \emph{trivially on a physical qubit} if it has the identity operator in the tensor product at the location corresponding to that qubit, and that it acts \emph{non-trivially on a physical qubit} if it does not have an identity operator at that location.  It will prove useful to extend this terminology so that the same concept can be applied to pseudo-generators, which we shall do with the following definition.
+\end{remark}
+
+\begin{definition}
+A pseudo-generator \emph{acts trivially on a physical qubit} if all of the operators in the sequence act trivially on the physical qubit.
+A pseudo-generator \emph{acts non-trivially on a physical qubit} if either it is length 1 and the single contained Pauli operator acts non-trivially on said physical qubit, or if it is length 2 and both operators as well as their product all act non-trivially on said physical qubit.  
+\end{definition}
+%@-node:gcross.20100406122411.1329:trivial/non-trivial actions
+%@+node:gcross.20100406122411.1330:disjoint
+\begin{remark}
+Note that our definitions are such that they do not exclude the possibility of there being pseudo-generators which act neither trivially nor non-trivially on a given physical qubit, since it is possible for a pseudo-generator to consist of two operators which have the same Pauli single-qubit operator at the same location so that their product contains the identity at that location;  such cases will not be of interest to us.
+
+In order to place a bound on the operators that we have not yet examined in our search, we want our pseudo-generators to be \emph{disjoint}, which we define as follows.
+\end{remark}
+
+\begin{definition}
+A set of $r$ pseudo-generators is said to be \emph{disjoint} if every operator in the pseudo-product of the generators has a weight of at least $r$.
+\end{definition}
+%@-node:gcross.20100406122411.1330:disjoint
+%@-node:gcross.20100406122411.1326:Definitions
+%@+node:gcross.20100406122411.1325:Lemma: Computing disjoint pseduo-generators
+\begin{remark}
+Note that this 
+
+The following Lemma shows that a search space generated by some set of Pauli operators can be equivalently expressed as the pseudo-product of a set of disjoint pseudo-generators.
+\end{remark}
+
+\begin{lemma}
+Given a set of Pauli operators $\set O$, there exists a set of disjoint pseudo-generators $\set G$ such that $\genfun(\set O)=(\genfun\circ\set U)(\set G)$.
+\end{lemma}
+
+\begin{proof}
+Proof by induction on the size of $\set O$.  For the base case, note that is $\set O$ is empty then the proof is trivial as $\set G=\emptyset$.
+
+Now assume we have proven this Lemma for sets of size $N-1$, and suppose we are given a non-empty set $\set O$ of size $N$.  Let $o$ be any element in $\set O$, and ;et $\set G':=\set G$ be the result of recursively applying this Lemma to $\set O:=\set O\backslash\{o\}$, which from the inductive hypothesis we know can be computed in time $O\paren{(N-1)^2}=O\paren{N^2}$.
+
+Let $f:\set G\to\pauligroup$ be a function defined such that $f(g)$ is either the product of operators contained in $g$ that when multipled by $o$ would make $o$ act trivially on qubit $j_{\set G}(g)$ if such a product exists, and the identity operator otherwise.  Let $o':=o\cdot\prod_{g\in\set G}f(g)$, and note that this product can be computed in $O(N)$.  If $o'$ is the identity operator, then let $\set G:=\set G'$ and we are done.  Let $\set K$ be the subset of qubit numbers from $\set J(\set G)$ on which $o'$ acts non-trivially.  If $\set K$ is empty, then let $g$ be the length-1 pseudo-generator containing $o'$ and $\set G':=\set G\cup\{g\}$ and we are done.  Otherwise, pick any $k\in\set K$ and let $\set K':=\set K\backslash\{k\}$.  Let $g:=j^{-1}_{\set G}(k)$.  We know that $g$ is length 1 because otherwise $o'$ would be acting trivially on qubit $k$, as otherwise $f(g)$ would have contained an operator which multiplied by $o$ resulted in an operator that acted non-trivially on qubit $k$ (since products of $X$ and $Z$ are sufficient to form all single-qubit Pauli matrices) and every other operator in the set $\{f(g) : g\in\set G\}$ acts trivially on $k$ since the pseudo-generators in $\set G$ are disjoint.
+\end{proof}
+%@-node:gcross.20100406122411.1325:Lemma: Computing disjoint pseduo-generators
 %@-node:gcross.20100405123649.1325:Proposition: Minimal weight operator
 %@+node:gcross.20100126164527.1288:Lemma: Multiple recombinations
 \begin{remark}
