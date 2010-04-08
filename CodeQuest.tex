@@ -29,7 +29,7 @@
 \newcommand{\lst}{\vec}
 \newcommand{\set}{\tilde}
 
-\newcommand{\genfun}{\mathcal{G}}
+\newcommand{\genfun}{\tilde{\mathcal{G}}}
 \newcommand{\pauligroup}{\mathfrak{P}}
 \newcommand{\powerset}{\mathcal{P}}
 \newcommand{\centralizer}{\mathcal{C}}
@@ -663,7 +663,7 @@ The key insight upon which the algorithm is built is that undetectable errors ac
 
 \begin{proposition}
 \label{minimal-weight-search}
-Given a set of Pauli operators $\set O$ acting on $N$ physical qubits and a test function $f:\pauligroup\to\{0,1\}$, the operator $o := \min_{o'\in \genfunc(\set O), f(o')=1} w(o')$ can be computed in time $O\paren{3^{w(o)}\choose{N}{w(o)}}$.
+Given a set of Pauli operators $\set O$ acting on $N$ physical qubits and a test function $f:\pauligroup\to\{0,1\}$, the operator $o := \min_{o'\in \genfun(\set O), f(o')=1} w(o')$ can be computed in time $O\paren{3^{w(o)}\choose{N}{w(o)}}$.
 \end{proposition}
 %@-node:gcross.20100405123649.1326:Statement
 %@+node:gcross.20100406122411.1326:Definitions
@@ -677,9 +677,8 @@ The key difference between binary strings and Pauli operators is that binary str
 \end{remark}
 
 \begin{definition}
-A \emph{pseudo-generator of length $k$}, where $k$ is either 1 or 2, is a sequence of $k$ Pauli operators.  The function $\set u$ is defined to be the function which maps a pseudo-generator to the set of Pauli operators contained in its sequence, and in an abuse of notation we define the function $\set U$ to be $\set G\mapsto \bigcup_{g\in\set G}\set u(g)$ when applied to a set of pseudo-generators.
+A \emph{pseudo-generator} is a set of either 1 or 2 Pauli operators.  In an abuse of notation, we define the function $\set U$ to be $\set G\mapsto \bigcup_{\set g\in\set G} \set g_i$ when applied to a set of pseudo-generators.
 \end{definition}
-%@nonl
 %@-node:gcross.20100406122411.1327:pseudo-generator
 %@+node:gcross.20100406122411.1328:pseudo-product (plus bounding Lemma)
 \begin{remark}
@@ -688,7 +687,7 @@ Unlike `normal' generators --- i.e., Pauli operators --- a product of generators
 
 \begin{definition}
 \label{definition:pseudo-product}
-Suppose we are given a set of $r$ pseudo-generators $\set G$.  Let $\set X:=\{(\genfun\circ\set u)(g)\backslash\{I\}: g\in\set G\}$, $\set Y$ be the $r-$ary Caresian product of the $r$ sets contained in $\set X$, and $\set Z$ be the set consisting of the normal quantum operator product of the $r$ operators in each $r-$tuple in $\set Y$.  Then $\set Z$ is defined to be the \emph{pseudo-product} of the pseudo-generators in $\set G$. 
+Suppose we are given a set of $r$ pseudo-generators $\set G$.  Let $\set X:=\{\genfun(\set g_i)\backslash\{I\}: \lst g\in\set G\}$, $\set Y$ be the $r-$ary Cartesian product of the $r$ sets contained in $\set X$, and $\set Z$ be the set consisting of the normal quantum operator product of the $r$ operators in each $r-$tuple in $\set Y$.  Then $\set Z$ is defined to be the \emph{pseudo-product} of the pseudo-generators in $\set G$. 
 \end{definition}
 
 \begin{remark}
@@ -703,45 +702,24 @@ The pseudo-product of $r$ pseudo-generators contains at most $3^r$ operators.
 Every set in $\set X$ described in Definition \ref{definition:pseudo-product} has a cardinality of either 1 or 3, and the size of $\set Y$ is equal to the product of the sizes of all the sets in $\set X$;  since $|\set X|=r$, we therefore conclude that the cardinality of $\set Y$ and hence the number of operators in the pseudo-product is at most $3^r$.
 \end{proof}
 %@-node:gcross.20100406122411.1328:pseudo-product (plus bounding Lemma)
-%@+node:gcross.20100406122411.1329:trivial/non-trivial actions
-\begin{remark}
-Recall that we say that a Pauli operator acts \emph{trivially on a physical qubit} if it has the identity operator in the tensor product at the location corresponding to that qubit, and that it acts \emph{non-trivially on a physical qubit} if it does not have an identity operator at that location.  It will prove useful to extend this terminology so that the same concept can be applied to pseudo-generators, which we shall do with the following definition.
-\end{remark}
-
-\begin{definition}
-A pseudo-generator \emph{acts trivially on a physical qubit} if all of the operators in the sequence act trivially on the physical qubit.
-A pseudo-generator \emph{acts non-trivially on a physical qubit} if either it is length 1 and the single contained Pauli operator acts non-trivially on said physical qubit, or if it is length 2 and both operators as well as their product all act non-trivially on said physical qubit.  
-\end{definition}
-%@-node:gcross.20100406122411.1329:trivial/non-trivial actions
-%@+node:gcross.20100406122411.1330:disjoint
-\begin{remark}
-Note that our definitions are such that they do not exclude the possibility of there being pseudo-generators which act neither trivially nor non-trivially on a given physical qubit, since it is possible for a pseudo-generator to consist of two operators which have the same Pauli single-qubit operator at the same location so that their product contains the identity at that location;  such cases will not be of interest to us.
-
-In order to place a bound on the operators that we have not yet examined in our search, we want our pseudo-generators to be \emph{disjoint}, which we define as follows.
-\end{remark}
-
-\begin{definition}
-A set of $r$ pseudo-generators is said to be \emph{disjoint} if every operator in the pseudo-product of the generators has a weight of at least $r$.
-\end{definition}
-%@-node:gcross.20100406122411.1330:disjoint
 %@-node:gcross.20100406122411.1326:Definitions
-%@+node:gcross.20100406122411.1325:Lemma: Computing disjoint pseduo-generators
+%@+node:gcross.20100406122411.1325:Lemma: Computing disjoint pseudo-generators
 \begin{remark}
 The following Lemma shows that a search space generated by some set of Pauli operators can be equivalently expressed as the pseudo-product of a set of disjoint pseudo-generators.
 \end{remark}
 
 \begin{lemma}
+\label{lemma:computing-disjoint-pseudo-generators}
 Suppose that we have been given a set of Pauli operators, $\set O$, acting on $N$ physical qubits.  Then there exists
 \begin{enumerate}
-\item a set $\set G$ of $n$ psuedo-generators such that $(\genfun\circ\set U)(\set G)=\genfun(\set O)$,
-\item a map $$p:\set G\to \{1\dots N\}\times\big(\{0,1\}\cup(\{0,1\}\times \{0,1\})\big)$$ such that for every $g\in\set G$, if we let $(a,b):=p(g)$ then
+\item a set $\set G$ of psuedo-generators such that $\genfun(\set G)=\genfun(\set O)$,
+\item a map $p:\set U(\set G)\to \paren{\{X_k\}_k \cup \{Z_k\}_k}$ such that
 \begin{enumerate}
-\item for every $g'\in\set G$, if $(a',b'):=f(g')$ then $a=a'$ if and only if $g=g'$;
-\item $b$ has the same length as $g$; and
-\item the $i$-th operator in $g$ is the only operator in $\cup_{g'\in \set G}\set u(g')$ that anti-commutes with $P_{a}^{[l]}$, where $l$ is the $i$-th element of $b$, $P_k^{[0]}:=X_k$ and $P_k^{[1]}:=Z_k$.
+\item for every $o\in\set U(\set G)$, $o$ is the unique operator in $\genfun(\set G)$ that anti-commutes with $p(o)$;
+\item for every $\set g\in\set G$, the operators in $\set g$ are both mapped by $p$ to single-qubit operators acting on the same physical qubit $k$, and they are the only such operators in $\genfun(\set G)$ that are mapped by $p$ to operators acting on $k$.
 \end{enumerate}
 \end{enumerate}
-Furthermore, the set $\set G$ can be computed in time $O(|\set O|)$.
+Furthermore, the set $\set G$ can be computed in time $O(|\set O|^2)$.
 \end{lemma}
 
 \begin{remark}
@@ -751,40 +729,46 @@ It is worth noting that this Lemma bears some similarities to Proposition \ref{m
 \begin{proof}
 Proof by induction.  For the base case, we observe that if $\set O$ is empty, then the trivial set $\set G:=\emptyset$ and the trivial function $p$ whose domain is the empty set satisfy the requirements.
 
-Now assume that ths Lemma has been proven for sets of cardinality $n-1$, and suppose we are given a (non-empty) set $\set O$ of cardinality $n$.  Take any operator $o\in\set O$.
+Now assume that ths Lemma has been proven for sets of cardinality $n-1$, and suppose we are given a (non-empty) set $\set O$ of cardinality $n$.  Take any operator $o\in\set O$.  By recursive application of this Lemma, we know that we can construct the set $\set G':=\set G$ and the function $p':=p$ described in this Lemma given $\set O:=\set O\backslash\{o\}$ in time $O\paren{(n-1)^2}=O(n^2)$.
 
-By our inductive hypothesis, we can apply the proposition to the first $-1$ operators in $\lst R$ obtain sequences $\lst S'$ and $\lst k'$ of length $n-1$\footnote{$n\ne N$ in general}, and a map $p':\{1\dots n-1\}\to \{0,1\}$ which all satisfy the respective properties of the theorem.  Let $$s:=\lst R_N\cdot \prod_{i=1\dots n-1, \,\,\left\{\lst R_N,P_{k'_i}^{[p(i)]}\right\}=0} \lst S'_i.$$  We know that $s$ commutes with every operator in $\lst S'$ because both $s$ and every operator in $\lst S'$ are equal to products of operators in $\lst R$, which all commute with each other.  Furthermore, since $s$ is a product of $\lst R_N$ and a factor of $\lst S'_i$ for every $i$ such that $\lst R_N$ and $P_{k'_i}^{[p'(i)]}$ anti-commute, and we know that $\lst S_i'$ is the only operator in $\lst S'$ that anti-commutes with $P_{k'_i}^{[p'(i)]}$ for $i=1\dots n-1$, it is therefore the case that $s$ commutes with every member of the set $\{P_{k'_i}^{[p'(i)]}\}_{i=1\dots n-1}$.  Finally, since $s$ is a product of $\lst R_N$ and operators in $\lst S'$, we can obtain $\lst R_N$ entirely from products of operators in $\{\lst S'_i\} \cup \{s\}$, and so $\genfun\paren{\{\lst S'_i\} \cup \{s\}}=\genfun\paren{\{\lst R_i\}}$.
-
-If $s$ is the identity operator, then let $\lst S:=\lst S'$ and $p:=p$ and we are done.  Otherwise, we shall now show that there must exist integers $j\in\{1,\dots,N\}\backslash\{\lst k'_i\}$ and $l\in\{0,1\}$ such that $s$ anti-commutes with $P_{j}^{[l]}$, by demonstrating that if this were not the case then $s$ would have to anti-commute with some element in $\lst S'$, leading to a contradiction.
-
-Assume that $s$ commutes with every operator in the set $\left\{P_j^{[l]}:\quad j\in\{1,\dots,N\}\backslash\{\lst k'_i\}, \quad l\in\{0,1\}\right\}.$  Recalling that $s$ is a member of the Pauli group and thus a tensor product of single-particle Pauli spin matrices, and also that $s$ commutes with every member of the set $\{P_{\lst k'_i}^{[p'(i)]}\}_{i=1\dots n-1}$, we see therefore that $s$ must be a product of elements from this set --- that is, there is some subset $\emptyset \ne \set F \subseteq \{P_{\lst k'_i}^{[p'(i)]}\}_{i=1\dots n-1}$ such that $s=\prod_{o\in \set F} o$.  However, from our inductive hypothesis we know that for every operator $f\in\set F$ there is an operator $s'\in\lst S'$ that anti-commutes with $f$ but commutes with the operators in $\set F\backslash\{f\}$.  Since $s$ is therefore a product of a single operator that anti-commutes with $s'$ and more operators that commute with $s'$, we conclude that $s$ and $s'$ anti-commute, which contradicts our earlier conclusion that $s$ commutes with every operator in $\lst S'$.
-
-Now that we have shown that there exist integers $j\in\{1,\dots,N\}\backslash\{\lst k'_i\}$ and $l\in\{0,1\}$ such that $s$ anti-commutes with $P_{j}^{[l]}$, in terms of these integers we define
+Let $$o':=o\cdot \prod_{x\in\set U(\set G'),\atop\{o,p(x)\}=0} x.$$  If $o'$ is the identity operator, then let $\set G:=\set G'$ and $p:=p'$ and we are done.  Otherwise, there must be some operator $z\in\paren{\{X_k\}_k \cup \{Z_k\}_k}$ that anti-commutes with $o$.  Define the function $f$ by
+$$f(x) :=
+\begin{cases}
+x \cdot o' & \{x,z\}=0, \\
+x          & \text{otherwise},
+\end{cases}
 $$
-\begin{aligned}
-\lst S_i &:= 
+and let $\set G'':=\left\{\{f(x):x\in\set g\}:\set g\in\set G''\right\}$ and $p'':=p'\circ f^{-1}$.  Note that $o'$ must be independent of the operators in $\set U(\set G')$, because $o'$ is not the identity and the product of $o'$ with any subset of operators $\set A\subset\set U(\set G')$ cannot be the identity since it must anti-commute with $p'(a)$ for every $a\in\set A$.  Thus, $f$ is a bijective map from $\set U(\set G')$ to $\set U(\set G'')$ and hence is invertible, and so we conclude that $p''$ is well-defined.
+
+Note that for every $x\in\set U(\set G')$, it must be that $o'$ commutes with $p'(x)$, since $o'$ is formed from a product that has either two factors that anti-commute with $p'(x)$ (namely, $o$ and $p'(x)$) or no operators that anti-commute with $p'(x)$.  Thus, multiplication by $o'$ does not change whether any operator $x\in\set U(\set G')$ commutes or anti-commutes with $p(y)$ for any $y\in\set U(\set G')$, and so we conclude that the properties listed in this Lemma that $p'$ has in relation to $\set G'$ (from the inductive hypothesis) are preserved in the transformation by $f$ so that $p''$ also has the same properties in relation to $\set G''$.  Furthermore, since every operator $x\in\set U(\lst G')$ was multiplied by a factor of $o'$ if and only if it anti-commutes with $z$, we conclude that $f(z)$ must commute with $z$, and thus every operator in $\set U(\lst G'')$ must commute with $z$.
+
+There two cases to consider:  either there is no operator $x\in\set U(\set G'')$ such that $p''(x)$ acts on the same qubit as $z$, or there is exactly one, since if there were more than two then it would violate the properties of $p''$, and if there were exactly two then by construction $o'$ would commute with $z$ leading to a contradiction.  In the first case, let $\set G:=\set G''\cup\left\{\{o'\}\right\}$.  In the second case, let $\set G:=\paren{\set G''\backslash\left\{\{x\}\right\}}\cup\left\{\{x,o'\}\right\}$, where $x$ is the single operator in $\set U(\set G'')$ such that $p(x)$ acts on the same qubit as $z$.   In either case, define
+$$
+p(x) :=
 \begin{cases}
-\begin{cases}
-\lst S'_i \cdot s & \{\lst S_i',P_j^{[l]}\}=0 \\
-\lst S'_i & \text{otherwise}
-\end{cases} & 1\le i\le n-1 \\
-S' & i=n
-\end{cases}, \\
-\lst k_i &:=
-\begin{cases}
-\lst k'_i & 1 \le i \le n-1 \\
-j & i=n
-\end{cases},\quad \text{and} \\
-p(i) &:=
-\begin{cases}
-p'(i) & 1 \le i \le n-1\\
-l & i=n
-\end{cases},
-\end{aligned}
-$$ and we are done.
+p''(x) & x\in \set U(\set G''), \\
+z & x=o',
+\end{cases}
+$$
+observing that it is well-defined since $\set U(\set G)=\set U(\set G'')\cup\{o'\}$.  We now need to prove that $\set G$ and $p$ satisfy the properties of this Lemma.  To prove the first property, we note that since $o'$ (and hence $o$) is independent with respect to $\set U(\set G')$, then because of how $\set G$ was constructed and the inductive hypothesis we have that $\genfun(\set G)=\genfun\paren{\set U(\set G')\cup\{o\}}=\genfun\paren{(\set O\backslash\{o\})\cup\{o\}}=\genfun(\set O)$.  To prove part (a) of the second property, we note that for every $x\in\set U(\set G)$ we have that either $x\in\set U(\set G'')$, in which case we have already shown that it is the unique operator that commutes with $p(x)$ as this is true for the operators in $\set U(\set G'')$ as well as for $o'$ (by construction), or $x=o'$, in which case this is still true since by construction $o'$ is the only operator in $\set U(\set G)$ that anti-commutes with $z$.  To prove part (b) of the second property, we note that due to the inductive hypothesis we need only consider the single change from $\set G''$ to $\set G$, which consisted of either adding or replacing a pseudo-generator;  in the first case (adding a generator), observe that we showed earlier that no operator $y\in\set G''$ is such that $p''(y)$ acts on the same qubit as $z$, and in the second case (replacing a generator), note that we added $o'$ to the only generator in $\set G''$ containing an operator $y$ such that $p''(y)$ acts on the same qubit as $z$;  in either case, we see that part (b) of the second property holds for $\set G$.
+
+Finally, we consider the running time.  In addition to the $O(n^2)$ time required to construct $\set G'$, we required an additional $O(n)$ multiplication operations to construct $o'$ and $\set G''$;  hence the total running-time is $O(n^2)$.
 \end{proof}
 %@nonl
-%@-node:gcross.20100406122411.1325:Lemma: Computing disjoint pseduo-generators
+%@+node:gcross.20100407162747.1330:Corollary
+\begin{remark}
+The reason for the importance of the proceeding Lemma is that it gives us a set of pseudo-generators with the following property.
+\end{remark}
+
+\begin{corollary}[to Lemma \ref{lemma:computing-disjoint-pseudo-generators}]
+Suppose that we have been given a set of Pauli operators, $\set O$, acting on $N$ physical qubits.  Then there exists a set $\set G$ of psuedo-generators that can be computed in time $O(|\set O|^2)$ such that $\genfun(\set G)=\genfun(\set O)$ and every operator in the pseudo-product of any $r$ pseudo-generators in $\set G$ has a weight of at least $r$.
+\end{corollary}
+
+\begin{proof}
+Let $\set G$ be the set described in Lemma \ref{lemma:computing-disjoint-pseudo-generators}.  Observe that every operator in the pseudo-product of any $r$ generators in $\set G$ is the product of $r$ factors each of which is the only factor that anti-commutes with a single-qubit operator acting on a given qubit due to the properties of $\set G$ and $p$, and therefore every operator in this pseudo-product must itself anti-commute with at least $r$ single-qubit operators acting on different qubits and so it must have a weight of at least $r$.
+\end{proof}
+%@-node:gcross.20100407162747.1330:Corollary
+%@-node:gcross.20100406122411.1325:Lemma: Computing disjoint pseudo-generators
 %@-node:gcross.20100405123649.1325:Proposition: Minimal weight operator
 %@+node:gcross.20100126164527.1288:Lemma: Multiple recombinations
 \begin{remark}
