@@ -665,7 +665,7 @@ The key insight upon which the algorithm is built is that undetectable errors ac
 
 \begin{proposition}
 \label{minimal-weight-search}
-Given a set of Pauli operators $\set O$ acting on $N$ physical qubits and a test function $f:\pauligroup\to\{0,1\}$, if $f^{-1}(1)\cap\genfun(\set O)\ne\emptyset}$ then $o:=\min_{o'\in \genfun(\set O), f(o')=1} w(o')$ can be computed in time $O\paren{d3^d\choose{|\set O|}{r}}$ where $d:=\min\paren{w(o),|\set O|}.
+Given a set of Pauli operators $\set O$ acting on $N$ physical qubits and a test function $f:\genfunc(\set O)\to\{0,1\}$, if $f^{-1}(1)\cap\genfun(\set O)\ne\emptyset}$ then $o:=\min_{o'\in \genfun(\set O), f(o')=1} w(o')$ can be computed in time $O\paren{d3^d\choose{|\set O|}{r}}$ where $d:=\min\paren{w(o),|\set O|}.
 \end{proposition}
 %@-node:gcross.20100405123649.1326:Statement
 %@+node:gcross.20100406122411.1326:Definitions
@@ -1086,42 +1086,50 @@ The following Proposition describes this procedure more formally, and proves tha
 \end{remark}
 
 \begin{proposition}
-Suppose we are given a set of $N$ pairs $\set L$ and a set of Pauli operators $\set S$ such that every pair in $\set L$ is conjugal with respect to $\set U(\set L)\cup\set S$.  Then for every $0\le n \le 2N$, there exist
+Suppose we are given
 \begin{itemize}
+\item a set of Pauli operators $\set S$;
 \item a choice of qubits $\lst P$ stabilized by $\set S$;
 \item a set of pairs, $\set Q$;
-\item and an unimproveable set of operators $\set O$ with respect to $\set S$ that extends to $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash \set O}$;
+\item and an unimproveable set of independent operators $\set O$ with respect to $\set S$ that extends to $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash \set O}$;
 \end{itemize}
-such that
+such that $\set X$ is non-empty, and $\set P$, $\set Q$, and $\set O$ satisfy the following properties:
 \begin{enumerate}
 % 1
 \item \label{pairs are all conjugal to T} the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $\set T':=\set U(\lst P)\cup \set U(\set Q)\cup \set S$;
 % 2
-\item \label{P and Q generate the same set as L} $\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}=(\genfun\circ\set U)(\set L)$;
-% 3
 \item \label{first members are all in O} $p_1(\lst P_i)\in \set O$ for every $1 \le i \le |\lst P_i|$;
-% 4
+% 3
 \item \label{Q does not intersect with O} $\genfun(\set Q) \cap \set O = \emptyset$;
-% 5
-\item \label{size of O matches arbitrarily chosen integer} $|\set O|=n$;
-% 6
+% 4
 \item \label{operators in X are no worse than the best qubit in P} and $\min_{x\in\set X}\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ (if $\lst P$ is non-empty).
 \end{enumerate}
-Furthermore, $\lst P$ and $\set Q$ can be computed in time 
+Then there exists objects $\lst P'$, $\set Q'$, and $\set O'$ satisfying the same properties listed above as their unprimed counterparts, as well as a Pauli operator $x$ such that
+\begin{itemize}
+\item $x\notin \set O$;
+\item $\set O'=\set O\cup\{x\}$; and
+\item $\genfun\paren{\set U(\lst P')\cup \set U(\set Q')}=\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}$.
+\end{itemize}
+Furtermore, these objects can be computed in time $O\paren{d3^d\choose{C}{r}}$ where $d:=\min\paren{\om_{\set s}(x),C}$ and $C:=\left|\centralizer_\pauligroup(\set S)\right|$
 \end{proposition}
 %@nonl
 %@-node:gcross.20100204174120.1285:Statement
 %@+node:gcross.20100204174120.1286:Proof
 \begin{proof}
 
-Proof by induction.  For the base case, let $\lst P$ be the empty sequence, $\set Q:=\set L$, and $\set O:=\emptyset$;  then the conclusions are satisfied vacuously.
+Let $h$ be any of the minimal weight undetectable errors with respect to $\set S$ acting on any operator in $\set X$;  recalling the definition of an undetectable error, we see that $h$ is equivalently defined to be any minimizer of $w_{\set S}$ over the set $\centralizer_\pauligroup(\set S)$ under the constraint that $f(h)=1$ where 
+$$f(o):=
+\begin{cases}
+1 & \exists x\in\set X \,\,\text{such that}\,\, \{x,h\}=0\\
+0 & \text{otherwise},
+\end{cases}
+$$
+i.e., under the constraint that that $h$ anti-commutes with some operator in $\set X$.  By Proposition \ref{minimal-weight-search}, we know that $h$ can be computed in time $O\paren{d3^d\choose{C}{r}}$ where $d:=\min\paren{\om_{\set s}(x),C}$ and $C:=\left|\centralizer_\pauligroup(\set S)\right|$.
 
-Now assume that this Proposition has been proven for some integer $n-1$;  let $\lst P'$, $\lst Q'$, $\set O'$ and $\set X'$ be the named objects (without the primes) obtained by recursively applying this Theorem to the integer $n-1$  Let $h$ be any minimizer of $w$ over the set $\bigcup_{o\in\set X'} \set e_{\set S}(o)$.  Let $x$ be either $p_2(\lst P_k)$ for the smallest $k$ such that $\{p_2(\lst P_k),h\}=0$, or if there is no such $k$ then let $x$ be any arbitrarily chosen operator from $\set X'$ such that $\{x,h\}=0$.  Finally, let  $d:=\om_{\set S}(x)$.
-
-There are two cases;  either
+Let $x$ be either $p_2(\lst P_k)$ for the smallest $k$ such that $\{p_2(\lst P_k),h\}=0$, or if there is no such $k$ then let $x$ be any arbitrarily chosen operator from $\set X$ such that $\{x,h\}=0$.  We see that two cases naturally result from this definition of $x$;  either
 \begin{enumerate}
-\item $x\in \set U(\lst P')$;
-\item or $x\notin \set U(\lst P')$ and $o\in\set U(\set Q')$.
+\item $x\in \set U(\lst P)$; or
+\item $x\notin \set U(\lst P)$ and $o\in\set U(\set Q)$.
 \end{enumerate}
 
 \begin{description}
@@ -1319,11 +1327,24 @@ It remains only to show that $\set O$ is an unimprovable set that extends to $\s
 %@-others
 %@-node:gcross.20100402140750.1314:Optimalization procedure
 %@-node:gcross.20090423002455.2:Algorithm
-%@-others
-
+%@+node:gcross.20100413085158.2885:Quantum Ising Models on Lattices of Regular Tilings
 \section{Quantum Ising Models on Lattices of Regular Tilings} \label{sec:lattice}
-
+%@nonl
+%@-node:gcross.20100413085158.2885:Quantum Ising Models on Lattices of Regular Tilings
+%@+node:gcross.20100413085158.2886:Conclusion
 \section{Conclusion}
+%@nonl
+%@-node:gcross.20100413085158.2886:Conclusion
+%@+node:gcross.20100413085158.2882:Glossary
+\section{glossary}
+%@+node:gcross.20100413085158.2883:Terms
+\subsection{Terms}
+%@-node:gcross.20100413085158.2883:Terms
+%@+node:gcross.20100413085158.2884:Notation
+\subsection{Notation}
+%@-node:gcross.20100413085158.2884:Notation
+%@-node:gcross.20100413085158.2882:Glossary
+%@-others
 
 \bibliography{codebib}
 
