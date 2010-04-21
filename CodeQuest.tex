@@ -650,7 +650,7 @@ We now present the main result of this section.
 
 \begin{theorem}
 \label{theorem:optimization procedure}
-Suppose we are given a set of Pauli operators, $\set S$, acting on $N$ physical qubits, and a set of pairs, $\set Q$, conjugal with respect to $\set U(\set Q)\cup\set S$.  Then the optimal choice $\lst P$ such that $\genfun(\lst P)=\genfun(\set Q)$ can be computed in a time that is in the set $O\paren{|\lst P|d3^d\choose{\min(N,2N-|\set S|)}{d}}$\footnote{A function $f$ is said to be in the set $O(g)$ if $f$ is asymptotically bounded by some fixed constant times $g$;  formally $f\in O(g)$ if and only if there exists constants $c$ and $x_0$ such that $f(x)<c g(x)$ for all $x>x_0$.}, where $d:=\min\paren{\lst M(\lst P)_{|\lst P|},N}$\footnote{Recall that $\lst M^{(N)}(\lst P)_N$ is the distance of the best qubit in the (optimized) code.}.
+Suppose we are given a set of Pauli operators, $\set S$, acting on $N$ physical qubits, and a set of pairs, $\set Q$, conjugal with respect to $\set U(\set Q)\cup\set S$.  Then the optimal choice $\lst P$ such that $\genfun(\lst P)=\genfun(\set Q)$ can be computed in a time that is in the set $O\paren{|\lst P|d3^d\choose{N}{d}}$\footnote{A function $f$ is said to be in the set $O(g)$ if $f$ is asymptotically bounded by some fixed constant times $g$;  formally $f\in O(g)$ if and only if there exists constants $c$ and $x_0$ such that $f(x)<c g(x)$ for all $x>x_0$.}, where $d:=\min\paren{\lst M(\lst P)_{|\lst P|},N}$\footnote{Recall that $\lst M^{(N)}(\lst P)_N$ is the distance of the best qubit in the (optimized) code.}.
 \end{theorem}
 %@-node:gcross.20100402140750.1315:Introduce theorem
 %@+node:gcross.20100405123649.1325:Proposition: Minimal weight operator
@@ -666,7 +666,7 @@ The key insight upon which the algorithm is built is that undetectable errors ac
 
 \begin{proposition}
 \label{minimal-weight-search}
-Given a set of Pauli operators $\set O$ acting on $N$ physical qubits and a test function $f:\genfunc(\set O)\to\{0,1\}$, if $f^{-1}(1)\cap\genfun(\set O)\ne\emptyset}$ then $o:=\min_{o'\in \genfun(\set O), f(o')=1} w(o')$ can be computed in time $O\paren{d3^d\choose{|\set O|}{r}}$ where $d:=\min\paren{w(o),|\set O|}.
+Given a set of Pauli operators $\set O$ acting on $N$ physical qubits and a test function $f:\genfunc(\set O)\to\{0,1\}$, if $f^{-1}(1)\cap\genfun(\set O)\ne\emptyset}$ then $o:=\min_{o'\in \genfun(\set O), f(o')=1} w(o')$ can be computed in time $O\paren{d3^d\choose{\min(|\set O|,N)}{r}}$ where $d:=\min\paren{w(o),|\set O|}.
 \end{proposition}
 %@-node:gcross.20100405123649.1326:Statement
 %@+node:gcross.20100406122411.1326:Definitions
@@ -726,6 +726,20 @@ In order to be able to place a lower bound on binary strings that have yet to be
 \label{definition:disjoint-pseudo-generators}
 A set of pseudo-generators $\set G$ is said to be \emph{disjoint} if for every $\set g\in\set G$ there exists some physical qubit $k$ such that either $X_k$ or $Z_k$ (or both) anti-commutes with every operator in $\genfun(\set g)\backslash\{I\}$, but both $X_k$ and $Z_k$ commute with every operator in $\genfun(\set g')$ for every $\set g'\in\set G\backslash\{g\}$.
 \end{definition}
+
+
+\begin{remark}
+The following Lemma is a trivial consequence of this definition.
+\end{remark}
+
+\begin{lemma}
+\label{lemma:bound on number of disjoint pseudo-generators}
+A set of disjoint pseudo-generators $\set G$ acting on $N$ qubits satisfies $|\set G|\le N$.
+\end{lemma}
+
+\begin{proof}
+This follows directly from the definition and the pidgeon hole principle.
+\end{proof}
 
 \begin{remark}
 With the following Lemma, we show that the property of disjointness is exactly what we need to obtain the bounds that we want.
@@ -832,7 +846,7 @@ By Corolary \ref{corolary:computing-disjoint-pseudo-generators}, we know that th
 
 From Lemma \ref{lemma:disjoint-pseudo-generators-bound} we conclude that $w(o)\ge r$ for every $o\in\set C_r$.  By extension this means that $w(o)\ge r$ for every $o\in\bigcup_{r'=r}^{|\set G|}\set C_{r'}$, and therefore that if $o\notin\bigcup_{r'=0}^{r-1}\set C_{r'}$ and $o\in\genfun(\set G)$ then $w(o)\ge r$.  Thus, if there exists an $r$ such that $r=\min_{o\in\bigcup_{r'=0}^{r-1}\set C_{r'},f(o)=1}w(o)$ then we know that $r=\min_{o\in\genfun(\set O),f(o)=1}w(o)$ --- that is, $r$ is \emph{exactly} the weight of the minimum weight solution to $f(o)=1$, since any operator in the search space that \emph{isn't} contained in $\bigcup_{r'=0}^{r-1}\set C_{r'}$ must have a weight of at least $r$.  Put another way, after having enumerated all of the elements in $\bigcup_{r'=0}^{r-1}\set C_{r'}$ we can check to see whether the smallest solution to $f$ we have seen so far (if any) has weight less than or equal to $r$, and if so we are done since we have found the minimal weight solution.
 
-Now consider the procedure of enumerating through each $\set C_r$ starting with $r=0$.  We know that we will eventually find at least one solution to $f(o)=1$, since in this Proposition we have assumed that such an operator exists in the search space (by the assumption that $f^{-1}(1)\cap\genfun(\set O)\ne\emptyset}$).  Furthermore, employing this procedure we will find the minimal solution $o$ no \emph{later} than after we have enumerated through $\set C_r$ for $r=0\dots w(o)$, since at that point all of the unenumerated operators have a weight greater than $w(o)$.  Thus, we conclude that we can compute the minimal weight solution after having enumerated at most all of the elements in $\bigcup_{r=0}^{\min(w(o),|\set G|)} C_r$, which we can do in time $$O\paren{\sum_{r=0}^{\min(w(o),|\set G|)}r 3^r \choose{|\set G|}{r}}\subseteq O\paren{d 3^d \choose{|\set O|}{d}},$$ where $d:=\min(w(o),|\set G|)$, and we have used the fact that $|\set G|\le |\set O|$ (from Corolary \ref{corolary:computing-disjoint-pseudo-generators}).
+Now consider the procedure of enumerating through each $\set C_r$ starting with $r=0$.  We know that we will eventually find at least one solution to $f(o)=1$, since in this Proposition we have assumed that such an operator exists in the search space (by the assumption that $f^{-1}(1)\cap\genfun(\set O)\ne\emptyset}$).  Furthermore, employing this procedure we will find the minimal solution $o$ no \emph{later} than after we have enumerated through $\set C_r$ for $r=0\dots w(o)$, since at that point all of the unenumerated operators have a weight greater than $w(o)$.  Thus, we conclude that we can compute the minimal weight solution after having enumerated at most all of the elements in $\bigcup_{r=0}^{\min(w(o),|\set G|)} C_r$, which we can do in time $$O\paren{\sum_{r=0}^{\min(w(o),|\set G|)}r 3^r \choose{|\set G|}{r}}\subseteq O\paren{d 3^d \choose{\min(|\set O|,N)}{d}},$$ where $d:=\min(w(o),|\set G|)$, and we have used the fact that $|\set G|\le |\set O|$ (from Corolary \ref{corolary:computing-disjoint-pseudo-generators}) and $|\set G|\le N$ (from Lemma \ref{lemma:bound on number of disjoint pseudo-generators}).
 \end{proof}
 %@-node:gcross.20100408121941.1329:Proof
 %@-node:gcross.20100405123649.1325:Proposition: Minimal weight operator
@@ -1105,14 +1119,14 @@ such that $\set X$ is non-empty, and $\set P$, $\set Q$, and $\set O$ satisfy th
 \end{enumerate}
 Then there exists objects $\lst P'$, $\set Q'$, $\set O'$ and $\set X'$ satisfying the same properties listed above as their unprimed counterparts---\emph{except} that $\set X'$ may be empty --- as well as a Pauli operator $x$ such that
 \begin{enumerate}
-\setcounter{enumi}{6}
+\setcounter{enumi}{5}
 \item $x\notin \set O$;
 \item $\set O'=\set O\cup\{x\}$;
 \item $\om_{\set S}(x)=\max_{o'\in\set O'}\om_{\set S}(o')$;
 \item $\genfun\paren{\set U(\lst P')\cup \set U(\set Q')}=\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}$;
 \item $|\lst Q'| \le |\lst Q|$.
 \end{enumerate}
-Furtermore, these objects can be computed in time $O\paren{d3^d\choose{C}{r}}$ where $d:=\min\paren{\om_{\set s}(x),N}$.
+Furtermore, these objects can be computed in time $O\paren{d3^d\choose{N}{r}}$ where $d:=\min\paren{\om_{\set s}(x),N}$.
 \end{proposition}
 %@nonl
 %@-node:gcross.20100204174120.1285:Statement
@@ -1122,7 +1136,7 @@ Furtermore, these objects can be computed in time $O\paren{d3^d\choose{C}{r}}$ w
 Let $h$ be any of the minimal weight undetectable errors with respect to $\set S$ acting on any operator in $\set X$;  recalling the definition of an undetectable error, we see that $h$ is equivalently defined to be any minimizer of $w_{\set S}$ over the set $\centralizer_\pauligroup(\set S)$ under the constraint that $f(h)=1$ where 
 $$f(o):=
 \begin{cases}
-1 & \exists x\in\set X \,\,\text{such that}\,\, \{x,h\}=0\\
+1 & \exists\,\, x\in\set X \,\,\text{such that}\,\, \{x,h\}=0\\
 0 & \text{otherwise},
 \end{cases}
 $$
