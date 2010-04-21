@@ -674,9 +674,9 @@ Given
 \begin{itemize}
 \item a set of Pauli operators $\set S$ acting on $N$ physical qubits,
 \item a set of operators $\set C$ such that the set $\set S\cup\set C$ is independent and $\genfun(\set S\cup\set C)=\centralizer(\set S)$, and
-\item a set of Pauli operators $\set Q$,
+\item a non-empty set of Pauli operators $\set Q$ such that $\set Q\cap\set S=\emptyset$ and every operator in $\set Q$ is a member of a conjugal pair in relation to $\set Q \cup \set S$,
 \end{itemize}
-then a minimal weight undetectable error acting on any operator in $\set Q$ can be found in time $O\paren{N^2+d3^d\choose{N}{r}}$ where $d:=\min\paren{w(o),|\set O|}.
+then a minimal weight undetectable error acting on any operator in $\set Q$ can be found in time $O\paren{|\set S\cup\set C|^2+(|\set Q|+d)3^d\choose{N}{r}}$ where $d:=\min\paren{w(o),N}.
 \end{proposition}
 
 %@-node:gcross.20100405123649.1326:Statement
@@ -762,8 +762,8 @@ Now that we have the concept of a disjoint set of pseudo-generators and a result
 \end{remark}
 
 \begin{lemma}
-\label{minimal-weight-search}
-Given a set of pseudo-generators $\set G$ acting on $N$ physical qubits and a test function $f:\genfun(\set G)\to\{0,1\}$ such that $f^{-1}(1)\cap\set P\ne\emptyset$, then $o:=\min_{o'\in \genfun(\set G), f(o')=1} w(o')$ can be computed in time $O\paren{(T+d)3^d\choose{|\set G|}{r}}$ where $d:=\min\paren{w(o),|\set G|}$ and $T$ is the time needed to compute $f$.
+\label{lemma:minimal-weight-search}
+Given a set of pseudo-generators $\set G$ acting on $N$ physical qubits and a test function $f:\pauligroup\to\{0,1\}$ such that $f^{-1}(1)\cap\genfun(\set G)\ne\emptyset$, then a solution $o$ such that $f(o)=1$ and $\om_{\set S}(o)=\min_{o'\in \genfun(\set G), f(o')=1} w(o')$ can be computed in time $O\paren{(T+d)3^d\choose{|\set G|}{r}}$ where $d:=\min\paren{w(o),|\set G|}$ and $T$ is the time needed to compute $f$.
 \end{lemma}
 
 \begin{proof}
@@ -893,6 +893,16 @@ We now have the tools that we need to prove Proposition \ref{proposition:search 
 \end{remark}
 
 \begin{proof}[Proof of Proposition \ref{proposition:search for minimal weight undetectable error}]
+By Corolary \ref{corolary:computing-disjoint-pseudo-generators}, we know that there is a set of pseudo-generators, $\set G$, which can be computed in time $|\set S\cup\set C|^2$ an satisfies the property that $\set G=\genfun(\set S\cup\set C)$.  Furthermore, since $\genfun(\set S\cup\set C)$ and $\set S$ is a set of commuting operators, by Lemma \ref{lemma:exact bound on number of disjoint pseudo-generators} we know that $|\set G|=N$.
+
+Define the function $f:\genfun(\set G)\to\{0,1\}$ by
+$$f(o):=
+\begin{cases}
+1 & \exists\,\, q\in\set Q \,\,\text{such that}\,\, \{o,q\}=0\\
+0 & \text{otherwise},
+\end{cases}
+$$
+Note that solutions to $f$ are undetectable errors acting on $\set Q$, and also that this function can be computed in time $O(|\set Q|)$ by checking the commutator for each element in $\set Q$.  Furthermore note that for every operator in $\set Q$ there is another operator in $\set Q$ which anti-commutes with it, and also that $\set Q\subset \centralizer_\pauligroup(\set S)$.  Thus, since $\set Q$ is non-empty, there is at least one operator $o\in\genfun(\set G)$ such that $f(o)=1$.  Thus, by Lemma \ref{lemma:minimal-weight-search}, we know that we can compute a minimal weight solution to $f$ in time $O\paren{(|\set Q|+d)3^d\choose{N}{r}}$.  After including the time needed to construct $\set G$---which recall that we showed earlier was in $O(|\set S\cup\set C|^2)$---we conclude that a minimal weight undetectble operator acting on an operator in $\set Q$ can be computed in time that is in $O\paren{|\set S\cup\set C|^2+(|\set Q|+d)3^d\choose{N}{r}}$.
 \end{proof}
 %@-node:gcross.20100408121941.1329:Proof
 %@-node:gcross.20100405123649.1325:Proposition: Minimal weight operator
