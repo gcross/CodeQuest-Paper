@@ -416,15 +416,15 @@ $\quad$
 \item the function $e_{\set S}:\centralizer_\pauligroup\paren{\set S}\to \paren{\powerset\circ\centralizer_\pauligroup}\paren{\set S}$ is defined such that $\set e_{\set S}(l)$ is the set of minimizers of $w$ over the set $\left\{o: o\in \centralizer_\pauligroup\paren{\set S}, \{o,l\}=0\right\}$ --- that is, it gives the undetectable errors with respect to $\set S$ acting on $l$ that are of minimum weight;
 \item the function $\om_{\set S}:\centralizer_\pauligroup\paren{\set S}\to\mathscr{N}$ is defined such that $\om_{\set S}:=w(o)$ for an arbitrarily chosen $o\in\circ \set e_{\set S}$ --- note that function is well-defiend since all operators in the set $\set e_{\set S}$ have the same weight;
 \item the function $m_{\set S}:\centralizer_\pauligroup\paren{\set S}\times \centralizer_\pauligroup\paren{\set S} \to \mathscr{N}$ is defined such that $m_{\set S}(l,l'):=\min \{\om_{\set S}(l),\om_{\set S}(l')\}$ --- that is, it gives the smaller of the weights of the smallest weight errors acting on respectively $\set L$ and $\set L'$;
-\item the function $\vec M^{(N)}_{\set S}$ is defined such that $\vec M^{(N)}_{\set S}\paren{\vec P}$ is the sequence of $N$ integers such that $\vec M^{(N)}_{\set S}\paren{\vec P}_i := m_{\set S}\paren{\vec P_i}$;
+\item the function $\lst M_{\set S}$ is defined such that $\lst M_{\set S}\paren{$\lst P}$ is the sequence of $|\lst P|$ integers such that $\lst M_{\set S}\paren{$\lst P}_i := m_{\set S}\paren{$\lst P_i}$;
 \item the functions $p_1$ and $p_2$ are defined such that, given $(a,b):=x$, we have that $p_1(x):=a$ and $p_2(x):=b$.
 \item the function $\set U:\powerset(\pauligroup\times\pauligroup)\to\powerset(\pauligroup)$ is defined (for convenience) such that $\set U\paren{\set X}:=\bigcup_{x\in\set X} \{p_1(x),p_2(x)\}$ --- that is, it `unpacks' a set of pairs of operators into a set of operators;  in an abuse of notation, we shall also allow $\set U$ to apply to sequences, so that $\set U(\lst P) := \set U\paren{\{\lst P_i\}_i}$, and to individual pairs, so that if $X$ is a single pair then $\set U(X) := \set U(\{X\})$;
-\item finally, a \emph{choice of $N$ qubits stabilized by $\set S$}, $\lst P$, is a sequence of $N$ pairs of operators from the Pauli group such that 
+\item finally, a \emph{choice of qubits stabilized by $\set S$}, $\lst P$, is a sequence of pairs of operators from the Pauli group such that 
 \begin{enumerate}
 \item $\set U(\lst P)\cap \set S = \emptyset$ --- that is, the operators in $\lst P$ are not included in $\set S$;
 \item every pair in $\lst P$ is a conjugal pair with respect $\set S \cup \set U(\lst P)$;
 \item $(\om_{\set S}\circ p_1)(\lst P_i)=m_{\set S}(\lst P_i)$; and
-\item $\lst M^{(N)}(\lst P)$ is an ordered sequence.
+\item $\lst M}(\lst P)$ is an ordered sequence.
 \end{enumerate}
 \end{itemize}
 
@@ -435,7 +435,7 @@ $\quad$
 Given the notation above, we now precisely define what we mean by the ``best choice'' of logical qubits.
 
 \begin{definition}
-An \emph{optimal choice of $N$ qubits stabilized by $\set S$} is any choice of $N$ qubits, $\lst P$ stabilized by $\set S$, such that given any other choice of $N$ qubits, $\lst P'$, that is also stabilized by $\set S$, such that $(\genfun\circ \set U)(\lst P)=(\genfun\circ \set U)(\lst P')$, we have that $\lst M^{(N)}(\lst P)_i \ge \lst M^{(N)}(\lst P')_i$ for all $1\le i \le N$.
+An \emph{optimal choice of qubits stabilized by $\set S$} is any choice of qubits, $\lst P$ stabilized by $\set S$, such that given any other choice of qubits, $\lst P'$, that is also stabilized by $\set S$, such that $(\genfun\circ \set U)(\lst P)=(\genfun\circ \set U)(\lst P')$, we have that $\lst M(\lst P)_i \ge \lst M(\lst P')_i$ for all $1\le i \le |\lst P|=|\lst P'|$.\footnote{Note that since $\lst P$ and $\lst P'$ are sequences of conjugal pairs, they are independent and so if $(\genfun\circ \set U)(\lst P)=(\genfun\circ \set U)(\lst P')$ then we know automatically that $|\lst P|=|\lst P'|$.}
 \end{definition}
 %@-node:gcross.20091221145013.1278:Definition: Total ordering => Optimal choice of qubits
 %@+node:gcross.20100128212359.1294:Definition: Unimprovable set
@@ -451,7 +451,7 @@ The following Theorem proves that this condition is indeed sufficient to show th
 %@+node:gcross.20100125183648.1309:Statement
 \begin{theorem}
 \label{optimality-condition}
-If $\lst P$ is a choice of $N$ logical qubits stabilized by $\set S$ such that $\{p_1(\lst P_i)\}_i\}$ is an unimprovable set with respect to $\set S$ that extends to $\set U(\lst P)$, then $\lst P$ is an optimal choice of qubits.
+If $\lst P$ is a choice of $N$ logical qubits stabilized by $\set S$ such that $\{p_1(\lst P_i)\}_i$ is an unimprovable set with respect to $\set S$ that extends to $\set U(\lst P)$, then $\lst P$ is an optimal choice of qubits.
 \end{theorem}
 
 \begin{remark}
@@ -618,9 +618,9 @@ With the proceding Lemmas and Propositions, we now have all of the tools that we
 \end{remark}
 
 \begin{proof}[Proof of Theorem \ref{optimality-condition}]
-Proof by contradiction.  Let $\lst P'$ be some choice of qubits stabilized by $\set S$ such that $(\genfun\circ\set U)(\lst P)=(\genfun\circ\set U)(\lst P')$ and there exists some integer $k$ such that $M^{(N)}_{\set S}(\lst P')_k > M^{(N)}_{\set S}(\lst P)_k$;  in particular, let $k$ be the smallest such integer, and let $\set C:=\{\lst P'_i : i \ge k\}$.  Let $l$ be the smallest integer such that $M^{(N)}_{\set S}(\lst P)_l\ge M^{(N)}_{\set S}(\lst P')_k$ or $N+1$ if there is no such integer, and let $\set A := \{p_1(\lst P_i) : i \ge l\}$; note that since $M^{(N)}(\lst P')_k > M^{(N)}(\lst P)_k$ we must have $l>k$, and hence $|\set C| > |\set A|$.
+Proof by contradiction.  Let $\lst P'$ be some choice of qubits stabilized by $\set S$ such that $(\genfun\circ\set U)(\lst P)=(\genfun\circ\set U)(\lst P')$ (which automatically implies that $|\lst P|=|\lst P'|$) and there exists some integer $k$ such that $M_{\set S}(\lst P')_k > M_{\set S}(\lst P)_k$;  in particular, let $k$ be the smallest such integer, and let $\set C:=\{\lst P'_i : i \ge k\}$.  Let $l$ be the smallest integer such that $\lst M_{\set S}(\lst P)_l\ge \lst M_{\set S}(\lst P')_k$ or $|\lst P|+1$ if there is no such integer, and let $\set A := \{p_1(\lst P_i) : i \ge l\}$; note that since $\lst M_{\set S}(\lst P')_k > \lst M_{\set S}(\lst P)_k$ we must have $l>k$, and hence $|\set C| > |\set A|$.
 
-Take any conjugal pair $O:=(a,b)$ such that $\{a,b\}\in\genfun(\set C)$.  Since $a$ and $b$ anti-commute, it must be the case that $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(O)\ne\emptyset$, because if every operator in $\set G_{\set U(\lst P)}(O)$ were the second member of a pair in $\lst P$ then $a$ and $b$ would commute.  Let $c$ be a choice of $a$ or $b$ such that $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\ne\emptyset$.  By Lemma \ref{combinations-can't-make-things-worse} we know that $M^{(N)}_{\set S}(\lst P')_k\le\om_{\set S}(c)$ since $c\in\genfun(\set C)$.  By the assumption of this Theorem that $\{p_1(\lst P_i)\}_i$ is an unimprovable set that extends to $\set U(\lst P)$, we know that $M^{(N)}_{\set S}(\lst P')_k \le \om_{\set S}(c)\le\min_{x\in\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)} \om_{\set S}(x)$.  From these bounds we conclude that $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\subseteq \set A$, and since $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\ne\emptyset$ we see therefore that $\set G_{\set U(\lst P)}(c)\cap\set A\ne\emptyset$ and so $\set G_{\set U(\lst P)}(O)\cap\set A\ne\emptyset$.
+Take any conjugal pair $O:=(a,b)$ such that $\{a,b\}\in\genfun(\set C)$.  Since $a$ and $b$ anti-commute, it must be the case that $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(O)\ne\emptyset$, because if every operator in $\set G_{\set U(\lst P)}(O)$ were the second member of a pair in $\lst P$ then $a$ and $b$ would commute.  Let $c$ be a choice of $a$ or $b$ such that $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\ne\emptyset$.  By Lemma \ref{combinations-can't-make-things-worse} we know that $\lst M_{\set S}(\lst P')_k\le\om_{\set S}(c)$ since $c\in\genfun(\set C)$.  By the assumption of this Theorem that $\{p_1(\lst P_i)\}_i$ is an unimprovable set that extends to $\set U(\lst P)$, we know that $\lst M_{\set S}(\lst P')_k \le \om_{\set S}(c)\le\min_{x\in\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)} \om_{\set S}(x)$.  From these bounds we conclude that $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\subseteq \set A$, and since $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\ne\emptyset$ we see therefore that $\set G_{\set U(\lst P)}(c)\cap\set A\ne\emptyset$ and so $\set G_{\set U(\lst P)}(O)\cap\set A\ne\emptyset$.
 
 We have now demonstrated that for every pair $O:=(a,b)$ such that $\{a,b\}\in\set \genfun(\set C)$, we must have $\set G(O)\cap\set A \ne\emptyset$.  Observe that this means that sets $\set C$ and $\set A$ match the descriptions in Proposition \ref{bound-on-recombinations} (letting set $\set Q:=\{\set P_i\}_i$), and thus we see that it is impossible for $|\set C|>|\set A|$, and so we have a contradiction.  We thus conclude that no such choice $\lst P'$ can exist.
 \end{proof}
