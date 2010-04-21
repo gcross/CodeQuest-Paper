@@ -33,6 +33,7 @@
 \newcommand{\pauligroup}{\mathfrak{P}}
 \newcommand{\powerset}{\mathcal{P}}
 \newcommand{\centralizer}{\mathcal{C}}
+\newcommand{\pseudoproduct}{\set\Pi}
 
 \input{macros.tex}
 %@-node:gcross.20091029172439.1256:<< Macros >>
@@ -661,13 +662,23 @@ The proof of this Theorem is constructive and hence shall not only prove that th
 
 Before presenting the proof this Theorem, we will first present a number of related Lemmas and Propositions which will assist us.
 
-The key insight upon which the algorithm is built is that undetectable errors acting on the space of logical qubits can never be eliminated entirely, so there will always be \emph{some} operator on which they act.  Thus, the goal of the optimization procedure is not to eliminate errors, but rather to \emph{contain} them, so that they act on as few operators as possible.  Futhermore, at any point in the optimization procedure the undetectable error that we most want to contain is the one with the smallest weight, since this is the error that is most damaging to our quantum code.  Because of this, it is important that we be able to find the minimal weight undetectable error acting on any operators in a given set;  we prove that this can be done in the following Proposition.
+The key insight upon which the algorithm is built is that undetectable errors acting on the space of logical qubits can never be eliminated entirely, so there will always be \emph{some} operator on which they act.  Thus, the goal of the optimization procedure is not to eliminate errors, but rather to \emph{contain} them, so that they act on as few operators as possible.
+
+At each step in the optimization procedure the undetectable error that we most want to contain is the one with the smallest weight, since this is the error that is most damaging to our quantum code.  Because of this, it is important that we be able to find the minimal weight undetectable error acting on any operators in a given set;  we prove that this can be done in the following Proposition.
 \end{remark}
 
+
 \begin{proposition}
-\label{minimal-weight-search}
-Given a set of Pauli operators $\set O$ acting on $N$ physical qubits and a test function $f:\genfunc(\set O)\to\{0,1\}$, if $f^{-1}(1)\cap\genfun(\set O)\ne\emptyset}$ then $o:=\min_{o'\in \genfun(\set O), f(o')=1} w(o')$ can be computed in time $O\paren{d3^d\choose{\min(|\set O|,N)}{r}}$ where $d:=\min\paren{w(o),|\set O|}.
+\label{proposition:search for minimal weight undetectable error}
+Given
+\begin{itemize}
+\item a set of Pauli operators $\set S$ acting on $N$ physical qubits,
+\item a set of operators $\set C$ such that the set $\set S\cup\set C$ is independent and $\genfun(\set S\cup\set C)=\centralizer(\set S)$, and
+\item a set of Pauli operators $\set Q$,
+\end{itemize}
+then a minimal weight undetectable error acting on any operator in $\set Q$ can be found in time $O\paren{N^2+d3^d\choose{N}{r}}$ where $d:=\min\paren{w(o),|\set O|}.
 \end{proposition}
+
 %@-node:gcross.20100405123649.1326:Statement
 %@+node:gcross.20100406122411.1326:Definitions
 %@+node:gcross.20100406122411.1327:pseudo-generator
@@ -680,19 +691,19 @@ The key difference between binary strings and Pauli operators is that binary str
 \end{remark}
 
 \begin{definition}
-A \emph{pseudo-generator} is a set of either 1 or 2 Pauli operators.  In an abuse of notation, we define the function $\set U$ to be $\set G\mapsto \bigcup_{\set g\in\set G} \set g_i$ when applied to a set of pseudo-generators.
+A \emph{pseudo-generator} is a set of either 1 or 2 Pauli operators.  In an abuse of notation, we define the functions $\set U$ to be respectively $\set G\mapsto \bigcup_{\set g\in\set G} \set g_i$ and $\set G\mapsto (\genfun\circ\set G)(\set G)$ when applied to a set of pseudo-generators.
 \end{definition}
 %@-node:gcross.20100406122411.1327:pseudo-generator
 %@+node:gcross.20100406122411.1328:pseudo-product (plus bounding Lemma)
 \begin{remark}
-(This definition does not follow that of White and Grassl exactly, since it has been specialized to our situation for the sake of simplicity.)
+(This definition does not follow that of White and Grassl exactly; it has been specialized to our situation for the sake of simplicity.)
 
 Unlike `normal' generators --- i.e., Pauli operators --- a product of generators is not a Pauli operator but rather a set of Pauli operators, which we define as follows.
 \end{remark}
 
 \begin{definition}
 \label{definition:pseudo-product}
-Suppose we are given a set of $r$ pseudo-generators $\set G$.  Let $\set X:=\{\genfun(\set g_i)\backslash\{I\}: \lst g\in\set G\}$, $\set Y$ be the $r-$ary Cartesian product of the $r$ sets contained in $\set X$, and $\set Z$ be the set consisting of the normal quantum operator product of the $r$ operators in each $r-$tuple in $\set Y$.  Then $\set Z$ is defined to be the \emph{pseudo-product} of the pseudo-generators in $\set G$. 
+Suppose we are given a set of $r$ pseudo-generators $\set G$.  Let $\set X:=\{\genfun(\set g_i)\backslash\{I\}: \lst g\in\set G\}$, $\set Y$ be the $r-$ary Cartesian product of the $r$ sets contained in $\set X$, and $\set Z$ be the set consisting of the normal quantum operator product of the $r$ operators in each $r-$tuple in $\set Y$.  Then $\set Z$ is defined to be the \emph{pseudo-product} of the pseudo-generators in $\set G$.  For convenience, define the function $\pseudoproduct$ so that $\pseudoproduct(\set G)$ is the pseudo-product of the pseudo-generators in $\set G$.
 \end{definition}
 
 \begin{remark}
@@ -708,13 +719,13 @@ The pseudo-product of $r$ pseudo-generators contains at most $3^r$ operators.
 Every set in $\set X$ described in Definition \ref{definition:pseudo-product} has a cardinality of either 1 or 3, and the size of $\set Y$ is equal to the product of the sizes of all the sets in $\set X$;  since $|\set X|=r$, we therefore conclude that the cardinality of $\set Y$ and hence the number of operators in the pseudo-product is at most $3^r$.
 \end{proof}
 
-\begin{corolary}[to Lemma]
+\begin{corolary}[to Lemma \ref{lemma:bound-on-pseudo-product}]
 \label{corolary:bound-on-pseudo-product}
-The pseudo-product of $r$ pseudo-generators can be enumerated in time $O(r 3^r)$.
+Given a set of $r$ pseudo-generators, $\set G$, then the set $\set O:=\{f(o):o\in\genfun(\set G)\}$ can be computed in time $O((T+r) 3^r)$, where the time needed to compute $f$ is in $O(T)$.
 \end{corolary}
 
 \begin{proof}
-Each operator in the pseudo-product is the product of $r$ operators, and from Lemma \ref{lemma:bound-on-pseudo-product} we know that there are at most $3^r$ operators in the pseudo-product.
+From Lemma \ref{lemma:bound-on-pseudo-product} we know that there are at most $3^r$ operators in the pseudo-product, so $|\set O|\le 3^r$.  Furthermore, for every element in the set we first need to compute the corresponding operator in the pseudo-product, which requires $r$ time since it is the product of $r$ operators, and then we need to compute $f$, which by assumption requires a time in $O(T)$.
 \end{proof}
 %@-node:gcross.20100406122411.1328:pseudo-product (plus bounding Lemma)
 %@+node:gcross.20100408121941.1328:disjoint
@@ -727,19 +738,9 @@ In order to be able to place a lower bound on binary strings that have yet to be
 A set of pseudo-generators $\set G$ is said to be \emph{disjoint} if for every $\set g\in\set G$ there exists some physical qubit $k$ such that either $X_k$ or $Z_k$ (or both) anti-commutes with every operator in $\genfun(\set g)\backslash\{I\}$, but both $X_k$ and $Z_k$ commute with every operator in $\genfun(\set g')$ for every $\set g'\in\set G\backslash\{g\}$.
 \end{definition}
 
-
 \begin{remark}
 The following Lemma is a trivial consequence of this definition.
 \end{remark}
-
-\begin{lemma}
-\label{lemma:bound on number of disjoint pseudo-generators}
-A set of disjoint pseudo-generators $\set G$ acting on $N$ qubits satisfies $|\set G|\le N$.
-\end{lemma}
-
-\begin{proof}
-This follows directly from the definition and the pidgeon hole principle.
-\end{proof}
 
 \begin{remark}
 With the following Lemma, we show that the property of disjointness is exactly what we need to obtain the bounds that we want.
@@ -755,9 +756,27 @@ Every operator in the pseudo-product is the product of $r$ factors, each of whic
 \end{proof}
 %@-node:gcross.20100408121941.1328:disjoint
 %@-node:gcross.20100406122411.1326:Definitions
+%@+node:gcross.20100421002003.1421:Lemma: Minimal weight search
+\begin{remark}
+Now that we have the concept of a disjoint set of pseudo-generators and a result showing that an operator in a pseudo-product of $r$ of them must have a weight of at least $r$, we present in the following Lemma an algorithm for searching through the space spanned by the pseudo-generators for an operator satisfying a given property.
+\end{remark}
+
+\begin{lemma}
+\label{minimal-weight-search}
+Given a set of pseudo-generators $\set G$ acting on $N$ physical qubits and a test function $f:\genfun(\set G)\to\{0,1\}$ such that $f^{-1}(1)\cap\set P\ne\emptyset$, then $o:=\min_{o'\in \genfun(\set G), f(o')=1} w(o')$ can be computed in time $O\paren{(T+d)3^d\choose{|\set G|}{r}}$ where $d:=\min\paren{w(o),|\set G|}$ and $T$ is the time needed to compute $f$.
+\end{lemma}
+
+\begin{proof}
+Define $\set C_r$ to be the set of all operators such that if $o\in\set C_r$ then there is some subset of exactly $r$ pseudo-generators from $\set G$ such that $o$ is contained in their pseudo-product.  Note that $\cup_r \set C_r = \genfun(\set G)$, so for every operator $o$ in the search space there is an integer $r$ such that $o\in\set C_r$.  Corolary \ref{corolary:bound-on-pseudo-product} shows that we can evaluate $f$ on every element of the pseudo-product of $r$ pseudo-generators in time $O((T+r)3^r)$, so since there are $\choose{|\set G|}{r}$ ways to choose $r$ pseudo-generators from $\set G$ we conclude that we can search $\set C_r$ for a solution to $f(o)=1$ in time $O\paren{(T+r) 3^r \choose{|\set G|}{r}}$.
+
+From Lemma \ref{lemma:disjoint-pseudo-generators-bound} we conclude that $w(o)\ge r$ for every $o\in\set C_r$.  By extension this means that $w(o)\ge r$ for every $o\in\bigcup_{r'=r}^{|\set G|}\set C_{r'}$, and therefore that if $o\notin\bigcup_{r'=0}^{r-1}\set C_{r'}$ and $o\in\genfun(\set G)$ then $w(o)\ge r$.  Thus, if there exists an $r$ such that $r=\min_{o\in\bigcup_{r'=0}^{r-1}\set C_{r'},f(o)=1}w(o)$ then we know that $r=\min_{o\in\genfun(\set O),f(o)=1}w(o)$ --- that is, $r$ is \emph{exactly} the weight of the minimum weight solution to $f(o)=1$, since any operator in the search space that \emph{isn't} contained in $\bigcup_{r'=0}^{r-1}\set C_{r'}$ must have a weight of at least $r$.  Put another way, after having enumerated all of the elements in $\bigcup_{r'=0}^{r-1}\set C_{r'}$ we can check to see whether the smallest solution to $f$ we have seen so far (if any) has weight less than or equal to $r$, and if so we are done since we have found the minimal weight solution.
+
+Now consider the procedure of searching through each $\set C_r$ starting with $r=0$.  We know that we will eventually find at least one solution to $f(o)=1$, since in this Proposition we have assumed that such an operator exists in the search space (by the assumption that $f^{-1}(1)\cap\genfun(\set G)\ne\emptyset}$).  Furthermore, employing this procedure we will find the minimal solution $o$ no \emph{later} than after we have searched through $\set C_r$ for $r=0\dots w(o)$, since at that point all of the unexamined operators have a weight greater than $w(o)$.  Thus, we conclude that we can compute the minimal weight solution after having searched at most all of the elements in $\bigcup_{r=0}^{\min(w(o),|\set G|)} C_r$, which we can do in time $$O\paren{\sum_{r=0}^{\min(w(o),|\set G|)}(T+r) 3^r \choose{|\set G|}{r}}\subseteq O\paren{(T+d) 3^d \choose{N}{d}},$$ where $d:=\min(w(o),|\set G|)$.
+\end{proof}
+%@-node:gcross.20100421002003.1421:Lemma: Minimal weight search
 %@+node:gcross.20100406122411.1325:Lemma: Computing disjoint pseudo-generators
 \begin{remark}
-The proceeding Lemma suggests that it would be desirable for our search space to expressed in terms of a disjoint set of pseudo-generators in order to have access to this lower bound;  we shall now show how to compute the this set of disjoint pseudo-generators.  First we present a Lemma that provides a criteria sufficient to show that a set of pseudo-generators is distinct.
+In order to make use of the proceding result, we need to have a set of disjoint pseudo-generators whose pseudo-product covers our search space.  However, we usually start not with a set of pseudo-generators but rather a set of ordinary Pauli operator generators;  thus, we shall now show that the former can be computed from the latterv --- i.e., that given a set of Pauli operators, we can compute a set of disjoint pseudo-generators that spans the same space.  First we present a Lemma that provides a criteria sufficient to show that a set of pseudo-generators is distinct.
 \end{remark}
 
 \begin{lemma}
@@ -836,17 +855,44 @@ This follows immediately from Lemmas \ref{lemma:disjointness-equvalence} and \re
 \end{proof}
 %@nonl
 %@-node:gcross.20100406122411.1325:Lemma: Computing disjoint pseudo-generators
-%@+node:gcross.20100408121941.1329:Proof
+%@+node:gcross.20100421002003.1422:Lemma: Bounds
 \begin{remark}
-We now have the tools that we need to prove Proposition \ref{minimal-weight-search}.
+We almost have all of the tools that we need to prove Proposition \ref{proposition:search for minimal weight undetectable error};  the final ingrediant is the following 3 Lemmas that show that our search space is generated by exactly $N$ pseudo-generators.
 \end{remark}
 
-\begin{proof}[Proof of Proposition \ref{minimal-weight-search}]
-By Corolary \ref{corolary:computing-disjoint-pseudo-generators}, we know that there exists a set $\set G$ of disjoint generators no larger than $\set O$ that (pseudo-)generates the same search space as $\set O$ and can be computed in $O(|\set O|^2)$ time.  Define $\set C_r$ to be the set of all operators such that if $o\in\set C_r$ then there is some subset of exactly $r$ pseudo-generators from $\set G$ such that $o$ is contained in their pseudo-product.  Note that $\cup_r \set C_r = \genfun(\set G)$, so for every operator $o$ in the search space there is an integer $r$ such that $o\in\set C_r$.  Corolary \ref{corolary:bound-on-pseudo-product} tells us that the pseudo-product of $r$ pseudo-generators can be enumerated in time $O(r3^r)$, so since there are $\choose{|\set G|}{r}$ ways to choose $r$ pseudo-generators from $\set G$ we conclude that $\set C_r$ can be enumerated in time $O\paren{r 3^r \choose{|\set G|}{r}}$.
+\begin{lemma}
+\label{lemma:lower bound on number of disjoint pseudo-generators}
+Given a set of disjoint pseudo-generators, $\set G$, the largest subset $\set X\subseteq\set U(\set G)$ such that $\set X$ commutes has size $|\set X|\le|\set G|$.
+\end{lemma}
 
-From Lemma \ref{lemma:disjoint-pseudo-generators-bound} we conclude that $w(o)\ge r$ for every $o\in\set C_r$.  By extension this means that $w(o)\ge r$ for every $o\in\bigcup_{r'=r}^{|\set G|}\set C_{r'}$, and therefore that if $o\notin\bigcup_{r'=0}^{r-1}\set C_{r'}$ and $o\in\genfun(\set G)$ then $w(o)\ge r$.  Thus, if there exists an $r$ such that $r=\min_{o\in\bigcup_{r'=0}^{r-1}\set C_{r'},f(o)=1}w(o)$ then we know that $r=\min_{o\in\genfun(\set O),f(o)=1}w(o)$ --- that is, $r$ is \emph{exactly} the weight of the minimum weight solution to $f(o)=1$, since any operator in the search space that \emph{isn't} contained in $\bigcup_{r'=0}^{r-1}\set C_{r'}$ must have a weight of at least $r$.  Put another way, after having enumerated all of the elements in $\bigcup_{r'=0}^{r-1}\set C_{r'}$ we can check to see whether the smallest solution to $f$ we have seen so far (if any) has weight less than or equal to $r$, and if so we are done since we have found the minimal weight solution.
+\begin{proof}
+If $\set X$ contained more that $\set G$ operators then by the pidgeon hole principle there would have to be at least two operators from the same pseudo-generator, and thus which did not commute
+\end{proof}
 
-Now consider the procedure of enumerating through each $\set C_r$ starting with $r=0$.  We know that we will eventually find at least one solution to $f(o)=1$, since in this Proposition we have assumed that such an operator exists in the search space (by the assumption that $f^{-1}(1)\cap\genfun(\set O)\ne\emptyset}$).  Furthermore, employing this procedure we will find the minimal solution $o$ no \emph{later} than after we have enumerated through $\set C_r$ for $r=0\dots w(o)$, since at that point all of the unenumerated operators have a weight greater than $w(o)$.  Thus, we conclude that we can compute the minimal weight solution after having enumerated at most all of the elements in $\bigcup_{r=0}^{\min(w(o),|\set G|)} C_r$, which we can do in time $$O\paren{\sum_{r=0}^{\min(w(o),|\set G|)}r 3^r \choose{|\set G|}{r}}\subseteq O\paren{d 3^d \choose{\min(|\set O|,N)}{d}},$$ where $d:=\min(w(o),|\set G|)$, and we have used the fact that $|\set G|\le |\set O|$ (from Corolary \ref{corolary:computing-disjoint-pseudo-generators}) and $|\set G|\le N$ (from Lemma \ref{lemma:bound on number of disjoint pseudo-generators}).
+\begin{lemma}
+\label{lemma:upper bound on number of disjoint pseudo-generators}
+A set of disjoint pseudo-generators $\set G$ acting on $N$ qubits satisfies $|\set G|\le N$.
+\end{lemma}
+
+\begin{proof}
+This follows directly from the definition and the pidgeon hole principle.
+\end{proof}
+
+\begin{lemma}
+\label{lemma:exact bound on number of disjoint pseudo-generators}
+For any set of commuting operators $\set S$ acting on $N$ physical qubits, if $\set G$ is a set of pseudo-generators satsifying $\genfun(\set G)=\centralizer_\pauligroup(\set S)$ then $|\set G|= N$.
+\end{lemma}
+
+\begin{proof}
+Since $\centralizer_\pauligroup(\set S)$ contains a subset of $N$ independent commuting operators, so must $\genfun(\set G)$ and therefore $\set U(\set G)$;  thus, Lemma \ref{lemma:lower bound on number of disjoint pseudo-generators} implies that $|\set G|\ge N$, and combining this bound with that given by Lemma \ref{lemma:upper bound on number of disjoint pseudo-generators} we see that $|\set G|=N$.
+\end{proof}
+%@-node:gcross.20100421002003.1422:Lemma: Bounds
+%@+node:gcross.20100408121941.1329:Proof
+\begin{remark}
+We now have the tools that we need to prove Proposition \ref{proposition:search for minimal weight undetectable error}.
+\end{remark}
+
+\begin{proof}[Proof of Proposition \ref{proposition:search for minimal weight undetectable error}]
 \end{proof}
 %@-node:gcross.20100408121941.1329:Proof
 %@-node:gcross.20100405123649.1325:Proposition: Minimal weight operator
