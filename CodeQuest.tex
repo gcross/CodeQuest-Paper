@@ -1017,11 +1017,11 @@ After we have replaced one or more members of an unimprovable set with products 
 
 \begin{lemma}
 \label{recombining elements preserves extension}
-Suppose $\set O$ and $\set O'$ are unimprovable sets with respect to $\set S$ such that $\genfun(\set O)=\genfun(\set O')$.  Then if $\set O$ extends to $\set Q$, so does $\set O'$.
+Suppose $\set O$ and $\set O'$ are unimprovable sets with respect to $\set S$ such that $\set O'\subseteq\genfun(\set O)$.  Then if $\set O$ extends to $\set Q$, so does $\set O'$.
 \end{lemma}
 
 \begin{proof}
-Take any subset $\set X \subseteq \set O\cup\set Q$ such that $\set A' := \set X\cap \set O' \ne \emptyset$.  We need to show that $\om_{\set S}(x)\le\min_{y\in\set A'}\om_{\set S}(y)$, where $x := \prod_{y\in\set X} y$.  Let $\set B := \set X \backslash \set A'$, $a := \prod_{y\in\set A'} y$, $b := \prod_{y\in\set B} y$ and $\set A$ be the subset of $\set O$ such that $\prod_{y\in\set A} y =a$.  Since $\set O$ and $\set O'$ are unimprovable sets, we know that $\min_{y\in\set A'}\om_{\set S}(y)=\om_{\set S}(a)=\min_{y\in\set A}\om_{\set S}(y)$.  Since $x=a\cdot b$, we see that $x$ is equal to the product of a set of elements $\set C := \set A \cup\set B$ such that $B\subseteq \set Q$ and $\set C\cap\set O=\set A$, and since $\set O$ extends to $\set Q$ we conclude that $\om_{\set S}(x)\le\min_{y\in\set A}\om_{\set S}(y)=\min_{y\in\set A'}\om_{\set S}(y)$.  Thus, $\set O'$ extends to $\set Q$.
+Take any subset $\set X \subseteq \set O'\cup\set Q$ such that $\set A' := \set X\cap \set O' \ne \emptyset$.  We need to show that $\om_{\set S}(x)\le\min_{y\in\set A'}\om_{\set S}(y)$, where $x := \prod_{y\in\set X} y$.  Let $\set B := \set X \backslash \set O'$, $a := \prod_{y\in\set A'} y$, $b := \prod_{y\in\set B} y$ and $\set A$ be the subset of $\set O$ such that $\prod_{y\in\set A} y =a$.  Since $\set O$ and $\set O'$ are unimprovable sets, we know that $\min_{y\in\set A'}\om_{\set S}(y)=\om_{\set S}(a)=\min_{y\in\set A}\om_{\set S}(y)$.  Since $x=a\cdot b$, we see that $x$ is equal to the product of a set of elements $\set C := \set A \cup\set B$ such that $B\subseteq \set Q$ and $\set C\cap\set O=\set A$, and since $\set O$ extends to $\set Q$ we conclude that $\om_{\set S}(x)\le\min_{y\in\set A}\om_{\set S}(y)=\min_{y\in\set A'}\om_{\set S}(y)$.  Thus, $\set O'$ extends to $\set Q$.
 \end{proof}
 %@-node:gcross.20100129120448.1281:Lemma: Recombining elements preserves extension
 %@+node:gcross.20100129120448.1283:Lemma: Recombining extension elements preserves extension
@@ -1086,31 +1086,30 @@ The following Proposition describes this procedure more formally, and proves tha
 \end{remark}
 
 \begin{proposition}
+\label{proposition:optimization-iteration}
 Suppose we are given
 \begin{itemize}
-\item a set of Pauli operators $\set S$;
+\item a set of Pauli operators $\set S$ acting on $N$ physical qubits;
 \item a choice of qubits $\lst P$ stabilized by $\set S$;
 \item a set of pairs, $\set Q$;
 \item and an unimproveable set of independent operators $\set O$ with respect to $\set S$ that extends to $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash \set O}$;
 \end{itemize}
 such that $\set X$ is non-empty, and $\set P$, $\set Q$, and $\set O$ satisfy the following properties:
 \begin{enumerate}
-% 1
 \item \label{pairs are all conjugal to T} the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $\set T':=\set U(\lst P)\cup \set U(\set Q)\cup \set S$;
-% 2
+\item \label{O is subset of P} $\set O \subseteq \set U(\lst P)$;
 \item \label{first members are all in O} $p_1(\lst P_i)\in \set O$ for every $1 \le i \le |\lst P_i|$;
-% 3
 \item \label{Q does not intersect with O} $\genfun(\set Q) \cap \set O = \emptyset$;
-% 4
 \item \label{operators in X are no worse than the best qubit in P} and $\min_{x\in\set X}\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ (if $\lst P$ is non-empty).
 \end{enumerate}
-Then there exists objects $\lst P'$, $\set Q'$, and $\set O'$ satisfying the same properties listed above as their unprimed counterparts, as well as a Pauli operator $x$ such that
+Then there exists objects $\lst P'$, $\set Q'$, $\set O'$ and $\set X'$ satisfying the same properties listed above as their unprimed counterparts---\emph{except} that $\set X'$ may be empty --- as well as a Pauli operator $x$ such that
 \begin{itemize}
 \item $x\notin \set O$;
-\item $\set O'=\set O\cup\{x\}$; and
-\item $\genfun\paren{\set U(\lst P')\cup \set U(\set Q')}=\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}$.
+\item $\set O'=\set O\cup\{x\}$;
+\item $\genfun\paren{\set U(\lst P')\cup \set U(\set Q')}=\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}$;
+\item $|\lst Q'| \le |\lst Q|$.
 \end{itemize}
-Furtermore, these objects can be computed in time $O\paren{d3^d\choose{C}{r}}$ where $d:=\min\paren{\om_{\set s}(x),C}$ and $C:=\left|\centralizer_\pauligroup(\set S)\right|$
+Furtermore, these objects can be computed in time $O\paren{d3^d\choose{C}{r}}$ where $d:=\min\paren{\om_{\set s}(x),N}$.
 \end{proposition}
 %@nonl
 %@-node:gcross.20100204174120.1285:Statement
@@ -1206,6 +1205,37 @@ It remains only to show that $\set O$ is an unimprovable set that extends to $\s
 %@nonl
 %@-node:gcross.20100204174120.1286:Proof
 %@-node:gcross.20100127211423.1361:Proposition: Optimization procedure
+%@+node:gcross.20100420142721.1344:Lemma: Unimprovable sets extend to themselves
+\begin{lemma}
+\label{lemma:unimprovable sets extend to themselves}
+If $\set O$ is an unimprovable set that extends to $\set Q$, then $\set O$ also extends to $\set O\cup\set Q$.
+\end{lemma}
+
+\begin{proof}
+This Lemma follows almost immmediately from the definition of unimprovable set, and so the proof has been left as an exercise for the reader.
+\end{proof}
+%@-node:gcross.20100420142721.1344:Lemma: Unimprovable sets extend to themselves
+%@+node:gcross.20100413085158.2887:Corolary
+\begin{corolary}
+Suppose we are given a set of Pauli operators, $\set S$, acting on $N$ physical qubits, and a set of pairs, $\set Q$, conjugal with respect to $\set U(\set Q)\cup\set S$.  Then the optimal choice $\lst P$ such that $\genfun(\lst P)=\genfun(\set Q)$ can be computed in a time that is in the set $O\paren{d3^d|\set L|\choose{N}{d}}$, where $d:=\min\paren{\lst M^{(|\set L|)}(\lst P)_{|\set L|},N}$.
+\end{corolary}
+
+\begin{proof}
+If $\set Q$ is the empty set then the empty choice is optimal and can be computed in no time.  Thus,  we assume that $\set Q$ is non-empty;  for convenience, define $K := 2|\set Q|\equiv |\set U(\set Q)|$.
+
+Define the sequences $\lst P^{(k)}$, $\set Q^{(k})$, $\set O^{(k)}$ such that $\lst P^{(0)}$ is the empty sequence, $\set Q^{(0)}:=\set Q$ and $\set O^{(0)}:=\emptyset$, and for $0<k\le K$ we define $\lst P^{(k)}$, $\set Q^{(k)}$ and $\set O^{(k)}$ to be respectively $\lst P^{(k)}:=\lst P'$, $\set Q^{(k)}:=\set Q'$ and $\set O^{(k)}:=\set O'$ described in Proposition \ref{proposition:optimization-iteration} given $\lst P:=\lst P^{(k-1)}$, $\set Q:=\set Q^{(k-1)}$ and $\set O:=\set O^{(k-1)}$;  put another way, the $k^{\text{th}}$ element of each of these sequences is the result of applying Proposition \ref{proposition:optimization-iteration} $k$ times to $\lst P^{(0)}$, $\set Q^{(0)}$ and $\set O^{(0)}$.  Furthermore define the additional sequence $\set X^{(k)}:=\set U(\set Q^{(k)})\cup\paren{\set U(\lst P^{(k)})\backslash\set O^{(k)}}$.
+
+First we shall prove using induction that the sequences are well-defined.  For the base case, observe that their first element is well defined.  Now assume that the sequences are well-defined at some $k$ that is strictly less than $K$;  it remains to show that this implies that they are well-defined at $k+1$.  To do this, it is sufficient to show that $\set X^{(k)}\ne\emptyset$ because the objects $\lst P'$, $\set Q'$ and $\set O'$ listed in Proposition \ref{proposition:optimization-iteration} satisfy the same properties as $\lst P$, $\set Q$ and $\set O$ listed in the same Proposition as long as $\set X'$ is non-empty.  Note that for $\set X^{(k)}$ to be empty it must be the case that $\set Q^{(k)}=\emptyset$ and $\set O^{(k)} = \set U(\lst P^{(k)})$.  However, observe that $|\set O^{(k)}|=|\set O^{(k-1)}|+1=|\set O^{(k-2)}|+2=\cdots=|\set O^{(0)}|+k=0+k=k$ and 
+$\genfun\paren{\set U(\lst P^{(k)})\cup\set U(\set Q^{(k)})}=\genfun\paren{\set U(\lst P^{(k-1)})\cup\set U(\set Q^{(k-1)})}=\cdots=\genfun\paren{\set U(\lst P^{(0)})\cup\set U(\set Q^{(0)})}=\genfun\paren{\emptyset\cup\set U(\set Q)}=\genfun(\set Q)$.  Thus, for $\set X^{(k)}=\emptyset$, it would have to be the case that $\genfun(\set O) = \genfun(\lst P^{(k)}) = \genfun(\set Q)$, and so since the operators in $\set U(\set Q)$ are independent (as they are conjugal pairs) this implies that  $|\set O|\ge |\set U(\set Q)| = 2|\set Q|$.  Since $k<K=2|\set Q|$, we see that $\set X^{(k)}$ must be non-empty and so the sequences are all defined at $k+1$.
+
+Next we shall show that there is an integer $0 < l \le K$ such that $\set Q^{(k)}=\emptyset$ for $k\ge l$ and $\set Q^{(k)}\ne\emptyset$ for $k < l$.  First, note that since $\set O^{(k)}\subseteq \set U(\lst P^{(k)})$, we conclude that the operators in $\set O^{(k)}$ are independent.  Thus, since $\set U(\lst P^{(k)}) \subseteq \genfun(\set Q)$, and the operators in $\set Q$ are independent, we conclude that because $|\set O^{(K)}|=K=2|\set Q|$ we have that $|\set U(\lst P^{(K)})|=|\set U(\set Q)|$ and so $\set Q^{(K)}=\emptyset$.  From Proposition \ref{proposition:optimization-iteration}, we know that the size of $\set Q^{(k)}$ decreases monotonically with $k$.  Thus, there is an integer $0 < l \le K$ such that $|\set Q^{(k)}|=0$ for $k\ge l$ and $|\set Q^{(k)}|>0$ for $k < l$.  (Recall that $l\ne 0$ since by assumption $\set Q\equiv \set Q^{(0)}$ is non-empty.)
+
+Let $\lst P:=\lst P^{(l)}$;  we shall now show that $\lst P$ is an optimal choice of qubits such that $\genfun(\lst P)=\genfun(\set Q)$.  First observe that since $\set Q^{(l)}=\emptyset$ we have that $\genfun(\lst P)=\genfun(\set Q)$. Recall that from Proposition \ref{proposition:optimization-iteration} we know that $\set O^{(l)}$ is an unimprovable set that extends to $\set X^{(l)}\equiv \set U(\lst P)\backslash\set O^{(l)}$, and from Lemma \ref{lemma:unimprovable sets extend to themselves} we conclude that $\set O^{(l)}$ therefore an unimprovable set that extends to $\set U(\lst P)$.  Also recall that from Proposition \ref{proposition:optimization-iteration} we know that $\left\{\{p_1(\lst P_i):i\in\{1\dots |\lst P|\}\right\}\subseteq \set O^{(l)}$, so by Lemma \ref{recombining elements preserves extension} we see that $\left\{p_1(\lst P_i):i\in\{1\dots |\lst P|\}\right\}$ is an unimprovable set that extends to $\lst P$; thus, by Theorem \ref{optimality-condition} we conclude that $\lst P$ is an optimal choice of qubits.
+
+Finally, we need to show that $\lst P$ can be computed in time $d:=\min\paren{\lst M^{(N)}(\lst P)_N,|\set G|}$. 
+\end{proof}
+%@nonl
+%@-node:gcross.20100413085158.2887:Corolary
 %@+node:gcross.20100402142648.1317:Pseudo-code
 
 %@+node:gcross.20100403145800.1484:Optimize-Logical-Qubits
