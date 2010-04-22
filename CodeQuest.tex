@@ -412,6 +412,7 @@ For convenience, we introduce the following additional notation:
 $\quad$
 
 \begin{itemize}
+\item the function $\Pi:\powerset(\pauligroup)\to\pauligroup$ is defined such that $\Pi(\set X):=\prod_{x\in \set X} x$ --- that is, it is the product of the operators in $\set X$.
 \item assuming we have a set of independent operators, $\set Q$, the function $\set G_{\set Q}:\genfun(\set Q)\to\powerset(\set Q)$ is defined (uniquely) such that for every $q\in\set Q$ we have that $q=\prod_{o\in\set G_{\set Q}(q)} o$;
 \item the function $w:\pauligroup\to \mathscr{N}$ is defined such that $w(o)$ gives the weight of $o$;
 \item the function $e_{\set S}:\centralizer_\pauligroup\paren{\set S}\to \paren{\powerset\circ\centralizer_\pauligroup}\paren{\set S}$ is defined such that $\set e_{\set S}(l)$ is the set of minimizers of $w$ over the set $\left\{o: o\in \centralizer_\pauligroup\paren{\set S}, \{o,l\}=0\right\}$ --- that is, it gives the undetectable errors with respect to $\set S$ acting on $l$ that are of minimum weight;
@@ -906,13 +907,6 @@ Note that solutions to $f$ are undetectable errors acting on $\set Q$, and also 
 %@-node:gcross.20100408121941.1329:Proof
 %@-node:gcross.20100405123649.1325:Proposition: Minimal weight operator
 %@+node:gcross.20100421154348.1345:Proposition: Optimization procedure
-
-
-\begin{lemma}
-\label{lemma:unimprovable sets extend to themselves}
-If $\set O$ is an unimprovable set that extends to $\set Q$, then $\set O$ also extends to $\set O\cup\set Q$.
-\end{lemma}
-%@nonl
 %@+node:gcross.20100421154348.1346:Statement
 \begin{remark}
 Once we have found the minimum weight undetectable error, we need to be able to contain it so that it affects as few qubits as possible.  However, one needs to pay careful attention to the way that this is done so that we end with an optimal choice of qubits.
@@ -930,28 +924,27 @@ Suppose we are given
 \begin{itemize}
 \item a set of Pauli operators $\set S$ acting on $N$ physical qubits;
 \item a choice of qubits $\lst P$ stabilized by $\set S$;
-\item a set of pairs, $\set Q$;
-\item an unimproveable set of independent operators $\set O$ with respect to $\set S$ that extends to $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash \set O}$;
+\item a set of pairs of Pauli operators, $\set Q$;
+\item a set of Pauli operators $\set O$;
 \item and a Pauli operator, $h$;
 \end{itemize}
-such that $\set X$ is non-empty, $h$ is a minimal weight undetectable operator acting on $\set X$, and $\set P$, $\set Q$, and $\set O$ satisfy the following properties:
+such that $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash \set O}$ is non-empty, $h$ is a minimal weight undetectable operator acting on $\set X$, and $\set P$, $\set Q$, and $\set O$ satisfy the following properties:
 \begin{enumerate}
-\item \label{pairs are all conjugal to T} the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $\set T:=\set U(\lst P)\cup \set U(\set Q)\cup \set S$;
-\item \label{O is subset of P} $\set O \subseteq \set U(\lst P)$;
-\item \label{first members are all in O} $p_1(\lst P_i)\in \set O$ for every $1 \le i \le |\lst P_i|$;
-\item \label{Q does not intersect with O} $\genfun(\set Q) \cap \set O = \emptyset$;
-\item \label{operators in X are no worse than the best qubit in P} and $\min_{x\in\set X}\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ (if $\lst P$ is non-empty).
+\item the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $\set T:=\set U(\lst P)\cup \set U(\set Q)\cup \set S$;
+\item $\set O \subseteq \set U(\lst P)$;
+\item $\{p_1(\lst P_i)\}_i\subseteq \lst O$;
+\item $(\om_{\set S}\circ p_1)(\lst P_i) = \lst M(\lst P)_i$;
+\item $\min_{x\in\set X}\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ (if $\lst P$ is non-empty).
+\item and $\set O$ is an unimproveable set of independent operators with respect to $\set S$ that extends to $\set X$;
 \end{enumerate}
-Then there exists objects $\lst P'$, $\set Q'$, $\set O'$ and $\set X'$ satisfying the same properties listed above as their unprimed counterparts---\emph{except} that $\set X'$ may be empty --- as well as a Pauli operator $x$ such that
+Then there exist objects $\lst P'$, $\set Q'$, $\set O'$ and $\set X'$ satisfying the same properties listed above as their unprimed counterparts---\emph{except} that $\set X'$ may be empty --- such that the following properties are additionally satisfied:
 \begin{enumerate}
-\setcounter{enumi}{5}
-\item $x\notin \set O$;
-\item $\set O'=\set O\cup\{x\}$;
-\item $\om_{\set S}(x)=\max_{o'\in\set O'}\om_{\set S}(o')$;
+\setcounter{enumi}{6}
+\item $h$ commutes with every operator in $\set U(\set Q')$;
 \item $\genfun\paren{\set U(\lst P')\cup \set U(\set Q')}=\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}$;
 \item $|\lst Q'| \le |\lst Q|$.
 \end{enumerate}
-Furtermore, these objects can be computed in time $O\paren{d3^d\choose{N}{r}}$ where $d:=\min\paren{\om_{\set s}(x),N}$.
+Furtermore, $\lst P'$, $\set Q'$ and $\set O$ can be constructed in time $O\paren{|\lst P|+|\set Q|}$.
 \end{proposition}
 %@nonl
 %@-node:gcross.20100421154348.1346:Statement
@@ -963,7 +956,7 @@ Once we have decided to contain an error inside an operator, we need to multiply
 \end{remark}
 
 \begin{lemma}
-\label{multiple-recombinations}
+\label{lemma:multiple-recombinations}
 Suppose we are given
 \begin{itemize}
 \item a pair of Pauli operators, $(a,b)$;
@@ -1059,12 +1052,11 @@ Finally, note that the process of constructing $b'$ and $\set R'$ required a con
 %@-node:gcross.20100126164527.1288:Lemma: Multiple recombinations
 %@+node:gcross.20100127132544.1287:Corolary: Recombination to make commute
 \begin{remark}
-The following Corolary to Lemma \ref{multiple-recombinations} is introduced for the sake of convenience;  it effectively places an ordering on and then pre-marks a set of conjugal pairs to be fixed on the basis of whether a given error acts on them, and then feeds this into Lemma \ref{multiple-recombinations}.  The result is a set of conjugal pairs on which the error no longer acts.
-The following Corolary to Lemma \ref{multiple-recombinations} is introduced for the sake of convenience;  it effectively places an ordering on and then pre-marks a set of conjugal pairs to be fixed on the basis of whether a given error acts on them, and then feeds this into Lemma \ref{multiple-recombinations}.  The result is a set of conjugal pairs that has been `fixed' so that the error no longer acts on any of them.
+The following Corolary to Lemma \ref{lemma:multiple-recombinations} is introduced for the sake of convenience;  it effectively places an ordering on and then pre-marks a set of conjugal pairs to be fixed on the basis of whether a given error acts on them, and then feeds this into Lemma \ref{lemma:multiple-recombinations}.  The result is a set of conjugal pairs on which the error no longer acts.
 \end{remark}
 
 \begin{corolary}
-\label{recombination-to-make-commute}
+\label{corolary:recombination-to-make-commute}
 Suppose we are given
 \begin{itemize}
 \item a pair of Pauli operators, $(a,b)$;
@@ -1100,60 +1092,38 @@ $$\lst f^{(j)}_i :=
 1 & \{p_j(\lst R_i),x\} = 0. \\
 \end{cases}
 $$
-The first two conclusions of this Corolary follows immediately from Lemma \ref{multiple-recombinations}, dropping the ordering on $\lst R'$.  The third comes from the fact that every element in $\set R'$ is either an element from $\set R$ that commutes with $x$ or the product of $a$ with an element from $\set R$ that anti-commutes with $x$, which must also commute with $x$.  The fourth comes directly from Lemma \ref{combinations-can't-make-things-worse}.
-Finally, we see that the running time to compute $b'$ and $\lst R'$ is in $O(|\lst R|)$ from Lemma \ref{multiple-recombinations}, and since computing $\lst f^{(0)}$ and $\lst f^{(1)}$ require a number of multiplications proportional to $N$ we see that the time to compute $b'$ and $\set R'$ is in $O(|\lst R|)$.
+The first two conclusions of this Corolary follows immediately from Lemma \ref{lemma:multiple-recombinations}, dropping the ordering on $\lst R'$.  The third comes from the fact that every element in $\set R'$ is either an element from $\set R$ that commutes with $x$ or the product of $a$ with an element from $\set R$ that anti-commutes with $x$, which must also commute with $x$.  The fourth comes directly from Lemma \ref{combinations-can't-make-things-worse}.
+Finally, we see that the running time to compute $b'$ and $\lst R'$ is in $O(|\lst R|)$ from Lemma \ref{lemma:multiple-recombinations}, and since computing $\lst f^{(0)}$ and $\lst f^{(1)}$ require a number of multiplications proportional to $N$ we see that the time to compute $b'$ and $\set R'$ is in $O(|\lst R|)$.
 \end{proof}
 %@-node:gcross.20100127132544.1287:Corolary: Recombination to make commute
 %@+node:gcross.20100129120448.1279:Lemma: Replacing element with product preserves unimprovability
 \begin{remark}
 As discussed earlier, in the process of fixing an error we will need to multiply the conjugal partner of the fixing operator by the conjugal partners of all the operators being fixed.  It might be that when this happens, the conjugal partner of the fixing operator is a member of an unimprovable set;  in this case, we do not want this partner to no longer be in this set when we are done, since this would hurt our goal of ultimately extending the unimprovable set so that it covers the first member of all the pairs in the set of logical qubit operators in order to satisfy the optimality condition.
 
-The following Lemma proves that if we are given an unimprovable set, we may take any operator in the set and replace it with a product of operators from the set while preserving the unimprovable property, as long as the operator we are replacing is the ``worst'' in the product in the sense of having the smallest weight minimum weight undetectable error.
+The following Lemma proves that if we are given an unimprovable set $\set O$ that extends to $\set Q$, then we may take any operator in the $\set O$ and replace it with a product of operators from $\set O\cup\set Q$ while preserving the property of being unimprovable and extending to $\set Q$, as long as the operator we are replacing has the same weight as its replacement.
 \end{remark}
 
 \begin{lemma}
-\label{replacing element with product preserves unimprovability}
-Suppose we are given an unimprovable set $\set O$ with respect to $\set S$.  Let $o$ be any element in $\set O$, and $\set Y\subseteq \set O$ such that $o\in \set Y$ and $\min_{y\in\set Y}\om_{\set S}(y)=\om_{\set S}(o)$.  Let $o':=\prod_{y\in\set Y}y$ and $\set O' := \paren{\set O\backslash\{o\}}\cup\{o'\}$.  Then
-\begin{enumerate}
-\item $\om_{\set S}(o)=\om_{\set S}(o')$;
-\item $\genfun(\set O)=\genfun(\set O')$;
-\item and $\set O'$ is also an unimprovable set with respect to $\set S$;
-\end{enumerate}
+\label{lemma:replacing element with product preserves unimprovability}
+Suppose we are given an unimprovable set $\set O$ with respect to $\set S$ that extends to $\set Q$.  Let $o$ be any element in $\set O$, and $\set Y\subseteq \set O\cup\set Q$ such that $o\in \set Y$ and $\min_{y\in\set Y}\om_{\set S}(y)=\om_{\set S}(o)$.  Let $o':=\Pi(\set Y)$ and $\set O' := \paren{\set O\backslash\{o\}}\cup\{o'\}$.  If $\om_{\set S}(o')=\om_{\set S}(o)$, then $\set O'$ is also an unimprovable set with respect to $\set S$ that extends to $\set Q$.
 \end{lemma}
 
 \begin{proof}
-First observe that since $\set O$ is an unimprovable set and $\min_{y\in\set Y}\om_{\set S}(y)=\om_{\set S}(o)$, we conclude that $\om_{\set S}(o)=\om_{\set S}(o')$, which proves conclusion 1.
+Take any subset of elements $\set X\subseteq\set O'\cup\set Q$ such that $\set X\cap\set O'\ne\emptyset$, and let $x := \Pi(\set X)$.  We need to show that $\om_{\set S}(x) \le \min_{y\in\set X}\om_{\set S}(y)$.  If $o'\notin\set X'$, then this follows immediately from the fact that $\set X\subseteq\set O\cup \set X$ and $\set O$ is an unimprovable set that extends to $\set X$, so assume that that $o'\in\set X'$.  Since $o'=\Pi(\set Y)$ and $\set Y\subseteq\set O\cup\set X$, we conclude that the set $\set Z\subseteq\set O\cup\set Q$ which is the symmetric difference of $\set X$ and $\set Y$ satisfies the property that $x=\Pi(\set Z)$.  Note that $o\in\set Z$ since $o\in Y$ and $o\notin \set O'$ and so $o\notin \set X$.  Thus, $\set Z \cap\set O\ne\emptyset$, and so $\om_{\set S}(x)\le \min_{y\in\set Z}\om_{\set S}(y)$ since $\set O$ is an unimprovable set that extends to $\set X$.  Thus, for us to show that $\om_{\set S}(x) \le \min_{y\in\set X}\om_{\set S}(y)$, it suffices for us to show that $\min_{y\in\set X}\om_{\set S}(y)=\min_{y\in\set Z}\om_{\set S}(y)$.
 
-The only element changed from $\set O$ to $\set O'$ is the replacement of $o$ with a product of elements including $o$;  since every factor besides $o$ in the new product is also contained in $\set O'$, we conclude that we can obtain $o$ from a product of elements in $\set O'$, and so $\genfun(\set O)=\genfun(\set O')$, which proves conclusion 2.
+First note that since $\om_{\set S}(o')=\om_{\set S}(o)$, there is no element $y\in\set Y$ such that $\om_{\set S}(y)<\om_{\set S}(o)$.  Thus, any operator $z\in\set Z$ such that $\om_{\set S}(z)<\om_{\set S}(o)$ must also appear in $\set X$, and vice versa;  put another way, any operator that is less robust to errors than $o$ must be present in both $\set X$ and $\set Z$ together or neither.  Thus, if at least one such operator exists, then we conclude that $\min_{y\in\set Z}\om_{\set S}(y)=\min_{y\in\set X}\om_{\set S}(y)$ since in this case any minimizer of $\om_{\set S}$ must be shared between the two sets.  If no such operator exists, then since $o$ is present in both $\set X$ and $\set Z$ and there is no other operator present in either set with a smaller minimum weight undetectable error, we conclude that $o$ must be a minimizer of $\om_{\set S}$ in both sets and so we still have that $\min_{y\in\set Z}\om_{\set S}(y)=\om_{\set S}(o)=\min_{y\in\set X}\om_{\set S}(y)$.
 
-Take any subset of elements $\set X'\subseteq\set O'$, and let $x' := \prod_{y\in \set X'} y$ and $d_{x'}:=\min_{y\in\set X'}\om_{\set S}(y)$.  We need to show that $\om_{\set S}(x') = d_{x'}$.  If $o'\notin\set X'$, then this follows from the fact that $\set X'\subseteq\set O$ and $\set O$ is an unimprovable set.
-
-Suppose that $o'\in\set X'$. Since we showed in the first paragraph that $\genfun(\set O)=\genfun(\set O')$, we conclude that there exists a subset $\set X\subseteq\set O$ such that $x=\prod_{y\in \set X'}y$.  For every $a\in\set X'$ such that $\om_{\set S}(a)<\om_{\set S}(o')$, we know that $a\in\set X$ because $a\notin\set Y$ since $\om_{\set S}(o)=\om_{\set S}(o')$ and $\set O$ is an unimprovable set.  Thus, if there exists at least one such $a$, then $\min_{y\in\set X'}\om_{\set S}(y)=\min_{y\in\set X}\om_{\set S}(y)=\om_{\set S}(x')$.  If there is no such $a$, then $\min_{y\in\set X'}\om_{\set S}(y)=\om_{\set S}(o')$, and so $\min_{y\in\set X'}\om_{\set S}(y)=\om_{\set S}(o)=\min_{y\in\set X'}\om_{\set S}(y)$.  We have thus proven that $\set O'$ is an unimprovable set, which proves the last conclusion.
-
+Thus we have shown that $\om_{\set S}(x)\le\min_{y\in\set Z}\om_{\set S}(y)=\min_{y\in\set X}\om_{\set S}(y)$, and since our choice of $\set X$ was arbitrary we conclude that $\set O'$ is an unimprovable set that extends to $\set X$.
 \end{proof}
 %@nonl
 %@-node:gcross.20100129120448.1279:Lemma: Replacing element with product preserves unimprovability
-%@+node:gcross.20100129120448.1281:Lemma: Recombining elements preserves extension
-\begin{remark}
-After we have replaced one or more members of an unimprovable set with products of elements in the unimprovable set, we want not only for the resulting set to still be unimprovable, but for it to extend to the same set as the old set.  This next Lemma proves that this is the case, by showing that if an unimprovable set can be generated from products of elements from another unimprovable set then it extends to the same set as the other.
-\end{remark}
-
-\begin{lemma}
-\label{recombining elements preserves extension}
-Suppose $\set O$ and $\set O'$ are unimprovable sets with respect to $\set S$ such that $\set O'\subseteq\genfun(\set O)$.  Then if $\set O$ extends to $\set Q$, so does $\set O'$.
-\end{lemma}
-
-\begin{proof}
-Take any subset $\set X \subseteq \set O'\cup\set Q$ such that $\set A' := \set X\cap \set O' \ne \emptyset$.  We need to show that $\om_{\set S}(x)\le\min_{y\in\set A'}\om_{\set S}(y)$, where $x := \prod_{y\in\set X} y$.  Let $\set B := \set X \backslash \set O'$, $a := \prod_{y\in\set A'} y$, $b := \prod_{y\in\set B} y$ and $\set A$ be the subset of $\set O$ such that $\prod_{y\in\set A} y =a$.  Since $\set O$ and $\set O'$ are unimprovable sets, we know that $\min_{y\in\set A'}\om_{\set S}(y)=\om_{\set S}(a)=\min_{y\in\set A}\om_{\set S}(y)$.  Since $x=a\cdot b$, we see that $x$ is equal to the product of a set of elements $\set C := \set A \cup\set B$ such that $B\subseteq \set Q$ and $\set C\cap\set O=\set A$, and since $\set O$ extends to $\set Q$ we conclude that $\om_{\set S}(x)\le\min_{y\in\set A}\om_{\set S}(y)=\min_{y\in\set A'}\om_{\set S}(y)$.  Thus, $\set O'$ extends to $\set Q$.
-\end{proof}
-%@-node:gcross.20100129120448.1281:Lemma: Recombining elements preserves extension
 %@+node:gcross.20100129120448.1283:Lemma: Recombining extension elements preserves extension
 \begin{remark}
 Similar to the motivation of the proceeding Lemma, after fixing a number of operators in a set to which an unimprovable set extends, we want to preserve this property so that the unimprovable set still extends to it.  Thus, this next Lemma proves that if we replace elements in a set with products of elements in that set, then if some unimprovable set extended to the old set then it also extends to the new set.
 \end{remark}
 
 \begin{lemma}
-\label{recombining extension elements preserves extension}
+\label{lemma:recombining extension elements preserves extension}
 If $\set O$ is an unimprovable set with respect to $\set S$ that extends to $\set Q$, and $\set Q'$ is a set such that $\set Q'\subseteq\genfun(\set Q)$, then $\set O$ also extends to $\set Q'$.
 \end{lemma}
 
@@ -1169,7 +1139,7 @@ The following Lemma shows that if we have an operator in a set to which some uni
 \end{remark}
 
 \begin{lemma}
-\label{move-it-over}
+\label{lemma:move-it-over}
 If $\set O$ is an unimprovable set with respect to $\set S$ that extends to $\{q\}\cup\set Q$, and there exists an undetectable error, $h$, of weight $\om_{\set S}(q)$ that acts on $q$ but not on any operator in $\set Q$, then $\set O\cup\{q\}$ is an unimprovable set with respect to $\set S$ that extends to $\set Q$.
 \end{lemma}
 
@@ -1210,48 +1180,75 @@ Let $x$ be either $p_2(\lst P_k)$ for the smallest $k$ such that $\{p_2(\lst P_k
 \item $x\notin \set U(\lst P)$ and $o\in\set U(\set Q)$.
 \end{enumerate}
 
+Note that determining which case we are in and the smallest such $k$ requires a time in $O(|\lst P)$, since we may have to scan through the entire choice.
+
 %@+others
 %@+node:gcross.20100421154348.1348:Case 1
 \begin{center}
-\textbf{Case 1:} $x\in\set U(\lst P')$
+\textbf{Case 1:} $x\in\set U(\lst P)$
 \end{center}
 
-Let $k$ be the integer such that $x=p_2(\lst P'_k)$, $a := x$, and $b:=p_1(\lst P'_k)$.  Now let $\set Q:=\set R'$ and $b'$ be the objects named in Corolary \ref{recombination-to-make-commute} given the pair $(a,b)$, the set $\set R=\set Q'$, the set $\set S$, and the operator $x:=h$.  Note that by Corolary \ref{recombination-to-make-commute} we know that $(a,b')$ and every pair in $\set Q$ are conjugal to
-$$\left[\set T'\backslash\paren{\{a,b\} \cup \set U(\set Q')}\right]\cup \{a,b'\} \cup \set U(\set Q)=\set T''$$
-where
-$$\set T'':=\left[\paren{\set U(\lst P')\cup \set S}\backslash\{b\}\right]\cup \{b'\} \cup \set U(\set Q);$$
-we also know that $\genfun\paren{\{b'\}\cup \set U(\set Q)}=\genfun\paren{\{b\}\cup \set U(\set Q')}$, and so by Lemma \ref{recombining elements preserves conjugal property for third parties} we also know that every pair in $\{\lst P'_i\}\backslash\{(a,b)\}$ is also conjugal to $\set T''$.
-
-Next let $\lst R$ be equal to $\lst P'$ with its first $k$ elements dropped, $\lst f^{(1)}$ be a sequence of $1$'s repeated $|\lst R|$ times, and
+Let $k$ be the integer such that $x=p_2(\lst P_k)$, $a := x$, and $b:=p_1(\lst P_k)$.  Now let $\set Q':=\set R'$ and $b'$ be the objects named in Corolary \ref{corolary:recombination-to-make-commute} given the pair $(a,b)$, the set $\set R=\set Q$, the set $\set S$, and the operator $x:=h$.  Next let $\lst R$ be equal to $\lst P$ with its first $k$ elements dropped, $\lst f^{(1)}$ be a sequence of $1$'s repeated $|\lst R|$ times, and
 $$\lst f^{(2)}_i :=
 \begin{cases}
-1 & p_2(\lst R)\in\set X', \{p_2(\lst R_i),x\} = 0; \\
+1 & p_2(\lst R)\in\set X, \{p_2(\lst R_i),x\} = 0; \\
 0 & \text{otherwise}.
 \end{cases}
 $$
-Let $\lst R'$ and $b''$ be the objects named in Lemma \ref{multiple-recombinations} given the pair $(a,b):=(a,b')$, the sequences $\lst f^{(l)}$ and the sequence $\lst R$, and let
-$$\lst P :=
+Now let $\lst R'$ and $b''$ be the objects named in Lemma \ref{multiple-recombinations} given the pair $(a,b):=(a,b')$, the sequences $\lst f^{(l)}$ and the sequence $\lst R$, and let
+$$\lst P' :=
 \begin{cases}
-\lst P'_i & i < k \\
-(a,b'') & i=k \\
+\lst P_i & i < k \\
+(b'',a) & i=k \\
 \lst R_{i-k}' & \text{otherwise}.
 \end{cases}
 $$
-By Lemma \ref{multiple-recombinations}, we know that $(a,b'')$ and every pair in $\lst R'$ are conjugal to
-$$\left[\set T''\backslash\paren{\{a,b'\} \cup \set U(\set R)}\right]\cup \{a,b''\} \cup \set U(\set Q')=\set T,$$
-and we also know that $\genfun\paren{\{b''\}\cup \set U(\set R')}=\genfun\paren{\{b'\}\cup \set U(\set R)}$;
-by Lemma \ref{recombining elements preserves conjugal property for third parties} we thus conclude that every pair in $\lst P$ and $\set Q$ is also conjugal to $\set T$.  We have thus proven that conclusion \ref{pairs are all conjugal to T} holds, and we furthermore note that by combining our results we see that $\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}=\genfun\paren{\set U(\lst P')\cup \set U(\set Q')}=(\genfun\circ\set U)(\set L)$, and so conclusion \ref{P and Q generate the same set as L} also holds.
+Finally, let $\set O':=\set O\backslash\{b\}\cup\{b'',x\}$.
 
-Observe that $b''$ is a product of elements from $\{p_1(\lst P_i') : i \ge k\}_i\cup\set U(\set Q)$, and by the inductive hypothesis and specifically properties \ref{first members are all in O} and \ref{operators in X are no worse than the best qubit in P} we see that it is a product of elements $\set Y\subseteq\set O'$ such that $\min_{y\in\set Y}\om_{\set S}(y)=\om_{\set S}(b)$.  Hence, by Lemma \ref{replacing element with product preserves unimprovability} we conclude that $\om_{\set S}(b)=\om_{\set S}(b'')$, the set $\set O'':=\paren{\set O'\backslash\{b\}}\cup\{b''\}$ is an unimprovable set and $\genfun(\set O')=\genfun(\set O'')$;  from the last equality we see from Lemma \ref{recombining elements preserves extension} that $\set O''$ extends to $\set X'$.
+It now remains to show that $\lst P'$, $\set Q'$, $\set O'$, and $\set X':=\set U(\set Q')\cup\paren{\set U(\lst P')\backslash\set O'}$ satsify the numbered properties listed in the statement of this Proposition.
 
-Note that, by construction, every element in $\set X$ is either an element of $\set X'$ or an element of $\set X'$ multiplied by $x\in\set X'$.  Thus $\set X\subseteq \genfun(\set X')$, and so by Lemma \ref{combinations-can't-make-things-worse} and conclusion \ref{operators in X are no worse than the best qubit in P} from the inductive hypothesis we see that $\min_{y\in\set X}(y) \ge \min_{y\in\set X'}(y) \ge m_{\set S}(\lst P'_{|\lst P'|})$.
+\begin{enumerate}
+\item
+Note that by Corolary \ref{corolary:recombination-to-make-commute} we know that $(a,b')$ and every pair in $\set Q'$ are conjugal in relation to
+$$\left[\set T\backslash\paren{\{a,b\} \cup \set U(\set Q)}\right]\cup \{a,b'\} \cup \set U(\set Q')=\set T''$$
+where
+$$\set T'':=\left[\paren{\set U(\lst P)\cup \set S}\backslash\{b\}\right]\cup \{b'\} \cup \set U(\set Q').$$
+We also know that $\genfun\paren{\{b'\}\cup \set U(\set Q')}=\genfun\paren{\{b\}\cup \set U(\set Q)}$, and so by Lemma \ref{recombining elements preserves conjugal property for third parties} we also know that every pair in $\{\lst P_i\}\backslash\{(a,b)\}$ is also conjugal in relation to $\set T''$.  By Lemma \ref{multiple-recombinations}, we know that $(a,b'')$ and every pair in $\lst R'$ are conjugal in relation to
+$$\left[\set T''\backslash\paren{\{a,b'\} \cup \set U(\set R)}\right]\cup \{a,b''\} \cup \set U(\set Q')=\set T',$$
+where $\set T':=\set U(\lst P')\cup\set U(\set Q')\cup\set S$.  We also know that $\genfun\paren{\{b''\}\cup \set U(\set R')}=\genfun\paren{\{b'\}\cup \set U(\set R)}$, by Lemma \ref{recombining elements preserves conjugal property for third parties} we thus conclude that the first $k-1$ pairs in $\lst P'$ and every pair in $\set Q'$ is also conjugal in relation to $\set T'$, and so we have shown that every pair in $\lst P'$ and $\set Q'$ are conjugal in relation to $\set T'$.
 
-Note that there are only two kinds of changes from $\lst P'$ to $\lst P$:  the change in the first member of a pair at $k$, and changes in the second members of pairs from being an element of $\set X'$ to an element of $\set X$.  Since we have already shown that $(\om_{\set S}\circ p_1)(\lst P_k) = (\om_{\set S}\circ p_1)(\lst P_k')$ and $\min_{y\in\set X}(y) \ge m_{\set S}(\lst P'_{|\lst P'|})$, we conclude that Thus, $m(\lst P_i)=m(\lst P_i')$ for every $1 \le i \le |\lst P'$, and so $M^{(|\lst P|)}(\lst P)=M^{(|\lst P'|)}(\lst P')$, which means in particular that the sequence $M^{(|\lst P|)}(\lst P)=M^{(|\lst P'|)}(\lst P')$ is ordered and hence $\lst P$ is a choice of qubits.  Furthermore, since in particular $m_{\set S}(\lst P'_{|\lst P'|})=m_{\set S}(\lst P_{|\lst P|})$, we conclude that $\min_{y\in\set X}(y)\geq m_{\set S}(\lst P_{|\lst P|})$, proving property \ref{operators in X are no worse than the best qubit in P}.
+\item
+Observe that because of how $\lst P'$ was defined, every operator in $\set O$ except for $b$ also appears in $\lst P'$.  Furthermore, we replaced $b$ in $\set O$ with $b''$ in $\set O'$ and also added $x\in\set U(\lst P')$.  Thus we conclude that $\set O'\subseteq\set U(\lst P')$.
 
-Let $\set O:=\set O''\cup\{x\}$.  Note that $x\notin \genfun(\set Q)$ since its conjugal partner commutes with every element in $\set Q$, and so since $\genfun(\set Q'\cup\{x\})=\genfun(\set Q)$ (by construction), by the inductive hypothesis and property \ref{Q does not intersect with O} we conclude that $\genfun(\set Q)\cap\set O=\emptyset$, so that property \ref{Q does not intersect with O} continues to hold.  We furthermore have that $x\notin \set O''$ since $x\in \set U(\lst P')\backslash \set O'$ and thus $|\set O|=|\set O''|+1$;  since $|\set O''|=|\set O'|=n-1$, we see that $|\set O|=n$, and so conclusion \ref{size of O matches arbitrarily chosen integer} holds.  Since we replaced $b$ with $b''$ in going from $\set O'$ to $\set O$, and $b$ is the only first member of any pair that changed from $\lst P'$ to $\lst P$, we conclude that conclusion \ref{first members are all in O} from the inductive hypothesis continues to hold for $\set O$ and $\lst P$.
+\item
+The only first member of a pair to change from $\lst P$ to $\lst P'$ was the same operator that we replaced with $b''$ in forming $\set O''$, so we conclude that $\{p_1(\lst P_i)\}_i\subseteq \lst O'$.
 
-It remains only to show that $\set O$ extends to $\set X$;  recall that we have already shown that $\set O''$ extends to $\set X$. Note that $\{x\}\cup\set X\subseteq \genfun(\set X')$ (recall we earlier showed that $\set X\subseteq \genfun(\set X')$, and hence by Lemma \ref{recombining extension elements preserves extension} we see that $\set O''$ extends to $\{x\}\cup\set X$.  By construction, there exists an undetectable error $h$ of weight $\om_{\set S}(x)$ that acts on $x$ but not on any operator in $\set X$.  Thus, by Lemma \ref{move-it-over} we see that $\set O=\set O''\cup\{x\}$ extends to $\set X$, and so we are done.
-%@nonl
+\item
+For there to be an index $i$ at which $\lst M_{\set S}(\lst P')_i\ne (\om_{\set S}\circ p_1)(\lst P'_i)$, it would have to be the case that $(\om_{\set S}\circ p_2)(\lst P'_i)<(\om_{\set S}\circ p_1)(\lst P'_i)$.  However, every second member of a pair that changed from $\lst P$ to $\lst P'$ did so by replacing a member of $\set X$ with a product of elements from $\set X$, and so by Lemma \ref{combinations-can't-make-things-worse} we conclude that for every index $i$ at which $(\om_{\set S}\circ p_2)(\lst P'_i)\ne(\om_{\set S}\circ p_2)(\lst P_i)$ we have that $(\om_{\set S}\circ p_2)(\lst P'_i) \ge \min_{y\in\set X}(y) \ge M_{\set S}(\lst P)_{|\lst P|} \ge M_{\set S}(\lst P)_i=(\om_{\set S}\circ p_1)(\lst P_i).$
+
+Now, note that the only first member of a pair to change from $\lst P$ to $\lst P'$ was $b$, which was replaced by a product of $b$ with operators from $\set X$.  Since $b$ is a member of an unimprovable set that extends to $\set X$ and $\min_{y\in\set X}(y) \ge \lst M_{\set S}(\lst P)_{|\lst P|} \ge \lst M_{\set S}(\lst P)_{k}=\om_{\set S}(b)$, we conclude that $\om_{\set S}(b'')=\om_{\set S}(b)$, and so for every $i$ we have that $\om_{\set S}(\lst P'_i)=\om_{\set S}(\lst P_i)$.   Thus, for every index $i$ at which $(\om_{\set S}\circ p_2)(\lst P'_i)\ne(\om_{\set S}\circ p_2)(\lst P_i)$ we must have that $(\om_{\set S}\circ p_2)(\lst P'_i)\ge (\om_{\set S}\circ p_1)(\lst P'_i)$, and so we conclude that $\lst M_{\set S}(\lst P')_i= (\om_{\set S}\circ p_1)(\lst P'_i)$.
+
+\item
+By construction, every element in $\set X'$ is either an element of $\set X$ or an element of $\set X'$ multiplied by $x\in\set X$.  Thus $\set X'\subseteq \genfun(\set X)$, and so by Lemma \ref{combinations-can't-make-things-worse} we see that $\min_{y\in\set X'}(y) \ge \min_{y\in\set X}(y)$.  Observe that in the course proof of the proceding property we proved that $\lst M_{\set S}(\lst P')=\lst M_{\set S}(\lst P)$ since $\lst M_{\set S}(\lst P')_i=(\om_{\set S}\circ p_1)(\lst P'_i)=(\om_{\set S}\circ p_1)(\lst P_i)=\lst M_{\set S}(\lst P)$.  Thus, since $\min_{y\in\set X}(y) \ge M_{\set S}(\lst P)_{|\lst P|}$ by the assumptions of this Proposition, we conclude that $\min_{y\in\set X'}(y) \ge M_{\set S}(\lst P')_{|\lst P'|}$.
+
+\item
+
+Let $\set O'':=(\set O\backslash\{b\})\cup\{b''\}$.  Since $b\in\set O$, $b''$ is a product of elements in $\set O\cup\set X$, and $\set O$ is an unimprovable set that extends to $\set X$, we conclude from Lemma \ref{lemma:replacing element with product preserves unimprovability} that $\set O''$ is also an unimprovable set that extends to $\set X$.
+
+Observe that every operator in $\set X'$ is either an operator in $\set X$ or a product of such an operator with $x$.  Thus, $\{x\}\cup\set X'\subseteq\genfun(\set X)$, and so we conclude from Lemma \ref{lemma:recombining extension elements preserves extension} that $\set O''$ also extends to $\{x\}\cup\set X'$.  By construction, there exists an undetectable error $h$ of weight $\om_{\set S}(x)$ that acts on $x$ but not on any operator in $\set X'$.  Thus, by Lemma \ref{lemma:move-it-over} we see that $\set O''\cup\{x\}\equiv \set O'$ is also an unimprovable set that extends to $\set X'$.
+
+\item
+This property follows from the fact that $\set Q'$ was constructed via Corolary \ref{corolary:recombination-to-make-commute}.
+
+\item
+We know from Corolary \ref{corolary:recombination-to-make-commute} that $\genfun\paren{\{b'\}\cup\set U(\set Q')}=\genfun\paren{\{b\}\cup\set U(\set Q)}$;  since $b\in\set U(\lst P)$ this implies that $\genfun\paren{\{b'\}\cup\set U(\set P)\cup\set U(\set Q')}=\genfun\paren{\set U(\lst P)\cup\set U(\set Q)}$.  We also know from Lemma \ref{lemma:multiple-recombinations} that $\genfun\paren{\{b''\}\cup\set U(\lst R')}=\genfun\paren{\{b'\}\cup\set U(\lst R)}$, and since $\set U(\lst R')\subseteq \set U(\lst P')$, $\set U(\lst R)\subseteq \set U(\lst P)$ and $b''$, we conclude that $\genfun\paren{\set U(\lst P')}=\genfun\paren{\{b'\}\cup\set U(\set P)}$.  Combining these results, we conclude that $\genfun\paren{\set U(\lst P')\cup\set U(\set Q')}=\genfun\paren{\set U(\set P)\cup\set U(\set Q)}$.
+
+\item
+This property follows from the fact that $|\set Q|=|\set Q'|$.
+
+\end{enumerate}
+
+It remains to analyze the time needed to construct $\lst P'$, $\set Q'$ and $\set O'$.  First recall that we required $O(|\lst P|)$ time to determine that we were in Case 1 and to compute the value of $k$.  Next observe that by Lemma \ref{lemma:multiple-recombinations} we see that $\lst P'$ can be constructed in $\lst P$ time and by Corolary \ref{corolary:recombination-to-make-commute} $\set Q'$ can be constructed in $O(|\set Q|)$ time.  Computing $\set O'$ required no time since it required taking no additional products.\footnote{In a real implementation, of course, there is a slight cost to updating the data structure representing $\set O'$, but in practice this means marking a single bit so it is $O(1)$ time and hence negligible.}  Thus, totaling these values, we see that the time needed to construct all of these objects is in $O(2|\lst P| + |\set Q|)\subseteq O(|\lst P| + |\set Q|)$.
 %@-node:gcross.20100421154348.1348:Case 1
 %@+node:gcross.20100421154348.1349:Case 2
 \begin{center}
