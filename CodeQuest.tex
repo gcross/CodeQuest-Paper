@@ -987,13 +987,13 @@ Then
 \item the pair $(a,b')$ and the sequence of pairs $\lst R'$ are all conjugal pairs with respect to $\set S'$; and
 \item $\genfun\paren{\{a,b'\}\cup \set U(\lst R')}=\genfun\paren{\{a,b\}\cup \set U(\lst R)}.$
 \end{enumerate}
-Furthermore, the time needed to compute $b'$ and $\lst R'$ is in $O(N)$ (i.e., is asymptotically proportional to the size of the sequence).
+Furthermore, the time needed to compute $b'$ and $\lst R'$ is in $O(|\lst R'|)$ (i.e., is asymptotically proportional to the size of the sequence).
 \end{lemma}
 
 \begin{proof}
-Proof by induction.  For the base case, note that statement trivially holds for $N=0$.
+Proof by induction on the length of $\lst R$.  For the base case, note that statement trivially holds for $|\lst R|=0$.
 
-Now suppose we have proven this for all sequences of $N-1$ pairs, and we are given a sequence of $N$ pairs.  Invoking the inductive hypothesis, apply this Lemma recursively to the first $N-1$ elements of $\lst R$ and $\lst f$, and let $b''$, $\lst R''$ and $\set S''$ refer to the objects described in this Lemma (without the extra primes) as applied to these $N-1$ elements.
+Now suppose we have proven this for $|\lst R|\le N-1$, and we are given a sequence $\lst R$ of $N$ pairs.  Invoking the inductive hypothesis, apply this Lemma recursively to the first $N-1$ elements of $\lst R$ and $\lst f$, and let $b''$, $\lst R''$ and $\set S''$ refer to the objects described in this Lemma (without the extra primes) as applied to these $N-1$ elements.
 
 Let
 $$
@@ -1002,7 +1002,8 @@ c :=
 b'' & l^{(1)}_N = 0\\
 b'' \cdot p_2(\lst R_N)  &  l^{(1)}_N = 1,\\
 \end{cases}
-\quad
+$$
+$$
 d_1 :=
 \begin{cases}
 p_1(\lst R_N) & l^{(1)}_N = 0\\
@@ -1053,9 +1054,8 @@ $$\lst R'_i :=
 \end{cases}
 $$
 
-Finally, note that the process of constructing $b'$ and $\set R'$ required a constant number of multiplictions (with respect to $N$), and hence since by our inductive hypothesis the running time for a sequence of length $N-1$ is in $O(N-1)=O(N)$, so is the running time for a sequence of length $N$.
+Finally, note that the process of constructing $b'$ and $\set R'$ required a constant number of multiplictions (with respect to $N$), and hence since by our inductive hypothesis the running time for a sequence of length $N-1$ is in $O(N-1)=O(N)=O(|\lst R|)$, so is the running time for a sequence of length $N$.
 \end{proof}
-%@nonl
 %@-node:gcross.20100126164527.1288:Lemma: Multiple recombinations
 %@+node:gcross.20100127132544.1287:Corolary: Recombination to make commute
 \begin{remark}
@@ -1068,7 +1068,7 @@ The following Corolary to Lemma \ref{multiple-recombinations} is introduced for 
 Suppose we are given
 \begin{itemize}
 \item a pair of Pauli operators, $(a,b)$;
-\item a set of $N$ pairs of Pauli operators, $\set R$;
+\item a set of pairs of Pauli operators, $\set R$;
 \item a set of Pauli operators, $\set S$;
 \item and a Pauli operator $x$;
 \end{itemize}
@@ -1089,7 +1089,7 @@ Then
 \item $x$ commutes with every operator in $\set R'$;
 \item and $$\min_{r'\in \set U(\set R')}\om_{\set S}(r')\ge \min\paren{\om_{\set S}(a),\min_{r\in \set U(\set R)}\om_{\set S}(r)};$$
 \end{enumerate}
-Furthermore, $b'$ and $\set R'$ can be constructed in a running time in $O(N)$ (i.e., asymptotically proportional to the size of the sequence).
+Furthermore, $b'$ and $\set R'$ can be constructed in a running time in $O(|\lst R|)$ (i.e., asymptotically proportional to the size of the sequence).
 \end{corolary}
 
 \begin{proof}
@@ -1101,7 +1101,7 @@ $$\lst f^{(j)}_i :=
 \end{cases}
 $$
 The first two conclusions of this Corolary follows immediately from Lemma \ref{multiple-recombinations}, dropping the ordering on $\lst R'$.  The third comes from the fact that every element in $\set R'$ is either an element from $\set R$ that commutes with $x$ or the product of $a$ with an element from $\set R$ that anti-commutes with $x$, which must also commute with $x$.  The fourth comes directly from Lemma \ref{combinations-can't-make-things-worse}.
-Finally, we see that the running time to compute $b'$ and $\lst R'$ is in $O(N)$ from Lemma \ref{multiple-recombinations}, and since computing $\lst f^{(0)}$ and $\lst f^{(1)}$ require a number of multiplications proportional to $N$ we see that the time to compute $b'$ and $\set R'$ is in $O(N)$.
+Finally, we see that the running time to compute $b'$ and $\lst R'$ is in $O(|\lst R|)$ from Lemma \ref{multiple-recombinations}, and since computing $\lst f^{(0)}$ and $\lst f^{(1)}$ require a number of multiplications proportional to $N$ we see that the time to compute $b'$ and $\set R'$ is in $O(|\lst R|)$.
 \end{proof}
 %@-node:gcross.20100127132544.1287:Corolary: Recombination to make commute
 %@+node:gcross.20100129120448.1279:Lemma: Replacing element with product preserves unimprovability
