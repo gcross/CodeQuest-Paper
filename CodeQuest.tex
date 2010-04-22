@@ -655,14 +655,13 @@ Suppose we are given a set of Pauli operators, $\set S$, acting on $N$ physical 
 \end{theorem}
 %@-node:gcross.20100402140750.1315:Introduce theorem
 %@+node:gcross.20100405123649.1325:Proposition: Minimal weight operator
-
 %@+node:gcross.20100405123649.1326:Statement
 \begin{remark}
 The proof of this Theorem is constructive and hence shall not only prove that the optimal choice can be contructed but shall also implicitly describe the construction algorithm.  For an explicit description of the algorithm in terms of pseudo-code, see the listing in table \ref{table:algorithm-optimization}.
 
-Before presenting the proof this Theorem, we will first present a number of related Lemmas and Propositions which will assist us.
-
 The key insight upon which the algorithm is built is that undetectable errors acting on the space of logical qubits can never be eliminated entirely, so there will always be \emph{some} operator on which they act.  Thus, the goal of the optimization procedure is not to eliminate errors, but rather to \emph{contain} them, so that they act on as few operators as possible.
+
+The optimization algorithm described in this Theorem works by starting with an empty (and therefore automatically optimal) choice of qubits and a set of `unoptimized' qubits, and making progress by gradually moving qubits from the unoptimized set into the choice in such a way that preserves the optimality of the choice.  The trick is that we want to delay as long as possible moving a qubit into the choice, until we have had every chance to improve it.  Thus, we additionally keep track of a subset of pairs in the choice whose second members have yet to be used to contain an error, and then use them as much as possible to fix errors.  That is, at every step in the algorithm, we scan for the minimal weight undetectable error acting on the set of operators consisting of both the second member of the pairs in this subset and all of the operators in the unoptimized set of qubits.  If the minimal weight error acts on an operator in the first category, then we remove the pair from the subset and use this operator to fix this error wherever it occurs in both the second members of pairs in the subset and the unoptimized qubits.  Otherwise, we pull out a qubit from the unoptimized set on which the error acts, use the first member in the pair to fix the error in the qubits remaining in the unoptimized subset, add the pair to the subset of qubits whose second members have yet to be used to contain an error, and then add it to the end of the choice.  At this point our choice turns out to still be optimal because if there had been a way to make the qubit we just added any better by recombining it with other qubits in the choice then we would have already done so by now.
 
 At each step in the optimization procedure the undetectable error that we most want to contain is the one with the smallest weight, since this is the error that is most damaging to our quantum code.  Because of this, it is important that we be able to find the minimal weight undetectable error acting on any operators in a given set;  we prove that this can be done in the following Proposition.
 \end{remark}
@@ -906,9 +905,61 @@ Note that solutions to $f$ are undetectable errors acting on $\set Q$, and also 
 \end{proof}
 %@-node:gcross.20100408121941.1329:Proof
 %@-node:gcross.20100405123649.1325:Proposition: Minimal weight operator
+%@+node:gcross.20100421154348.1345:Proposition: Optimization procedure
+
+
+\begin{lemma}
+\label{lemma:unimprovable sets extend to themselves}
+If $\set O$ is an unimprovable set that extends to $\set Q$, then $\set O$ also extends to $\set O\cup\set Q$.
+\end{lemma}
+%@nonl
+%@+node:gcross.20100421154348.1346:Statement
+\begin{remark}
+Once we have found the minimum weight undetectable error, we need to be able to contain it so that it affects as few qubits as possible.  However, one needs to pay careful attention to the way that this is done so that we end with an optimal choice of qubits.
+
+In the following Proposition, we assume that we have been given a set of qubits that have been split into an optimal choice, $\lst P$, and a set of `unoptimized' qubits, $\set Q$.  Once an operator $o$ has been designating as containing an error whose weight is equal to $\om_{\set S}(o)$, the value of $\om_{\set S}(o)$ then becomes fixed since for it to be improved we would have to move the error to a different container, and furthermore $o$ cannot be used to contain any other error since to do so would allow its contained error to escape.  Thus, we additionally keep track of a set of operators that have been used to contain errors since they are not useful for containing additional errors and, very importantly, we assume that this set is \emph{unimprovable} and shall show that if we pick our containing operator carefully then we can add it to $\set O$ while preserving the property of unimprovability.
+
+The key insight is that we want to improve the unoptimized qubits in $\set Q$ as much as possible before moving them into our choice.  Thus, if we can contain an operator in $\lst P\backslash\set O$, then we do so.  Otherwise, we conclude that there is at least one operator in $\set Q$ that cannot be improved any more, and so we move the qubit into $\lst P$, forming a new choice $\lst P'$ and a new set $\set Q'$.  In either case, we can show that the operator we use to contain the error can be added to $\set O'$ to form a new unimprovable set that contains the first member of every pair in $\lst P'$ and extends to all of the operators in $\lst P'$.  A consequence of this is that $\lst P'$ is therefore \emph{optimal}.
+
+Put another way, the following Proposition shows that we can take a single step in our optimization procedure that contains an error and in so doing makes progress towards optimizing the qubits.
+\end{remark}
+
+\begin{proposition}
+\label{proposition:optimization-iteration}
+Suppose we are given
+\begin{itemize}
+\item a set of Pauli operators $\set S$ acting on $N$ physical qubits;
+\item a choice of qubits $\lst P$ stabilized by $\set S$;
+\item a set of pairs, $\set Q$;
+\item an unimproveable set of independent operators $\set O$ with respect to $\set S$ that extends to $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash \set O}$;
+\item and a Pauli operator, $h$;
+\end{itemize}
+such that $\set X$ is non-empty, $h$ is a minimal weight undetectable operator acting on $\set X$, and $\set P$, $\set Q$, and $\set O$ satisfy the following properties:
+\begin{enumerate}
+\item \label{pairs are all conjugal to T} the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $\set T':=\set U(\lst P)\cup \set U(\set Q)\cup \set S$;
+\item \label{O is subset of P} $\set O \subseteq \set U(\lst P)$;
+\item \label{first members are all in O} $p_1(\lst P_i)\in \set O$ for every $1 \le i \le |\lst P_i|$;
+\item \label{Q does not intersect with O} $\genfun(\set Q) \cap \set O = \emptyset$;
+\item \label{operators in X are no worse than the best qubit in P} and $\min_{x\in\set X}\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ (if $\lst P$ is non-empty).
+\end{enumerate}
+Then there exists objects $\lst P'$, $\set Q'$, $\set O'$ and $\set X'$ satisfying the same properties listed above as their unprimed counterparts---\emph{except} that $\set X'$ may be empty --- as well as a Pauli operator $x$ such that
+\begin{enumerate}
+\setcounter{enumi}{5}
+\item $x\notin \set O$;
+\item $\set O'=\set O\cup\{x\}$;
+\item $\om_{\set S}(x)=\max_{o'\in\set O'}\om_{\set S}(o')$;
+\item $\genfun\paren{\set U(\lst P')\cup \set U(\set Q')}=\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}$;
+\item $|\lst Q'| \le |\lst Q|$.
+\end{enumerate}
+Furtermore, these objects can be computed in time $O\paren{d3^d\choose{N}{r}}$ where $d:=\min\paren{\om_{\set s}(x),N}$.
+\end{proposition}
+%@nonl
+%@-node:gcross.20100421154348.1346:Statement
 %@+node:gcross.20100126164527.1288:Lemma: Multiple recombinations
 \begin{remark}
-At this point we have shown how to compute the minimal weight operator satisfying some property, which in our case is the property that it is an undetectable error that has not yet been `contained'.  Once we have found this error we need to contain it, which means that we need to multiply other operators that we wish to shield from this error (i.e., the operators that we want to `fix') by the operator we have chosen to contain it (i.e., the `fixing' operator), since the product of two operators that anti-commute with an error is an operator that commutes with an error.  If this were all we did, however, then we would no longer have a set of conjugal pairs;  thus, every time we multiply an operator by the fixing operator, we also need to multiply the conjugal partner of the fixing operator by the conjugal partner of the operator being fixed, since by Lemma \ref{combining-pairs} this will preserve the property that we have a set of conjugal pairs.  The following Lemma formalizes this process by showing how we can take a marked subset of conjugal pairs (in which the first and second members are individually marked or not marked) and then multiply them all of them by an operator while preserving the conjugal pair property. 
+Before we prove this Proposition, we shall first prove a number of related Lemmas.
+
+Once we have decided to contain an error inside an operator, we need to multiply other operators that we wish to shield from this error by the operator we have chosen to contain it, since the product of two operators that anti-commute with an error is an operator that commutes with an error.  If this were all we did, however, then we would no longer have a set of conjugal pairs;  thus, every time we multiply an operator by the fixing operator, we also need to multiply the conjugal partner of the fixing operator by the conjugal partner of the operator being fixed, since by Lemma \ref{combining-pairs} this will preserve the property that we have a set of conjugal pairs.  The following Lemma formalizes this process by showing how we can take a marked subset of conjugal pairs (in which the first and second members are individually marked or not marked) and then multiply them all of them by an operator while preserving the conjugal pair property. 
 \end{remark}
 
 \begin{lemma}
@@ -1008,6 +1059,7 @@ Finally, note that the process of constructing $b'$ and $\set R'$ required a con
 %@-node:gcross.20100126164527.1288:Lemma: Multiple recombinations
 %@+node:gcross.20100127132544.1287:Corolary: Recombination to make commute
 \begin{remark}
+The following Corolary to Lemma \ref{multiple-recombinations} is introduced for the sake of convenience;  it effectively places an ordering on and then pre-marks a set of conjugal pairs to be fixed on the basis of whether a given error acts on them, and then feeds this into Lemma \ref{multiple-recombinations}.  The result is a set of conjugal pairs on which the error no longer acts.
 The following Corolary to Lemma \ref{multiple-recombinations} is introduced for the sake of convenience;  it effectively places an ordering on and then pre-marks a set of conjugal pairs to be fixed on the basis of whether a given error acts on them, and then feeds this into Lemma \ref{multiple-recombinations}.  The result is a set of conjugal pairs that has been `fixed' so that the error no longer acts on any of them.
 \end{remark}
 
@@ -1146,68 +1198,24 @@ Suppose we are given two sets, $\set A$ and $\set B$, of pairs of Paili operator
 Since every operator in $\set U(\set A)$ commutes with every operator in $\set U(\set B)$, they must also commute with every operator in $\set U(\set B')$.
 \end{proof}
 %@-node:gcross.20100203143542.1282:Lemma: Recombining elements preserves conjugal property for third parties
-%@+node:gcross.20100127211423.1361:Proposition: Optimization procedure
-%@+node:gcross.20100204174120.1285:Statement
+%@+node:gcross.20100421154348.1347:Proof
 \begin{remark}
 We now have all of the ingrediants that we need to define our optimization procedure, namely: a means for finding the minimal weight undetectable error that we have yet to contain, a means of containing an error in a qubit so that the error does not affect other qubits, and results for how this affects the unimprovability of sets.  The following Proposition contains the heart of the optimization procedure.
-
-The basic idea behind the optimization algorithm is that we start with an empty (and therefore automatically optimal) choice of qubits and a set of `unoptimized' qubits, and make progress by gradually moving qubits from the unoptimized set into the choice in such a way that preserves the optimality of the choice.  The key insight is that we want to delay as long as possible moving a qubit into the choice, until we have had every chance to improve it.  Thus, we additionally keep track of a subset of pairs in the choice whose second members have yet to be used to contain an error, and then use them as much as possible to fix errors.  That is, at every step in the algorithm, we scan for the minimal weight undetectable error acting on the set of operators consisting of both the second member of the pairs in this subset and all of the operators in the unoptimized set of qubits.  If the minimal weight error acts on an operator in the first category, then we remove the pair from the subset and use this operator to fix this error wherever it occurs in both the second members of pairs in the subset and the unoptimized qubits.  Otherwise, we pull out a qubit from the unoptimized set on which the error acts, use the first member in the pair to fix the error in the qubits remaining in the unoptimized subset, add the pair to the subset of qubits whose second members have yet to be used to contain an error, and then add it to the end of the choice.  At this point our choice turns out to still be optimal because if there had been a way to make the qubit we just added any better by recombining it with other qubits in the choice then we would have already done so by now.
-
-The following Proposition describes this procedure more formally, and proves that it works.  Rather than proving that the end result is an optimal choice of qubits, however, we take advantage of the fact that to prove a choice is optimal it is sufficient to prove that the set of first members of qubits in the choice is an unimproveable set that extends to the set of second members of qubits in the choice, and instead construct a choice of qubits that has this property.  Specifically, we divide the set of operators in $\set L$ into an unimprovable set and an improvable set.  At every step in the algorithm, we look for the minimal weight undetectable error acting on the improvable set, and then contain it in one of the operators in this set and move that operator to the unimprovable set.  If possible, we contain it in an operator that is a member of a pair that is already in our choice;  otherwise, we not only move the operator to the unimprovable set but also move the pair in which it is a member into the choice.  In either case, we prove that this procedure results in a set of unimprovable operators that extends to the set of improvable operators, which has the direct consequence that the first member of every pair in the choice is a member of an unimprovable set that extends to a set containing the second member of every pair in the choice.
 \end{remark}
 
-\begin{proposition}
-\label{proposition:optimization-iteration}
-Suppose we are given
-\begin{itemize}
-\item a set of Pauli operators $\set S$ acting on $N$ physical qubits;
-\item a choice of qubits $\lst P$ stabilized by $\set S$;
-\item a set of pairs, $\set Q$;
-\item and an unimproveable set of independent operators $\set O$ with respect to $\set S$ that extends to $\set X:=\set U(\set Q) \cup \paren{\set U(\lst P) \backslash \set O}$;
-\end{itemize}
-such that $\set X$ is non-empty, and $\set P$, $\set Q$, and $\set O$ satisfy the following properties:
-\begin{enumerate}
-\item \label{pairs are all conjugal to T} the pairs in $\lst P$ and $\set Q$ are all conjugal with respect to $\set T':=\set U(\lst P)\cup \set U(\set Q)\cup \set S$;
-\item \label{O is subset of P} $\set O \subseteq \set U(\lst P)$;
-\item \label{first members are all in O} $p_1(\lst P_i)\in \set O$ for every $1 \le i \le |\lst P_i|$;
-\item \label{Q does not intersect with O} $\genfun(\set Q) \cap \set O = \emptyset$;
-\item \label{operators in X are no worse than the best qubit in P} and $\min_{x\in\set X}\om_{\set S}(x)\ge m_{\set S}(\lst P_{|\lst P|})$ (if $\lst P$ is non-empty).
-\end{enumerate}
-Then there exists objects $\lst P'$, $\set Q'$, $\set O'$ and $\set X'$ satisfying the same properties listed above as their unprimed counterparts---\emph{except} that $\set X'$ may be empty --- as well as a Pauli operator $x$ such that
-\begin{enumerate}
-\setcounter{enumi}{5}
-\item $x\notin \set O$;
-\item $\set O'=\set O\cup\{x\}$;
-\item $\om_{\set S}(x)=\max_{o'\in\set O'}\om_{\set S}(o')$;
-\item $\genfun\paren{\set U(\lst P')\cup \set U(\set Q')}=\genfun\paren{\set U(\lst P)\cup \set U(\set Q)}$;
-\item $|\lst Q'| \le |\lst Q|$.
-\end{enumerate}
-Furtermore, these objects can be computed in time $O\paren{d3^d\choose{N}{r}}$ where $d:=\min\paren{\om_{\set s}(x),N}$.
-\end{proposition}
-%@nonl
-%@-node:gcross.20100204174120.1285:Statement
-%@+node:gcross.20100204174120.1286:Proof
 \begin{proof}
-
-Let $h$ be any of the minimal weight undetectable errors with respect to $\set S$ acting on any operator in $\set X$;  recalling the definition of an undetectable error, we see that $h$ is equivalently defined to be any minimizer of $w_{\set S}$ over the set $\centralizer_\pauligroup(\set S)$ under the constraint that $f(h)=1$ where 
-$$f(o):=
-\begin{cases}
-1 & \exists\,\, x\in\set X \,\,\text{such that}\,\, \{x,h\}=0\\
-0 & \text{otherwise},
-\end{cases}
-$$
-i.e., under the constraint that that $h$ anti-commutes with some operator in $\set X$.  By Proposition \ref{minimal-weight-search}, we know that $h$ can be computed in time $O\paren{d3^d\choose{C}{r}}$ where $d:=\min\paren{\om_{\set s}(x),C}$ and $C:=\left|\centralizer_\pauligroup(\set S)\right|$.
-
 Let $x$ be either $p_2(\lst P_k)$ for the smallest $k$ such that $\{p_2(\lst P_k),h\}=0$, or if there is no such $k$ then let $x$ be any arbitrarily chosen operator from $\set X$ such that $\{x,h\}=0$.  We see that two cases naturally result from this definition of $x$;  either
 \begin{enumerate}
 \item $x\in \set U(\lst P)$; or
 \item $x\notin \set U(\lst P)$ and $o\in\set U(\set Q)$.
 \end{enumerate}
 
-\begin{description}
 %@+others
-%@+node:gcross.20100204174120.1284:Case 1
-\item[Case 1 $\Rightarrow x\in\set U(\lst P')$]
+%@+node:gcross.20100421154348.1348:Case 1
+\begin{center}
+\textbf{Case 1:} $x\in\set U(\lst P')$
+\end{center}
+
 Let $k$ be the integer such that $x=p_2(\lst P'_k)$, $a := x$, and $b:=p_1(\lst P'_k)$.  Now let $\set Q:=\set R'$ and $b'$ be the objects named in Corolary \ref{recombination-to-make-commute} given the pair $(a,b)$, the set $\set R=\set Q'$, the set $\set S$, and the operator $x:=h$.  Note that by Corolary \ref{recombination-to-make-commute} we know that $(a,b')$ and every pair in $\set Q$ are conjugal to
 $$\left[\set T'\backslash\paren{\{a,b\} \cup \set U(\set Q')}\right]\cup \{a,b'\} \cup \set U(\set Q)=\set T''$$
 where
@@ -1244,9 +1252,11 @@ Let $\set O:=\set O''\cup\{x\}$.  Note that $x\notin \genfun(\set Q)$ since its 
 
 It remains only to show that $\set O$ extends to $\set X$;  recall that we have already shown that $\set O''$ extends to $\set X$. Note that $\{x\}\cup\set X\subseteq \genfun(\set X')$ (recall we earlier showed that $\set X\subseteq \genfun(\set X')$, and hence by Lemma \ref{recombining extension elements preserves extension} we see that $\set O''$ extends to $\{x\}\cup\set X$.  By construction, there exists an undetectable error $h$ of weight $\om_{\set S}(x)$ that acts on $x$ but not on any operator in $\set X$.  Thus, by Lemma \ref{move-it-over} we see that $\set O=\set O''\cup\{x\}$ extends to $\set X$, and so we are done.
 %@nonl
-%@-node:gcross.20100204174120.1284:Case 1
-%@+node:gcross.20100204174120.1287:Case 2
-\item[Case 2 $\Rightarrow$ $x\notin \set U(\lst P')$ and $o\in\set U(\set Q')$]
+%@-node:gcross.20100421154348.1348:Case 1
+%@+node:gcross.20100421154348.1349:Case 2
+\begin{center}
+\textbf{Case 2:} $x\notin \set U(\lst P')$ and $o\in\set U(\set Q')$
+\end{center}
 
 Let $(a,b)$ be the pair in $\set Q'$ such that $h$ acts on one of its members, and let $\set R:=\set Q'\backslash\{(a,b)\}$;  without loss of generality we may assume that $h$ acts on $a$ but not on $b$, as if this is not the case we can make it be the case by flipping the two members of the pair and/or multiplying the second operator by the first.  Now let $\set Q:=\set R'$ and $b'$ be the objects named in Corolary \ref{recombination-to-make-commute} given the pair $(a,b)$, the set $\set R$, the set $\set S$, and the operator $x:=h$.  Note that by Corolary \ref{recombination-to-make-commute} we know that $(a,b')$ and every pair in $\set Q$ are conjugal to
 $$\left[\set T'\backslash\paren{\{a,b\} \cup \set U(\set Q')}\right]\cup \{a,b'\} \cup \set U(\set Q)=\set T''$$
@@ -1270,15 +1280,18 @@ Note that by property \ref{operators in X are no worse than the best qubit in P}
 
 It remains only to show that $\set O$ is an unimprovable set that extends to $\set X$.  We know from the inductive hypothesis that $\set O'$ is an unimprovable set that extends to $\set X'$.  Since $\{a\}\cup\set X\subseteq \genfun(\set X')$, we conclude from Lemma \ref{recombining extension elements preserves extension} that $\set O'$ extends to $\{a\}\cup\set X$.  Since $a$ has an undetectable error of weight $\om_{\set S}(a)$, namely $h$ that acts on it but on no operator in $\set X'$ by construction and the fact that we are in Case 2, we conclude from Lemma \ref{move-it-over} that $\{a\}\cup \set O'\equiv \set O$ extends to $\set X$, and so we are done.
 %@nonl
-%@-node:gcross.20100204174120.1287:Case 2
+%@-node:gcross.20100421154348.1349:Case 2
 %@-others
-\end{description}
 
 \end{proof}
 %@nonl
-%@-node:gcross.20100204174120.1286:Proof
-%@-node:gcross.20100127211423.1361:Proposition: Optimization procedure
+%@-node:gcross.20100421154348.1347:Proof
+%@-node:gcross.20100421154348.1345:Proposition: Optimization procedure
 %@+node:gcross.20100420142721.1344:Lemma: Unimprovable sets extend to themselves
+\begin{remark}
+The result of Proposition \ref{proposition:search for minimal weight undetectable error} is a choice of qubits $\lst P'$ and an unimprovable set $\set O'$ that includes the first member of every pair in $\lst P'$ and also the second member of some subset of pairs.  It is not hard to see that this is actually stronger than what we need for us to apply Theorem \ref{optimality-condition} and conclude that $\lst P'$ is optimal, but nonetheless since it does not exactly meet the stated condition we will need show that the condition in Theorem \ref{optimality-condition} can be derived from it.  Most of the results we need to prove this have already been presented in earler Lemmas, but we shall also need the following additional result.
+\end{remark}
+
 \begin{lemma}
 \label{lemma:unimprovable sets extend to themselves}
 If $\set O$ is an unimprovable set that extends to $\set Q$, then $\set O$ also extends to $\set O\cup\set Q$.
@@ -1288,7 +1301,11 @@ If $\set O$ is an unimprovable set that extends to $\set Q$, then $\set O$ also 
 This Lemma follows almost immmediately from the definition of unimprovable set, and so the proof has been left as an exercise for the reader.
 \end{proof}
 %@-node:gcross.20100420142721.1344:Lemma: Unimprovable sets extend to themselves
-%@+node:gcross.20100413085158.2887:Theorem
+%@+node:gcross.20100413085158.2887:Proof of Theorem
+\begin{remark}
+We now have all of the ingredients that we need to prove the main Theorem of this subsection.
+\end{remark}
+
 \begin{proof}[Proof of Theorem \ref{theorem:optimization procedure}]
 If $\set Q$ is the empty set then the empty choice is optimal and can be computed in no time.  Thus,  we assume that $\set Q$ is non-empty;  for convenience, define $K := 2|\set Q|\equiv |\set U(\set Q)|$.
 
@@ -1307,7 +1324,7 @@ $$O\paren{|\set O^{(l)}| d 3^{d}\choose{N}{d}}= O\paren{|\lst P| d 3^{d}\choose{
 and so the time needed to compute the choice is in $O\paren{|\set Q| d 3^{d}\choose{N}{d}}$.
 \end{proof}
 %@nonl
-%@-node:gcross.20100413085158.2887:Theorem
+%@-node:gcross.20100413085158.2887:Proof of Theorem
 %@+node:gcross.20100402142648.1317:Pseudo-code
 
 %@+node:gcross.20100403145800.1484:Optimize-Logical-Qubits
