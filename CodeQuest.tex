@@ -1379,10 +1379,16 @@ Let $(\set Q',\lst P',\lst s')$ be the second to last element of $\optimizer(\se
 %@nonl
 %@-node:gcross.20100422160536.1366:Optimization
 %@-node:gcross.20090423002455.2:Algorithm
-%@+node:gcross.20100413085158.2885:Quantum Ising Models on Lattices of Regular Tilings
-\section{Quantum Ising Models on Lattices of Regular Tilings} \label{sec:lattice}
-%@nonl
-%@-node:gcross.20100413085158.2885:Quantum Ising Models on Lattices of Regular Tilings
+%@+node:gcross.20100413085158.2885:Application
+\section{Application} \label{sec:lattice}
+
+In the previous section we presented an algorithm that computes the optimal subsystem code that can be implemented using a given set of measurements.  The procedure for optimizing the code requires an exponential amount of time, but fortunately the power of the exponential is a function of the distance of the best qubit in the code.  Thus, the optimization procedure terminates quickly when a set of measurements does not give rise to a good code.  Because of this property, this algorithm can be effectively applied to search over a set of choices of measurement operators to see if there is any choice from which a good code can be implemented.
+
+In this section, we shall present an example of applying this algorithm to search for codes that can be implemented using lattices of qubits such that the measurements are on the edges.  Specifically, we shall focus our search on the convex vertex-uniform tilings of the plane --- that is, those tilings with the property that every face is convex and every vertex has the same sequence of faces.  There are 11 such tilings, each of which is characterized by its \emph{vertex configuration}, which is the sequence of faces at each vertex.
+
+%@+others
+%@-others
+%@-node:gcross.20100413085158.2885:Application
 %@+node:gcross.20100413085158.2886:Conclusion
 \section{Conclusion}
 %@nonl
