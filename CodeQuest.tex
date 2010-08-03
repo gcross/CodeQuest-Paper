@@ -117,9 +117,8 @@ where $P_{i,j}$ represents operator $P$ acting on qubit at location $(i,j)$.  Th
 Our approach is thus the opposite of the normal approach to constructing subsystem codes in that we start first with the two-qubit terms and then build up the code.  In section~\ref{sec:algorithm}, we shall formally prove that every set of measurements that are members of the Pauli group acting on the system give rise to a subsystem code, and we shall in the process present algorithms for computing this code (or at least, for computing one such code, since it is not unique) and its distance.  In section~\ref{sec:lattice}, we shall present numerical results obtained by applying a code implementing this algorithm to explore systems built using lattices that take the form of the 11 regular tilings.  In the section~\ref{sec:graph}, we shall present an algorithm for seaching over all of the systems that can be implemented by using arbtitrary Ising interactons
 with the structure of a graph, and then we shall present the results that we have obtained from our searches.
 %@-node:gcross.20090405101642.5:Introduction
-%@+node:gcross.20090423002455.2:Algorithm
-
-\section{Algorithm} \label{sec:algorithm}
+%@+node:gcross.20090423002455.2:Theory
+\section{Theory} \label{sec:algorithm}
 
 %@+node:gcross.20090423002455.3:Stabilizers and gauge qubits
 \subsection{Construction of the subsystem code}
@@ -1378,20 +1377,38 @@ Let $(\set Q',\lst P',\lst s')$ be the second to last element of $\optimizer(\se
 %@-others
 %@nonl
 %@-node:gcross.20100422160536.1366:Optimization
-%@-node:gcross.20090423002455.2:Algorithm
+%@-node:gcross.20090423002455.2:Theory
 %@+node:gcross.20100413085158.2885:Application
 \section{Application} \label{sec:lattice}
 
 In the previous section we presented an algorithm that computes the optimal subsystem code that can be implemented using a given set of measurements.  The procedure for optimizing the code requires an exponential amount of time, but fortunately the power of the exponential is a function of the distance of the best qubit in the code.  Thus, the optimization procedure terminates quickly when a set of measurements does not give rise to a good code.  Because of this property, this algorithm can be effectively applied to search over a set of choices of measurement operators to see if there is any good choice for implementing a code, since it can (relatively) quickly skip over the bad choices of measurements.
 
-In this section, we shall present an example of applying this algorithm to search for codes on quantum systems with the structure of a graph.  That is, we assume that we have a system of qubits and 2-body Pauli measurement operators and a graph such that there is a bijection between the qubits and vertices and between the edges and measurement operators, and also such that each measurement only acts on the two qubits corresponding to the vertices adjecent to its associated edge.  Specifying a particular graph constrains the number of qubits and the types of measurement operators, but it still allows a great deal of freedom in the choice of the measurement operator at each edge.  In Figure X we illustrate an example of a graph with two possible such choices of measurement operators labelings;  note that for the sake of generality we do not impose the constraint that the two operators in the 2-body measurement be identical.
+In this section, we shall present an example of applying this algorithm to search for codes on quantum systems with the structure of a graph.  That is, we assume that we have a system of qubits, 2-body Pauli measurement operators and a graph such that there is a bijection between the qubits and vertices and between the edges and measurement operators, and also such that each measurement only acts on the two qubits corresponding to the vertices adjecent to its associated edge.  Specifying a particular graph constrains the number of qubits and the types of measurement operators, but it still allows a great deal of freedom in the choice of the measurement operator at each edge.  In Figure X we illustrate an example of a graph with two possible such choices of measurement operators labelings;  note that for the sake of generality we do not impose the constraint that the two operators in the 2-body measurement be identical.
 
 For reasons that will become clear, it turns out to be useful to specify choices of measurement operators in terms of ray labelings rather than edges, since the former remains associated with vertices.  Define a \emph{ray} of a graph to be a pair consisting of a vertex and an edge adjacent to the vertex;  note that every ray can be uniquely associated with an edge, and every edge can be associated uniquely with a ray for each of its two incident vertices.  Thus, we can define a particular choice of measurement operators by labeling each ray in the graph with a single-qubit Pauli operator acting on the qubit of the incident vertex, and then letting the measurement operator associated with each edge be equal to the product of the single-qubit operators in the edge's two rays.
 
-There is a natural symmetry of quantum codes that can be factored out to reduce the search space:  the relevent properties of the code are invariant under single-qubit rotations.  That is, transformations such as swapping the $X$ and $Z$ operators at the location of a single physical qubit in every stabilizer, gauge qubit, and logical qubit operator does not affect the code.  Thus, when labeling the rays of a vertex, exactly which ray is labeled $X$, $Y$, and $Z$ is not important;  what matters is which rays commute and which rays anti-commute.  We see therefore that we need only search over the possible ways to divide the rays into three indistinguishable groups, so that a vertex with $n$ rays only has $\frac{3^n}{6}=\frac{3^{n-1}}{2}$ relevent labelings that need to be examined.
+There is a natural symmetry of quantum codes that can be factored out to reduce the search space:  the relevent properties of the code are invariant under single-qubit rotations.  That is, transformations such as swapping the $X$ and $Z$ operators at the location of a single physical qubit in every stabilizer, gauge qubit, and logical qubit operator does not affect the code.  Thus, when labeling the rays of a vertex, exactly which ray is labeled $X$, $Y$, and $Z$ is not important;  what matters is which rays commute and which rays anti-commute.  We see therefore that we need only search over the possible ways to divide the rays into three indistinguishable groups, so that a vertex with $n$ rays only has $1+\frac{3^{n-1}-1}{2}$ relevent labelings that need to be examined.
 
-The specific graphs we shall examine in this section are the lattices generated by the convex vertex-uniform tilings of the plane --- that is, those tilings with the property that every face is convex and every vertex has the same sequence of faces.  Since these tilings have many translational symmetries, we narrow our search the set of labelings that share the translational symmetries of the lattice.  Since the ray labelings must be preserved under these symmetries, we can partition the rays of the graph into equivalence classes such that two rays are equivalent if and only if they are related by a translation symmetry;  thus we see that our narrowed search space is equivalent to the space of possible labelings of each \emph{class} of rays in the lattice.
-examined.  Since there is a symmetry that can be factored out at each vertex (as discussed previously), we note that we can likewise parition the vertices into equivalence classes of vertices related by translation symmetries.  If there are $m$ vertex equivalence classes, and every vertex has $n$ rays, then our search space consists of $\paren{\frac{3^{n-1}}{2}}^m$ total possible labelings.
+The specific graphs we shall examine in this section are the lattices generated by the convex vertex-uniform (also known as the ``Archimedean'') tilings of the plane --- that is, those tilings with the property that every face is convex and every vertex has the same sequence of faces.  Since these tilings have many translational symmetries, we narrow our search the set of labelings that share the translational symmetries of the lattice.  Since the ray labelings must be preserved under these symmetries, we can partition the rays of the graph into equivalence classes such that two rays are equivalent if and only if they are related by a translation symmetry;  thus we see that our narrowed search space is equivalent to the space of possible labelings of each \emph{class} of rays in the lattice.
+examined.  Since there is a symmetry that can be factored out at each vertex (as discussed previously), we note that we can likewise partition the vertices into equivalence classes of vertices related by translation symmetries.  If there are $m$ vertex equivalence classes, and every vertex has $n$ rays, then our search space consists of $\paren{1+\frac{3^{n-1}-1}{2}}^m$ total possible labelings.  In table \ref{combinatorics}, we list the eleven convex vextex-uniform tilings with the number of vertex equivalence classes, the number of rays (per vertex), and the number of total labelings.
+
+\begin{table}
+\label{table:combinatorics}
+\begin{tabular}{llll}
+Archimedian Tiling & Number of Vertex Equivalence Classes & Number of Rays & Number of Labelings \\
+quadrille & 1 & 4 & 14\\
+truncated quadrille & 4 & 3 & 625\\
+snub quadrille & 4 & 5 & 2825761\\
+isosnub quadrille & 2 & 5 & 1681\\
+hextille & 2 & 3 & 25\\
+truncated hextille & 6 & 3 & 15625\\
+snub hextille & 6 & 5 & 4750104241\\
+deltille & 1 & 6 & 122\\
+hexadeltille & 3 & 4 & 2744\\
+truncated hexadeltille & 12 & 3 & 244140625\\
+rhombihexadeltille & 6 & 4 & 7529536\\
+\end{tabular}
+\end{table}
 
 Note that we could furthermore refine our search to consist of those codes which also share the \emph{rotational} symmetries of the lattice.  We explicit avoid making this refinement because the existence of such codes as the Compass model code [ref] suggests that there are good codes on lattices that require breaking the rotational symmetry of the lattice.
 %@nonl
