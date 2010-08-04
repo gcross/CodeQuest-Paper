@@ -1,5 +1,5 @@
-*.pdf
-*.ps
+CodeQuest.pdf
+CodeQuest.ps
 *.toc
 *.dvi
 *.aux
@@ -9,3 +9,4 @@ prv_*
 .scons*
 *.bbl
 *.blg
+*.fls
