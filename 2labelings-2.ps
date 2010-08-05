@@ -1,0 +1,72 @@
+%!PS-Adobe-3.0
+/Helvetica-Bold findfont 32 scalefont setfont
+/multiplier 100 def
+/setup_page {
+    /uy exch def
+    /ux exch def
+    /ly exch def
+    /lx exch def
+    /x_offset ux lx sub 2 div def
+    /y_offset uy ly sub 2 div def
+    << /PageSize [
+        ux lx sub multiplier mul
+        uy ly sub multiplier mul
+    ] >> setpagedevice
+} def
+/xcoord {x_offset add multiplier mul} def
+/ycoord {y_offset add multiplier mul} def
+/mod180 { dup 90 gt { 180 sub } if } def
+/centershow {
+    /angle exch def
+    /text exch def
+    gsave
+    newpath
+    0 0 moveto
+    text false charpath pathbbox
+    grestore
+    2 index sub 2 div neg /ty exch def
+    2 index sub 2 div neg /tx exch def
+    pop pop
+    gsave
+    angle rotate
+    tx ty rmoveto
+    text show
+    grestore
+} def
+/edge {
+    /p2 exch def
+    ycoord /y2 exch def
+    xcoord /x2 exch def
+    /p1 exch def
+    ycoord /y1 exch def
+    xcoord /x1 exch def
+    newpath
+        x1 y1 5 0 360 arc
+    fill
+    newpath
+        x2 y2 5 0 360 arc
+    fill
+    newpath
+        x1 y1 moveto
+        x2 y2 lineto
+    stroke
+    /dx x2 x1 sub 3 div def
+    /dy y2 y1 sub 3 div def
+    /a dy dx atan mod180 def
+    x1 y1 moveto
+    dx dy rmoveto
+    p1 a centershow
+    x2 y2 moveto
+    dx neg dy neg rmoveto
+    p2 a centershow
+} def
+
+-1.5 -1.5 1.5 1.5 setup_page
+
+-1 -1 (Z) -1 1 (Z) edge
+-1 -1 (X) 1 -1 (Z) edge
+1 1 (Z) 1 -1 (Z) edge
+1 1 (Y) -1 1 (X) edge
+-1 -1 (Y) 1 1 (Y) edge
+
+showpage
