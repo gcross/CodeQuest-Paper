@@ -116,8 +116,8 @@ where $P_{i,j}$ represents operator $P$ acting on qubit at location $(i,j)$.  Th
 Our approach is thus the opposite of the normal approach to constructing subsystem codes in that we start first with the two-qubit terms and then build up the code.  In section~\ref{sec:algorithm}, we shall formally prove that every set of measurements that are members of the Pauli group acting on the system give rise to a subsystem code, and we shall in the process present algorithms for computing this code (or at least, for computing one such code, since it is not unique) and its distance.  In section~\ref{sec:lattice}, we shall present numerical results obtained by applying a code implementing this algorithm to explore systems built using lattices that take the form of the 11 regular tilings.  In the section~\ref{sec:graph}, we shall present an algorithm for seaching over all of the systems that can be implemented by using arbtitrary Ising interactons
 with the structure of a graph, and then we shall present the results that we have obtained from our searches.
 %@-node:gcross.20090405101642.5:Introduction
-%@+node:gcross.20090423002455.2:Theory
-\section{Theory} \label{sec:algorithm}
+%@+node:gcross.20090423002455.2:Algorithm
+\section{Algorithm} \label{sec:algorithm}
 
 %@+node:gcross.20090423002455.3:Stabilizers and gauge qubits
 \subsection{Construction of the subsystem code}
@@ -1376,9 +1376,11 @@ Let $(\set Q',\lst P',\lst s')$ be the second to last element of $\optimizer(\se
 %@-others
 %@nonl
 %@-node:gcross.20100422160536.1366:Optimization
-%@-node:gcross.20090423002455.2:Theory
+%@-node:gcross.20090423002455.2:Algorithm
 %@+node:gcross.20100413085158.2885:Application
 \section{Application} \label{sec:lattice}
+%@+node:gcross.20100805134725.1339:Methodology
+\subsection{Methodology} \label{sec:methodology}
 
 In the previous section we presented an algorithm that computes the optimal subsystem code that can be implemented using a given set of measurements.  The procedure for optimizing the code requires an exponential amount of time, but fortunately the power of the exponential is a function of the distance of the best qubit in the code.  Thus, the optimization procedure terminates quickly when a set of measurements does not give rise to a good code.  Because of this property, this algorithm can be effectively applied to search over a set of choices of measurement operators to see if there is any good choice for implementing a code, since it can (relatively) quickly skip over the bad choices of measurements.
 
@@ -1470,6 +1472,10 @@ Note that under this scheme there can be no vertices on a corner.  For most tili
 }
 \end{figure*}
 %@nonl
+%@-node:gcross.20100805134725.1339:Methodology
+%@+node:gcross.20100805134725.1340:Results
+\subsection{Results} \label{sec:results}
+%@-node:gcross.20100805134725.1340:Results
 %@-node:gcross.20100413085158.2885:Application
 %@+node:gcross.20100413085158.2886:Conclusion
 \section{Conclusion}
