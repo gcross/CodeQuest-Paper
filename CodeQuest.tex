@@ -1471,10 +1471,47 @@ A figure illustrating how we placed the centers and boundaries for each of the t
 Note that under this scheme there can be no vertices on a corner.  For most tilings this will never happen, but it turns out that in the case of the deltille tiling there are vertices on the corners when the radius (smallest distance from the center to the boundary) is three times the radius of the unit cell;  we thus ignore deltille tilings of these sizes.
 }
 \end{figure*}
-%@nonl
+
+Due to limits on our computational resources, we were limited in the size of the lattices that we could search with our algorithms.  We describe the size of the lattices using a quantity we call the `radius', which is an integral quantity equal to the length of the lattice divided by the length of the smallest lattice defined for that tiling;  the unit radius lattices are those illustrated in Figure {figure:boundaries}.  In Table \ref{table:maximum-radius-scanned} we show the maximum radius lattice that was completely scanned (i.e., such that every possible labeling was examined by our algorithm) for each tiling.
+
+\begin{table}
+\begin{tabular}{lcr}
+Tiling & Maximum Radius & \# Qubits\\
+quadrille & 4 & 64\\
+truncated quadrille & 6 & 576\\
+snub quadrille & 5 & 200\\
+isosnub quadrille & 8 & 768\\
+hextille & 8 & 384\\
+truncated hextille & 5 & 600\\
+deltille & 8 & 256\\
+hexadeltille & 3 & 108\\
+rhombihexadeltille & 3 & 162\\
+\end{tabular}
+\caption{
+\label{table:maximum-radius-scanned}
+A table in which we show the maximum radius lattice that was completely scanned (i.e., such that every possible labeling was examined by our algorithm) for each tiling.  To give a sense of the size of the lattices involved, we also list the number of physical qubits (corresponding to vertices) for the lattice with the maximum radius.
+}
+\end{table}
+
+Since each labeling of every lattice results in a quantum code, we had to provide some criteria for our search algorithm to decide whether a code was interesting enough to log.  We set our critera relatively low:  a code was deemed to be interesting if there was at least one logical qubit with distance three, that is if there was at leats one logcal qubit such that a single arbitrary error on that qubit can be corrected.  This was done under the reasoning that as long as some of the logical qubits in a code are sufficently useful to us to make implementing the code worthwhile, then we should not be troubled by the fact that there might be other logical qubits that are not useful because we can always ignore them (or, equivalently, classify them as gauge qubits).
 %@-node:gcross.20100805134725.1339:Methodology
 %@+node:gcross.20100805134725.1340:Results
 \subsection{Results} \label{sec:results}
+
+In the previous subsection we described the search space to which we applied our algorithm in order to computationally find possible codes that can be implemented using systems with two-body interactions and a lattice structure following nine of the eleven convx vertex-uniform tilings.  In this subsection we present the results of this search for each of the tilings we investigated.
+%@+node:gcross.20100805174159.1347:quadrille
+\subsubsection{quadrille}
+
+We scanned this tiling up to a radius of four.  Of the 14 possible labelings of this tiling, only the labeling illustrated in Figure X was found to result in an interesting code.  This labeling corresponds to the compass model code, and our algorithm correctly found that the distance of the code grows linearly with the radius of the lattice.  This result is not terribly suprising, but it is good to see that our search technique employing our algorithm can correctly duplicate known results.
+
+\begin{figure}
+\includegraphics[width=3in]{quadrille-code-labeling}
+\caption{
+\label{figure:quadrille-code-labeling}
+A figure illustrating the single labeling of the quadrille tiling (on a radius 2 lattice) that results in a useful quantum code.
+}
+\end{figure}
+%@-node:gcross.20100805174159.1347:quadrille
 %@-node:gcross.20100805134725.1340:Results
 %@-node:gcross.20100413085158.2885:Application
 %@+node:gcross.20100413085158.2886:Conclusion
