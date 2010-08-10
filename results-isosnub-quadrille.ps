@@ -1,0 +1,82 @@
+%!PS-Adobe-3.0
+/cshow {
+/angle exch def
+/text exch def
+gsave
+newpath
+0 0 moveto
+text false charpath pathbbox
+grestore
+2 index sub 2 div neg /ty exch def
+2 index sub 2 div neg /tx exch def
+pop pop
+gsave
+angle rotate
+tx ty rmoveto
+text show
+grestore
+} def
+/rshow {
+/text exch def
+gsave
+newpath
+0 0 moveto
+text false charpath pathbbox
+grestore
+2 index sub 2 div neg /ty exch def
+2 index sub neg /tx exch def
+pop pop
+gsave
+tx ty rmoveto
+text show
+grestore
+} def
+<< /PageSize [ 1150 525 ] >> setpagedevice
+4 setlinewidth
+newpath
+200.0 200.0 moveto
+1000.0 200.0 lineto
+1000.0 375.0 lineto
+200.0 375.0 lineto
+closepath
+stroke
+2 setlinewidth
+/TimesRoman findfont 36 scalefont setfont
+newpath 250.0 190.0 moveto 250.0 210.0 lineto stroke 250.0 164.0 moveto (1) 0 cshow
+newpath 350.0 190.0 moveto 350.0 210.0 lineto stroke 350.0 164.0 moveto (2) 0 cshow
+newpath 450.0 190.0 moveto 450.0 210.0 lineto stroke 450.0 164.0 moveto (3) 0 cshow
+newpath 550.0 190.0 moveto 550.0 210.0 lineto stroke 550.0 164.0 moveto (4) 0 cshow
+newpath 650.0 190.0 moveto 650.0 210.0 lineto stroke 650.0 164.0 moveto (5) 0 cshow
+newpath 750.0 190.0 moveto 750.0 210.0 lineto stroke 750.0 164.0 moveto (6) 0 cshow
+newpath 850.0 190.0 moveto 850.0 210.0 lineto stroke 850.0 164.0 moveto (7) 0 cshow
+newpath 950.0 190.0 moveto 950.0 210.0 lineto stroke 950.0 164.0 moveto (8) 0 cshow
+newpath 190.0 200.0 moveto 210.0 200.0 lineto stroke 176.0 200.0 moveto (0) rshow
+newpath 190.0 300.0 moveto 210.0 300.0 lineto stroke 176.0 300.0 moveto (1) rshow
+/TimesRoman findfont 48 scalefont setfont
+600.0 72.0 moveto (Radius) 0 cshow
+72.0 287.5 moveto (Number of qubits) 90 cshow
+/TimesRoman findfont 48 scalefont setfont
+600.0 447.0 moveto (Codes found for the isosnub quadrille tiling) 0 cshow
+gsave 0 setlinejoin 2 setlinewidth newpath 650.0 307.5 moveto
+643.5048094716167 296.25 lineto
+656.4951905283833 296.25 lineto closepath fill grestore
+gsave 0 setlinejoin 2 setlinewidth newpath 750.0 307.5 moveto
+743.5048094716167 296.25 lineto
+756.4951905283833 296.25 lineto closepath fill grestore
+gsave 0 setlinejoin 2 setlinewidth newpath 858.8388347648319 308.83883476483186 moveto
+841.1611652351681 308.83883476483186 lineto
+841.1611652351681 291.16116523516814 lineto
+858.8388347648319 291.16116523516814 lineto closepath stroke
+newpath
+850.0 300.0 2 0 360 arc
+closepath
+0.75 setgray fill grestore
+gsave 0 setlinejoin 2 setlinewidth newpath 958.8388347648319 308.83883476483186 moveto
+941.1611652351681 308.83883476483186 lineto
+941.1611652351681 291.16116523516814 lineto
+958.8388347648319 291.16116523516814 lineto closepath stroke
+newpath
+950.0 300.0 2 0 360 arc
+closepath
+0.75 setgray fill grestore
+showpage
