@@ -1498,8 +1498,11 @@ Since each labeling of every lattice results in a quantum code, we had to provid
 %@+node:gcross.20100805134725.1340:Results
 \subsection{Results} \label{sec:results}
 
-In the previous subsection we described the search space to which we applied our algorithm in order to computationally find possible codes that can be implemented using systems with two-body interactions and a lattice structure following nine of the eleven convx vertex-uniform tilings.  In this subsection we present the results of this search for each of the tilings we investigated.
+In the previous subsection we described the search space to which we applied our algorithm in order to computationally find possible codes that can be implemented using systems with two-body interactions and a lattice structure following nine of the eleven convex vertex-uniform tilings.  In this subsection we present the results of this search.
+The codes that we found are shown in the plots appearing in Figures \ref{figure:results-quadrille} and \ref{figure:results-hextille}.  No plot appears for the deltille tiling because no codes were found for that tiling.
 
+%@<< Figures >>
+%@+node:gcross.20100810123019.1784:<< Figures >>
 \begin{figure*}
 \centering
 \subfloat[]{{\includegraphics[width=2.5in]{results-quadrille}}}
@@ -1510,7 +1513,8 @@ In the previous subsection we described the search space to which we applied our
 \subfloat[]{{\includegraphics[width=2.83in]{results-snub-quadrille}}}\\
 \caption{
 \label{figure:results-quadrille}
-A figure containing plots of the results from scanning the (a) quadrille, (b) isosnub quadrille, (c) truncated quadrille and (d) snub quadrille tilings.
+A figure containing plots of the results from scanning the (a) quadrille, (b) isosnub quadrille, (c) truncated quadrille and (d) snub quadrille tilings.  Every polygon in the plot corresponds to a code that was found with a distance equal to the number of sides of the polygon, so that triangles indicate distance three codes, squares indicate distance four codes, etc.  The position along the $x$-axis indicates the radius of the lattice where the code was found, where the radius is an integer defined to be the length of the lattice divided by the length of the smallest possible periodic lattice for the tiling;  it also indicates the number of physical qubits in the lattice where the code was found, which appears on the $x$-axis just under the value of the radius.  The position along the $y$-axis indicates the number of logical qubits with that distance in the code.
+Note that in cases where multiple codes were found for the same radius and with the same number of logical qubits, multiple polygons are drawn, so that for example in plot (c) we see several cases in which a distance 3 code (triangle) and a distance 4 code (square) were found that were in lattices with the same radius and also had the same number of logical qubits.
 }
 \end{figure*}
 
@@ -1524,13 +1528,21 @@ A figure containing plots of the results from scanning the (a) quadrille, (b) is
 \subfloat[]{{\includegraphics[width=2.17in]{results-hexadeltille}}} \\
 \caption{
 \label{figure:results-hextille}
-A figure containing plots of the results from scanning the (a) hextille, (b) rhombihexadeltille, (c) truncated hextille and (d) hexadeltille tilings.
+A figure containing plots of the results from scanning the (a) hextille, (b) rhombihexadeltille, (c) truncated hextille and (d) hexadeltille tilings.  See the caption of Figure \ref{figure:results-quadrille} for an explanation of how to interpret these plots.
 }
 \end{figure*}
+%@-node:gcross.20100810123019.1784:<< Figures >>
+%@nl
+
+Observe that two kinds of trends appear frequently in the results:  codes that grow in distance but remain constant in the number of logical qubits as the radius increase, and codes that remain constant in distance but grow in the number of logical qubits as the radius increases.  The former trend appears in the quadrille, snub quadrille, isosnub quadrille, hexadeltille, and rhombihexadeltille tilings\footnote{Note that where the former trend was present, the maximum radius that we scanned was often quite limited;  this is due to the exponential explosion in the cost of finding the optimal code as a function of the distance of the code.}.  The latter trend appears in the truncated quadrille, snub quadrille, hextille, truncated hextille, hexadeltille, and rhombihexadeltille tilings.  In many of the tilings there are also codes that were found that do not seem to belong to an obvious trend.
+
+In the follow subsections we will focus on some specifics of the results for each of the tilings.
+
+%@+others
 %@+node:gcross.20100805174159.1347:quadrille
 \subsubsection{quadrille}
 
-We scanned this tiling up to a radius of four.  Of the 14 possible labelings of this tiling, only the labeling illustrated in Figure X was found to result in an interesting code.  This labeling corresponds to the compass model code, and our algorithm correctly found that the distance of the code grows linearly with the radius of the lattice.  This result is not terribly suprising, but it is good to see that our search technique employing our algorithm can correctly duplicate known results.
+Of the 14 possible labelings of this tiling, only the labeling illustrated in Figure \ref{figure:quadrille-code-labeling} was found to result in an interesting code.  This labeling corresponds to the compass model code, and our algorithm correctly found that the distance of the code grows linearly with the radius of the lattice.  This result is not terribly suprising, but it is good to see that our search technique employing our algorithm can correctly duplicate known results.
 
 \begin{figure}
 \includegraphics[width=3in]{quadrille-code-labeling}
@@ -1540,12 +1552,85 @@ A figure illustrating the single labeling of the quadrille tiling (on a radius 2
 }
 \end{figure}
 %@-node:gcross.20100805174159.1347:quadrille
+%@+node:gcross.20100810123019.1785:truncated quadrille
+\subsubsection{truncated quadrille}
+
+The most interesting codes for this tiling are those for which the number of logical qubits ($l$) is related to the radius ($r$) by $l=(2r-1)^2$;  since the number of physical qubits ($n$) is given by $n=(4r)^2$, this means that these codes have $\frac{l}{n}=\paren{\half-\frac{1}{r}}^2$ logical qubits per physical qubit, a quantity which converges to $\frac{1}{4}$ as $r\to\infty$.  There are four such labelings out of the 625 total:  two with distance 3 qubits (illustrated in Figure \ref{figure:truncated-quadrille-code-3-labelings}), and two with distance 4 qubits (illustrated in Figure \ref{figure:truncated-quadrille-code-4-labelings}).
+
+\begin{figure*}
+\subfloat[distance 3 code labelings]{
+\label{figure:truncated-quadrille-code-3-labelings}
+\includegraphics[width=3in]{truncated-quadrille-code-3-labeling-1}
+\includegraphics[width=3in]{truncated-quadrille-code-3-labeling-2}
+}\\
+\subfloat[distance 4 code labelings]{
+\label{figure:truncated-quadrille-code-4-labelings}
+\includegraphics[width=3in]{truncated-quadrille-code-4-labeling-1} \\
+\includegraphics[width=3in]{truncated-quadrille-code-4-labeling-2}
+}
+\caption{
+\label{figure:truncated-quadrille-code-labelings}
+A figure illustrating the four labelings (out of 625 total) of the truncated quadrille tiling (on a radius 1 lattice) that result in a quantum code with distance 3/4 (in respectively \ref{figure:truncated-quadrille-code-3-labelings}/\ref{figure:truncated-quadrille-code-4-labelings}), and a number of distance logical qubits proportional to the square of the radius of the labeling.
+}
+\end{figure*}
+%@-node:gcross.20100810123019.1785:truncated quadrille
+%@+node:gcross.20100810123019.1786:snub quadrille
+\subsubsection{snub quadrille}
+
+%@+at
+% (select labeling from code_best_distances where tiling = 'snub quadrille' 
+% and radius = 3 and distance = 3 and number_of_qubits=1) intersect
+% (select labeling from code_best_distances where tiling = 'snub quadrille' 
+% and radius = 4 and distance = 4 and number_of_qubits=1) intersect
+% (select labeling from code_best_distances where tiling = 'snub quadrille' 
+% and radius = 5 and distance = 5 and number_of_qubits=1)
+%  order by labeling;
+%@-at
+%@@c
+
+There are two kinds of interesting codes found in this filing.  First, there is exactly one labeling (out of 2,825,761 total) that has the property that the distance is four and the number of logical qubits ($l$) is given by $l=2r(r-1)$, where $r$ is the radius of the lattice.  Since the number of physical qubits ($n$) is given by $n=8r^2$, this means that the number of logical qubits per physical qubit is given by $\frac{l}{n}=\frac{2r(r-1)}{8r^2}=\frac{1}{4}\paren{1-\frac{1}{r}}\to\frac{1}{4}$ as $r\to\infty$.  This labeling is illustrated in Figure \ref{figure:snub-quadrille-code-4-labeling}.
+
+\begin{figure}
+\includegraphics[width=3.5in]{snub-quadrille-code-4-labeling} % labeling #1836744
+\caption{
+\label{figure:snub-quadrille-code-4-labeling}
+A figure illustrating the single labeling (out of 2,825,761 total) of the snub quadrille tiling (on a radius 2 lattice) that results with distance 4 and a number of distance logical qubits proportional to the square of the radius of the labeling.
+}
+\end{figure}
+
+Second, more usefully, there are twelve labelings which result in a code that has one qubit whose distance grows with the side of the lattice.  Two of these labelings are illustrated in Figure 
+
+\begin{figure}
+\includegraphics[width=3.5in]{snub-quadrille-code-r-labeling-1} \\ % labeling #180508
+\includegraphics[width=3.5in]{snub-quadrille-code-r-labeling-2}    % labeling #287828
+\caption{
+\label{figure:snub-quadrille-code-r-labeling}
+A figure illustrating two of the twelve labelings (out of 2,825,761 total) of the snub quadrille tiling (on a radius 2 lattice) that result in a quantum code with a single qubit whose distance grows with the radius of the lattice.
+}
+\end{figure}
+%@-node:gcross.20100810123019.1786:snub quadrille
+%@+node:gcross.20100810123019.1787:isosnub quadrille
+\subsubsection{isosnub quadrille}
+
+Out of the 1681 possible labelings of the isosnub quadrille tiling, only two result in useful codes, both of which only have a single qubit that seems (assuming that the trend seen in Figure \ref{figure:results-hextille} can be extrapolated) to have a distance that grows with the radius of the lattice.  These two labeling are illustrated in Figure 
+
+\begin{figure}
+\includegraphics[width=3.5in]{isosnub-quadrille-code-labeling-1} \\ % labeling #346
+\includegraphics[width=3.5in]{isosnub-quadrille-code-labeling-2}    % labeling #764
+\caption{
+\label{figure:snub-quadrille-code-r-labeling}
+A figure illustrating the two labelings (out of 1681 total) of the isosnub quadrille tiling (on a radius 1 lattice) that result in a quantum code with a single qubit whose distance grows with the radius of the lattice.
+}
+\end{figure}
+%@nonl
+%@-node:gcross.20100810123019.1787:isosnub quadrille
 %@+node:gcross.20100806112455.1342:deltille
 \subsubsection{deltille}
 
 We scanned this tiling up to a radius of eight;  no interesting codes were found in any of the 122 labelings.
 %@nonl
 %@-node:gcross.20100806112455.1342:deltille
+%@-others
 %@-node:gcross.20100805134725.1340:Results
 %@-node:gcross.20100413085158.2885:Application
 %@+node:gcross.20100413085158.2886:Conclusion
