@@ -1629,6 +1629,30 @@ A figure illustrating two of the labelings of the isosnub quadrille tiling (on a
 We scanned this tiling up to a radius of eight;  no interesting codes were found in any of the 122 labelings.
 %@nonl
 %@-node:gcross.20100806112455.1342:deltille
+%@+node:gcross.20100811005016.1353:hextille
+\subsubsection{hextille}
+
+In this tiling we saw for labelings which resulted in two kinds of interesting codes:  two of the labelings (illustrated in Figure \ref{figure:hextille-code-3-labelings}) resulted in codes of distance 3 that were present for every value of the radius, and two of the labelings (illustrated in Figure \ref{figure:hextille-code-4-labelings}) resulted in codes of distance 4 that were only present for \emph{even} values of the radius.  The former resulted in codes which had a number of logical qubits ($l_3$) given by $l_3=\frac{(r-1)(r-2)}{2}$, where $r$ is the radius, and the latter resulted in codes which had a number of logical qubits ($l_4$) given by $l_4=r(r+3)$.  Since the number of qubits ($n$) is given by $n=6r^2$, we have that the number of logical qubits per physical qubit for the distance and distance 4 codes were given respectively by $d_3=\frac{l_3}{n}=\frac{1}{12}\paren{1-\frac{1}{r}}\paren{1-\frac{2}{r}}$ and $d_4=\frac{l_4}{n}=\frac{1}{6}\paren{1+\frac{3}{r}}$;  as $r\to\infty$, we have that $d_3\to\frac{1}{12}$ and $d_4\to\frac{1}{6}$.
+
+It is interesting to observe that there is no distance/qubit count trade-off in this tiling.  As long as the radius is even, the distance 4 code is superior in \emph{both} distance \emph{and} logical qubit count over the distance 3 code.
+
+\begin{figure*}
+\subfloat[distance 3 code labelings] {
+\label{figure:hextille-code-3-labelings}
+\includegraphics[width=3.5in]{hextille-code-3-labeling-1} % labeling #9
+\includegraphics[width=3.5in]{hextille-code-3-labeling-2} % labeling #19
+}\\
+\subfloat[distance 4 code labelings] {
+\label{figure:hextille-code-4-labelings}
+\includegraphics[width=3.5in]{hextille-code-4-labeling-1} % labeling #7
+\includegraphics[width=3.5in]{hextille-code-4-labeling-2} % labeling #8
+}
+\caption{
+\label{figure:hextille-code-labelings}
+A figure illustrating four labelings of the hextille tiling (on a radius 2 lattice) that result in a quantum code with distance 3/4 (in respectively \ref{figure:hextille-code-3-labelings}/\ref{figure:hextille-code-4-labelings}), and a number of distance logical qubits proportional to the square of the radius of the labeling.
+}
+\end{figure*}
+%@-node:gcross.20100811005016.1353:hextille
 %@-others
 %@-node:gcross.20100805134725.1340:Results
 %@-node:gcross.20100413085158.2885:Application
