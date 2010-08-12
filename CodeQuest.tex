@@ -1554,18 +1554,18 @@ A figure illustrating the single labeling of the quadrille tiling (on a radius 2
 %@+node:gcross.20100810123019.1785:truncated quadrille
 \subsubsection{truncated quadrille}
 
-The most interesting codes for this tiling are those for which the number of logical qubits ($l$) is related to the radius ($r$) by $l=(2r-1)^2$;  since the number of physical qubits ($n$) is given by $n=(4r)^2$, this means that these codes have $\frac{l}{n}=\paren{\half-\frac{1}{r}}^2$ logical qubits per physical qubit, a quantity which converges to $\frac{1}{4}$ as $r\to\infty$.  We saw four such labelings in our search:  two with distance 3 qubits (illustrated in Figure \ref{figure:truncated-quadrille-code-3-labelings}), and two with distance 4 qubits (illustrated in Figure \ref{figure:truncated-quadrille-code-4-labelings}).
+There are three kinds of codes that appear in this tiling where the number of qubits increases with the radius:  two where the distance is fixed at 4, and one where the distance is fixed at 3.  For the best two of these three kinds of codes, the number of logical qubits ($l$) is related to the radius ($r$) by $l=(2r-1)^2$.    Since the number of physical qubits ($n$) is given by $n=(4r)^2$, the number of logical qubits per physical qubit is thus given by $\frac{l}{n}=\paren{\half-\frac{1}{r}}^2$, a quantity which converges to $\frac{1}{4}$ as $r\to\infty$.  There were four labelings with this property that we saw in our search:  two with distance 3 qubits (illustrated in Figure \ref{figure:truncated-quadrille-code-3-labelings}), and two with distance 4 qubits (illustrated in Figure \ref{figure:truncated-quadrille-code-4-labelings}).
 
 \begin{figure*}
 \subfloat[distance 3 code labelings]{
 \label{figure:truncated-quadrille-code-3-labelings}
-\includegraphics[width=3in]{truncated-quadrille-code-3-labeling-1}
-\includegraphics[width=3in]{truncated-quadrille-code-3-labeling-2}
+\includegraphics[width=3.5in]{truncated-quadrille-code-3-labeling-1}
+\includegraphics[width=3.5in]{truncated-quadrille-code-3-labeling-2}
 }\\
 \subfloat[distance 4 code labelings]{
 \label{figure:truncated-quadrille-code-4-labelings}
-\includegraphics[width=3in]{truncated-quadrille-code-4-labeling-1} \\
-\includegraphics[width=3in]{truncated-quadrille-code-4-labeling-2}
+\includegraphics[width=3.5in]{truncated-quadrille-code-4-labeling-1} \\
+\includegraphics[width=3.5in]{truncated-quadrille-code-4-labeling-2}
 }
 \caption{
 \label{figure:truncated-quadrille-code-labelings}
@@ -1653,6 +1653,45 @@ A figure illustrating four labelings of the hextille tiling (on a radius 2 latti
 }
 \end{figure*}
 %@-node:gcross.20100811005016.1353:hextille
+%@+node:gcross.20100811134608.1348:truncated hextille
+\subsubsection{truncated hextille}
+
+In the truncated hextille there are four kinds of codes where the number of qubit increases with the radius:  three with the distance fixed at 3, and one with the distance fixed at 4.
+
+The best of the distance 3 codes has the number of logical qubits ($l_3$) given by $l_3=2r^2-1$, where $r$ is the radius of the code.  Since the number of physical qubits ($n$) is given by $n=24r^2$, the number of logical qubits per physical qubit is thus given by $\frac{l_3}{n}=\frac{1}{12}\paren{1-\frac{1}{24r}}^2$, a quantity which converges to $\frac{1}{12}$ as $r\to\infty$.  The two labelings we saw which give rise to this code are illustrated in Figure \ref{figure:truncated-hextille-code-3-labelings}.
+
+The best of the distance 4 codes has the number of logical qubits ($l_4$) given by $l_4=2r(r-1)$, and the number of logical qubits per physical qubit is thus given by $\frac{l_4}{n}=\frac{1}{12}\paren{1-\frac{1}{r}}$, a quantity which converges to $\frac{1}{12}$ as $r\to\infty$.  We see from this analysis that although the best distance 4 code contains fewer logical qubits than the best distance 3 code, they both converge to the same number of logical qubits per physical qubit in the large radius limit.  One of the nine labelings we saw which give rise to this code are illustrated in Figure \ref{figure:truncated-hextille-code-4-labelings}.
+
+\begin{figure*}
+\includegraphics[width=3.5in]{truncated-quadrille-code-3-labeling-1} % labeling #5859
+\includegraphics[width=3.5in]{truncated-quadrille-code-3-labeling-2} % labeling #12369
+\caption{
+\label{figure:truncated-hextille-code-3-labelings}
+A figure illustrating two labelings of the truncated hextille tiling (on a radius 1 lattice) that result in a quantum code with distance 3 and a number of distance logical qubits proportional to the square of the radius of the labeling.
+}
+\end{figure*}
+
+\begin{figure}
+\includegraphics[width=3.5in]{truncated-quadrille-code-4-labeling-1} % labeling #4792
+\caption{
+\label{figure:truncated-hextille-code-4-labelings}
+A figure illustrating two labelings of the truncated hextille tiling (on a radius 1 lattice) that result in a quantum code with distance 4 and a number of distance logical qubits proportional to the square of the radius of the labeling.
+}
+\end{figure}
+%@-node:gcross.20100811134608.1348:truncated hextille
+%@+node:gcross.20100811134608.1349:hexadeltille
+\subsubsection{hexadeltille}
+
+There are many codes that appear in the hexadeltille tiling, but it is difficult to draw conclusions about trends due to the limit on the size of the lattices that were scanned.  The good news, though, is that the reason why scanning larger radii was difficult is because there is a code in this tiling with a qubit whose distance grows with the radius of the lattice.  One of the nine labelings that we saw with this property is illustrated in Figure \ref{figure:hexadeltille-code-labeling}. 
+
+\begin{figure}
+\includegraphics[width=3in]{hexadeltille-code-labeling}
+\caption{
+\label{figure:hexadeltille-code-labeling}
+A figure illustrating one of the labelings of the hexadeltille tiling (on a radius 1 lattice) that results in quantum code whose distance grows with the size of the tiling.
+}
+\end{figure}
+%@-node:gcross.20100811134608.1349:hexadeltille
 %@-others
 %@-node:gcross.20100805134725.1340:Results
 %@-node:gcross.20100413085158.2885:Application
