@@ -113,8 +113,7 @@ H=-\Delta \sum_{i,j} (X_{i,j} X_{i+1,j} +Z_{i,j} Z_{i,j+1}),
 \end{equation}
 where $P_{i,j}$ represents operator $P$ acting on qubit at location $(i,j)$.  This model is interesting for a few reasons.  The first is that the energy levels of this system can be best thought of as elements of a quantum error correcting subsystem code.  The second reason is that the model provides some amount of protection from quantum errors because errors are energetically unfavored.  Actually in this system as the size of the lattice goes to infinity this protection vanishes~\cite{Dorier:05a}, but for small lattice sizes there is some protection from errors due to the energy level structure of the system~\cite{Bacon:01a}.  Many other examples of systems which have energy protecting properties are also known: the most famous being Kitaev's toric code in two and four-spatial dimensions~\cite{Kitaev:97c,Kitaev:03a,Dennis:02a}.  The study of such systems is still in its infancy and one central question is whether there exist Hamiltonians with reasonable physical parameters (such as existing in three or fewer spatial dimensions and involving two-body interactions) whose physics when the system is in contact with a thermal reservoir enacts quantum error correction on the system.  Such systems are called self-correcting quantum computers~\cite{Bacon:06a,Bombin:09a}.  Motivated by these systems, an important question is which Hamiltonians with two-qubit interactions give rise to quantum error correcting subsystem codes.  Here we address this issue by starting with a set of two-qubit interactions of the form $P\otimes Q$ where $P$ and $Q$ are Pauli operators, and then, from these operators, constructing the subsystem code (if any) which will arise from the algebra of these operators.
 
-Our approach is thus the opposite of the normal approach to constructing subsystem codes in that we start first with the two-qubit terms and then build up the code.  In section~\ref{sec:algorithm}, we shall formally prove that every set of measurements that are members of the Pauli group acting on the system give rise to a subsystem code, and we shall in the process present algorithms for computing this code (or at least, for computing one such code, since it is not unique) and its distance.  In section~\ref{sec:lattice}, we shall present numerical results obtained by applying a code implementing this algorithm to explore systems built using lattices that take the form of the 11 regular tilings.  In the section~\ref{sec:graph}, we shall present an algorithm for seaching over all of the systems that can be implemented by using arbtitrary Ising interactons
-with the structure of a graph, and then we shall present the results that we have obtained from our searches.
+Our approach is thus the opposite of the normal approach to constructing subsystem codes in that we start first with the two-qubit terms and then build up the code.  In section~\ref{sec:algorithm}, we shall formally prove that every set of measurements that are members of the Pauli group acting on the system give rise to a subsystem code, and we shall in the process present algorithms for computing this code (or at least, for computing one such code, since it is not unique) and its distance.  In section~\ref{sec:lattice}, we shall present numerical results obtained by applying a code implementing this algorithm to explore systems built using lattices that take the form of the 11 regular tilings.  In section~\ref{sec:conclusion} we present our conclusions.
 %@-node:gcross.20090405101642.5:Introduction
 %@+node:gcross.20090423002455.2:Algorithm
 \section{Algorithm} \label{sec:algorithm}
@@ -1559,7 +1558,7 @@ In the follow subsections we will focus on some specifics of the results for eac
 %@+node:gcross.20100805174159.1347:quadrille
 \subsubsection{quadrille}
 
-For the quadrille lattice, we only saw one labeling, illustrated in Figure \ref{figure:quadrille-code-labeling}, that resulted in an interesting code.  This labeling corresponds to the compass model code, and our algorithm correctly found that the distance of the code grows linearly with the radius of the lattice.  This result is not terribly suprising, but it is good to see that our search technique employing our algorithm can correctly duplicate known results.
+For the quadrille lattice, we only saw one labeling, illustrated in Figure \ref{figure:quadrille-code-labeling}, that resulted in an interesting code.  This labeling corresponds to the compass model code, and our algorithm correctly found that the distance of the code grows linearly with the radius of the lattice and is exactly equal to the square root of the number of qubits in the lattice.  This result is not terribly suprising, but it is good to see that our search technique employing our algorithm can correctly duplicate known results.
 
 \begin{figure}
 \includegraphics[width=3in]{quadrille-code-labeling}
@@ -1750,9 +1749,23 @@ A figure illustrating two labelings of the rhombihexadeltille tiling (on a radiu
 %@-node:gcross.20100812150117.1356:rhombihexadeltille
 %@-others
 %@-node:gcross.20100805134725.1340:Results
+%@+node:gcross.20100820103141.1357:Discussion
+\subsection{Discussion} \label{sec:discussion}
+
+There are few surprises in our results.  For example, the best code that we found that maximized the logical qubit distance per physical qubit was the compass model code in the quadrille tiling, which is already well-known.  Furthermore, all of the codes obeyed the upper bounds $kd\in O(n)$ and $d^2\in O(n)$ --- where $k$ is the number of logical qubits in the code, $d$ is the distance of the code, and $n$ is the number of phyisical qubits implementing the code --- that were derived in Ref. X for codes having spatially local generators.
+
+Some of the observed differences between the tilings are an artifact of the search space.  For example, every code found on the hextille tiling could also be implemented on the deltille tiling, but although we found two kinds of codes for the hextille tiling we found no codes for the deltille tilings.  This is because our search space included no way for the deltille tilings to ``knock out'' the middle qubits in each hexagonal tiling, and futhermore the hextille tiling search space included two classes of vertices which could have independent labelings whereas the deltille tiling search space had only one kind of vertex class.
+
+Although it is not clear how many of the codes we found will have practical applications, the success of this search demonstrates the feasibility of our method for using brute-force computation to find useful codes within a constrained search space.
+%@nonl
+%@-node:gcross.20100820103141.1357:Discussion
 %@-node:gcross.20100413085158.2885:Application
 %@+node:gcross.20100413085158.2886:Conclusion
 \section{Conclusion}
+
+In this paper we have presented an algorithm for computing the optimal quantum subsystem code that can be implemented using a given set of measurements.  We have shown that although this algorithm requires exponential time in the worst case, this exponential is a function of the code distance, and so the algorithm terminates (relatively) quickly when the optimal code has low distance.  Because of this, the algorithm can be used to perform a brute-force search through a space of possible measurements in order to see which give rise to ``useful'' (high-distance) codes.  We demonstrated the feasibility of this approach by applying the algorithm to search for codes implemented on systems with lattice structures corresponding to nine of the eleven vertex-uniform tilings, and on all but one of these nine tilings we found useful codes.
+
+Our algorithm should prove helpful in two kinds of ways in particular.  First, it can be appled in an exploratory setting to do the tedius work of computing the code resulting from a set of measurements so that the researcher can experiment with new ideas for choices of measurement to see how well they work.  Second, it can be applied to hone a `rough' idea for how a code might be implemented (such as a particular lattice configuration) into a concrete idea by scanning through the possible choices of the degrees of freedom to see if any result in useful codes; of course, cleverness can often come up with an answer more quickly than a computationally intensive search, but it is good to have the alternative of brute-force computation to fall back on when brute-force cleverness fails.
 %@nonl
 %@-node:gcross.20100413085158.2886:Conclusion
 %@-others
