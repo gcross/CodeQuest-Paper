@@ -11,7 +11,7 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}{Proposition}
 \newtheorem{lemma}{Lemma}
-\newtheorem{corolary}{Corolary}
+\newtheorem{corollary}{Corollary}
 
 \newenvironment{definition}[1][Definition]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
@@ -58,7 +58,7 @@
 
 \begin{abstract}
 Quantum error correction allows for faulty quantum systems to behave in an effectively error free manner.  One important class of techniques for quantum error correction is the class of \emph{quantum subsystem codes}, which are relevant both to active quantum error correcting schemes as well as to the design of self-correcting quantum memories.
-Previous approaches for investigating these codes have focused on applying theoretical analysis to look for intersting codes and to investigate their properties.  In this paper we present an alternative approach that uses \emph{computational} analysis to accomplish the same goals.  Specifically, we present an algorithm that computes the optimal quantum subsystem code that can be implemented given an arbitrary set of measurement operators that are tensor products of Pauli operators.  We then demonstrate the utility of this algorithm by performing a systematic investigation of the quantum subsystem codes that exist in the setting where the interactions are limited to 2-body interactions between neighbors on lattices derived from the convex uniform tilings of the plane.
+Previous approaches for investigating these codes have focused on applying theoretical analysis to look for interesting codes and to investigate their properties.  In this paper we present an alternative approach that uses \emph{computational} analysis to accomplish the same goals.  Specifically, we present an algorithm that computes the optimal quantum subsystem code that can be implemented given an arbitrary set of measurement operators that are tensor products of Pauli operators.  We then demonstrate the utility of this algorithm by performing a systematic investigation of the quantum subsystem codes that exist in the setting where the interactions are limited to 2-body interactions between neighbors on lattices derived from the convex uniform tilings of the plane.
 \end{abstract}
 
 \maketitle
@@ -99,13 +99,13 @@ to the Hilbert space of physical qubits, $\mathscr{P}$.  To distinguish between 
 record of the errors that have been introduces, and the qubits that live in $\mathscr{Q}$ are the qubits in whose terms our quantum
 algorithm is expressed.  
 
-Given that the space $\mathscr{R}$ is used to record the damage that has occurred on our system, we have to decide how to read out the information about an error which has occurred on our system.  One natural choice is to perform a Pauli $Z$ measurement operator for each qubit on $\mathscr{R}$.  In order to build the `trap' element into our system, we need to ensure at least that whenever nature strikes at the physical space $\mathscr{P}$ in a form we wish to be able to correct, it is isomorphic to a strike on the computational space that leaves a \emph{measureable} record in $\mathscr{R}$.  For our choice of measuring Pauli $Z$ errors, these are errors that are isomorphic to an operator that \emph{anti-commutes} with a $Z$ operator of at least one of the qubits in $\mathscr{R}$.  Note that although we speak of measuring the qubits in $\mathscr{R}$, the measurement operator of interest in $\mathscr{R}$ is mapped to an operator in the physical space $\mathscr{P}$; this isomorphic operator is referred to as a \emph{stabilizer}, and the full set of operators on $\mathscr{P}$ which are isomorphic to our chosen measurement operators on $\mathscr{R}$ are referred to as the \emph{stabilizers} of the code.
+Given that the space $\mathscr{R}$ is used to record the damage that has occurred on our system, we have to decide how to read out the information about an error which has occurred on our system.  One natural choice is to perform a Pauli $Z$ measurement operator for each qubit on $\mathscr{R}$.  In order to build the `trap' element into our system, we need to ensure at least that whenever nature strikes at the physical space $\mathscr{P}$ in a form we wish to be able to correct, it is isomorphic to a strike on the computational space that leaves a \emph{measurable} record in $\mathscr{R}$.  For our choice of measuring Pauli $Z$ errors, these are errors that are isomorphic to an operator that \emph{anti-commutes} with a $Z$ operator of at least one of the qubits in $\mathscr{R}$.  Note that although we speak of measuring the qubits in $\mathscr{R}$, the measurement operator of interest in $\mathscr{R}$ is mapped to an operator in the physical space $\mathscr{P}$; this isomorphic operator is referred to as a \emph{stabilizer}, and the full set of operators on $\mathscr{P}$ which are isomorphic to our chosen measurement operators on $\mathscr{R}$ are referred to as the \emph{stabilizers} of the code.
 
 Up to this point, the formalism we have described is known as \emph{stabilizer codes}~\cite{Gottesman:96a,Gottesman:97a,Calderbank:97a,Calderbank:97b} and its essential characteristic is that in determining the syndrome of the physical error, one makes a measurement of all of the qubits in $\mathscr{R}$. What if, however, we relaxed this constraint and only measured some of the qubits in $\mathscr{R}$?  That is to say, what if we split the qubits in $\mathscr{R}$ into two categories: \emph{stabilizer
 qubits} whose states we care about and which we measure to obtain an error syndrome, and \emph{gauge
 qubits} whose states we do not care about.  (The latter get their name
 from the fact that they provide a `gauge' degree of freedom, i.e. a
-degree of freedom that is irrelevent to us.)  Then we would have that
+degree of freedom that is irrelevant to us.)  Then we would have that
 $\mathscr{R}=\mathscr{S}\times \mathscr{G}$, where $\mathscr{S}$ is
 the space in which the stabilizer qubits live, and $\mathscr{G}$ is
 the space in which the so-called gauge qubits live; such a scheme is
@@ -123,14 +123,14 @@ where $P_{i,j}$ represents operator $P$ acting on qubit at location $(i,j)$.  Th
 
 Our approach is thus the opposite of the normal approach to constructing subsystem codes in that we start first with the two-qubit terms and then build up the code.  In section~\ref{sec:algorithm}, we shall formally prove that every set of measurements that are members of the Pauli group acting on the system give rise to a subsystem code, and we shall in the process present algorithms for computing this code (or at least, for computing one such code, since it is not unique) and its distance.  In section~\ref{sec:lattice}, we shall present numerical results obtained by applying a code implementing this algorithm to explore systems built using lattices that take the form of the 11 regular tilings.  In section~\ref{sec:conclusion} we present our conclusions.
 %@-node:gcross.20090405101642.5:Introduction
-%@+node:gcross.20090423002455.2:Algorithm
-\section{Algorithm} \label{sec:algorithm}
+%@+node:gcross.20090423002455.2:Theory
+\section{Theory} \label{sec:algorithm}
 
 %@+node:gcross.20090423002455.3:Stabilizers and gauge qubits
 \subsection{Construction of the subsystem code}
 
 \begin{remark}
-This subsection describes by way of a constructive proof how one can compute the quantum subsystem code implemetable by a the set of measurement operators.  For a listing of pseudo-code that implements the algorithm described in this proof, see Table \ref{table:algo1} near the end of this subsection.
+This subsection describes by way of a constructive proof how one can compute the quantum subsystem code implementable by a the set of measurement operators.  For a listing of pseudo-code that implements the algorithm described in this proof, see Table \ref{table:algo1} near the end of this subsection.
 \end{remark}
 %@+node:gcross.20090520163423.14:Introduce main theorem
 Although conceptually a subsystem code is an isomorphism $T$ such that  $\mathscr{P}\approx^T \mathscr{S}\times\mathscr{G}\times\mathscr{Q}$ --- that is, an isomorphism between the \emph{physical} space of qubits and the \emph{computational} space of qubits in whose terms our computation is actually expressed --- we do not need to actually construct this isomorphism in order to be able to use the code.  Since all of our work will be done on the physical system anyway, it suffices to know the operators in the physical space $\mathscr{P}$ that are isomorphic to the qubit measurement operators of interest in the computational space $\mathscr{S}\times\mathscr{G}\times\mathscr{Q}$, and it is exactly the operators on $\mathscr{P}$ that the algorithm we present shall compute\footnote{If one really wanted to, one could explicitly construct the isomorphism $\mathscr{T}$ from these operators by computing the unitary operator which simultaneously diagonalizes a the maximal subset of commuting measurements from this set of operators on $\mathscr{P}$, but in practice this is not particularly useful.}.
@@ -186,7 +186,7 @@ The main work in the proof of this theorem will be performed by proving several 
 \begin{proof}
 Proof by induction.  For the base case, note that if $\lst O$ is empty then $\lst S:=\emptyset$ and $\set G:=\emptyset$ trivially satisfy all properties.
 
-Now assume that the proposition holds for a sequence of length $n-1$, and consider a sequence of operators $\lst O$ of length $n$.  By the inductive hypothesis, we know that there is a sequence $\lst S'$ and a set $\set G'$ satisfying the properties above for the subsequence of $\lst O$ consisting of the first $n-1$ operators.  Let $o:=\lst O_n\cdot \prod_{g\in \set G, \{\lst O_n,g\}=0} \text{conj}_{\set G}(g)$ --- that is, the product of $\lst O_n$ with the conjugal partner of every operator in $\set G$ with which $\lst O_n$ anti-commutes.  This definition guarantees that $o$ commmutes with every operator in $\set G$;  furthermore, we can obtain $\lst O_n$ back from $o$ since every operator in $\set G$ squares to the identity and thus $\lst O_n=o\cdot \prod_{g\in \set G, \{\lst O_n,g\}=0} \text{conj}_{\set G}(o)$; therefore we conclude that $\genfun\paren{\{\lst S'_i\} \cup \set G' \cup \{o\}}=\genfun\paren{\{\lst O_i\}}$.
+Now assume that the proposition holds for a sequence of length $n-1$, and consider a sequence of operators $\lst O$ of length $n$.  By the inductive hypothesis, we know that there is a sequence $\lst S'$ and a set $\set G'$ satisfying the properties above for the subsequence of $\lst O$ consisting of the first $n-1$ operators.  Let $o:=\lst O_n\cdot \prod_{g\in \set G, \{\lst O_n,g\}=0} \text{conj}_{\set G}(g)$ --- that is, the product of $\lst O_n$ with the conjugal partner of every operator in $\set G$ with which $\lst O_n$ anti-commutes.  This definition guarantees that $o$ commutes with every operator in $\set G$;  furthermore, we can obtain $\lst O_n$ back from $o$ since every operator in $\set G$ squares to the identity and thus $\lst O_n=o\cdot \prod_{g\in \set G, \{\lst O_n,g\}=0} \text{conj}_{\set G}(o)$; therefore we conclude that $\genfun\paren{\{\lst S'_i\} \cup \set G' \cup \{o\}}=\genfun\paren{\{\lst O_i\}}$.
 
 If $o$ commutes with every operator in $\lst S'$, then set
 $$\lst S_i :=
@@ -261,7 +261,7 @@ $$ and we are done.
 %@-node:gcross.20090519160701.4:Making them independent
 %@+node:gcross.20090527164539.1:Construct the logical operators
 \begin{remark}
-Proposition \ref{make-independent-using-elimination} is good for more than computing an independent set of generators from a commuting list of operators;  it is also the key ingrediant in computing the logical qubit operators.
+Proposition \ref{make-independent-using-elimination} is good for more than computing an independent set of generators from a commuting list of operators;  it is also the key ingredient in computing the logical qubit operators.
 \end{remark}
 
 \begin{proposition}
@@ -297,7 +297,7 @@ With these building blocks in place, we now prove the main theorem:
 \begin{proof}[Proof of Theorem \ref{theorem-SG}]
 By Proposition \ref{proposition-SG}, we know that there exists a list of operators $\lst S$ and a set of independent operators $\set G$ satisfying the properties that are listed there.  By Proposition \ref{make-independent-using-elimination}, we know that there is an independent set of operators $\set S$ that generate the same subgroup as $\lst S$.  
 
-Now let $\set F$ be a maximal subset of commuting operators in $\set G$ --- i.e., for each conjugal pair in $\set G$ take one of the two operators --- and then let $\set O := \set F \cup \set S$.  Since all of the operators in $\set O$ commute, we apply Proposition \ref{make-independent-using-elimination} again to conclude the existance of the objects listed there, and then we immediately apply Proposition \ref{construction-of-logicals} to show that a set $\set M$ exists with the properties listed there.  We are not done yet, however, since there might be operators in $\set G$ with which operators in $\set M$ anti-commute, so we let
+Now let $\set F$ be a maximal subset of commuting operators in $\set G$ --- i.e., for each conjugal pair in $\set G$ take one of the two operators --- and then let $\set O := \set F \cup \set S$.  Since all of the operators in $\set O$ commute, we apply Proposition \ref{make-independent-using-elimination} again to conclude the existence of the objects listed there, and then we immediately apply Proposition \ref{construction-of-logicals} to show that a set $\set M$ exists with the properties listed there.  We are not done yet, however, since there might be operators in $\set G$ with which operators in $\set M$ anti-commute, so we let
 $$\set L := \{m\cdot\prod_{f\in \set F\atop \{M,\text{conj}_{\set G}(f)\}=0} f :\quad m \in\set M\}$$
 where $\text{conj}_{\set G}(F)$ is the conjugal partner of $F$ in the set $\set G$.  This guarantees that the operators in $\set L$ commute with every operator in $\set S\cup\set G$, and so we are done.
 \end{proof}
@@ -427,7 +427,7 @@ $\quad$
 \item assuming we have a set of independent operators, $\set Q$, the function $\set G_{\set Q}:\genfun(\set Q)\to\powerset(\set Q)$ is defined (uniquely) such that for every $q\in\set Q$ we have that $q=\prod_{o\in\set G_{\set Q}(q)} o$;
 \item the function $w:\pauligroup\to \mathscr{N}$ is defined such that $w(o)$ gives the weight of $o$;
 \item the function $e_{\set S}:\centralizer_\pauligroup\paren{\set S}\to \paren{\powerset\circ\centralizer_\pauligroup}\paren{\set S}$ is defined such that $\set e_{\set S}(l)$ is the set of minimizers of $w$ over the set $\left\{o: o\in \centralizer_\pauligroup\paren{\set S}, \{o,l\}=0\right\}$ --- that is, it gives the undetectable errors with respect to $\set S$ acting on $l$ that are of minimum weight;
-\item the function $\om_{\set S}:\centralizer_\pauligroup\paren{\set S}\to\mathscr{N}$ is defined such that $\om_{\set S}:=w(o)$ for an arbitrarily chosen $o\in\circ \set e_{\set S}$ --- note that function is well-defiend since all operators in the set $\set e_{\set S}$ have the same weight;
+\item the function $\om_{\set S}:\centralizer_\pauligroup\paren{\set S}\to\mathscr{N}$ is defined such that $\om_{\set S}:=w(o)$ for an arbitrarily chosen $o\in\circ \set e_{\set S}$ --- note that function is well-defined since all operators in the set $\set e_{\set S}$ have the same weight;
 \item the function $m_{\set S}:\centralizer_\pauligroup\paren{\set S}\times \centralizer_\pauligroup\paren{\set S} \to \mathscr{N}$ is defined such that $m_{\set S}(l,l'):=\min \{\om_{\set S}(l),\om_{\set S}(l')\}$ --- that is, it gives the smaller of the weights of the smallest weight errors acting on respectively $\set L$ and $\set L'$;
 \item the function $\lst M_{\set S}$ is defined such that $\lst M_{\set S}\paren{\lst P}$ is the sequence of $|\lst P|$ integers such that $\lst M_{\set S}\paren{\lst P}_i := m_{\set S}\paren{\lst P_i}$;
 \item the functions $p_1$ and $p_2$ are defined such that, given $(a,b):=x$, we have that $p_1(x):=a$ and $p_2(x):=b$.
@@ -706,7 +706,7 @@ Suppose we are given
 \item a set of pairs, $\set L\subseteq\centralizer_\pauligroup(\set S)$, conjugal with respect to $\set U(\set Q)\cup\set S$;
 \item and a set of Pauli operators $\set C$ such that $\genfun(\set C)=\centralizer_\pauligroup(\set S)$;
 \end{itemize}
-then $\optimizer(\set S,\set L)$ is a sequence of finite length, and if $(\set Q,\lst P,\lst s)$ is the last element in the sequence then $\lst P$ is an optimal choice of qubits such that $\genfun(\lst P)=\genfun(\set L)$, and futhermore it can be computed in a time that is in the set $O\paren{|\set C|^2+|\lst L|^2d3^d\choose{N}{d}}$\footnote{A function $f$ is said to be in the set $O(g)$ if $f$ is asymptotically bounded by some fixed constant times $g$;  formally $f\in O(g)$ if and only if there exists constants $c$ and $x_0$ such that $f(x)<c g(x)$ for all $x>x_0$.}, where $d:=\lst M(\lst P)_{|\lst P|}$\footnote{Recall that $\lst M^{(N)}(\lst P)_N$ is the distance of the best qubit in the (optimized) code.}.
+then $\optimizer(\set S,\set L)$ is a sequence of finite length, and if $(\set Q,\lst P,\lst s)$ is the last element in the sequence then $\lst P$ is an optimal choice of qubits such that $\genfun(\lst P)=\genfun(\set L)$, and furthermore it can be computed in a time that is in the set $O\paren{|\set C|^2+|\lst L|^2d3^d\choose{N}{d}}$\footnote{A function $f$ is said to be in the set $O(g)$ if $f$ is asymptotically bounded by some fixed constant times $g$;  formally $f\in O(g)$ if and only if there exists constants $c$ and $x_0$ such that $f(x)<c g(x)$ for all $x>x_0$.}, where $d:=\lst M(\lst P)_{|\lst P|}$\footnote{Recall that $\lst M^{(N)}(\lst P)_N$ is the distance of the best qubit in the (optimized) code.}.
 \end{theorem}
 
 The proof of this Theorem is rather technical and shall be split into several subsections.  First we shall prove the existence of a condition that suffices to prove that a choice of logical qubits is optimal.   Second we shall prove that the algorithm above constructs a choice satisfying this condition.  Third we shall prove that the running time of the algorithm has the claimed bound.  Finally we shall tie these results together to prove the Theorem above.
@@ -770,7 +770,7 @@ Since $\om_{\set S}(a)<\om_{\set S}(b)$, there must be an undetectable error wit
 %@-node:gcross.20100125183648.1304:Lemma: The lesser operator wins
 %@+node:gcross.20100125183648.1319:Proposition: Bound on recombinations
 \begin{remark}
-Intuitively we should expect that it is not possible to take $n$ qubits and recombine them to form $n+k$ independent qubits where $k>0$.  To state this intution in other terms, suppose we are given a set of conjugal pairs $\set C$ that are generated from some other set of conjugal pairs $\set D$.  We know that every pair in $\set C$ must have a member that includes a factor that is a first member of a pair in $\set D$ (since otherwise the members of the pair cannot anti-commute), so let $\set A$ be the set of first members of pairs in $\set D$.  Our intuition then tells us that $|\set C|\le |\set A|=|\set D|$.  The following Proposition states this fact formally:
+Intuitively we should expect that it is not possible to take $n$ qubits and recombine them to form $n+k$ independent qubits where $k>0$.  To state this intuition in other terms, suppose we are given a set of conjugal pairs $\set C$ that are generated from some other set of conjugal pairs $\set D$.  We know that every pair in $\set C$ must have a member that includes a factor that is a first member of a pair in $\set D$ (since otherwise the members of the pair cannot anti-commute), so let $\set A$ be the set of first members of pairs in $\set D$.  Our intuition then tells us that $|\set C|\le |\set A|=|\set D|$.  The following Proposition states this fact formally:
 \end{remark}
 %@+node:gcross.20100125183648.1320:Statement
 \begin{proposition}
@@ -854,7 +854,7 @@ In the context of Proposition \ref{bound-on-recombinations}, there exists a Paul
 \end{lemma}
 
 \begin{proof}
-Take any pair $Y'\in\set C$.  By the assumptions of Proposition \ref{bound-on-recombinations}, we know that $\set G(Y')\cap \set A \ne \emptyset$, which implies that there exists an element $a\in A$ such that either $a\in (\set G_{\set Q}\circ p_1)(Y')$ or $a\in (\set G_{\set Q}\circ p_2)(Y')$.  The existance of $Y$ and $\set D$ then follow immediately from the application of Lemma \ref{directed-gaussian-elimination-of-logicals}.
+Take any pair $Y'\in\set C$.  By the assumptions of Proposition \ref{bound-on-recombinations}, we know that $\set G(Y')\cap \set A \ne \emptyset$, which implies that there exists an element $a\in A$ such that either $a\in (\set G_{\set Q}\circ p_1)(Y')$ or $a\in (\set G_{\set Q}\circ p_2)(Y')$.  The existence of $Y$ and $\set D$ then follow immediately from the application of Lemma \ref{directed-gaussian-elimination-of-logicals}.
 \end{proof}
 %@nonl
 %@-node:gcross.20100125183648.1323:Undirected Gaussian elimination
@@ -877,7 +877,7 @@ Proof by induction.  If $\set C$ is empty, then the empty sets trivially satisfy
 
 Now suppose that we have proven this Lemma for $|\set C|=N-1$, and assume we have been given sets $\set C$ and $\set A$ such that $|\set C|=N$.  Applying Lemma \ref{undirected-gaussian-elimination-of-logicals} to $\set C$ and $\set A$ we obtain the conjugal pair $Y$,  the set of conjugal pairs $\set D$, and the element $a$ described in the conclusions of that Lemma.  Apply this Lemma recursively to the respective sets $\set D$ and $\set A\backslash\{a\}$, we obtain the sets $\set X'$ and $\set O'$ described (without the primes) in this Lemma; let $\set X := \set X'\cup\{Y\}$ and $\set O:=\set O'\cup\{a\}$.  Note that $\set X$ is a set of conjugal pairs with respect to $\set X\cup\set S$ since $\set X'$ is a set of conjugal pairs with respect to $\set X'\cup\set S$, and we know that the operators in $Y$ commute with every operator in every pair in $\set X'$ since they commute with every operator in $(\genfun\circ\set U)(\set D)=(\genfun\circ\set U)(\set X')$.
 
-First, observe that $|\set O|=|\set O'|+1$ since $a\notin \set O'$.  Futhermore, $a\notin \bigcup_{x\in \set U(\set X')} \set G(x)$ since $a\notin \bigcup_{x\in \set U(\set D)} \set G_{\set Q}(x)$ by Lemma \ref{undirected-gaussian-elimination-of-logicals} and $(\genfun\circ\set U)(\set D)=(\genfun\circ\set U)(\set X')$ by recursive application of this Corolary.  Thus, $|\set X|=|\set X'|+1$ since $Y\notin X'$ as $a\in\set G(Y)$, and $|\set X|=|\set O|=|\set D|+1=|\set C|-1+1=|\set C|$.
+First, observe that $|\set O|=|\set O'|+1$ since $a\notin \set O'$.  Furthermore, $a\notin \bigcup_{x\in \set U(\set X')} \set G(x)$ since $a\notin \bigcup_{x\in \set U(\set D)} \set G_{\set Q}(x)$ by Lemma \ref{undirected-gaussian-elimination-of-logicals} and $(\genfun\circ\set U)(\set D)=(\genfun\circ\set U)(\set X')$ by recursive application of this Corollary.  Thus, $|\set X|=|\set X'|+1$ since $Y\notin X'$ as $a\in\set G(Y)$, and $|\set X|=|\set O|=|\set D|+1=|\set C|-1+1=|\set C|$.
 
 Second, observe that since $(\genfun\circ\set U)(\set X')=(\genfun\circ\set U)(\set D)=(\genfun\circ\set U)(\set C)$ by recursive application of this Lemma and $(\genfun\circ\set U)(\{Y\}\cup\set D)=(\genfun\circ\set U)(\set C)$ by Lemma \ref{undirected-gaussian-elimination-of-logicals}, we conclude that $(\genfun\circ\set U)(\set X) = (\genfun\circ\set U)(\{Y\}\cup\set X') = (\genfun\circ\set U)(\{Y\}\cup\set D) = (\genfun\circ\set U)(\set C)$.
 
@@ -887,7 +887,7 @@ Finally, observe that for every $o\in\set O$ we either have that $o=a$, in which
 %@-node:gcross.20100125183648.1324:Elimination to create subset
 %@+node:gcross.20100125183648.1325:Proof
 \begin{remark}
-With the proceding Lemmas having performed the heavy lifting, the Proof of Proposition \ref{bound-on-recombinations} is quite simple.
+With the preceding Lemmas having performed the heavy lifting, the Proof of Proposition \ref{bound-on-recombinations} is quite simple.
 \end{remark}
 
 \begin{proof}[Proof of Proposition \ref{bound-on-recombinations}]
@@ -897,7 +897,7 @@ Proof by contradiction.  By Lemma \ref{elimination-to-create-subset}, there woul
 %@-node:gcross.20100125183648.1319:Proposition: Bound on recombinations
 %@+node:gcross.20100125183648.1326:Proof of Theorem
 \begin{remark}
-With the proceding Lemmas and Propositions, we now have all of the tools that we need to prove Theorem \ref{optimality-condition}.  Again, the idea behind this proof is that because the first members of pairs in the choice are contained in an unimprovable set, one cannot take products of the qubits in the choice in order to improve them;  thus, the only way one could construct a better choice would by forming $n+k$ independent qubits from products of $n$ qubits (where $k>0$), which is disallowed by the result of Proposition \ref{bound-on-recombinations}.  Hence, there can be no better choice.
+With the preceding Lemmas and Propositions, we now have all of the tools that we need to prove Theorem \ref{optimality-condition}.  Again, the idea behind this proof is that because the first members of pairs in the choice are contained in an unimprovable set, one cannot take products of the qubits in the choice in order to improve them;  thus, the only way one could construct a better choice would by forming $n+k$ independent qubits from products of $n$ qubits (where $k>0$), which is disallowed by the result of Proposition \ref{bound-on-recombinations}.  Hence, there can be no better choice.
 \end{remark}
 
 \begin{proof}[Proof of Theorem \ref{optimality-condition}]
@@ -1033,7 +1033,7 @@ This follows from the fact that $\set L\subseteq\centralizer_\pauligroup(\set S)
 %@+node:gcross.20100422160536.1402:|L| = 2(|Q| + |P|)
 \item
 
-By construction, either $|\set Q'|=|\set Q|$ and $|\lst P'|=|\lst P$ (in Case 1) or $|\set Q'|=|\set Q|-1$ and $|\lst P'|=|\lst P|+1$ (in Csae 2).  In either case we have that $2(|\set Q'|+|\lst P'|)=2(|\set Q|+|\lst P|)=|\set L|$.
+By construction, either $|\set Q'|=|\set Q|$ and $|\lst P'|=|\lst P$ (in Case 1) or $|\set Q'|=|\set Q|-1$ and $|\lst P'|=|\lst P|+1$ (in Case 2).  In either case we have that $2(|\set Q'|+|\lst P'|)=2(|\set Q|+|\lst P|)=|\set L|$.
 %@-node:gcross.20100422160536.1402:|L| = 2(|Q| + |P|)
 %@+node:gcross.20100422160536.1403:|L| = |U(Q)+U(P)|
 \item
@@ -1093,7 +1093,7 @@ From the definition of an unimprovable set it is easy to see that since $\set O'
 %@-node:gcross.20100422160536.1396:Proposition: The set generated is an invariant
 %@+node:gcross.20100422160536.1422:Proof of Theorem
 \begin{remark}
-Now that the heavy lifting has been done by the proceding Proposition, the proof of Theorem \ref{theorem:algorithm is correct} is relatively simple.
+Now that the heavy lifting has been done by the preceding Proposition, the proof of Theorem \ref{theorem:algorithm is correct} is relatively simple.
 \end{remark}
 
 \begin{proof}[Proof of Theorem \ref{theorem:algorithm is correct}]
@@ -1125,11 +1125,11 @@ then the time needed to compute the sequence $\optimizer(\set S,\set L)$ is in t
 %@+node:gcross.20100422160536.1450:Definitions
 %@+node:gcross.20100422160536.1451:pseudo-generator
 \begin{remark}
-Before proving this Thoerem, we shall first prove a number of related Lemmas and Propositions.
+Before proving this Theorem, we shall first prove a number of related Lemmas and Propositions.
 
 The most complicated part of analyzing the running time of the optimization algorithm is analyzing the time needed to find the minimum weight undetectable error.  In fact, the procedure for doing this was not even described explicitly in the algorithm, so we shall now explain how we do it.
 
-The algorithm we employ is based on the Brouwer-Zimmermann search algorithmm, which searches for the minimum weight binary string satisfying some property given a set of binary string generators endowed with a multiplication operation defined to be the exclusive-or operation.  The Brouwer-Zimmermann algorithm works by using a Gaussian elimination analogue to express the generators in reduced row eschelon form;  it then performs its search by examining all products of $r$ generators for increasing $r$.  When all of the products of $r$ generators have been enumerated, one knows that the set of strings that has yet to be enumerated has weight $r+1$ or greater, since the row-eschelon form means that every string has a column for which it is the only string with a 1 in that column, and so a product of $k$ strings must have a weight of at least $k$.  Thus, as the search proceeds, there is a growing lower-bound on the weight of the binary string, and the search halts when a string has been found that matches this bound.
+The algorithm we employ is based on the Brouwer-Zimmermann search algorithm, which searches for the minimum weight binary string satisfying some property given a set of binary string generators endowed with a multiplication operation defined to be the exclusive-or operation.  The Brouwer-Zimmermann algorithm works by using a Gaussian elimination analogue to express the generators in reduced row echelon form;  it then performs its search by examining all products of $r$ generators for increasing $r$.  When all of the products of $r$ generators have been enumerated, one knows that the set of strings that has yet to be enumerated has weight $r+1$ or greater, since the row-echelon form means that every string has a column for which it is the only string with a 1 in that column, and so a product of $k$ strings must have a weight of at least $k$.  Thus, as the search proceeds, there is a growing lower-bound on the weight of the binary string, and the search halts when a string has been found that matches this bound.
 
 This algorithm cannot be immediately applied to the current problem because we are not working with binary strings, and in particular Pauli operators have a more complicated multiplication operation that binary strings.  Fortunately, in~\cite{White:2006fj} White and Grassl showed that the Brouwer-Zimmermann enumeration can be generalized.
 
@@ -1217,7 +1217,7 @@ This Lemma follows directly from the results in~\cite{White:2006fj}, though the 
 \end{remark}
 
 \begin{proof}
-Define $\set C_r$ to be the set of all operators such that if $o\in\set C_r$ then there is some subset of exactly $r$ pseudo-generators from $\set G$ such that $o$ is contained in their pseudo-product.  Note that $\cup_r \set C_r = \genfun(\set G)$, so for every operator $o$ in the search space there is an integer $r$ such that $o\in\set C_r$.  Corolary \ref{corolary:bound-on-pseudo-product} shows that we can evaluate $f$ on every element of the pseudo-product of $r$ pseudo-generators in time $O((T+r)3^r)$, so since there are $\choose{|\set G|}{r}$ ways to choose $r$ pseudo-generators from $\set G$ we conclude that we can search $\set C_r$ for a solution to $f(o)=1$ in time $O\paren{(T+r) 3^r \choose{|\set G|}{r}}$.
+Define $\set C_r$ to be the set of all operators such that if $o\in\set C_r$ then there is some subset of exactly $r$ pseudo-generators from $\set G$ such that $o$ is contained in their pseudo-product.  Note that $\cup_r \set C_r = \genfun(\set G)$, so for every operator $o$ in the search space there is an integer $r$ such that $o\in\set C_r$.  Corollary \ref{corolary:bound-on-pseudo-product} shows that we can evaluate $f$ on every element of the pseudo-product of $r$ pseudo-generators in time $O((T+r)3^r)$, so since there are $\choose{|\set G|}{r}$ ways to choose $r$ pseudo-generators from $\set G$ we conclude that we can search $\set C_r$ for a solution to $f(o)=1$ in time $O\paren{(T+r) 3^r \choose{|\set G|}{r}}$.
 
 From Lemma \ref{lemma:disjoint-pseudo-generators-bound} we conclude that $w(o)\ge r$ for every $o\in\set C_r$.  By extension this means that $w(o)\ge r$ for every $o\in\bigcup_{r'=r}^{|\set G|}\set C_{r'}$, and therefore that if $o\notin\bigcup_{r'=0}^{r-1}\set C_{r'}$ and $o\in\genfun(\set G)$ then $w(o)\ge r$.  Thus, if there exists an $r$ such that $r=\min_{o\in\bigcup_{r'=0}^{r-1}\set C_{r'},f(o)=1}w(o)$ then we know that $r=\min_{o\in\genfun(\set O),f(o)=1}w(o)$ --- that is, $r$ is \emph{exactly} the weight of the minimum weight solution to $f(o)=1$, since any operator in the search space that \emph{isn't} contained in $\bigcup_{r'=0}^{r-1}\set C_{r'}$ must have a weight of at least $r$.  Put another way, after having enumerated all of the elements in $\bigcup_{r'=0}^{r-1}\set C_{r'}$ we can check to see whether the smallest solution to $f$ we have seen so far (if any) has weight less than or equal to $r$, and if so we are done since we have found the minimal weight solution.
 
@@ -1235,7 +1235,7 @@ Given a set of disjoint pseudo-generators, $\set G$, the largest subset $\set X\
 \end{lemma}
 
 \begin{proof}
-If $\set X$ contained more that $\set G$ operators then by the pidgeon hole principle there would have to be at least two operators from the same pseudo-generator, and thus which did not commute
+If $\set X$ contained more that $\set G$ operators then by the pigeon hole principle there would have to be at least two operators from the same pseudo-generator, and thus which did not commute
 \end{proof}
 
 \begin{lemma}
@@ -1244,12 +1244,12 @@ A set of disjoint pseudo-generators $\set G$ acting on $N$ qubits satisfies $|\s
 \end{lemma}
 
 \begin{proof}
-This follows directly from the definition and the pidgeon hole principle.
+This follows directly from the definition and the pigeon hole principle.
 \end{proof}
 
 \begin{lemma}
 \label{lemma:exact bound on number of disjoint pseudo-generators}
-For any set of commuting operators $\set S$ acting on $N$ physical qubits, if $\set G$ is a set of disjoint pseudo-generators satsifying $\genfun(\set G)=\centralizer_\pauligroup(\set S)$ then $|\set G|= N$.
+For any set of commuting operators $\set S$ acting on $N$ physical qubits, if $\set G$ is a set of disjoint pseudo-generators satisfying $\genfun(\set G)=\centralizer_\pauligroup(\set S)$ then $|\set G|= N$.
 \end{lemma}
 
 \begin{proof}
@@ -1287,7 +1287,7 @@ Note that solutions to $f$ are undetectable errors acting on $\set Q$, and also 
 %@-node:gcross.20100422160536.1461:Lemma: Minimal weight search (specialized)
 %@+node:gcross.20100422160536.1457:Lemma: Computing disjoint pseudo-generators
 \begin{remark}
-In order to make use of the proceding result, we need to have a set of disjoint pseudo-generators whose pseudo-product covers our search space.  However, we usually start instead with a set of ordinary Pauli operators that generate this space.  Thus, we shall now show that the former can be computed from the latter --- i.e., that given a set of Pauli operators, we can compute a set of disjoint pseudo-generators that spans the same space.  First we present a Lemma that provides a criteria sufficient to show that a set of pseudo-generators is distinct.
+In order to make use of the preceding result, we need to have a set of disjoint pseudo-generators whose pseudo-product covers our search space.  However, we usually start instead with a set of ordinary Pauli operators that generate this space.  Thus, we shall now show that the former can be computed from the latter --- i.e., that given a set of Pauli operators, we can compute a set of disjoint pseudo-generators that spans the same space.  First we present a Lemma that provides a criteria sufficient to show that a set of pseudo-generators is distinct.
 \end{remark}
 
 \begin{lemma}
@@ -1314,7 +1314,7 @@ Given any a set of Pauli operators, $\set O$, there exists a set $\set G$ of psu
 \begin{enumerate}
 \item $|\set G|\le|\set O|$,
 \item $\genfun(\set O)=\genfun(\set G)$,
-\item the map $p$ descibed in Lemma \ref{lemma:disjointness-equvalence} exists for $\set G$,
+\item the map $p$ described in Lemma \ref{lemma:disjointness-equvalence} exists for $\set G$,
 \end{enumerate}
 and $\set G$ can be computed in time $O(|\set O|^2)$.
 \end{lemma}
@@ -1326,7 +1326,7 @@ The structure of this proof bears some similarities to Proposition \ref{make-ind
 \begin{proof}
 Proof by induction.  For the base case, we observe that if $\set O$ is empty, then the trivial set $\set G:=\emptyset$ and the trivial function $p$ whose domain is the empty set satisfy the requirements.
 
-Now assume that ths Lemma has been proven for sets of cardinality $n-1$, and suppose we are given a (non-empty) set $\set O$ of cardinality $n$.  Take any operator $o\in\set O$.  By recursive application of this Lemma, we know that we can construct the set $\set G':=\set G$ and the function $p':=p$ described in this Lemma given $\set O:=\set O\backslash\{o\}$ in time $O\paren{(n-1)^2}=O(n^2)$.
+Now assume that this Lemma has been proven for sets of cardinality $n-1$, and suppose we are given a (non-empty) set $\set O$ of cardinality $n$.  Take any operator $o\in\set O$.  By recursive application of this Lemma, we know that we can construct the set $\set G':=\set G$ and the function $p':=p$ described in this Lemma given $\set O:=\set O\backslash\{o\}$ in time $O\paren{(n-1)^2}=O(n^2)$.
 
 Let $$o':=o\cdot \prod_{x\in\set U(\set G'),\atop\{o,p(x)\}=0} x.$$  Note that for every $x\in\set U(\set G')$, it must be that $o'$ commutes with $p'(x)$, since $o'$ is formed from a product that has either two factors that anti-commute with $p'(x)$ (namely, $o$ and $p'(x)$) or no operators that anti-commute with $p'(x)$.  If $o'$ is the identity operator, then let $\set G:=\set G'$ and $p:=p'$ and we are done.  Otherwise, there must be some operator $z\in\paren{\{X_k\}_k \cup \{Z_k\}_k}$ that anti-commutes with $o$.  Define the function $f$ by
 $$f(x) :=
@@ -1383,7 +1383,7 @@ Let $(\set Q',\lst P',\lst s')$ be the second to last element of $\optimizer(\se
 %@-others
 %@nonl
 %@-node:gcross.20100422160536.1366:Optimization
-%@-node:gcross.20090423002455.2:Algorithm
+%@-node:gcross.20090423002455.2:Theory
 %@+node:gcross.20100413085158.2885:Application
 \section{Application} \label{sec:lattice}
 %@+node:gcross.20100805134725.1339:Methodology
@@ -1391,7 +1391,7 @@ Let $(\set Q',\lst P',\lst s')$ be the second to last element of $\optimizer(\se
 
 In the previous section we presented an algorithm that computes the optimal subsystem code that can be implemented using a given set of measurements.  The procedure for optimizing the code requires an exponential amount of time, but fortunately the power of the exponential is a function of the distance of the best qubit in the code.  Thus, the optimization procedure terminates quickly when a set of measurements does not give rise to a good code.  Because of this property, this algorithm can be effectively applied to search over a set of choices of measurement operators to see if there is any good choice for implementing a code, since it can (relatively) quickly skip over the bad choices of measurements.
 
-In this section, we shall present an example of applying this algorithm to search for codes on quantum systems with the structure of a graph.  That is, we assume that we have a system of qubits, 2-body Pauli measurement operators and a graph such that there is a bijection between the qubits and vertices and between the edges and measurement operators, and also such that each measurement only acts on the two qubits corresponding to the vertices adjecent to its associated edge.  Specifying a particular graph constrains the number of qubits and the types of measurement operators, but it still allows a great deal of freedom in the choice of the measurement operator at each edge.  In Figure \ref{figure:2labelings} we illustrate an example of a graph with two possible such choices of measurement operators labelings;  note that for the sake of generality we do not impose the constraint that the two operators in the 2-body measurement be identical.
+In this section, we shall present an example of applying this algorithm to search for codes on quantum systems with the structure of a graph.  That is, we assume that we have a system of qubits, 2-body Pauli measurement operators and a graph such that there is a bijection between the qubits and vertices and between the edges and measurement operators, and also such that each measurement only acts on the two qubits corresponding to the vertices adjacent to its associated edge.  Specifying a particular graph constrains the number of qubits and the types of measurement operators, but it still allows a great deal of freedom in the choice of the measurement operator at each edge.  In Figure \ref{figure:2labelings} we illustrate an example of a graph with two possible such choices of measurement operators labelings;  note that for the sake of generality we do not impose the constraint that the two operators in the 2-body measurement be identical.
 
 \begin{figure}
 \begin{center}
@@ -1406,13 +1406,13 @@ A figure illustrating two possible labelings of a graph, which correspond to two
 
 For reasons that will become clear, it turns out to be useful to specify choices of measurement operators in terms of ray labelings rather than edges, since the former remains associated with vertices.  Define a \emph{ray} of a graph to be a pair consisting of a vertex and an edge adjacent to the vertex;  note that every ray can be uniquely associated with an edge, and every edge can be associated uniquely with a ray for each of its two incident vertices.  Thus, we can define a particular choice of measurement operators by labeling each ray in the graph with a single-qubit Pauli operator acting on the qubit of the incident vertex, and then letting the measurement operator associated with each edge be equal to the product of the single-qubit operators in the edge's two rays.
 
-There is a natural symmetry of quantum codes that can be factored out to reduce the search space:  the relevent properties of the code are invariant under single-qubit rotations.  That is, transformations such as swapping the $X$ and $Z$ operators at the location of a single physical qubit in every stabilizer, gauge qubit, and logical qubit operator does not affect the code.  Thus, when labeling the rays of a vertex, exactly which ray is labeled $X$, $Y$, and $Z$ is not important;  what matters is which rays commute and which rays anti-commute.  We see therefore that we need only search over the possible ways to divide the rays into three indistinguishable groups, so that a vertex with $n$ rays only has $1+\frac{3^{n-1}-1}{2}$ relevent labelings that need to be examined.
+There is a natural symmetry of quantum codes that can be factored out to reduce the search space:  the relevant properties of the code are invariant under single-qubit rotations.  That is, transformations such as swapping the $X$ and $Z$ operators at the location of a single physical qubit in every stabilizer, gauge qubit, and logical qubit operator does not affect the code.  Thus, when labeling the rays of a vertex, exactly which ray is labeled $X$, $Y$, and $Z$ is not important;  what matters is which rays commute and which rays anti-commute.  We see therefore that we need only search over the possible ways to divide the rays into three indistinguishable groups, so that a vertex with $n$ rays only has $1+\frac{3^{n-1}-1}{2}$ relevant labelings that need to be examined.
 
 The specific graphs we shall examine in this section are lattices generated by nine of the eleven convex vertex-uniform (also known as the ``Archimedean'') tilings of the plane --- that is, those tilings with the property that every face is convex and every vertex has the same sequence of faces.  Since these tilings have many translational symmetries, we narrow our search the set of labelings that share the translational symmetries of the lattice.  Since the ray labelings must be preserved under these symmetries, we can partition the rays of the graph into equivalence classes such that two rays are equivalent if and only if they are related by a translation symmetry;  thus we see that our narrowed search space is equivalent to the space of possible labelings of each \emph{class} of rays in the lattice examined.  Since there is a symmetry that can be factored out at each vertex (as discussed previously), we note that we can likewise partition the vertices into equivalence classes of vertices related by translation symmetries.  If there are $m$ vertex equivalence classes, and every vertex has $n$ rays, then our search space consists of $\paren{1+\frac{3^{n-1}-1}{2}}^m$ total possible labelings.  In Table \ref{table:combinatorics}, we list the eleven convex vextex-uniform tilings with the number of vertex equivalence classes, the number of rays at each vertex, and the total number of labelings.  (Two of the eleven tilings, ``truncated hexadeltille'' and ``snub hextille'', had such a large number of possible labelings that we decided to exclude them from our search.)
 
 \begin{table}
 \begin{tabular}{lrrr} \toprule
-Archimedian Tiling & \# Classes & \# Rays & \# Labelings \\ \midrule
+Archimedean Tiling & \# Classes & \# Rays & \# Labelings \\ \midrule
 quadrille & 1 & 4 & 14\\
 truncated quadrille & 4 & 3 & 625\\
 snub quadrille & 4 & 5 & 2,825,761\\
@@ -1432,11 +1432,11 @@ A table listing the number of vertex equivalence classes, the number of rays at 
 
 Note that we could furthermore refine our search to consist of those codes which also share the \emph{rotational} symmetries of the lattice.  We explicit avoid making this refinement because the existence of such codes as the Compass model code [ref] indicates that there are good codes on lattices that require breaking the rotational symmetry of the lattice.  However, we can use the rotational symmetries in a different way to reduce the search space as follows.  Partition the labelings into equivalence classes such that two labelings are in the same class if and only if there is a rotational symmetry that relates them, and observe that all of the labelings in each class will give rise quantum codes with identical properties.  Thus, we can reduce our search space to ignore redundant labelings by only examining one labeling in each equivalence class.
 
-Our search algorithm thus works in the following manner.  We start by putting a total ordering on all of the lattice labelings (after having factored out the symmetry at each vertex.)  We enumerate these labelings in order.  For each labeling, we generate new labelings by applying each rotational symmetry to the current labeling.  If any of these new labelings is less than the current labeling under our ordering, then we skip the current labeling because we know that we have already previously examined an equivalent labeling.  Although this algorithm proceeds serially through the search space, it can be paralized by making use of $n$ walkers, each of which starts at a different labeling (from $0$ to $n-1$) and which proceed by examining the current labeling and then skipping directly to the $n^{\text{th}}$ labeling after the current one.  In Table \ref{table:count-of-labels-scanned} we list the number of labelings that were actually examined by the scanning algorithm for each tiling.
+Our search algorithm thus works in the following manner.  We start by putting a total ordering on all of the lattice labelings (after having factored out the symmetry at each vertex.)  We enumerate these labelings in order.  For each labeling, we generate new labelings by applying each rotational symmetry to the current labeling.  If any of these new labelings is less than the current labeling under our ordering, then we skip the current labeling because we know that we have already previously examined an equivalent labeling.  Although this algorithm proceeds serially through the search space, it can be parallelized by making use of $n$ walkers, each of which starts at a different labeling (from $0$ to $n-1$) and which proceed by examining the current labeling and then skipping directly to the $n^{\text{th}}$ labeling after the current one.  In Table \ref{table:count-of-labels-scanned} we list the number of labelings that were actually examined by the scanning algorithm for each tiling.
 
 \begin{table}
 \begin{tabular}{lrrr} \toprule
-Archimedian Tiling & \# Scanned & \# Total \\ \midrule
+Archimedean Tiling & \# Scanned & \# Total \\ \midrule
 quadrille & 10 & 14\\
 truncated quadrille & 155 & 625\\
 snub quadrille & 706,881 & 2,825,761\\
@@ -1457,7 +1457,7 @@ In order to preserve the rotational symmetries of the tiling, it is important th
 \begin{table}
 \begin{tabular}{llr}
 \toprule
-Archimedian Tiling & Symmetries & Chosen\\
+Archimedean Tiling & Symmetries & Chosen\\
 quadrille & p4m & p4m \\
 truncated quadrille & p4m & p4m \\
 snub quadrille & p4g, p4, and pg & p4 \\
@@ -1518,7 +1518,7 @@ A table in which we show the maximum radius lattice that was completely scanned 
 }
 \end{table}
 
-Since each labeling of every lattice results in a quantum code, we had to provide some criteria for our search algorithm to decide whether a code was interesting enough to log.  We set our critera relatively low:  a code was deemed to be interesting if there was at least one logical qubit with distance three, that is if there was at leats one logcal qubit such that a single arbitrary error on that qubit can be corrected.  This was done under the reasoning that as long as some of the logical qubits in a code are sufficently useful to us to make implementing the code worthwhile, then we should not be troubled by the fact that there might be other logical qubits that are not useful because we can always ignore them (or, equivalently, classify them as gauge qubits).
+Since each labeling of every lattice results in a quantum code, we had to provide some criteria for our search algorithm to decide whether a code was interesting enough to log.  We set our criteria relatively low:  a code was deemed to be interesting if there was at least one logical qubit with distance three, that is if there was at least one logical qubit such that a single arbitrary error on that qubit can be corrected.  This was done under the reasoning that as long as some of the logical qubits in a code are sufficiently useful to us to make implementing the code worthwhile, then we should not be troubled by the fact that there might be other logical qubits that are not useful because we can always ignore them (or, equivalently, classify them as gauge qubits).
 %@-node:gcross.20100805134725.1339:Methodology
 %@+node:gcross.20100805134725.1340:Results
 \subsection{Results} \label{sec:results}
@@ -1566,7 +1566,7 @@ In the follow subsections we will focus on some specifics of the results for eac
 %@+node:gcross.20100805174159.1347:quadrille
 \subsubsection{quadrille}
 
-For the quadrille lattice, we only saw one labeling, illustrated in Figure \ref{figure:quadrille-code-labeling}, that resulted in an interesting code.  This labeling corresponds to the compass model code, and our algorithm correctly found that the distance of the code grows linearly with the radius of the lattice and is exactly equal to the square root of the number of qubits in the lattice.  This result is not terribly suprising, but it is good to see that our search technique employing our algorithm can correctly duplicate known results.
+For the quadrille lattice, we only saw one labeling, illustrated in Figure \ref{figure:quadrille-code-labeling}, that resulted in an interesting code.  This labeling corresponds to the compass model code, and our algorithm correctly found that the distance of the code grows linearly with the radius of the lattice and is exactly equal to the square root of the number of qubits in the lattice.  This result is not terribly surprising, but it is good to see that our search technique employing our algorithm can correctly duplicate known results.
 
 \begin{figure}
 \includegraphics[width=3in]{quadrille-code-labeling}
@@ -1722,7 +1722,7 @@ A figure illustrating one of the labelings of the hexadeltille tiling (on a radi
 
 This tiling is interesting because it had many more labelings that resulted in codes  than all of the other tilings combined;  specifically, for the rhombihexadeltille tiling we saw 48,807 labelings that resulted in useful codes, whereas for all of the other tilings combined we saw only 421 labelings that resulted in useful codes.  This is even more remarkable considering that the largest lattice we were able to scan for the rhombihexadeltille tiling was smaller than that the for most of the other tilings.
 
-As can be seen in Figure \ref{figure:results-hextille}, this tiling is also interesting becase it features so many different kinds of codes, including both codes that seem to grow in the number of logical qubits with radius and codes that grow in distance with size.  It is the only tiling that features a lattice that contains a labeling resulting in a code for every distance up to 6.
+As can be seen in Figure \ref{figure:results-hextille}, this tiling is also interesting because it features so many different kinds of codes, including both codes that seem to grow in the number of logical qubits with radius and codes that grow in distance with size.  It is the only tiling that features a lattice that contains a labeling resulting in a code for every distance up to 6.
 
 The rhombihexadeltille tiling is the only tiling we have seen which has code both with a distance greater than 4 and multiple qubits;  we saw six labelings which resulted in codes with distance 6 and two qubits, and four labelings which resulted in codes with distance 5 and four qubits.  In Figure \ref{figure:rhombihexadeltille-code-56-labelings} we show an example of each of these labelings.
 
@@ -1760,9 +1760,9 @@ A figure illustrating two labelings of the rhombihexadeltille tiling (on a radiu
 %@+node:gcross.20100820103141.1357:Discussion
 \subsection{Discussion} \label{sec:discussion}
 
-There are few surprises in our results.  For example, the best code that we found that maximized the logical qubit distance per physical qubit was the compass model code in the quadrille tiling, which is already well-known.  Furthermore, all of the codes obeyed the upper bounds $kd\in O(n)$ and $d^2\in O(n)$ --- where $k$ is the number of logical qubits in the code, $d$ is the distance of the code, and $n$ is the number of phyisical qubits implementing the code --- that were derived in Ref. X for codes having spatially local generators.
+There are few surprises in our results.  For example, the best code that we found that maximized the logical qubit distance per physical qubit was the compass model code in the quadrille tiling, which is already well-known.  Furthermore, all of the codes obeyed the upper bounds $kd\in O(n)$ and $d^2\in O(n)$ --- where $k$ is the number of logical qubits in the code, $d$ is the distance of the code, and $n$ is the number of physical qubits implementing the code --- that were derived in Ref. X for codes having spatially local generators.
 
-Some of the observed differences between the tilings are an artifact of the search space.  For example, every code found on the hextille tiling could also be implemented on the deltille tiling, but although we found two kinds of codes for the hextille tiling we found no codes for the deltille tilings.  This is because our search space included no way for the deltille tilings to ``knock out'' the middle qubits in each hexagonal tiling, and futhermore the hextille tiling search space included two classes of vertices which could have independent labelings whereas the deltille tiling search space had only one kind of vertex class.
+Some of the observed differences between the tilings are an artifact of the search space.  For example, every code found on the hextille tiling could also be implemented on the deltille tiling, but although we found two kinds of codes for the hextille tiling we found no codes for the deltille tilings.  This is because our search space included no way for the deltille tilings to ``knock out'' the middle qubits in each hexagonal tiling, and furthermore the hextille tiling search space included two classes of vertices which could have independent labelings whereas the deltille tiling search space had only one kind of vertex class.
 
 Although it is not clear how many of the codes we found will have practical applications, the success of this search demonstrates the feasibility of our method for using brute-force computation to find useful codes within a constrained search space.
 %@nonl
@@ -1773,7 +1773,7 @@ Although it is not clear how many of the codes we found will have practical appl
 
 In this paper we have presented an algorithm for computing the optimal quantum subsystem code that can be implemented using a given set of measurements.  We have shown that although this algorithm requires exponential time in the worst case, this exponential is a function of the code distance, and so the algorithm terminates (relatively) quickly when the optimal code has low distance.  Because of this, the algorithm can be used to perform a brute-force search through a space of possible measurements in order to see which give rise to ``useful'' (high-distance) codes.  We demonstrated the feasibility of this approach by applying the algorithm to search for codes implemented on systems with lattice structures corresponding to nine of the eleven vertex-uniform tilings, and on all but one of these nine tilings we found useful codes.
 
-Our algorithm should prove helpful in two kinds of ways in particular.  First, it can be appled in an exploratory setting to do the tedius work of computing the code resulting from a set of measurements so that the researcher can experiment with new ideas for choices of measurement to see how well they work.  Second, it can be applied to hone a `rough' idea for how a code might be implemented (such as a particular lattice configuration) into a concrete idea by scanning through the possible choices of the degrees of freedom to see if any result in useful codes; of course, cleverness can often come up with an answer more quickly than a computationally intensive search, but it is good to have the alternative of brute-force computation to fall back on when brute-force cleverness fails.
+Our algorithm should prove helpful in two kinds of ways in particular.  First, it can be applied in an exploratory setting to do the tedious work of computing the code resulting from a set of measurements so that the researcher can experiment with new ideas for choices of measurement to see how well they work.  Second, it can be applied to hone a `rough' idea for how a code might be implemented (such as a particular lattice configuration) into a concrete idea by scanning through the possible choices of the degrees of freedom to see if any result in useful codes; of course, cleverness can often come up with an answer more quickly than a computationally intensive search, but it is good to have the alternative of brute-force computation to fall back on when brute-force cleverness fails.
 %@nonl
 %@-node:gcross.20100413085158.2886:Conclusion
 %@-others
