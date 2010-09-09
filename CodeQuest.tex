@@ -29,9 +29,9 @@
 \newcommand{\set}{\tilde}
 
 \newcommand{\genfun}{\tilde{\mathcal{G}}}
-\newcommand{\pauligroup}{\mathfrak{P}}
-\newcommand{\powerset}{\mathcal{P}}
-\newcommand{\centralizer}{\mathcal{C}}
+\newcommand{\pauligroup}{\set{\mathfrak{P}}}
+\newcommand{\powerset}{\set{\mathcal{P}}}
+\newcommand{\centralizer}{\set{\mathcal{C}}}
 \newcommand{\pseudoproduct}{\set\Pi}
 \newcommand{\unpack}{\set U}
 \newcommand{\optimizer}{\lst{\mathcal{O}}}
@@ -119,9 +119,28 @@ There are now many examples of stabilizer subsystem codes in the literature.  On
 \begin{equation}
 H=-\Delta \sum_{i,j} (X_{i,j} X_{i+1,j} +Z_{i,j} Z_{i,j+1}),
 \end{equation}
-where $P_{i,j}$ represents the Pauli operator $P$ acting on qubit at location $(i,j)$.  This model is interesting for a few reasons.  The first is that the energy levels of this system can be best thought of as elements of a quantum error correcting subsystem code.  The second reason is that the model provides some amount of protection from quantum errors because errors are energetically unfavored\footnote{Unfortunately, in this particular system the protection vanishes as the size of the lattice goes to infinity~\cite{Dorier:05a}, but for small lattice sizes there is some protection from errors due to the energy level structure of the system~\cite{Bacon:01a}.}.  Many other examples of systems which have energy protecting properties are also known: the most famous being Kitaev's toric code in two and four-spatial dimensions~\cite{Kitaev:97c,Kitaev:03a,Dennis:02a}.  The study of such systems is still in its infancy and one central question is whether there exist Hamiltonians with reasonable physical parameters (such as existing in three or fewer spatial dimensions and involving two-body interactions) whose physics enact quantum error correction on the system when the system is in contact with a thermal reservoir; such systems are called \emph{self-correcting} quantum computers~\cite{Bacon:06a,Bombin:09a}.  Motivated by these systems, an important question is which Hamiltonians with two-qubit interactions give rise to quantum error correcting subsystem codes.  Here we address this issue by starting with a set of two-qubit interactions of the form $P\otimes Q$ where $P$ and $Q$ are Pauli operators, and then, from these operators, constructing the subsystem code (if any) which will arise from the algebra of these operators.
+where $P_{i,j}$ represents the Pauli operator $P$ acting on qubit at location $(i,j)$.  This model is interesting for a few reasons.  The first is that the energy levels of this system can be best thought of as elements of a quantum error correcting subsystem code.  The second reason is that the model provides some amount of protection from quantum errors because errors are energetically unfavored\footnote{Unfortunately, in this particular system the protection vanishes as the size of the lattice goes to infinity~\cite{Dorier:05a}, but for small lattice sizes there is some protection from errors due to the energy level structure of the system~\cite{Bacon:01a}.}.  Many other examples of systems which have energy protecting properties are also known: the most famous being Kitaev's toric code in two and four-spatial dimensions~\cite{Kitaev:97c,Kitaev:03a,Dennis:02a}.  The study of such systems is still in its infancy and one central question is whether there exist Hamiltonians with reasonable physical parameters (such as existing in three or fewer spatial dimensions and involving two-body interactions) whose physics enact quantum error correction on the system when the system is in contact with a thermal reservoir; such systems are called \emph{self-correcting} quantum computers~\cite{Bacon:06a,Bombin:09a}.  In this paper we will talk about quantum subsystem codes from the perspective of active error correction where error syndromes are identified through carefully engineered measurements, but it shall be understood that this formalism can equivalently be seen from the perspective of passive error correction where errors are guarded against by carefully engineered interactions.  That is, measurement operators in the active error correction picture are equivalent to interactions in the passive error correction picture.
 
-Our approach is thus the opposite of the normal approach to constructing subsystem codes in that we start first with the two-qubit terms and then build up the code.  In section~\ref{sec:algorithm}, we shall formally prove that every set of measurements that are members of the Pauli group acting on the system give rise to a subsystem code, and we shall in the process present algorithms for computing this code (or at least, for computing one such code, since it is not unique) and its distance.  In section~\ref{sec:lattice}, we shall present numerical results obtained by applying a code implementing this algorithm to explore systems built using lattices that take the form of the 11 regular tilings.  In section~\ref{sec:conclusion} we present our conclusions.
+Because we ultimately want to build a system implementing our measurements, physical considerations typically constrain our measurements to be \emph{local}, which means that they can be expressed in the physical space as a tensor product of single-qubit Pauli operators --- i.e, for each measurement operator $o$ we have that
+$o := \bigotimes_i P_i$ where $P_i$ is the pauli operator $P$ acting on the $i^{\text{th}}$ qubit.  An important question then is which sets of local measurements give rise to useful quantum error correcting subsystem codes.
+
+Approaches to answering this question typically involve applying theoretical analysis with varying degrees of cleverness.  In this paper we present an alternative approach.  In section~\ref{sec:algorithm}, we present an algorithm which for every set of local measurement operators computes a quantum subsystem code that arises from the algebra of these operators\footnote{The code that we find is almost never unique, since among other transformations one can multiple every gauge and logical qubit operator by an element from the stablizers and end up with an equivalent code.}.  Along the way we develop a formalism that allows us to prove not only that this algorithm is correct, but also that the code that it computes is \emph{optimal} in the sense that there exists no other code arising from the same set of measurements for which the distance of any of the logical qubits has been increased.  This property makes this algorithm useful for analyzing the properties of codes arising from measuments that are too overwhelming to analyize by hand.  
+
+We shall also show that an important property of this algorithm is that it terminates (relatively) quickly when the distance of the code is small, which allows it to be used not only to solve for individual codes, but also to search through entire classes of sets of measurements to see if any have high-distance qubits.  Motivated by previous results demonstrating the utility of codes implemented using systems on a lattice, we undertake a systematic investigation of codes where the measurement operators are restricted to the two-body interations arising from the edges of periodic lattices derived from the 11 regular tilings.  In section~\ref{sec:lattice} we discuss our approach for applying the algorithm to perform a systematic search for codes that can be implemented on these tilings, and we the present numerical results that we obtained. In section~\ref{sec:conclusion} we present our conclusions.
+%@+node:gcross.20100908141301.1352:Notation
+\subsection{Notation}
+
+In this paper we adopt the following conventions for notation:
+
+\begin{itemize}
+\item \emph{sets} are denoted by a variable with a tilde, e.g. $\tilde A$;
+\item \emph{sequences} are denoted by a variable with an arrow, e.g. $\vec A$;
+\item \emph{operators} and \emph{integers} are denoted by using lower-case letters, e.g. $o$ and $i$;
+\item \emph{collections} of \emph{operators} and \emph{pairs of operators} are denoted by using upper-case letters with either a tilde or an arrow above them, e.g. $\tilde O$ and $\vec O$;
+\item \emph{collections} of \emph{integers} are denoted by using lower-case letters with either a tilde or an arrow above them, e.g. $\tilde k$ and $\vec k$;  and
+\item \emph{collections} of \emph{other kinds} of objects are typically denoted by capital letters in a fancy script.
+\end{description}
+%@-node:gcross.20100908141301.1352:Notation
 %@-node:gcross.20090405101642.5:Introduction
 %@+node:gcross.20090423002455.2:Algorithm
 \section{Theory} \label{sec:algorithm}
@@ -130,7 +149,7 @@ Our approach is thus the opposite of the normal approach to constructing subsyst
 \subsection{Construction of the subsystem code}
 
 \begin{remark}
-This subsection describes by way of a constructive proof how one can compute the quantum subsystem code implementable by a the set of measurement operators.  For a listing of pseudo-code that implements the algorithm described in this proof, see Table \ref{table:algo1} near the end of this subsection.
+This subsection describes by way of a constructive proof how to compute given a set of measurement operators the quantum code that can be implemented by these operators.  For a listing of pseudo-code that implements the algorithm described in this proof, see Table \ref{table:algo1} near the end of this subsection.
 \end{remark}
 %@+node:gcross.20090520163423.14:Introduce main theorem
 Although conceptually a subsystem code is an isomorphism $T$ such that  $\mathscr{P}\approx^T \mathscr{S}\times\mathscr{G}\times\mathscr{Q}$ --- that is, an isomorphism between the \emph{physical} space of qubits and the \emph{computational} space of qubits in whose terms our computation is actually expressed --- we do not need to actually construct this isomorphism in order to be able to use the code.  Since all of our work will be done on the physical system anyway, it suffices to know the operators in the physical space $\mathscr{P}$ that are isomorphic to the qubit measurement operators of interest in the computational space $\mathscr{S}\times\mathscr{G}\times\mathscr{Q}$, and it is exactly the operators on $\mathscr{P}$ that the algorithm we present shall compute\footnote{If one really wanted to, one could explicitly construct the isomorphism $\mathscr{T}$ from these operators by computing the unitary operator which simultaneously diagonalizes a the maximal subset of commuting measurements from this set of operators on $\mathscr{P}$, but in practice this is not particularly useful.}.
@@ -148,7 +167,7 @@ For convenience, we introduce the following additional definitions:
 \begin{definition}
 
 \begin{enumerate}
-\item $\pauligroup$ is the group of Pauli operators --- that is, the group of tensor products of the (unnormalized) Pauli matrices --- acting on the physical space $\mathscr{P}$;
+\item $\pauligroup$ is the group of Pauli operators --- that is, the group of tensor products of the (unnormalized) Pauli matrices --- acting on the physical space $\mathscr{P}$, \emph{modulo phases};
 \item $\powerset(\set S)$ is the power set of $\set S$, i.e. the set of all subsets of $\set S$; and
 \item $\centralizer_\mathfrak{G}(\set S)$ is the centralizer of $\set S$, that is the subgroup of elements in $\mathfrak{G}$ which commute with $\set S$;
 \item the function $\genfun:\powerset(\pauligroup)\to\powerset(\pauligroup)$ is defined such that $\genfun(\set S)$ is the set of all possible products of operators in $\set S$ --- that is, it is the set \emph{generated} by $\set S$.
@@ -1770,6 +1789,7 @@ Although it is not clear how many of the codes we found will have practical appl
 %@-node:gcross.20100413085158.2885:Application
 %@+node:gcross.20100413085158.2886:Conclusion
 \section{Conclusion}
+\label{sec:conclusion}
 
 In this paper we have presented an algorithm for computing the optimal quantum subsystem code that can be implemented using a given set of measurements.  We have shown that although this algorithm requires exponential time in the worst case, this exponential is a function of the code distance, and so the algorithm terminates (relatively) quickly when the optimal code has low distance.  Because of this, the algorithm can be used to perform a brute-force search through a space of possible measurements in order to see which give rise to ``useful'' (high-distance) codes.  We demonstrated the feasibility of this approach by applying the algorithm to search for codes implemented on systems with lattice structures corresponding to nine of the eleven vertex-uniform tilings, and on all but one of these nine tilings we found useful codes.
 
