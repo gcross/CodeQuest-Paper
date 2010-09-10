@@ -916,10 +916,10 @@ Proof by contradiction.  By Lemma \ref{elimination-to-create-subset}, there woul
 %@-node:gcross.20100125183648.1319:Proposition: Bound on recombinations
 %@+node:gcross.20100125183648.1326:Proof of Theorem
 \begin{remark}
-With the preceding Lemmas and Propositions, we now have all of the tools that we need to prove Theorem \ref{optimality-condition}.  Again, the idea behind this proof is that because the first members of pairs in the choice are contained in an unimprovable set, one cannot take products of the qubits in the choice in order to improve them;  thus, the only way one could construct a better choice would by forming $n+k$ independent qubits from products of $n$ qubits (where $k>0$), which is disallowed by the result of Proposition \ref{bound-on-recombinations}.  Hence, there can be no better choice.
+With the preceding Lemmas and Propositions, we now have all of the tools that we need to prove Theorem \ref{theorem:optimality-condition}.  Again, the idea behind this proof is that because the first members of pairs in the choice are contained in an unimprovable set, one cannot take products of the qubits in the choice in order to improve them;  thus, the only way one could construct a better choice would by forming $n+k$ independent qubits from products of $n$ qubits (where $k>0$), which is disallowed by the result of Proposition \ref{bound-on-recombinations}.  Hence, there can be no better choice.
 \end{remark}
 
-\begin{proof}[Proof of Theorem \ref{optimality-condition}]
+\begin{proof}[Proof of Theorem \ref{theorem:optimality-condition}]
 Proof by contradiction.  Let $\lst P'$ be some choice of qubits stabilized by $\set S$ such that $(\genfun\circ\set U)(\lst P)=(\genfun\circ\set U)(\lst P')$ (which automatically implies that $|\lst P|=|\lst P'|$) and there exists some integer $k$ such that $M_{\set S}(\lst P')_k > M_{\set S}(\lst P)_k$;  in particular, let $k$ be the smallest such integer, and let $\set C:=\{\lst P'_i : i \ge k\}$.  Let $l$ be the smallest integer such that $\lst M_{\set S}(\lst P)_l\ge \lst M_{\set S}(\lst P')_k$ or $|\lst P|+1$ if there is no such integer, and let $\set A := \{p_1(\lst P_i) : i \ge l\}$; note that since $\lst M_{\set S}(\lst P')_k > \lst M_{\set S}(\lst P)_k$ we must have $l>k$, and hence $|\set C| > |\set A|$.
 
 Take any conjugal pair $O:=(a,b)$ such that $\{a,b\}\in\genfun(\set C)$.  Since $a$ and $b$ anti-commute, it must be the case that $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(O)\ne\emptyset$, because if every operator in $\set G_{\set U(\lst P)}(O)$ were the second member of a pair in $\lst P$ then $a$ and $b$ would commute.  Let $c$ be a choice of $a$ or $b$ such that $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\ne\emptyset$.  By Lemma \ref{combinations-can't-make-things-worse} we know that $\lst M_{\set S}(\lst P')_k\le\om_{\set S}(c)$ since $c\in\genfun(\set C)$.  By the assumption of this Theorem that $\{p_1(\lst P_i)\}_i$ is an unimprovable set that extends to $\set U(\lst P)$, we know that $\lst M_{\set S}(\lst P')_k \le \om_{\set S}(c)\le\min_{x\in\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)} \om_{\set S}(x)$.  From these bounds we conclude that $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\subseteq \set A$, and since $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\ne\emptyset$ we see therefore that $\set G_{\set U(\lst P)}(c)\cap\set A\ne\emptyset$ and so $\set G_{\set U(\lst P)}(O)\cap\set A\ne\emptyset$.
@@ -1654,13 +1654,13 @@ A figure illustrating two of the labelings of the snub quadrille tiling (on a ra
 %@+node:gcross.20100810123019.1787:isosnub quadrille
 \subsubsection{isosnub quadrille}
 
-We only saw two labelings of the isosnub lattice that result in useful codes, both of which only have a single qubit that seems (assuming that the trend seen in Figure \ref{figure:results-hextille} can be extrapolated) to have a distance that grows with the radius of the lattice.  These two labeling are illustrated in Figure \ref{figure:snub-quadrille-code-r-labeling}.
+We only saw two labelings of the isosnub lattice that result in useful codes, both of which only have a single qubit that seems (assuming that the trend seen in Figure \ref{figure:results-hextille} can be extrapolated) to have a distance that grows with the radius of the lattice.  These two labeling are illustrated in Figure \ref{figure:isosnub-quadrille-code-r-labeling}.
 
 \begin{figure*}
 \includegraphics[width=3.5in]{isosnub-quadrille-code-labeling-1} % labeling #346
 \includegraphics[width=3.5in]{isosnub-quadrille-code-labeling-2} % labeling #764
 \caption{
-\label{figure:snub-quadrille-code-r-labeling}
+\label{figure:isosnub-quadrille-code-r-labeling}
 A figure illustrating two of the labelings of the isosnub quadrille tiling (on a radius 1 lattice) that result in a quantum code with a single qubit whose distance grows with the radius of the lattice.
 }
 \end{figure*}
@@ -1755,7 +1755,7 @@ The rhombihexadeltille tiling is the only tiling we have seen which has code bot
 }
 \caption{
 \label{figure:rhombihexadeltille-code-56-labelings}
-A figure illustrating labelings of the rhombihexadeltille tiling (on a radius 2 lattice) that result in a quantum code with distance 5 and four qubits (\ref{figure:hexadeltille-code-5-labeling}) and a quantum code with distance 6 and two qubits (\ref{figure:hexadeltille-code-6-labeling}) when applied to a radius 3 lattice.
+A figure illustrating labelings of the rhombihexadeltille tiling (on a radius 2 lattice) that result in a quantum code with distance 5 and four qubits (\ref{figure:rhombihexadeltille-code-5-labeling}) and a quantum code with distance 6 and two qubits (\ref{figure:rhombihexadeltille-code-6-labeling}) when applied to a radius 3 lattice.
 }
 \end{figure*}
 
