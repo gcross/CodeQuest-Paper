@@ -144,7 +144,6 @@ In this paper we adopt the following conventions for notation:
 %@-node:gcross.20090405101642.5:Introduction
 %@+node:gcross.20090423002455.2:Algorithm
 \section{Theory} \label{sec:algorithm}
-
 %@+node:gcross.20090423002455.3:Stabilizers and gauge qubits
 \subsection{Construction of the subsystem code}
 
@@ -1264,10 +1263,6 @@ In order to be able to place a lower bound on binary strings that have yet to be
 \label{definition:disjoint-pseudo-generators}
 A set of pseudo-generators $\set G$ is said to be \emph{disjoint} if for every $\set g\in\set G$ there exists some physical qubit $k$ such that either $X_k$ or $Z_k$ (or both) anti-commutes with every operator in $\genfun(\set g)\backslash\{I\}$, but both $X_k$ and $Z_k$ commute with every operator in $\genfun(\set g')$ for every $\set g'\in\set G\backslash\{g\}$.
 \end{definition}
-
-\begin{remark}
-The following Lemma is a trivial consequence of this definition.
-\end{remark}
 
 \begin{remark}
 With the following Lemma, we show that the property of disjointness is exactly what we need to obtain the bounds that we want.
