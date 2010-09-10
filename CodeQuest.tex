@@ -1217,12 +1217,12 @@ The key difference between binary strings and Pauli operators is that binary str
 \end{remark}
 
 \begin{definition}
-A \emph{pseudo-generator} is a set of either 1 or 2 Pauli operators.  In an abuse of notation, we define the functions $\set U$ to be respectively $\set G\mapsto \bigcup_{\set g\in\set G} \set g_i$ and $\set G\mapsto (\genfun\circ\set G)(\set G)$ when applied to a set of pseudo-generators.
+A \emph{pseudo-generator} is a set of either 1 or 2 Pauli operators.  In an abuse of notation, we define the functions $\set U$ and $\genfun$ to be respectively $\set G\mapsto \bigcup_{\set g\in\set G} \set g_i$ and $\set G\mapsto (\genfun\circ\set G)(\set G)$ when applied to a set of pseudo-generators.
 \end{definition}
 %@-node:gcross.20100422160536.1451:pseudo-generator
 %@+node:gcross.20100422160536.1452:pseudo-product (plus bounding Lemma)
 \begin{remark}
-(This definition does not follow that of White and Grassl exactly; it has been specialized to our situation for the sake of simplicity.)
+(The preceding definition does not follow that of White and Grassl exactly; it has been specialized to our situation for the sake of simplicity.)
 
 Unlike `normal' generators --- i.e., Pauli operators --- a product of generators is not a Pauli operator but rather a set of Pauli operators, which we define as follows.
 \end{remark}
@@ -1396,7 +1396,7 @@ and $\set G$ can be computed in time $O(|\set O|^2)$.
 \end{lemma}
 
 \begin{remark}
-The structure of this proof bears some similarities to Proposition \ref{make-independent-using-elimination}.
+The structure of this proof bears some similarities to Proposition \ref{make-independent-using-elimination}.  In constrast with Proposition \ref{make-independent-using-elimination}, however, in the setting of this Lemma we are working with operators that in general will not commute.
 \end{remark}
 
 \begin{proof}
