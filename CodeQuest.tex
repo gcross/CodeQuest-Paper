@@ -469,7 +469,7 @@ A pseudo-code representation of the algorithm described by Theorem \ref{theorem-
 \subsection{Optimization of the logical qubits}
 
 \begin{remark}
-A pseudo-code representation of the algoritm that will be described in this section is given in Table \ref{table:algorithm-optimization}.
+A pseudo-code representation of the algoritm that will be described in this section is presented in Table \ref{table:algorithm-optimization}.
 \end{remark}
 
 %@<< Main body >>
@@ -543,7 +543,7 @@ $\quad$
 Given the notation above, we now precisely define what we mean by the ``best choice'' of logical qubits.
 
 \begin{definition}
-An \emph{optimal choice of qubits stabilized by $\set S$} is any choice of qubits, $\lst P$ stabilized by $\set S$, such that given any other choice of qubits, $\lst P'$, that is also stabilized by $\set S$, such that $(\genfun\circ \set U)(\lst P)=(\genfun\circ \set U)(\lst P')$, we have that $\lst M(\lst P)_i \ge \lst M(\lst P')_i$ for all $1\le i \le |\lst P|=|\lst P'|$.\footnote{Note that since $\lst P$ and $\lst P'$ are sequences of conjugal pairs without duplicates they are therefore independent, and so if $(\genfun\circ \set U)(\lst P)=(\genfun\circ \set U)(\lst P')$ then we know automatically that $|\lst P|=|\lst P'|$.}
+An \emph{optimal choice of qubits stabilized by $\set S$} is any choice of qubits, $\lst P$ stabilized by $\set S$, such that given any other choice of qubits, $\lst P'$, that is also stabilized by $\set S$ and which satisfies $(\genfun\circ \set U)(\lst P)=(\genfun\circ \set U)(\lst P')$, we have that $\lst M(\lst P)_i \ge \lst M(\lst P')_i$ for all $1\le i \le |\lst P|=|\lst P'|$.\footnote{Note that since $\lst P$ and $\lst P'$ are sequences of conjugal pairs without duplicates they are therefore independent, and so if $(\genfun\circ \set U)(\lst P)=(\genfun\circ \set U)(\lst P')$ then we know automatically that $|\lst P|=|\lst P'|$.}
 \end{definition}
 %@-node:gcross.20091221145013.1278:Definition: Total ordering => Optimal choice of qubits
 %@+node:gcross.20100422160536.1370:Definition: Optimization procedure
@@ -773,7 +773,7 @@ Table \ref{table:algorithm-optimization} contains a listing of pseudo-code that 
 %@-node:gcross.20100422160536.1382:Fix-Logical-Qubits
 %@-node:gcross.20100422160536.1380:Pseudo-code
 %@+node:gcross.20100422160536.1374:Definition: Running time
-In addition to proving that the above algorithm successfully constructs an optimal choice of qubits, we shall also provide a bound on its running time.  In order to this, we first need to precisely define what we mean by the running time for the purposes of this section.
+In addition to proving that the above algorithm successfully constructs an optimal choice of qubits, we shall also provide a bound on its running time.  In order to do this, we first need to precisely define what we mean by the running time for the purposes of this section.
 
 \begin{definition}
 We say that a computation can be performed \emph{in time $x$} if the computation requires taking $x$ products of Pauli operators.
@@ -792,7 +792,7 @@ Suppose we are given
 \item a set of pairs, $\set L\subseteq\centralizer_\pauligroup(\set S)$, conjugal with respect to $\set U(\set Q)\cup\set S$;
 \item and a set of Pauli operators $\set C$ such that $\genfun(\set C)=\centralizer_\pauligroup(\set S)$;
 \end{itemize}
-then $\optimizer(\set S,\set L)$ is a sequence of finite length, and if $(\set Q,\lst P,\lst s)$ is the last element in the sequence then $\lst P$ is an optimal choice of qubits such that $\genfun(\lst P)=\genfun(\set L)$, and furthermore it can be computed in a time that is in the set $O\paren{|\set C|^2+|\lst L|^2d3^d\choose{N}{d}}$\footnote{A function $f$ is said to be in the set $O(g)$ if $f$ is asymptotically bounded by some fixed constant times $g$;  formally $f\in O(g)$ if and only if there exists constants $c$ and $x_0$ such that $f(x)<c g(x)$ for all $x>x_0$.}, where $d:=\lst M(\lst P)_{|\lst P|}$\footnote{Recall that $\lst M^{(N)}(\lst P)_N$ is the distance of the best qubit in the (optimized) code.}.
+then $\optimizer(\set S,\set L)$ is a sequence of finite length, and if $(\set Q,\lst P,\lst s)$ is the last element in the sequence then $\lst P$ is an optimal choice of qubits such that $\genfun(\lst P)=\genfun(\set L)$, and furthermore it can be computed in a time that is in the set $O\paren{|\set C|^2+|\lst L|^2d3^d\choose{N}{d}}$\footnote{A function $f$ is said to be in the set $O(g)$ if $f$ is asymptotically bounded by some fixed constant times $g$;  formally $f\in O(g)$ if and only if there exists constants $c$ and $x_0$ such that $f(x)<c g(x)$ for all $x>x_0$.}, where $d:=\lst M(\lst P)_{|\lst P|}$\footnote{Recall that $\lst M(\lst P)_{|\lst P|}$ is the distance of the best qubit in the (optimized) code.}.
 \end{theorem}
 
 The proof of this Theorem is rather technical and shall be split into several subsections.  First we shall prove the existence of a condition that suffices to prove that a choice of logical qubits is optimal.   Second we shall prove that the algorithm above constructs a choice satisfying this condition.  Third we shall prove that the running time of the algorithm has the claimed bound.  Finally we shall tie these results together to prove the Theorem above.
@@ -812,7 +812,7 @@ The proof of this Theorem is rather technical and shall be split into several su
 How do we know that a choice of qubits is optimal?  Intuitively, it should be sufficient to prove that a choice of qubits is optimal if we can show that there is no way that we can recombine qubits in the choice to form one or more qubits that are more robust than their component factors --- that is, there is no way that any qubit can be ``improved'' by its involvement in such a product.  This condition is stated formally in the following definition of \emph{unimprovable sets}:
 
 \begin{definition}
-An \emph{unimprovable set with respect to $\set S$} is a set of Pauli operators, $\set O$, such that for any subset, $\set X\subseteq \set O$, we have that $\om_{\set S}\paren{\prod_{x\in \set X} x} = \min_{x\in\set X}\om_{\set S}(x)$.  We say that an unimprovable set $\set O$ \emph{extends to $\lst Q$} if for all subsets $\set X \subseteq \set O\cup\set Q$ such that $\set X\cap \set O \ne \emptyset$ we have that $\om_{\set S}\paren{\prod_{x\in \set X} x} \le \min_{x\in\set X\cap \set O}\om_{\set S}(x)$.
+An \emph{unimprovable set with respect to $\set S$} is a set of Pauli operators, $\set O$, such that for any subset, $\set X\subseteq \set O$, we have that $(\om_{\set S}\circ\prod)(\set X) = \min_{x\in\set X}\om_{\set S}(x)$.  We say that an unimprovable set $\set O$ \emph{extends to $\lst Q$} if for all subsets $\set X \subseteq \set O\cup\set Q$ such that $\set X\cap \set O \ne \emptyset$ we have that $(\om_{\set S}\circ\prod)(\set X) \le \min_{x\in\set X\cap \set O}\om_{\set S}(x)$.
 \end{definition}
 %@-node:gcross.20100128212359.1294:Definition: Unimprovable set
 %@+node:gcross.20100125183648.1309:Introduce Theorem
@@ -833,11 +833,11 @@ To assist us in proving this Theorem, we shall first prove a number of useful Le
 %@+node:gcross.20100125183648.1306:Lemma: Combinations can't make things worse
 \begin{lemma}
 \label{combinations-can't-make-things-worse}
-For any set of operators $\set O$, we have that $\om_{\set S}\paren{\prod_{o\in\set O} o} \ge \text{min}_{o\in \set O}\,\om_{\set S}\paren{o}$.
+For any set of operators $\set O$, we have that $(\om_{\set S}\circ \prod)(\set O) \ge \text{min}_{o\in \set O}\,\om_{\set S}\paren{o}$.
 \end{lemma}
 
 \begin{proof}[Proof of Lemma]
-Any undetectable error with respect to $\set S$ acting on $\om_{\set S}\paren{\prod_{o\in\set O} o}$ must also act at least one of the operators in $\set O$ since otherwise it cannot anti-commute with the product. \end{proof}
+Any undetectable error with respect to $\set S$ acting on $(\om_{\set S}\circ \prod)(\set O)$ must also act at least one of the operators in $\set O$ since otherwise it cannot anti-commute with the product. \end{proof}
 %@-node:gcross.20100125183648.1306:Lemma: Combinations can't make things worse
 %@+node:gcross.20100125183648.1304:Lemma: The lesser operator wins
 \begin{remark}
@@ -850,7 +850,7 @@ Suppose we are given two operators $a,b\in\pauligroup$ such that $\om_{\set S}(a
 \end{lemma}
 
 \begin{proof}[Proof of Lemma]
-Since $\om_{\set S}(a)<\om_{\set S}(b)$, there must be an undetectable error with respect to $\set S$ that acts on $a$ but not on $b$;  thus, it must anti-commute with and hence act on the product $a\cdot b$, so that $\om_{\set S}(a\cdot b)\le \om_{\set S}(a)$.  Since $\om_{\set S}(a\cdot b)\ge \om_{\set S}(a)$ by Lemma , we conclude that $\om_{\set S}(a\cdot b) = \om_{\set S}(a)$.
+Since $\om_{\set S}(a)<\om_{\set S}(b)$, there must be an undetectable error with respect to $\set S$ that acts on $a$ but not on $b$;  thus, it must anti-commute with and hence act on the product $a\cdot b$, so that $\om_{\set S}(a\cdot b)\le \om_{\set S}(a)$.  Since $\om_{\set S}(a\cdot b)\ge \om_{\set S}(a)$ by Lemma \ref{lesser-operator-wins}, we conclude that $\om_{\set S}(a\cdot b) = \om_{\set S}(a)$.
 \end{proof}
 %@nonl
 %@-node:gcross.20100125183648.1304:Lemma: The lesser operator wins
@@ -973,7 +973,7 @@ Finally, observe that for every $o\in\set O$ we either have that $o=a$, in which
 %@-node:gcross.20100125183648.1324:Elimination to create subset
 %@+node:gcross.20100125183648.1325:Proof
 \begin{remark}
-With the preceding Lemmas having performed the heavy lifting, the Proof of Proposition \ref{bound-on-recombinations} is quite simple.
+With the preceding Lemmas having performed the heavy lifting, the proof of Proposition \ref{bound-on-recombinations} is quite simple.
 \end{remark}
 
 \begin{proof}[Proof of Proposition \ref{bound-on-recombinations}]
@@ -989,7 +989,7 @@ With the preceding Lemmas and Propositions, we now have all of the tools that we
 \begin{proof}[Proof of Theorem \ref{theorem:optimality-condition}]
 Proof by contradiction.  Let $\lst P'$ be some choice of qubits stabilized by $\set S$ such that $(\genfun\circ\set U)(\lst P)=(\genfun\circ\set U)(\lst P')$ (which automatically implies that $|\lst P|=|\lst P'|$) and there exists some integer $k$ such that $M_{\set S}(\lst P')_k > M_{\set S}(\lst P)_k$;  in particular, let $k$ be the smallest such integer, and let $\set C:=\{\lst P'_i : i \ge k\}$.  Let $l$ be the smallest integer such that $\lst M_{\set S}(\lst P)_l\ge \lst M_{\set S}(\lst P')_k$ or $|\lst P|+1$ if there is no such integer, and let $\set A := \{p_1(\lst P_i) : i \ge l\}$; note that since $\lst M_{\set S}(\lst P')_k > \lst M_{\set S}(\lst P)_k$ we must have $l>k$, and hence $|\set C| > |\set A|$.
 
-Take any conjugal pair $O:=(a,b)$ such that $\{a,b\}\in\genfun(\set C)$.  Since $a$ and $b$ anti-commute, it must be the case that $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(O)\ne\emptyset$, because if every operator in $\set G_{\set U(\lst P)}(O)$ were the second member of a pair in $\lst P$ then $a$ and $b$ would commute.  Let $c$ be a choice of $a$ or $b$ such that $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\ne\emptyset$.  By Lemma \ref{combinations-can't-make-things-worse} we know that $\lst M_{\set S}(\lst P')_k\le\om_{\set S}(c)$ since $c\in\genfun(\set C)$.  By the assumption of this Theorem that $\{p_1(\lst P_i)\}_i$ is an unimprovable set that extends to $\set U(\lst P)$, we know that $\lst M_{\set S}(\lst P')_k \le \om_{\set S}(c)\le\min_{x\in\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)} \om_{\set S}(x)$.  From these bounds we conclude that $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\subseteq \set A$, and since $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\ne\emptyset$ we see therefore that $\set G_{\set U(\lst P)}(c)\cap\set A\ne\emptyset$ and so $\set G_{\set U(\lst P)}(O)\cap\set A\ne\emptyset$.
+Take any conjugal pair $O:=(a,b)$ such that $\{a,b\}\in\genfun(\set C)$.  Since $a$ and $b$ anti-commute, it must be the case that $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(O)\ne\emptyset$, because if every operator in $\set G_{\set U(\lst P)}(O)$ were the second member of a pair in $\lst P$ then $a$ and $b$ would commute.  Let $c$ be a choice of $a$ or $b$ such that $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\ne\emptyset$.  By Lemma \ref{combinations-can't-make-things-worse} we know that $\lst M_{\set S}(\lst P')_k\le\om_{\set S}(c)$ since $c\in\genfun(\set C)$.  By the assumption of this Theorem that $\{p_1(\lst P_i)\}_i$ is an unimprovable set that extends to $\set U(\lst P)$, we know that $\lst M_{\set S}(\lst P')_k \le \om_{\set S}(c)\le\min \{\om_{\set S}(x):x\in\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\}$.  From these bounds we conclude that $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\subseteq \set A$, and since $\{p_1(\lst P_i)\}_i\cap \set G_{\set U(\lst P)}(c)\ne\emptyset$ we see therefore that $\set G_{\set U(\lst P)}(c)\cap\set A\ne\emptyset$ and so $\set G_{\set U(\lst P)}(O)\cap\set A\ne\emptyset$.
 
 We have now demonstrated that for every pair $O:=(a,b)$ such that $\{a,b\}\in\set \genfun(\set C)$, we must have $\set G(O)\cap\set A \ne\emptyset$.  Observe that this means that sets $\set C$ and $\set A$ match the descriptions in Proposition \ref{bound-on-recombinations} (letting set $\set Q:=\{\set P_i\}_i$), and thus we see that it is impossible for $|\set C|>|\set A|$, and so we have a contradiction.  We thus conclude that no such choice $\lst P'$ can exist.
 \end{proof}
@@ -1013,9 +1013,9 @@ Given a set of commuting Pauli operators $\set S$ and a set of pairs $\set L\sub
 \begin{remark}
 Before proving this Theorem, we shall first prove several related Lemmas and Propositions.
 
-Our ultimate goal is to extend the unimprovable set so that it extends to at least the first member of every conjugal pair in the set of logical qubit operators, since this means that we have satisfied the optimality condition.  Thus, we want to be able to add operators to this set while preserving the property of being an unimprovable set.
+Our ultimate goal is to expand the unimprovable set so that it includes at least the first member of every conjugal pair in the set of logical qubit operators, since this means that we have satisfied the optimality condition.  Thus, we want to be able to add operators to this set while preserving the property of being an unimprovable set.
 
-The following Lemma shows that if we have an operator in a set to which some unimprovable set extends, then if the smallest weight undetectable error of this operator acts on only it then we may move this operator to the unimprovable set to obtain a new unimprovable set that also extends to the same set as the old set minus the moved element.  The intuition here is that because said error acts only on this operator, it cannot be canceled by multiplying the operator by other operators, and so it is an ``unimprovable'' operator that can be included in our unimprovable set.
+The following Lemma shows that if we have an operator $o$ in a set $\set X$ to which some unimprovable set extends, then if the smallest weight undetectable error acting on $o$ acts on no other operator in $\set X$ then we may move $o$ to the unimprovable set to obtain a new unimprovable set that extends to $\set X\slash \{o\}$.  The intuition here is that because said error acts only on $o$, it cannot be canceled by multiplying $o$ by other operators, and so it is an ``unimprovable'' operator that can be included in our unimprovable set.
 \end{remark}
 
 \begin{lemma}
@@ -1055,7 +1055,7 @@ Thus we have shown that $\min_{a\in\set R\cap\set O'}\om_{\set S}(a)=\min_{a\in\
 %@-node:gcross.20100422160536.1408:Lemma: Replacing element with product preserves unimprovability
 %@+node:gcross.20100422160536.1411:Lemma: Recombining extension elements preserves extension
 \begin{remark}
-In both cases of the algorithm we tend to replace operators in a set to which an unimprovable set extends with a new set that a product of elements in the old set.  We want to show that the new set is also an extension of the unimprovable set, and this is proved by the following Lemma.
+In both cases of the algorithm we replace a set to which an unimprovable set extends with a new set that a product of elements in the old set.  We want to show that the new set is also an extension of the unimprovable set, and this is proved by the following Lemma.
 \end{remark}
 
 \begin{lemma}
@@ -1223,7 +1223,7 @@ The key difference between binary strings and Pauli operators is that binary str
 \end{remark}
 
 \begin{definition}
-A \emph{pseudo-generator} is a set of either 1 or 2 Pauli operators.  In an abuse of notation, we define the functions $\set U$ and $\genfun$ to be respectively $\set G\mapsto \bigcup_{\set g\in\set G} \set g_i$ and $\set G\mapsto (\genfun\circ\set G)(\set G)$ when applied to a set of pseudo-generators.
+A \emph{pseudo-generator} is a set of either 1 or 2 Pauli operators.  In an abuse of notation, we extend the functions $\set U$ and $\genfun$ to be respectively $\set G\mapsto \bigcup_{\set g\in\set G} \set g$ and $\set G\mapsto (\genfun\circ\set U)(\set G)$ when applied to a set of pseudo-generators.
 \end{definition}
 %@-node:gcross.20100422160536.1451:pseudo-generator
 %@+node:gcross.20100422160536.1452:pseudo-product (plus bounding Lemma)
@@ -1235,7 +1235,7 @@ Unlike `normal' generators --- i.e., Pauli operators --- a product of generators
 
 \begin{definition}
 \label{definition:pseudo-product}
-Suppose we are given a set of $r$ pseudo-generators $\set G$.  Let $\set X:=\{\genfun(\set g_i)\backslash\{I\}: \lst g\in\set G\}$, $\set Y$ be the $r-$ary Cartesian product of the $r$ sets contained in $\set X$, and $\set Z$ be the set consisting of the normal quantum operator product of the $r$ operators in each $r-$tuple in $\set Y$.  Then $\set Z$ is defined to be the \emph{pseudo-product} of the pseudo-generators in $\set G$.  For convenience, define the function $\pseudoproduct$ so that $\pseudoproduct(\set G)$ is the pseudo-product of the pseudo-generators in $\set G$.
+Suppose we are given a set of $r$ pseudo-generators $\set G$.  Let $\set X:=\{\genfun(\set g)\backslash\{I\}: \lst g\in\set G\}$, $\set Y$ be the $r-$ary Cartesian product of the $r$ sets contained in $\set X$, and $\set Z$ be the set consisting of the normal quantum operator product of the $r$ operators in each $r-$tuple in $\set Y$.  Then $\set Z$ is defined to be the \emph{pseudo-product} of the pseudo-generators in $\set G$.  For convenience, we define a function $\pseudoproduct$ such that $\pseudoproduct(\set G)$ is the pseudo-product of the pseudo-generators in $\set G$.
 \end{definition}
 
 \begin{remark}
@@ -1267,7 +1267,7 @@ In order to be able to place a lower bound on binary strings that have yet to be
 
 \begin{definition}
 \label{definition:disjoint-pseudo-generators}
-A set of pseudo-generators $\set G$ is said to be \emph{disjoint} if for every $\set g\in\set G$ there exists some physical qubit $k$ such that either $X_k$ or $Z_k$ (or both) anti-commutes with every operator in $\genfun(\set g)\backslash\{I\}$, but both $X_k$ and $Z_k$ commute with every operator in $\genfun(\set g')$ for every $\set g'\in\set G\backslash\{g\}$.
+A set of pseudo-generators $\set G$ is said to be \emph{disjoint} if for every $\set g\in\set G$ there exists some physical qubit $k$ such that either $X_k$ or $Z_k$ (or both) anti-commutes with every operator in $\genfun(\set g)\backslash\{I\}$, but both $X_k$ and $Z_k$ commute with every operator in $\bigcup_{\set g'\in\set G\backslash\{\set g\}}\genfun(\set g')$.
 \end{definition}
 
 \begin{remark}
@@ -1303,7 +1303,7 @@ Define $\set C_r$ to be the set of all operators such that if $o\in\set C_r$ the
 
 From Lemma \ref{lemma:disjoint-pseudo-generators-bound} we conclude that $w(o)\ge r$ for every $o\in\set C_r$.  By extension this means that $w(o)\ge r$ for every $o\in\bigcup_{r'=r}^{|\set G|}\set C_{r'}$, and therefore that if $o\notin\bigcup_{r'=0}^{r-1}\set C_{r'}$ and $o\in\genfun(\set G)$ then $w(o)\ge r$.  Thus, if there exists an $r$ such that $r=\min_{o\in\bigcup_{r'=0}^{r-1}\set C_{r'},f(o)=1}w(o)$ then we know that $r=\min_{o\in\genfun(\set O),f(o)=1}w(o)$ --- that is, $r$ is \emph{exactly} the weight of the minimum weight solution to $f(o)=1$, since any operator in the search space that \emph{isn't} contained in $\bigcup_{r'=0}^{r-1}\set C_{r'}$ must have a weight of at least $r$.  Put another way, after having enumerated all of the elements in $\bigcup_{r'=0}^{r-1}\set C_{r'}$ we can check to see whether the smallest solution to $f$ we have seen so far (if any) has weight less than or equal to $r$, and if so we are done since we have found the minimal weight solution.
 
-Now consider the procedure of searching through each $\set C_r$ starting with $r=0$.  We know that we will eventually find at least one solution to $f(o)=1$, since in this Proposition we have assumed that such an operator exists in the search space (by the assumption that $f^{-1}(1)\cap\genfun(\set G)\ne\emptyset$).  Furthermore, employing this procedure we will find the minimal solution $o$ no \emph{later} than after we have searched through $\set C_r$ for $r=0\dots w(o)$, since at that point all of the unexamined operators have a weight greater than $w(o)$.  Thus, we conclude that we can compute the minimal weight solution after having searched at most all of the elements in $\bigcup_{r=0}^{\min(w(o),|\set G|)} C_r$, which we can do in time $$O\paren{\sum_{r=0}^{\min(w(o),|\set G|)}(T+r) 3^r \choose{|\set G|}{r}}\subseteq O\paren{(T+d) 3^d \choose{N}{d}},$$ where $d:=\min(w(o),|\set G|)$.
+Now consider the procedure of searching through each $\set C_r$ starting with $r=0$.  We know that we will eventually find at least one solution to $f(o)=1$, since in this Proposition we have assumed that such an operator exists in the search space (by the assumption that $f^{-1}(1)\cap\genfun(\set G)\ne\emptyset$).  Furthermore, employing this procedure we will find the minimal solution $o$ no \emph{later} than after we have searched through $\set C_r$ for $r=0\dots w(o)$, since at that point all of the unexamined operators have a weight greater than $w(o)$.  Thus, we conclude that we shall find the minimal weight solution after having searched at most all of the elements in $\bigcup_{r=0}^{\min(w(o),|\set G|)} C_r$, which we can do in time $$O\paren{\sum_{r=0}^{\min(w(o),|\set G|)}(T+r) 3^r \choose{|\set G|}{r}}\subseteq O\paren{(T+d) 3^d \choose{N}{d}},$$ where $d:=\min(w(o),|\set G|)$.
 \end{proof}
 %@-node:gcross.20100422160536.1455:Lemma: Minimal weight search
 %@+node:gcross.20100910155955.1358:Pseudocode: Compute-Minimal-Weight-Operator
@@ -1335,7 +1335,7 @@ Now consider the procedure of searching through each $\set C_r$ starting with $r
     \End
 \li \Return $\alpha$ \label{li:found-the-minimum}
 \end{codebox}
-\caption[Algorithm \proc{Find-Weight-Minimizer}]{Algorithm which find the minimal weight operator in a given generating set that satisfies a given predicate.  For the sake of convenience, we also allow the query function to return auxialiary information that is returned to the caller along with the minimal weight operator.} \label{table:find-weight-minimizer}
+\caption[Algorithm \proc{Find-Weight-Minimizer}]{Algorithm which finds the minimal weight operator in a given generating set that satisfies a given predicate.  For the sake of convenience, we also allow the query function to return auxialiary information that is returned to the caller along with the minimal weight operator.} \label{table:find-weight-minimizer}
 \end{table}
 %@-node:gcross.20100910155955.1358:Pseudocode: Compute-Minimal-Weight-Operator
 %@+node:gcross.20100422160536.1459:Lemma: Bounds
