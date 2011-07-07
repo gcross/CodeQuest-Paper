@@ -1,9 +1,9 @@
-%@+leo-ver=4-thin
-%@+node:gcross.20090405101642.3:@thin CodeQuest.tex
+%@+leo-ver=5-thin
+%@+node:gcross.20090405101642.3: * @thin CodeQuest.tex
 %@@language latex
 
-%@<< Prelude >>
-%@+node:gcross.20090405101642.4:<< Prelude >>
+%@+<< Prelude >>
+%@+node:gcross.20090405101642.4: ** << Prelude >>
 \documentclass[twocolumn,showpacs,preprintnumbers,amsmath,amssymb,nofootinbib,pra,floatfix]{revtex4-1}
 
 \usepackage{mathrsfs,amsthm,clrscode,comment,booktabs,graphicx,subfig}
@@ -20,11 +20,10 @@
 \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
 \newenvironment{remark}[1][Remark]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
-%@-node:gcross.20090405101642.4:<< Prelude >>
-%@nl
+%@-<< Prelude >>
 
-%@<< Macros >>
-%@+node:gcross.20091029172439.1256:<< Macros >>
+%@+<< Macros >>
+%@+node:gcross.20091029172439.1256: ** << Macros >>
 \newcommand{\lst}{\vec}
 \newcommand{\set}{\tilde}
 
@@ -37,13 +36,12 @@
 \newcommand{\optimizer}{\lst{\mathcal{O}}}
 
 \input{macros.tex}
-%@-node:gcross.20091029172439.1256:<< Macros >>
-%@nl
+%@-<< Macros >>
 
 \begin{document}
 
 %@+others
-%@+node:gcross.20090513124712.1:Title Page
+%@+node:gcross.20090513124712.1: ** Title Page
 \title{Automated Searching for Quantum Subsystem Codes}
 
 \author{Gregory M. Crosswhite}
@@ -66,8 +64,7 @@ Previous approaches for investigating these codes have focused on applying theor
 \newpage
 
 %\tableofcontents
-%@-node:gcross.20090513124712.1:Title Page
-%@+node:gcross.20100425115407.1343:Prelude
+%@+node:gcross.20100425115407.1343: ** Prelude
 
 Quantum computers are a technological possibility because there exist methods for building these computers out of physical components that fail to operate in an error-free manner.  The theory behind achieving this makes up the field of quantum error correction~\cite{Shor:95a,Steane:96a,Steane:96b,Steane:96c,Knill:97a,Gottesman:97a} and fault-tolerant quantum computing~\cite{Shor:96a,Aharonov:97a,Knill:98a,Knill:98b,Preskill:98a,Aliferis:05a}. Of particular note is the threshold theorem for fault-tolerant quantum computing~\cite{Aharonov:97a,Knill:98a,Knill:98b,Aliferis:05a}.  This theorem says that if a quantum system decoheres slowly enough, and sufficiently precise control is maintained over the system, then effectively arbitrary error-free quantum computations can be performed.  The way that this is achieved is through the use of quantum information which is encoded across multiple quantum subsystems into a quantum error correcting code.
 
@@ -78,15 +75,11 @@ Previous approaches for studying quantum subsystem codes have focused on using t
 In this paper we present an algorithm that computes the optimal subsystem code for a given set of measurements consisting of tensors products of Pauli operators.  In the process of doing this we also develop a formalism that allows us to prove that the algorithm is correct and that the code it computes is indeed the optimal code for the given measurements.  We also prove bounds on the running time of the algorithm that show that the algorithm terminates (relatively) quickly when the optimal code is not very robust to errors.  Because of this property, the algorithm can be applied to sift through a class of possible measurements to determine which (if any) result in a robust code.
 
 To demonstrate the use of this algorithm, we focus on classes of measurement operators where each measurement is limited in action to two qubits --- that is, to operators taking the form $P_i \cdot Q_j$, where $P_i$ and $Q_j$ are Pauli operators acting on respectively the $i^{\text{th}}$ and $j^{\text{th}}$ qubits of the system;  examples of previous subsystem codes that have been constructed with this structure are the quantum compass model subsystem code~\cite{Bacon:06a} (including generalizations~\cite{Bacon:06b,Bravyi:10a}) and topological subsystem codes~\cite{Bombin:10a}.  In particular we focus on systems where the measurement operators only couple qubits that are neighboring on a periodic lattice arising from the convex uniform tilings of the plane.  We perform a systematic study of the codes on lattices arising from nine of the eleven such tilings, and present the results of this search.
-%@nonl
-%@-node:gcross.20100425115407.1343:Prelude
-%@+node:gcross.20100910155955.1360:List of Tables
+%@+node:gcross.20100910155955.1360: ** List of Tables
 \listoftables
-%@-node:gcross.20100910155955.1360:List of Tables
-%@+node:gcross.20100425115407.1344:Table of Contents
+%@+node:gcross.20100425115407.1344: ** Table of Contents
 \tableofcontents
-%@-node:gcross.20100425115407.1344:Table of Contents
-%@+node:gcross.20090405101642.5:Introduction
+%@+node:gcross.20090405101642.5: ** Introduction
 \section{Introduction}
 
 We begin by a brief review of the notion of quantum error correcting codes and in particular the subsystem stabilizer codes~\cite{Poulin:05a}.
@@ -132,8 +125,7 @@ $o := \bigotimes_i P_i$ where $P_i$ is the Pauli operator $P$ acting on the $i^{
 Approaches to answering this question typically involve applying theoretical analysis with varying degrees of cleverness.  In this paper we present an alternative approach.  In section~\ref{sec:algorithm}, we present an algorithm which for every set of local measurement operators computes a quantum subsystem code that arises from the algebra of these operators\footnote{We say that we compute ``a'' code rather than ``the'' code because there is almost never a unique solution, since among other transformations one can multiply every gauge and logical qubit operator by an element from the stabilizers and end up with an equivalent code.}.  Along the way we develop a formalism that allows us to prove not only that this algorithm is correct, but also that the code that it computes is \emph{optimal} in the sense that there exists no other code arising from the same set of measurements for which the distance of any of the logical qubits has been increased.  This property makes this algorithm useful for analyzing the properties of codes arising from measurements that are too overwhelming to analyze by hand.  
 
 We shall also show that an important property of this algorithm is that it terminates (relatively) quickly when the distance of the code is small, which allows it to be used not only to solve for individual codes, but also to search through entire classes of sets of measurements to see if any have high-distance qubits.  Motivated by previous results demonstrating the utility of codes implemented using systems on a lattice, we undertake a systematic investigation of codes where the measurement operators are restricted to the 2-body interactions arising from the edges of periodic lattices derived from the 11 regular tilings.  In section~\ref{sec:lattice} we discuss our approach for applying the algorithm to perform a systematic search for codes that can be implemented on these tilings, and we then present numerical results that we obtained. In section~\ref{sec:conclusion} we present our conclusions.
-%@nonl
-%@+node:gcross.20100908141301.1352:Notation
+%@+node:gcross.20100908141301.1352: *3* Notation
 \subsection{Notation}
 
 In this paper we adopt the following conventions for notation:
@@ -146,17 +138,15 @@ In this paper we adopt the following conventions for notation:
 \item \emph{collections} of \emph{integers} are denoted by using lower-case letters with either a tilde or an arrow above them, e.g. $\tilde k$ and $\vec k$;  and
 \item \emph{collections} of \emph{other kinds} of objects are typically denoted by capital letters in a fancy script.
 \end{itemize}
-%@-node:gcross.20100908141301.1352:Notation
-%@-node:gcross.20090405101642.5:Introduction
-%@+node:gcross.20090423002455.2:Theory
+%@+node:gcross.20090423002455.2: ** Theory
 \section{Theory} \label{sec:algorithm}
-%@+node:gcross.20090423002455.3:Stabilizers and gauge qubits
+%@+node:gcross.20090423002455.3: *3* Stabilizers and gauge qubits
 \subsection{Construction of the subsystem code}
 
 \begin{remark}
 This section describes by way of a constructive proof an algorithm that, given a set of measurement operators, computes a quantum code that can be implemented by these operators.  For a listing of pseudo-code that implements this algorithm, see Table \ref{table:algo1} near the end of this section.
 \end{remark}
-%@+node:gcross.20090520163423.14:Introduce main theorem
+%@+node:gcross.20090520163423.14: *4* Introduce main theorem
 Although conceptually a subsystem code is an isomorphism $T$ such that  $\mathscr{P}\approx^T \mathscr{S}\times\mathscr{G}\times\mathscr{Q}$ --- that is, an isomorphism between the \emph{physical} space of qubits and the \emph{computational} space of qubits in whose terms our computation is actually expressed --- we do not need to actually construct this isomorphism in order to be able to use the code.  Since all of our work will be done on the physical system anyway, it suffices to know the operators in the physical space $\mathscr{P}$ that are isomorphic to the qubit measurement operators of interest in the computational space $\mathscr{S}\times\mathscr{G}\times\mathscr{Q}$, and it is exactly the operators on $\mathscr{P}$ that the algorithm we present will compute\footnote{If one really wanted to, one could explicitly construct the isomorphism $\mathscr{T}$ from these operators by computing the unitary operator which simultaneously diagonalizes the maximal subset of commuting measurements from this set of operators on $\mathscr{P}$, but in practice this is not particularly useful.}.
 
 When one wants to define a qubit in terms of its measurement operators, it suffices to define two operators that anti-commute with each other but which commute with all of the other measurement operators that have been defined, since this gives us the $X$ and $Z$ measurements on the qubit which are sufficient to generate the full $Pauli$ group (minus phases).  Since working with such pairs of operators will be a common theme in this algorithm, we shall introduce the following definition in order to simplify the language used to describe them.
@@ -196,9 +186,7 @@ This theorem follows, at least implicitly, from prior work on stabilizer codes~\
 
 The main work in the proof of this theorem will be performed by proving several related propositions.  First we shall show how the set $\set G$ and a sequence $\lst S$ are constructed from the sequence of operators $\lst O$.  Since we want our stabilizers to form an independent set of operators, we shall then show that through a Gaussian elimination procedure it is possible to extract a list of independent operators from a sequence $\lst S$ resulting in a set $\set S$.  Finally, we shall show how using this same Gaussian elimination procedure we can transform a subset of the operators of $\set S\cup\set G$ into a form that makes it trivial to compute the logical qubit operators $\set L$.
 \end{remark}
-%@nonl
-%@-node:gcross.20090520163423.14:Introduce main theorem
-%@+node:gcross.20090519160701.3:Construction of sequences
+%@+node:gcross.20090519160701.3: *4* Construction of sequences
 \begin{proposition} \label{proposition-SG} Suppose that we are given a sequence of Pauli operators $\lst O\subseteq \pauligroup$.  Then there exists a sequence of Pauli operators $\lst S\subseteq\pauligroup$ and a set of Pauli operators $\set G\subseteq\pauligroup$ such that
 \begin{enumerate}
 \item all of the operators in $\lst S$ commute with each other and also all of the operators in $\lst G$; \label{stabs-commute-with-G}
@@ -233,8 +221,7 @@ Lastly, since $s\in \set G$, we can form any operator in $\lst S'$ with products
 
 We conclude by noting that since all of the operators in $\lst S$ and $\set G$ were formed from products of operators in $\lst O$, which are Pauli operators (i.e., members of the group $\pauligroup$), they are Pauli operators themselves.
 \end{proof}
-%@-node:gcross.20090519160701.3:Construction of sequences
-%@+node:gcross.20090519160701.4:Making them independent
+%@+node:gcross.20090519160701.4: *4* Making them independent
 \begin{remark}
 A consequence of not requiring independence of the operators in $\lst O$ is that the operators $\lst S$ given by Proposition \ref{proposition-SG} are not necessarily independent.  Happily, since all of these operators can be expressed as tensor products of Pauli operators, we can construct a set of independent operators by performing an analog of Gaussian elimination.
 \end{remark}
@@ -282,8 +269,7 @@ l & i=n
 \end{aligned}
 $$ and we are done.
 \end{proof}
-%@-node:gcross.20090519160701.4:Making them independent
-%@+node:gcross.20090527164539.1:Construct the logical operators
+%@+node:gcross.20090527164539.1: *4* Construct the logical operators
 \begin{remark}
 Proposition \ref{make-independent-using-elimination} is good for more than computing an independent set of generators from a commuting list of operators;  it is also the key ingredient in computing the logical qubit operators.
 \end{remark}
@@ -313,9 +299,7 @@ Next, to see that property \ref{L-are-conjugal-pairs} holds, observe that for ev
 
 Finally, to see that property \ref{L-completes-the-generators} holds, observe that since the operators in $\set S$ commute they can therefore be simultaneously diagonalized, which means that there is an automorphism on $\pauligroup$ that takes $\lst S_i\mapsto P_i^{[1]}$ for every $i=1 \dots n$.  The only operators that commute with every such $P_i^{[1]}$ are those which do not contain any factor of $P_i^{[0]}$ for $i=1 \dots n$, and so $\centralizer_\pauligroup\paren{\{P_i^{[0]}\}_{i=1\dots n}} = \genfun\paren{\{P_i^{[1]}\}_{i=1 \dots n}\cup \{P_i^{[l]}\}_{i=n+1 \dots N, \,\, l=0,1}}$, which has $2N-n$ generators.  Since the automorphism preserves the number of generators in the centralizer, we thus conclude that $\centralizer_\pauligroup(\set S)$ has exactly $2N-n$ generators.  Since $\set S\cup\set L$ contains independent operators which commute with every member of $\set S$, and furthermore $|\set S\cup\set L|=2N-n$, we thus conclude that $\genfun\paren{\set S\cup\set L}=\centralizer_\pauligroup(\set S)$.
 \end{proof}
-%@nonl
-%@-node:gcross.20090527164539.1:Construct the logical operators
-%@+node:gcross.20090520163423.15:Prove main theorem
+%@+node:gcross.20090520163423.15: *4* Prove main theorem
 With these building blocks in place, we now prove the main theorem:
 
 \begin{proof}[Proof of Theorem \ref{theorem-SG}]
@@ -325,14 +309,13 @@ Now let $\set F$ be a maximal subset of commuting operators in $\set G$ --- i.e.
 $$\set L := \{m\cdot\prod_{f\in \set F\atop \{M,\text{conj}_{\set G}(f)\}=0} f :\quad m \in\set M\}$$
 where $\text{conj}_{\set G}(F)$ is the conjugal partner of $F$ in the set $\set G$.  This guarantees that the operators in $\set L$ commute with every operator in $\set S\cup\set G$, and so we are done.
 \end{proof}
-%@-node:gcross.20090520163423.15:Prove main theorem
-%@+node:gcross.20090511123440.5:Pseudo-code
+%@+node:gcross.20090511123440.5: *4* Pseudo-code
 \begin{remark}
 A pseudo-code representation of the algorithm described by Theorem \ref{theorem-SG} is given in Table \ref{table:algo1}.
 \end{remark}
 
 %@+others
-%@+node:gcross.20100909203748.1343:Compute-Subsystem-Code
+%@+node:gcross.20100909203748.1343: *5* Compute-Subsystem-Code
 \begin{table}
 \begin{codebox}
 \Procname{$\proc{Compute-Subsystem-Code}(\lst O)$}
@@ -398,8 +381,7 @@ A pseudo-code representation of the algorithm described by Theorem \ref{theorem-
 \end{codebox}
 \caption[Algorithm \proc{Compute-Subsystem-Code}]{Algorithm which computes the subsystem code generated by a given list of measurement operators $\lst O$.  The subroutine \textsc{Gaussian-Elimination} is listed in Table \ref{table:gaussian-elimination}.} \label{table:algo1}
 \end{table}
-%@-node:gcross.20100909203748.1343:Compute-Subsystem-Code
-%@+node:gcross.20100909203748.1344:Gaussian-Elimination
+%@+node:gcross.20100909203748.1344: *5* Gaussian-Elimination
 \begin{table}
 \begin{codebox}
 \Procname{$\proc{Gaussian-Elimination}(\lst S,i,\lst I,\lst P)$}
@@ -464,21 +446,18 @@ A pseudo-code representation of the algorithm described by Theorem \ref{theorem-
 \caption[Algorithm \proc{Gaussian-Elimination}]{Subroutine which performs a procedure analogous to Gaussian-elimination on $\vec S$ to distill a set of independent operators from a possible dependent set of operators.  This subroutine is called by the main subsystem code algorithm in Table \ref{table:algo1}.}
 \label{table:gaussian-elimination}
 \end{table}
-%@-node:gcross.20100909203748.1344:Gaussian-Elimination
 %@-others
-%@-node:gcross.20090511123440.5:Pseudo-code
-%@-node:gcross.20090423002455.3:Stabilizers and gauge qubits
-%@+node:gcross.20100422160536.1366:Optimization
+%@+node:gcross.20100422160536.1366: *3* Optimization
 \subsection{Optimization of the logical qubits}
 
 \begin{remark}
 A pseudo-code representation of the algorithm that will be described in this section is presented in Table \ref{table:algorithm-optimization}.
 \end{remark}
 
-%@<< Main body >>
-%@+node:gcross.20100422160536.1376:<< Main body >>
+%@+<< Main body >>
+%@+node:gcross.20100422160536.1376: *4* << Main body >>
 %@+others
-%@+node:gcross.20091221145013.1274:Lemma:  Recombining generators
+%@+node:gcross.20091221145013.1274: *5* Lemma:  Recombining generators
 In general there are multiple sets of operators that satisfy the properties of Theorem \ref{theorem-SG}, as is illustrated by the following lemma:
 
 \begin{lemma}
@@ -496,24 +475,19 @@ Given conjugal pairs $Q:=(a,b)$ and $R:=(c,d)$ in relation to some set $\set X$ 
 \item Since $b$ and $c$ are Pauli operators and thus square to the identity, we have that $a\cdot c\cdot c=a$ and $d\cdot b\cdot b=d$, and so $\genfun\paren{\{a,b,c,d\}}=\genfun\paren{\{a\cdot c,b,c,d\cdot b\}}$.
 \end{enumerate}
 \end{proof}
-%@-node:gcross.20091221145013.1274:Lemma:  Recombining generators
-%@+node:gcross.20091221145013.1275:Definition: Undetectable error
+%@+node:gcross.20091221145013.1275: *5* Definition: Undetectable error
 As a result of this lemma, we see that we can take pairs of arbitrary conjugal pairs from sets $\set G$ and $\set L$ of Theorem \ref{theorem-SG} and replace them with different pairs per the recipe in Lemma \ref{combining-pairs} such that the properties of the theorem still hold.  So given that these sets are not unique, the natural question arises:  What is the best choice of $\set G$ and $\set L$?  To answer this, we observe that another criterion we would like our code to satisfy is that it be as robust to errors as possible;  in particular, we seek to maximize the difficulty of \emph{undetectable errors}, which are defined as follows:
 
 \begin{definition}
 Given a set $\set S\subseteq\pauligroup$ and operators $l\in\pauligroup$ and $e\in\centralizer_\pauligroup(\set S)$ which anti-commute (i.e., $\{l,e\}=0$), we say that $e$ is an \emph{undetectable error with respect to} $\set S$ \emph{acting on} $l$.
 \end{definition}
-%@nonl
-%@-node:gcross.20091221145013.1275:Definition: Undetectable error
-%@+node:gcross.20091221145013.1276:Definition: Weight
+%@+node:gcross.20091221145013.1276: *5* Definition: Weight
 We assume that the ``difficulty'' of an interaction between our physical system and its environment is related to the number of physical qubits in our system that are participating in the interaction.  Thus, the natural metric for measuring the relative difficulty of an error is given by its weight, which recall is defined as follows:
 
 \begin{definition}
 Given an operator $p\in\pauligroup$---which recall means that $p$ is the tensor product of single-qubit Pauli unnormalized spin matrices---the \emph{weight} of $p$ is the number of single-qubit operators in the product which are non-trivial (i.e., not the identity).  So, for example, the weight of $I\otimes I\otimes I$ is 0, the weight of $I\otimes Z\otimes I\otimes X$ is 2, and the weight of $Z\otimes X\otimes Y$ is 3.
 \end{definition}
-%@nonl
-%@-node:gcross.20091221145013.1276:Definition: Weight
-%@+node:gcross.20091221145013.1277:Definition: Additional notation
+%@+node:gcross.20091221145013.1277: *5* Definition: Additional notation
 For convenience, we introduce the following additional notation:
 
 \begin{definition}
@@ -540,16 +514,13 @@ $\quad$
 \end{itemize}
 
 \end{definition}
-%@nonl
-%@-node:gcross.20091221145013.1277:Definition: Additional notation
-%@+node:gcross.20091221145013.1278:Definition: Total ordering => Optimal choice of qubits
+%@+node:gcross.20091221145013.1278: *5* Definition: Total ordering => Optimal choice of qubits
 Given the notation above, we now precisely define what we mean by the ``best choice'' of logical qubits.
 
 \begin{definition}
 An \emph{optimal choice of qubits stabilized by $\set S$} is any choice of qubits, $\lst P$ stabilized by $\set S$, such that given any other choice of qubits, $\lst P'$, that is also stabilized by $\set S$ and which satisfies $(\genfun\circ \set U)(\lst P)=(\genfun\circ \set U)(\lst P')$, we have that $\lst M(\lst P)_i \ge \lst M(\lst P')_i$ for all $1\le i \le |\lst P|=|\lst P'|$.\footnote{Note that since $\lst P$ and $\lst P'$ are sequences of conjugal pairs without duplicates they are therefore independent, and so if $(\genfun\circ \set U)(\lst P)=(\genfun\circ \set U)(\lst P')$ then we know automatically that $|\lst P|=|\lst P'|$.}
 \end{definition}
-%@-node:gcross.20091221145013.1278:Definition: Total ordering => Optimal choice of qubits
-%@+node:gcross.20100422160536.1370:Definition: Optimization procedure
+%@+node:gcross.20100422160536.1370: *5* Definition: Optimization procedure
 We now present an algorithm for computing the optimal choice of logical qubits from a set of input qubits.  The key insight upon which the algorithm is built is that undetectable errors acting on the space of logical qubits can never be eliminated entirely, so there will always be \emph{some} operator on which they act.  Thus, the goal of the optimization procedure is not to eliminate errors, but rather to \emph{contain} them, so that they act on as few operators as possible.
 
 The optimization algorithm works by starting with an empty (and therefore automatically optimal) choice of qubits and a set of `unoptimized' qubits, and making progress by gradually moving qubits from the unoptimized set into the choice in such a way that preserves the optimality of the choice.  The trick is that we want to delay as long as possible moving a qubit into the choice, until we have had every chance to improve it.  Thus, we additionally keep track of a subset of pairs in the choice whose second members have yet to be used to contain an error, and then use them as much as possible to fix errors.  That is, at every step in the algorithm, we scan for the minimal weight undetectable error acting on the set of operators consisting of both the second member of the pairs in this subset and all of the operators in the unoptimized set of qubits.  If the minimal weight error acts on an operator in the first category, then we remove the pair from the subset and use this operator to fix this error wherever it occurs in both the second members of pairs in the subset and the unoptimized qubits.  Otherwise, we pull out a qubit from the unoptimized set on which the error acts, use the first member in the pair to fix the error in the qubits remaining in the unoptimized subset, add the pair to the subset of qubits whose second members have yet to be used to contain an error, and then add it to the end of the choice.  At this point our choice turns out to still be optimal because if there had been a way to make the qubit we just added any better by recombining it with other qubits in the choice then we would have already done so by now.
@@ -664,9 +635,8 @@ $$
 
 Table \ref{table:algorithm-optimization} contains a listing of pseudo-code that uses the above algorithm to compute the optimal choice of qubits.  For the sake of completeness, it includes additional steps that pertain to the details of how the minimal weight operator is computed, which will be discussed in more detail in Section \ref{subsubsection:running time analysis}.
 
-%@-node:gcross.20100422160536.1370:Definition: Optimization procedure
-%@+node:gcross.20100422160536.1380:Pseudo-code
-%@+node:gcross.20100422160536.1381:Optimize-Logical-Qubits
+%@+node:gcross.20100422160536.1380: *5* Pseudo-code
+%@+node:gcross.20100422160536.1381: *6* Optimize-Logical-Qubits
 \begin{table}
 \begin{codebox}
 \Procname{$\proc{Optimize-Logical-Qubits}(\lst S,\lst G,\lst L)$}
@@ -743,8 +713,7 @@ Table \ref{table:algorithm-optimization} contains a listing of pseudo-code that 
 \end{codebox}
 \caption[Algorithm \proc{Optimize-Logical-Qubits}]{Algorithm which optimizes the logical qubits for a given subsystem code.} \label{table:algorithm-optimization}
 \end{table}
-%@-node:gcross.20100422160536.1381:Optimize-Logical-Qubits
-%@+node:gcross.20100422160536.1382:Fix-Logical-Qubits
+%@+node:gcross.20100422160536.1382: *6* Fix-Logical-Qubits
 \begin{table}
 \begin{codebox}
 \Procname{$\proc{Fix-Logical-Qubits}(\lst L,k,e,q_A,q_B)$}
@@ -773,9 +742,7 @@ Table \ref{table:algorithm-optimization} contains a listing of pseudo-code that 
 \end{codebox}
 \caption[Algorithm \proc{Fix-Logical-Qubits}]{Algorithm which `fixes' a subset of the logical qubits so that they are robust to a given error.} \label{table:fix-logical-qubits}
 \end{table}
-%@-node:gcross.20100422160536.1382:Fix-Logical-Qubits
-%@-node:gcross.20100422160536.1380:Pseudo-code
-%@+node:gcross.20100422160536.1374:Definition: Running time
+%@+node:gcross.20100422160536.1374: *5* Definition: Running time
 In addition to proving that the above algorithm successfully constructs an optimal choice of qubits, we shall also provide a bound on its running time.  In order to do this, we first need to precisely define what we mean by the running time for the purposes of this section.
 
 \begin{definition}
@@ -783,8 +750,7 @@ We say that a computation can be performed \emph{in time $x$} if the computation
 \end{definition}
 
 Of course, the number of products of Pauli operators is not the only metric that could serve as the gauge for the running time, but it suffices for our purposes.
-%@-node:gcross.20100422160536.1374:Definition: Running time
-%@+node:gcross.20100422160536.1372:Introduce Theorem
+%@+node:gcross.20100422160536.1372: *5* Introduce Theorem
 We now present the main result of this section.
 
 \begin{theorem}
@@ -799,26 +765,23 @@ then $\optimizer(\set S,\set L)$ is a sequence of finite length, and if $(\set Q
 \end{theorem}
 
 The proof of this theorem is rather technical and will be split into several sections.  First we shall prove the existence of a condition that suffices to prove that a choice of logical qubits is optimal.   Second we shall prove that the algorithm above constructs a choice satisfying this condition.  Third we shall prove that the running time of the algorithm has the claimed bound.  Finally we shall tie these results together to prove the theorem above.
-%@-node:gcross.20100422160536.1372:Introduce Theorem
 %@-others
-%@-node:gcross.20100422160536.1376:<< Main body >>
-%@nl
+%@-<< Main body >>
 
 %@+others
-%@+node:gcross.20090511123440.3:Optimality condition
+%@+node:gcross.20090511123440.3: *4* Optimality condition
 \subsubsection{Optimality condition}
 
 \label{optimal-generators}
 
 %@+others
-%@+node:gcross.20100128212359.1294:Definition: Unimprovable set
+%@+node:gcross.20100128212359.1294: *5* Definition: Unimprovable set
 How do we know that a choice of qubits is optimal?  Intuitively, it should be sufficient to prove that a choice of qubits is optimal if we can show that there is no way that we can recombine qubits in the choice to form one or more qubits that are more robust than their component factors --- that is, there is no way that any qubit can be ``improved'' by its involvement in such a product.  This condition is stated formally in the following definition of \emph{unimprovable sets}:
 
 \begin{definition}
 An \emph{unimprovable set with respect to $\set S$} is a set of Pauli operators, $\set O$, such that for any subset, $\set X\subseteq \set O$, we have that $(\om_{\set S}\circ\prod)(\set X) = \min_{x\in\set X}\om_{\set S}(x)$.  We say that an unimprovable set $\set O$ \emph{extends to $\lst Q$} if for all subsets $\set X \subseteq \set O\cup\set Q$ such that $\set X\cap \set O \ne \emptyset$ we have that $(\om_{\set S}\circ\prod)(\set X) \le \min_{x\in\set X\cap \set O}\om_{\set S}(x)$.
 \end{definition}
-%@-node:gcross.20100128212359.1294:Definition: Unimprovable set
-%@+node:gcross.20100125183648.1309:Introduce Theorem
+%@+node:gcross.20100125183648.1309: *5* Introduce Theorem
 The following theorem is the main result of this section and proves that this condition is indeed sufficient to show that a choice of logical qubits is optimal.
 
 \begin{theorem}
@@ -831,9 +794,7 @@ The intuition behind the proof of this theorem is that because the set of first 
 
 To assist us in proving this theorem, we shall first prove a number of useful lemmas and propositions.  We start with a simple lemma that proves that taking a product of operators results in an operator that is no ``worse'' (with respect to its robustness to errors) than the worst operator in the product.
 \end{remark}
-%@nonl
-%@-node:gcross.20100125183648.1309:Introduce Theorem
-%@+node:gcross.20100125183648.1306:Lemma: Combinations can't make things worse
+%@+node:gcross.20100125183648.1306: *5* Lemma: Combinations can't make things worse
 \begin{lemma}
 \label{combinations-can't-make-things-worse}
 For any set of operators $\set O$, we have that $(\om_{\set S}\circ \prod)(\set O) \ge \text{min}_{o\in \set O}\,\om_{\set S}\paren{o}$.
@@ -841,8 +802,7 @@ For any set of operators $\set O$, we have that $(\om_{\set S}\circ \prod)(\set 
 
 \begin{proof}[Proof of Lemma]
 Any undetectable error with respect to $\set S$ acting on $(\om_{\set S}\circ \prod)(\set O)$ must also act on at least one of the operators in $\set O$ since otherwise it cannot anti-commute with the product. \end{proof}
-%@-node:gcross.20100125183648.1306:Lemma: Combinations can't make things worse
-%@+node:gcross.20100125183648.1304:Lemma: The lesser operator wins
+%@+node:gcross.20100125183648.1304: *5* Lemma: The lesser operator wins
 \begin{remark}
 In general, taking products of operators might result in an operator that is better than the worst operator in the product because errors will cancel each other out --- i.e., if two operators in the product anti-commute with an error then their product commutes with the error.  Thus, it is useful to state a condition under which we can be certain that this will not happen, so that the product is exactly as bad as the worst operator, which we do in the following lemma.
 \end{remark}
@@ -855,13 +815,11 @@ Suppose we are given two operators $a,b\in\pauligroup$ such that $\om_{\set S}(a
 \begin{proof}[Proof of Lemma]
 Since $\om_{\set S}(a)<\om_{\set S}(b)$, there must be an undetectable error with respect to $\set S$ that acts on $a$ but not on $b$;  thus, it must anti-commute with and hence act on the product $a\cdot b$, so that $\om_{\set S}(a\cdot b)\le \om_{\set S}(a)$.  Since $\om_{\set S}(a\cdot b)\ge \om_{\set S}(a)$ by Lemma \ref{lesser-operator-wins}, we conclude that $\om_{\set S}(a\cdot b) = \om_{\set S}(a)$.
 \end{proof}
-%@nonl
-%@-node:gcross.20100125183648.1304:Lemma: The lesser operator wins
-%@+node:gcross.20100125183648.1319:Proposition: Bound on recombinations
+%@+node:gcross.20100125183648.1319: *5* Proposition: Bound on recombinations
 \begin{remark}
 Intuitively we should expect that it is not possible to take $n$ qubits and recombine them to form $n+k$ independent qubits where $k>0$.  To state this intuition in other terms, suppose we are given a set of conjugal pairs $\set C$ that are generated from some other set of conjugal pairs $\set D$.  We know that every pair in $\set C$ must have a member that includes a factor that is a first member of a pair in $\set D$ (since otherwise the members of the pair cannot anti-commute), so let $\set A$ be the set of first members of pairs in $\set D$.  Our intuition then tells us that $|\set C|\le |\set A|=|\set D|$.  The following proposition states this fact formally:
 \end{remark}
-%@+node:gcross.20100125183648.1320:Statement
+%@+node:gcross.20100125183648.1320: *6* Statement
 \begin{proposition}
 \label{bound-on-recombinations}
 Suppose we are given
@@ -877,8 +835,7 @@ The basic idea behind the proof of this proposition is that an analog of Gaussia
 
 The formal proof is somewhat technical and so we first introduce several lemmas.  First we prove a small helper lemma that shows that it is possible to take a conjugal pair in which a given generator appears and rearrange it so that the generator appears only in the first member of the pair.
 \end{remark}
-%@-node:gcross.20100125183648.1320:Statement
-%@+node:gcross.20100125183648.1321:Single pair rearrangement.
+%@+node:gcross.20100125183648.1321: *6* Single pair rearrangement.
 \begin{lemma}
 \label{single-pair-rearrangement}
 Let $A:=(a,b)$ with $\{a,b\}\subseteq\genfun(\set Q)$ be a conjugal pair with respect to some set $\set S$, and $o$ be some Pauli operator such that $o\in\set G_{\set Q}(A)$.  Then there exists a pair $B:=(c,d)$ such that
@@ -903,9 +860,7 @@ $$
 $$
 Note that in any of the above cases, properties 1-3 are satisfied by construction, property 4 is satisfied because $c$ and $d$ are products of $a$ and $b$ which commute with every element in $\set S\backslash \{a,b\}$ and $\{c,d\}=0$, and finally property 5 is satisfied because $\{a,b\}\subseteq \genfun\paren{\{c,d\}}$ and $\{c,d\}\subseteq \genfun\paren{\{a,b\}}$.
 \end{proof}
-%@nonl
-%@-node:gcross.20100125183648.1321:Single pair rearrangement.
-%@+node:gcross.20100125183648.1322:Directed Gaussian elimination
+%@+node:gcross.20100125183648.1322: *6* Directed Gaussian elimination
 \begin{remark}
 This next lemma contains the heart of this proposition by introducing an analog to a directed Gaussian elimination procedure.  Specifically, it shows that if we have a generator $a\in\set A$ that appears in one or more conjugal pairs, then we can take products of the conjugal pairs to eliminate it from appearing anywhere except in the first member of a single pair.
 \end{remark}
@@ -931,8 +886,7 @@ Otherwise, apply Lemma \ref{single-pair-rearrangement}, setting $A:=X''$, $o:=a$
 
 Let $\set D:=\{X\}\cup\set D'$, and observe that $|\set D|=|\set D'|+1=|\set C\backslash \{X''\}|-1+1=|\set C|-1$, and also that $(\genfun\circ\set U)(\{Y\}\cup\set D)=(\genfun\circ\set U)(\{X,Y\}\cup\set D')=(\genfun\circ\set U)(\{X''\}\cup(\{Y'\}\cup\set D'))=(\genfun\circ\set U)(\{X''\}\cup(\set C'\backslash\{X''\}))=(\genfun\circ\set U)(\set C)$.  Furthermore, by the earlier recursive application of this Lemma we know that $a\notin\set G_{\set Q}(O)$ for every $O\in \set D'$, so since we have also established that $a\notin \set G_{\set Q}(X)$, we conclude that $a\notin\set G_{\set Q}(O)$ for every $O\in \set D$;  since we also know that every such $O$ must also satisfy $\set G_{\set Q}(O)\cap \set A \ne \emptyset$, we conclude that every such $O$ satisfies $\set G_{\set Q}(O) \cap A\backslash\{a\}\ne\emptyset$.
 \end{proof}
-%@-node:gcross.20100125183648.1322:Directed Gaussian elimination
-%@+node:gcross.20100125183648.1323:Undirected Gaussian elimination
+%@+node:gcross.20100125183648.1323: *6* Undirected Gaussian elimination
 \begin{remark}
 This next lemma provides the small but important result that we can always find a generator $a$ that appears somewhere in the conjugal pairs;  this has the consequence that we can now perform \emph{undirected} Gaussian elimination (in contrast to the \emph{directed} Gaussian elimination procedure described in the previous lemma) by picking an arbitrary generator to eliminate rather than specifying a particular generator up front.
 \end{remark}
@@ -945,9 +899,7 @@ In the context of Proposition \ref{bound-on-recombinations}, there exists a Paul
 \begin{proof}
 Take any pair $Y'\in\set C$.  By the assumptions of Proposition \ref{bound-on-recombinations}, we know that $\set G(Y')\cap \set A \ne \emptyset$, which implies that there exists an element $a\in A$ such that either $a\in (\set G_{\set Q}\circ p_1)(Y')$ or $a\in (\set G_{\set Q}\circ p_2)(Y')$.  The existence of $Y$ and $\set D$ then follows immediately from the application of Lemma \ref{directed-gaussian-elimination-of-logicals}.
 \end{proof}
-%@nonl
-%@-node:gcross.20100125183648.1323:Undirected Gaussian elimination
-%@+node:gcross.20100125183648.1324:Elimination to create subset
+%@+node:gcross.20100125183648.1324: *6* Elimination to create subset
 \begin{remark}
 This final lemma (inside the proof of Proposition \ref{bound-on-recombinations}) shows using Gaussian elimination that there must be a number of generators from $\set A$ present in the pairs in $\set C$ that is equal to the size of $\set C$, since otherwise we could recombine the pairs in $\set C$ to obtain a pair that includes no generator from $\set A$, contradicting the assumptions of Proposition \ref{bound-on-recombinations}.
 \end{remark}
@@ -972,9 +924,7 @@ Second, observe that since $(\genfun\circ\set U)(\set X')=(\genfun\circ\set U)(\
 
 Finally, observe that for every $o\in\set O$ we have either that $o=a$, in which case $Y\in\set X$ and $o\in\set G_{\set Q}(Y)$, or $o\in \set A\backslash\{a\}$, in which case by recursive application of this lemma we know that there is an operator $Z\in \set X'\subseteq \set X$ such that $o\in\set G_{\set Q}(Z)$.
 \end{proof}
-%@nonl
-%@-node:gcross.20100125183648.1324:Elimination to create subset
-%@+node:gcross.20100125183648.1325:Proof
+%@+node:gcross.20100125183648.1325: *6* Proof
 \begin{remark}
 With the preceding lemmas having performed the heavy lifting, the proof of Proposition \ref{bound-on-recombinations} is quite simple.
 \end{remark}
@@ -982,9 +932,7 @@ With the preceding lemmas having performed the heavy lifting, the proof of Propo
 \begin{proof}[Proof of Proposition \ref{bound-on-recombinations}]
 This proof is by contradiction.  By Lemma \ref{elimination-to-create-subset}, there would have to exist a subset $\set O\subseteq\set A$ such that $|\set C|=|\set O|>|\set A|$, which is impossible.
 \end{proof}
-%@-node:gcross.20100125183648.1325:Proof
-%@-node:gcross.20100125183648.1319:Proposition: Bound on recombinations
-%@+node:gcross.20100125183648.1326:Proof of Theorem
+%@+node:gcross.20100125183648.1326: *5* Proof of Theorem
 \begin{remark}
 With the preceding lemmas and propositions, we now have all of the tools that we need to prove Theorem \ref{theorem:optimality-condition}.  Again, the idea behind this proof is that because the first members of pairs in the choice are contained in an unimprovable set, one cannot take products of the qubits in the choice in order to improve them;  thus, the only way one could construct a better choice would be by forming $n+k$ independent qubits from products of $n$ qubits (where $k>0$), which is disallowed by the result of Proposition \ref{bound-on-recombinations}.  Hence, there can be no better choice.
 \end{remark}
@@ -996,23 +944,19 @@ Take any conjugal pair $O:=(a,b)$ such that $\{a,b\}\in\genfun(\set C)$.  Since 
 
 We have now demonstrated that for every pair $O:=(a,b)$ such that $\{a,b\}\in\set \genfun(\set C)$, we must have $\set G(O)\cap\set A \ne\emptyset$.  Observe that this means that sets $\set C$ and $\set A$ match the descriptions in Proposition \ref{bound-on-recombinations} (letting set $\set Q:=\{\set P_i\}_i$), and thus we see that it is impossible for $|\set C|>|\set A|$, and so we have a contradiction.  We thus conclude that no such choice $\lst P'$ can exist.
 \end{proof}
-%@nonl
-%@-node:gcross.20100125183648.1326:Proof of Theorem
 %@-others
-%@-node:gcross.20090511123440.3:Optimality condition
-%@+node:gcross.20100422160536.1375:Correctness of the algorithm
+%@+node:gcross.20100422160536.1375: *4* Correctness of the algorithm
 \subsubsection{Correctness of the algorithm}
 
 %@+others
-%@+node:gcross.20100422160536.1420:Introduce Theorem
+%@+node:gcross.20100422160536.1420: *5* Introduce Theorem
 We now prove that this algorithm is correct --- that is, that it terminates and outputs an optimal choice of logical qubits.  We do so by proving the following theorem, which is the main result of this section.
 
 \begin{theorem}
 \label{theorem:algorithm is correct}
 Given a set of commuting Pauli operators $\set S$ and a set of pairs $\set L\subseteq\centralizer_\pauligroup(\set S)$ conjugal in relation to $\set U(\set L)\cup\set S$, the sequence $\optimizer(\set S,\set L)$ is finite and if $(\set Q,\lst P,\lst s)$ is the last element then $\set Q=\emptyset$ and $\lst P$ is an optimal choice of logical qubits stabilized by $\set S$ such that $\genfun(\lst P)=\genfun(\set L)$.
 \end{theorem}
-%@-node:gcross.20100422160536.1420:Introduce Theorem
-%@+node:gcross.20100422160536.1413:Lemma: An element can be moved from the extension to the unimprovable set
+%@+node:gcross.20100422160536.1413: *5* Lemma: An element can be moved from the extension to the unimprovable set
 \begin{remark}
 Before proving this theorem, we shall first prove several related lemmas and propositions.
 
@@ -1035,9 +979,7 @@ Now consider the case where $\set R\cap\set O'=\{o\}$.  In this case, by the ass
 
 Finally we consider the remaining case where $\{o\}\subset\set R\cap\set O'$. Let $\set Z := \set R\backslash\{o\}\ne\emptyset$.  Since $\set O$ extends to $\set X$ and $\set R\cap\set O=\set Z\cap\set O\ne\emptyset$, we know that $\om_{\set S}(x)\le \min_{a\in\set Z\cap\set O}\om_{\set S}(y)=:d$.  If $d \le \om_{\set S}(o)$, then $\om_{\set S}(r)\le d = \min_{a\in\set R\cap\set O'}\om_{\set S}(a)$, and we are done.  Otherwise, since $d> \om_{\set S}(o)$ we know that $h$ acts on $r$ since there can be no other operator in $\set Z$ that anti-commutes with $h$, and so $\om_{\set S}(r) \le w(h)\le\om_{\set S}(o)=\min_{a\in\set R\cap\set O'}\om_{\set S}(a)$
 \end{proof}
-%@nonl
-%@-node:gcross.20100422160536.1413:Lemma: An element can be moved from the extension to the unimprovable set
-%@+node:gcross.20100422160536.1408:Lemma: Replacing element with product preserves unimprovability
+%@+node:gcross.20100422160536.1408: *5* Lemma: Replacing element with product preserves unimprovability
 \begin{remark}
 In Case 1 of the algorithm we take an element that is a member of an unimprovable set and replace it with the product of this element times some elements in the set to which the unimprovable set extends.  We want to show that this preserves the unimprovability of the set, and this is done in the following Lemma.
 \end{remark}
@@ -1054,9 +996,7 @@ First note that since $\om_{\set S}(o')=\om_{\set S}(o)$, there is no element $z
 
 Thus we have shown that $\min_{a\in\set R\cap\set O'}\om_{\set S}(a)=\min_{a\in\set T\cap\set O}\om_{\set S}(a)$, and since our choice of $\set R$ was arbitrary we conclude that $\set O'$ is an unimprovable set that extends to $\set X$.
 \end{proof}
-%@nonl
-%@-node:gcross.20100422160536.1408:Lemma: Replacing element with product preserves unimprovability
-%@+node:gcross.20100422160536.1411:Lemma: Recombining extension elements preserves extension
+%@+node:gcross.20100422160536.1411: *5* Lemma: Recombining extension elements preserves extension
 \begin{remark}
 In both cases of the algorithm we replace a set to which an unimprovable set extends with a new set that is a product of elements in the old set.  We want to show that the new set is also an extension of the unimprovable set, and this is proved by the following lemma.
 \end{remark}
@@ -1069,8 +1009,7 @@ If $\set O$ is an unimprovable set with respect to $\set S$ that extends to $\se
 \begin{proof}
 Take any subset $\set R' \subseteq \set O\cup\set X'$ such that $\set A := \set R'\cap \set O \ne \emptyset$.  We need to show that $\om_{\set S}(x)\le\min_{y\in\set A}\om_{\set S}(y)$, where $x := \Pi(\set R')$.  Note that since $\set X'\subseteq\genfun(\set X)$, there exists a set $\set B\subseteq \set X$ such that $x = \Pi\paren{\set A\cup\set B}$, and so since $\set O$ extends to $\set X$ we conclude that $\om_{\set S}(x)\le\min_{y\in\set A}\om_{\set S}(y)$.  Since our choice of $\set R'$ was arbitrary, we conclude that that $\set O$ extends to $\set X'$.
 \end{proof}
-%@-node:gcross.20100422160536.1411:Lemma: Recombining extension elements preserves extension
-%@+node:gcross.20100422160536.1396:Proposition: The set generated is an invariant
+%@+node:gcross.20100422160536.1396: *5* Proposition: The set generated is an invariant
 \begin{remark}
 Most of the heavy lifting in this section is performed in the following proposition, which uses induction to prove a number of properties about the output of the algorithm at every step.
 \end{remark}
@@ -1103,7 +1042,7 @@ Also, when we say that we are assuming we are in ``Case 1'' or ``Case 2'', we me
 
 \begin{enumerate}
 %@+others
-%@+node:gcross.20100422160536.1401:The set generated is an invariant
+%@+node:gcross.20100422160536.1401: *6* The set generated is an invariant
 \item
 
 Examination of the definition reveals that $\set Q'$ and $\lst P'$ are constructed entirely from products of elements in $\set Q$ and $\lst P$ so that $\genfun\paren{\set U(\set Q')\cup\set U(\lst P')}\subseteq\genfun\paren{\set U(\set Q)\cup\set U(\lst P)}$.
@@ -1113,42 +1052,35 @@ If $\optimizer(\set S,\set L)_{i+1}$ was defined using Case 1 then let $(b,a):=\
 In both cases, observe that for every operator $o\in\set U(\set Q)\cup\set U(\lst P)\backslash\{b\}$ we have that either $o$ or $o\cdot a$ is contained in $\set U(\set Q')\cup\set U(\lst P')$, and since $a$ is also contained in this set we see immediately that any operator in $\set U(\set Q)\cup\set U(\lst P)\backslash\{b\}$ can be obtained from products of elements in $\set U(\set Q')\cup\set U(\lst P')$ (i.e., from an operator in $\set U(\set Q')\cup\set U(\lst P')$ times possibly $a$).  Thus we conclude that $\genfun\paren{\set U(\set Q)\cup\set U(\lst P)\backslash\{b\}}\subseteq\genfun\paren{\set U(\set Q')\cup\set U(\lst P')}$.  Since $b'$ is the product of $b$ with elements in $\genfun\paren{\set U(\set Q)\cup\set U(\lst P)\backslash\{b\}}$, and $\genfun\paren{\set U(\set Q)\cup\set U(\lst P)\backslash\{b\}}\subseteq\genfun\paren{\set U(\set Q')\cup\set U(\lst P')}$, we conclude that $b\in\genfun\paren{\set U(\set Q')\cup\set(\lst P')}$ and so $\genfun\paren{\set U(\set Q)\cup\set U(\lst P)}\subseteq\genfun\paren{\set U(\set Q')\cup\set U(\lst P')}$.
 
 Thus we have proven that $\genfun\paren{\set U(\set Q')\cup\set U(\lst P')}=\genfun\paren{\set U(\set Q)\cup\set U(\lst P)}=\genfun(\set L)$, and so we are done.
-%@-node:gcross.20100422160536.1401:The set generated is an invariant
-%@+node:gcross.20100422160536.1415:The set generated stays in the centralizer
+%@+node:gcross.20100422160536.1415: *6* The set generated stays in the centralizer
 \item
 
 This follows from the fact that $\set L\subseteq\centralizer_\pauligroup(\set S)\Rightarrow\genfun(\set L)\subseteq\centralizer_\pauligroup(\set S)$ and $\set U(\set Q)\cup\set U(\lst P)\subseteq\genfun\paren{\set U(\set Q)\cup\set U(\lst P)}=\genfun(\set L)$ (which we just proved).
-%@-node:gcross.20100422160536.1415:The set generated stays in the centralizer
-%@+node:gcross.20100422160536.1402:|L| = 2(|Q| + |P|)
+%@+node:gcross.20100422160536.1402: *6* |L| = 2(|Q| + |P|)
 \item
 
 By construction, either $|\set Q'|=|\set Q|$ and $|\lst P'|=|\lst P$ (in Case 1) or $|\set Q'|=|\set Q|-1$ and $|\lst P'|=|\lst P|+1$ (in Case 2).  In either case we have that $2(|\set Q'|+|\lst P'|)=2(|\set Q|+|\lst P|)=|\set L|$.
-%@-node:gcross.20100422160536.1402:|L| = 2(|Q| + |P|)
-%@+node:gcross.20100422160536.1403:|L| = |U(Q)+U(P)|
+%@+node:gcross.20100422160536.1403: *6* |L| = |U(Q)+U(P)|
 \item
 
 Since the elements in $\set L$ are members of conjugal pairs, they are therefore independent, and so we see that we need at least $|\set L|$ operators to generate $\genfun(\set L)$.  Thus we need $|\set L|\le|\set U(\set Q')\cap\set U(\lst P')|\le 2(|\set Q'|+|\lst P'|)=|\lst L|$,  where the second inequality comes from the fact that a pair can unpack to at most two operators, and the last equality comes from the previous conclusion.  We thus conclude that $|\set U(\set Q')\cap\set U(\lst P')|=|\lst L|$.
-%@-node:gcross.20100422160536.1403:|L| = |U(Q)+U(P)|
-%@+node:gcross.20100422160536.1404:No operator is repeated
+%@+node:gcross.20100422160536.1404: *6* No operator is repeated
 \item
 
 By combining the previous two conclusions we see that $|\set U(\set Q')\cup\set U(\lst P')|=2(|\set Q'|+|\lst P'|)$;  if this conclusion were false (i.e., an operator were repeated somewhere) then we would have that $|\set U(\set Q')\cup\set U(\lst P')|<2(|\set Q'|+|\lst P'|)$, which contradicts our earlier results.
-%@-node:gcross.20100422160536.1404:No operator is repeated
-%@+node:gcross.20100422160536.1406:Unimprovability is preserved
+%@+node:gcross.20100422160536.1406: *6* Unimprovability is preserved
 \item
 
 First assume that we are in Case 1.  Let $k$ be the integer described in this case, $(a,b):=\lst P_k$, and $(a',b'):=\lst P'_k$.  Note that $a\in\set O$, and by construction $a':=\Pi(\set A')$ where $\set A'\subseteq \set O\cup\set X$ and $\set A'\cap\set O=\{a\}$, and so since by the inductive hypothesis we know that $\set O$ is an unimprovable set that extends to $\set X$ we know that $\om_{\set S}(a')\le\om_{\set S}(a)$.  Since by the inductive hypothesis we also know that $\max_{o\in\set O}\om_{\set S}(o)\le\min_{x\in\set X}(x)$, by Lemma \ref{combinations-can't-make-things-worse} we conclude that $\om_{\set S}(a')=\om_{\set S}(a)$.  Lemma \ref{lemma:replacing element with product preserves unimprovability} thus applies to our situation and allows us to conclude that $\set O'':=\paren{\set O\backslash\{a\}}\cup\{a'\}$ is an unimprovable set that extends to $\set X$.  Furthermore, since by construction $\set X'\subseteq\genfun(\set X)$ and $b\in\set X$, Lemma \ref{lemma:recombining extension elements preserves extension} allows us to conclude that $\set O''$ extends to $\{b\}\cup\set X'$.  By construction, there is an error of minimal weight that acts on $b$ but not on any other operator in $\set X'$, which means that by Lemma \ref{lemma:move-it-over} we conclude that $\set O''\cup\{b\}\equiv\set O'$ extends to $\set X'$.
 
 Now assume that we are in Case 2.  Note that the only change from $\set O$ to $\set O'$ is the addition of a single element $o$ that has an error that acts only on it but not on any other operator in $\set X'$.  Note that since $\{o\}\cup\set X'\subseteq\genfun(\set X)$ we conclude from Lemma \ref{lemma:recombining extension elements preserves extension} that $\set O$ extends to $\{o\}\cup\set X'$, and from Lemma \ref{lemma:move-it-over} we conclude that $\set O'$ extends to $\set X'$.
-%@-node:gcross.20100422160536.1406:Unimprovability is preserved
-%@+node:gcross.20100422160536.1409:max w(O) <= min w(X)
+%@+node:gcross.20100422160536.1409: *6* max w(O) <= min w(X)
 \item
 
 First observe that since $\set X'\subseteq\genfun(\set X)$, we conclude from Lemma \ref{combinations-can't-make-things-worse} that $\min_{x\in\set X}\om_{\set S}(x)\le\min_{x'\in\set X'}\om_{\set S}(x')$.
 
 The difference between $\set O$ and $\set O'$ is the addition of a minimizer of $\om_{\set S}$ over $\set X$, $o$, and possibly also the replacement of a single element.  Since $\max_{a\in\set O}\om_{\set S}(a)\le\min_{a\in\set X}\om_{\set S}(a)\le\min_{a\in\set X'}\om_{\set S}(a)$, we conclude that since $\om_{\set S}(o)=\min_{a\in\set X}\om_{\set S}(a)$ therefore $\max_{a\in\set O\cup\{o\}}\om_{\set S}(a)\le\min_{a\in\set X'}\om_{\set S}(a)$.  If $\set O'=\set O\cup\{o\}$ then we are done.  Otherwise, we are in Case 1 which means that we have also replaced an element in $\set O$;  however, the operator we have replaced it with is the product of an operator from $\set O$ and operators from $\set X$, and since $\set O$ is an unimprovable set that extends to $\set X$ we conclude that the replacement can be no better than the operator it is replacing.  Thus, $\max_{a\in\set O'}\om_{\set S}(a)\le\min_{a\in\set X'}\om_{\set S}(a)$.
-%@-node:gcross.20100422160536.1409:max w(O) <= min w(X)
-%@+node:gcross.20100422160536.1405:om . p_1 = m
+%@+node:gcross.20100422160536.1405: *6* om . p_1 = m
 \item
 
 Since $\max_{a\in\set O'}\om_{\set S}(a)\le\min_{a\in\set X'}\om_{\set S}(a)$, we immediately conclude that $(\om_{\set S}\circ p_1)(\lst P'_i)=m_{\set S}(\lst P'_i)$ when $\lst a'_i=1$.  By the inductive hypothesis, we know that $(\om_{\set S}\circ p_1)(\lst P'_i)=m_{\set S}(\lst P'_i)$ where $\lst P'_i=\lst P_i$;  furthermore, in both cases the pairs at the locations where $\lst a_i=0$ are unchanged from $\lst P$ to $\lst P'$, and in each case this turns out to leave just a single location that we still need to examine.
@@ -1156,8 +1088,7 @@ Since $\max_{a\in\set O'}\om_{\set S}(a)\le\min_{a\in\set X'}\om_{\set S}(a)$, w
 In Case 1, this location is the index $k$ described in that case, where $\lst a_k=1$ and $\lst a'_k=0$.  Since $p_1(\lst P'_k)$ is the product of a single element of $\set O$ and elements from $\set X$, we conclude from the fact that $\set O$ is an unimprovable set that extends to $\set X$ that $(\om_{\set S}\circ p_1)(\lst P'_k)\le(\om_{\set S}\circ p_1)(\lst P_k)$.  By the inductive hypothesis we know that $\max_{a\in\set O}\om_{\set S}(a)\le\min_{a\in\set X}\om_{\set S}(a)$.  Because $p_2(\lst P'_k)$ is a product of elements from $\set X$ we conclude from Lemma \ref{combinations-can't-make-things-worse} that $\min_{a\in\set X}\om_{\set S}(a)\le (\om_{\set S}\circ p_2)(\lst P'_k)$.  Since $p_1(\lst P)\in\set O$, we conclude that $(\om_{\set S}\circ p_1)(\lst P_k)\le\min_{a\in\set X}\om_{\set S}(a)$.  Combining all of these inequalities we reach the conclusion that $(\om_{\set S}\circ p_1)(\lst P'_k)\le(\om_{\set S}\circ p_2)(\lst P'_k)$ and hence $(\om_{\set S}\circ p_1)(\lst P'_k)=m_{\set S}(\lst P'_k)$.
 
 In Case 2, this location is the end of the sequence $\lst P'$, but since the addition to the sequences is a pair of operators from $\set X$ such that the first member is a minimizer of $\om_{\set S}$ over $\set X$ we conclude that $(\om_{\set S}\circ p_1)(\lst P'_{|\lst P'|})=m_{\set S}(\lst P'_{|\lst P'|})$.
-%@-node:gcross.20100422160536.1405:om . p_1 = m
-%@+node:gcross.20100422160536.1414:M(P) is ordered
+%@+node:gcross.20100422160536.1414: *6* M(P) is ordered
 \item
 
 By the inductive hypothesis we have that $\lst M_{\set S}(\lst P)_i=(\om_{\set S}\circ \om_{\set S})(\lst P_i)$, and we have just shown that $\lst M_{\set S}(\lst P')_i=(\om_{\set S}\circ \om_{\set S})(\lst P'_i)$.  By the inductive hypothesis we know that $\lst M_{\set S}(\lst P)$ is ordered, and so to prove that $\lst M_{\set S}(\lst P')$ is ordered we need only check the places in the sequence where $p_1(\lst P_i)\ne p_1(\lst P'_i)$.  In both cases there is exactly one location where the first member of a pair is modified from $\lst P$ to $\lst P'$.
@@ -1165,22 +1096,18 @@ By the inductive hypothesis we have that $\lst M_{\set S}(\lst P)_i=(\om_{\set S
 In Case 1, this is the index $k$ defined in that case, at which the first member was replaced with a product of that first member with elements in $\set X$.  Since this member is in $\set O$, and since $\max_{a\in\set O}\om_{\set S}(a)\le\min_{a\in\set X}\om_{\set S}(a)$ (by the inductive hypothesis), we conclude from the fact that $\set O$ is an unimprovable set that extends to $\set X$ that $(\om_{\set S}\circ p_1)(\lst P'_k)=(\om_{\set S}\circ p_1)(\lst P_k)$, and so we conclude that $\lst M_{\set S}(\lst P')$ is ordered.
 
 In Case 2, this is the end of the sequence $\lst P'$ where a pair was appended to $\lst P$.  Since the pair contains elements from $\set X$, and $\max_{a\in\set O}\om_{\set S}(a)\le\min_{a\in\set X}\om_{\set S}(a)$, we conclude that $\lst M_{\set S}(\lst P')_{|\lst P'|}\ge\lst M_{\set S}(\lst P)_i$ for $i<|\lst P'|$, and so we conclude that $\lst M_{\set S}(\lst P')$ is ordered.
-%@-node:gcross.20100422160536.1414:M(P) is ordered
-%@+node:gcross.20100422160536.1416:P is a choice of qubits
+%@+node:gcross.20100422160536.1416: *6* P is a choice of qubits
 \item
 
 The fact that $\lst P$ is a choice of logical qubits stabilized by $\set S$ follows directly from the previous conclusions.
-%@-node:gcross.20100422160536.1416:P is a choice of qubits
-%@+node:gcross.20100422160536.1417:P is optimal
+%@+node:gcross.20100422160536.1417: *6* P is optimal
 \item
 
 From the definition of an unimprovable set it is easy to see that since $\set O'$ is an unimprovable set that extends to $\set X'$, it also extends to $\set X'\cup\set O'=\set U(\set Q')\cup\set U(\lst P')$.  Since $\{p_1(q):q\in\lst P'\}\subseteq \set O'$ and $\set U(\lst P')\subseteq \set X'\cup\set O'$, it is also easy to see from the definition that $\{p_1(q):q\in\lst P'\}$ is an unimprovable set that extends to $\set U(\lst P')$ --- that is, taking subsets does not affect the property of unimprovability.  Thus, we conclude from Theorem \ref{theorem:optimality-condition} that $\lst P'$ is therefore an optimal choice of qubits.
-%@-node:gcross.20100422160536.1417:P is optimal
 %@-others
 \end{enumerate}
 \end{proof}
-%@-node:gcross.20100422160536.1396:Proposition: The set generated is an invariant
-%@+node:gcross.20100422160536.1422:Proof of Theorem
+%@+node:gcross.20100422160536.1422: *5* Proof of Theorem
 \begin{remark}
 Now that the heavy lifting has been done by the preceding proposition, the proof of Theorem \ref{theorem:algorithm is correct} is relatively simple.
 \end{remark}
@@ -1188,16 +1115,14 @@ Now that the heavy lifting has been done by the preceding proposition, the proof
 \begin{proof}[Proof of Theorem \ref{theorem:algorithm is correct}]
 At every step in the algorithm, we either change an entry in $\lst s$ from 1 to 0 or remove an element from $\set Q$.  Since $\lst s$ is of finite length, as long as $\set Q$ is non-empty there will be a step at which another element is removed from it.  Thus, there is an index $k$ such that if $\lst O(\set S,\set L)_k=(\set Q,\lst P,\lst s)$ then $\set Q=\emptyset$, and by definition this is the last element of the sequence.  By Proposition \ref{proposition:properties of the algorithm} we know that $\lst P$ is optimal and also that $\genfun(\lst P)=\genfun(\lst L)$ (since $\set Q$ is empty), and so we are done.
 \end{proof}
-%@-node:gcross.20100422160536.1422:Proof of Theorem
 %@-others
-%@-node:gcross.20100422160536.1375:Correctness of the algorithm
-%@+node:gcross.20100422160536.1423:Running time of the algorithm
+%@+node:gcross.20100422160536.1423: *4* Running time of the algorithm
 \subsubsection{Running time of the algorithm}
 
 \label{subsubsection:running time analysis}
 
 %@+others
-%@+node:gcross.20100422160536.1425:Introduce Theorem
+%@+node:gcross.20100422160536.1425: *5* Introduce Theorem
 In this section we analyze the running time of the optimization algorithm;  the result is presented in the following Theorem.
 
 \begin{theorem}
@@ -1210,9 +1135,8 @@ Suppose we are given
 \end{itemize}
 then the time needed to compute the sequence $\optimizer(\set S,\set L)$ is in the set $O\paren{|\set C|^2+|\set L|(|\set L|+d)3^d\choose{N}{d}},$ where $d:=\lst M(\lst P)_{|\lst P|}$ and $(\set Q,\lst P,\lst S)$ is the last element in the sequence (i.e., $\lst P$ is the desired optimal choice of qubits).
 \end{theorem}
-%@-node:gcross.20100422160536.1425:Introduce Theorem
-%@+node:gcross.20100422160536.1450:Definitions
-%@+node:gcross.20100422160536.1451:pseudo-generator
+%@+node:gcross.20100422160536.1450: *5* Definitions
+%@+node:gcross.20100422160536.1451: *6* pseudo-generator
 \begin{remark}
 Before proving this theorem, we shall first prove a number of related lemmas and propositions.
 
@@ -1228,8 +1152,7 @@ The key difference between binary strings and Pauli operators is that binary str
 \begin{definition}
 A \emph{pseudo-generator} is a set of either one or two Pauli operators.  In an abuse of notation, we extend the functions $\set U$ and $\genfun$ to be respectively $\set G\mapsto \bigcup_{\set g\in\set G} \set g$ and $\set G\mapsto (\genfun\circ\set U)(\set G)$ when applied to a set of pseudo-generators.
 \end{definition}
-%@-node:gcross.20100422160536.1451:pseudo-generator
-%@+node:gcross.20100422160536.1452:pseudo-product (plus bounding Lemma)
+%@+node:gcross.20100422160536.1452: *6* pseudo-product (plus bounding Lemma)
 \begin{remark}
 (The preceding definition does not follow that of White and Grassl exactly; it has been specialized to our situation for the sake of simplicity.)
 
@@ -1261,8 +1184,7 @@ Given a set of $r$ pseudo-generators $\set G$ the set $\set O:=\{f(o):o\in\genfu
 \begin{proof}
 From Lemma \ref{lemma:bound-on-pseudo-product} we know that there are at most $3^r$ operators in the pseudo-product, so $|\set O|\le 3^r$.  Furthermore, for every element in the set we first need to compute the corresponding operator in the pseudo-product, which requires $r$ time since it is the product of $r$ operators, and then we need to compute $f$, which by assumption requires a time in $O(T)$.
 \end{proof}
-%@-node:gcross.20100422160536.1452:pseudo-product (plus bounding Lemma)
-%@+node:gcross.20100422160536.1453:disjoint
+%@+node:gcross.20100422160536.1453: *6* disjoint
 \begin{remark}
 In order to be able to place a lower bound on binary strings that have yet to be examined in the Brouwer-Zimmermann enumeration, we need the generators of the binary strings over which we are searching to have the property that each generator has a column such that it is the only generator with a 1 in that column, so that products of $r$ generators must have at least weight $r$.  Because we want to similarly place a bound on unexamined products of pseudo-generators, we generalize this property with the following definition.
 \end{remark}
@@ -1284,9 +1206,7 @@ All of the operators in the pseudo-product of any $r$ (distinct) pseudo-generato
 \begin{proof}
 Every operator in the pseudo-product is the product of $r$ factors, each of which is associated with some distinct physical qubit $k$ such that it anti-commutes with either $X_k$ or $Z_k$ (or both) but every other factor commutes with both $X_k$ and $Z_k$;  thus, the product must anti-commute with at least $r$ single-qubit operators acting on distinct physical qubits, and so it must have a weight of at least $r$.
 \end{proof}
-%@-node:gcross.20100422160536.1453:disjoint
-%@-node:gcross.20100422160536.1450:Definitions
-%@+node:gcross.20100422160536.1455:Lemma: Minimal weight search
+%@+node:gcross.20100422160536.1455: *5* Lemma: Minimal weight search
 \begin{remark}
 Now that we have the concept of a disjoint set of pseudo-generators and a result showing that an operator in a pseudo-product of $r$ of them must have a weight of at least $r$, we present in the following Lemma an algorithm for searching through the space spanned by the pseudo-generators for an operator satisfying a given property.
 \end{remark}
@@ -1307,8 +1227,7 @@ From Lemma \ref{lemma:disjoint-pseudo-generators-bound} we conclude that $w(o)\g
 
 Now consider the procedure of searching through each $\set C_r$ starting with $r=0$.  We know that we will eventually find at least one solution to $f(o)=1$, since in this Proposition we have assumed that such an operator exists in the search space (by the assumption that $f^{-1}(1)\cap\genfun(\set G)\ne\emptyset$).  Furthermore, employing this procedure we will find the minimal solution $o$ no \emph{later} than after we have searched through $\set C_r$ for $r=0\dots w(o)$, since at that point all of the unexamined operators have a weight greater than $w(o)$.  Thus, we conclude that we shall find the minimal weight solution after having searched at most all of the elements in $\bigcup_{r=0}^{\min(w(o),|\set G|)} C_r$, which we can do in time $$O\paren{\sum_{r=0}^{\min(w(o),|\set G|)}(T+r) 3^r \choose{|\set G|}{r}}\subseteq O\paren{(T+d) 3^d \choose{N}{d}},$$ where $d:=\min(w(o),|\set G|)$.
 \end{proof}
-%@-node:gcross.20100422160536.1455:Lemma: Minimal weight search
-%@+node:gcross.20100910155955.1358:Pseudocode: Compute-Minimal-Weight-Operator
+%@+node:gcross.20100910155955.1358: *5* Pseudocode: Compute-Minimal-Weight-Operator
 \begin{table}
 \begin{codebox}
 \Procname{$\proc{Find-Weight-Minimizer}(f,\lst G)$}
@@ -1339,8 +1258,7 @@ Now consider the procedure of searching through each $\set C_r$ starting with $r
 \end{codebox}
 \caption[Algorithm \proc{Find-Weight-Minimizer}]{Algorithm which finds the minimal weight operator in a given generating set that satisfies a given predicate.  For the sake of convenience, we also allow the query function to return auxiliary information that is returned to the caller along with the minimal weight operator.} \label{table:find-weight-minimizer}
 \end{table}
-%@-node:gcross.20100910155955.1358:Pseudocode: Compute-Minimal-Weight-Operator
-%@+node:gcross.20100422160536.1459:Lemma: Bounds
+%@+node:gcross.20100422160536.1459: *5* Lemma: Bounds
 \begin{remark}
 The preceding lemma is rather general, so we shall show how it specializes to our case.  First, however, we use the following three lemmas to prove that our search space is generated by exactly $N$ pseudo-generators.
 \end{remark}
@@ -1371,8 +1289,7 @@ For any set of commuting operators $\set S$ acting on $N$ physical qubits, if $\
 \begin{proof}
 Since $\centralizer_\pauligroup(\set S)$ contains a subset of $N$ independent commuting operators, so must $\genfun(\set G)$ and therefore $\set U(\set G)$;  thus, Lemma \ref{lemma:lower bound on number of disjoint pseudo-generators} implies that $|\set G|\ge N$, and combining this bound with that given by Lemma \ref{lemma:upper bound on number of disjoint pseudo-generators} we see that $|\set G|=N$.
 \end{proof}
-%@-node:gcross.20100422160536.1459:Lemma: Bounds
-%@+node:gcross.20100422160536.1461:Lemma: Minimal weight search (specialized)
+%@+node:gcross.20100422160536.1461: *5* Lemma: Minimal weight search (specialized)
 \begin{remark}
 We now prove a lemma which shows how the search specializes to the case of our qubit optimization algorithm.
 \end{remark}
@@ -1400,8 +1317,7 @@ $$f(o):=
 $$
 Note that solutions to $f$ are undetectable errors acting on $\set Q$, and also that this function can be computed in time $O(|\set Q|)$ by checking the commutator for each element in $\set Q$.  Furthermore note that for every operator in $\set Q$ there is another operator in $\set Q$ which anti-commutes with it, and also that $\set Q\subset \centralizer_\pauligroup(\set S)$.  Thus, since $\set Q$ is non-empty, there is at least one operator $o\in\genfun(\set G)$ such that $f(o)=1$.  Thus, by Lemma \ref{lemma:minimal-weight-search}, we know that we can compute a minimal weight solution to $f$ in time $O\paren{(|\set Q|+d)3^d\choose{N}{d}}$ where $d:=\min\paren{w(o),N}$.
 \end{proof}
-%@-node:gcross.20100422160536.1461:Lemma: Minimal weight search (specialized)
-%@+node:gcross.20100422160536.1457:Lemma: Computing disjoint pseudo-generators
+%@+node:gcross.20100422160536.1457: *5* Lemma: Computing disjoint pseudo-generators
 \begin{remark}
 In order to make use of the preceding result, we need to have a set of disjoint pseudo-generators whose pseudo-product covers our search space.  However, we usually start instead with a set of ordinary Pauli operators that generate this space.  Thus, we shall now show that the former can be computed from the latter --- i.e., that given a set of Pauli operators, we can compute a set of disjoint pseudo-generators that spans the same space.  First we present a lemma that provides a criterion sufficient to show that a set of pseudo-generators is distinct.
 \end{remark}
@@ -1480,8 +1396,7 @@ Given any set of Pauli operators, $\set O$, there exists a disjoint set of pseud
 \begin{proof}
 This follows immediately from Lemmas \ref{lemma:disjointness-equvalence} and \ref{lemma:computing-disjoint-pseudo-generators}.
 \end{proof}
-%@-node:gcross.20100422160536.1457:Lemma: Computing disjoint pseudo-generators
-%@+node:gcross.20100910155955.1362:Pseudocode: Compute-Pseudo-Generators
+%@+node:gcross.20100910155955.1362: *5* Pseudocode: Compute-Pseudo-Generators
 \begin{table}
 \begin{codebox}
 \Procname{$\proc{Compute-Pseudogenerators}(\lst O)$}
@@ -1560,8 +1475,7 @@ This follows immediately from Lemmas \ref{lemma:disjointness-equvalence} and \re
 \end{codebox}
 \caption[Algorithm \proc{Compute-Pseudogenerators}]{Algorithm which computes a set of disjoint pseudo-generators that generates the input set of operators.} \label{table:compute-pseudo-generators}
 \end{table}
-%@-node:gcross.20100910155955.1362:Pseudocode: Compute-Pseudo-Generators
-%@+node:gcross.20100422160536.1464:Proof of Theorem
+%@+node:gcross.20100422160536.1464: *5* Proof of Theorem
 \begin{remark}
 We now have the tools that we need to analyze the running time of the algorithm.
 \end{remark}
@@ -1573,16 +1487,11 @@ At each step of the algorithm, we first need to find an operator $o$ that has an
 
 Let $(\set Q',\lst P',\lst s')$ be the second to last element of $\optimizer(\set S,\set L)$ and $(\set Q,\lst P,\lst s)$ the last element.  In the final step of the algorithm, we move the last remaining pair in $\set Q'=\{q\}$ over to $\lst P'$, which means that the operator $o$ with the minimal weight is a member of $q$.  From Proposition \ref {proposition:properties of the algorithm}, we know that $\om_{\set S}(o)\ge m_{\set S}(\lst P'_i)$ for any $i$.  Thus, at each step of the algorithm before this one we know that we spent a time in $O\paren{(|\set L|+d)3^d\choose{N}{d}}$ where $d:=w(o)$ --- i.e., a time no greater than the time spent on the last step.  Since the algorithm requires at most $|\set L|$ steps we conclude that the total running time, including that needed to compute the set of pseudo-generators, is in $O\paren{|\set G|^2+|\set L|(|\set L|+d)3^d\choose{N}{d}}$.  Since $\om_{\set S}(o)=\lst M(\lst P)_{|\lst P|}$, we conclude that $d\equiv\lst M(\lst P)_{|\lst P|}$ (since there can be at most $N$ qubits in the choice), and so we are done.
 \end{proof}
-%@-node:gcross.20100422160536.1464:Proof of Theorem
 %@-others
-%@-node:gcross.20100422160536.1423:Running time of the algorithm
 %@-others
-%@nonl
-%@-node:gcross.20100422160536.1366:Optimization
-%@-node:gcross.20090423002455.2:Theory
-%@+node:gcross.20100413085158.2885:Practice
+%@+node:gcross.20100413085158.2885: ** Practice
 \section{Practice} \label{sec:lattice}
-%@+node:gcross.20100805134725.1339:Methodology
+%@+node:gcross.20100805134725.1339: *3* Methodology
 \subsection{Methodology} \label{sec:methodology}
 
 In the previous section we presented an algorithm that computes the optimal subsystem code that can be implemented using a given set of measurements.  The procedure for optimizing the code requires an exponential amount of time, but fortunately the power of the exponential is a function of the distance of the best qubit in the code.   Because of this property, this algorithm can be effectively applied to search over a set of choices of measurement operators to see if there is any good choice for implementing a code, since it can (relatively) quickly skip over the bad choices of measurements.
@@ -1715,14 +1624,13 @@ A table in which we show the maximum radius lattice that was completely scanned 
 \end{table}
 
 Since each labeling of every lattice results in a quantum code, we had to provide some criterion for our search algorithm to decide whether a code was interesting enough to log.  We set our criterion relatively low:  a code was deemed to be interesting if there was at least one logical qubit with distance-3, that is if there was at least one logical qubit such that a single arbitrary error on that qubit can be corrected.  This was done under the reasoning that as long as some of the logical qubits in a code are sufficiently useful to us to make implementing the code worthwhile, then we should not be troubled by the fact that there might be other logical qubits that are not useful because we can always ignore them (or, equivalently, classify them as gauge qubits).
-%@-node:gcross.20100805134725.1339:Methodology
-%@+node:gcross.20100805134725.1340:Results
+%@+node:gcross.20100805134725.1340: *3* Results
 \subsection{Results} \label{sec:results}
 
 In the previous section we described the search space to which we applied the algorithm in order to computationally find possible codes that can be implemented using systems with 2-body interactions and a lattice structure following nine of the eleven convex vertex-uniform tilings.  In this section we present the results of this search.  The codes that we found are shown in the plots appearing in Figures \ref{figure:results-quadrille} and \ref{figure:results-hextille}.  No plot appears for the deltille tiling because no codes were found for that tiling.  It is worth emphasizing that these codes indicated in these figures are \emph{all} of the (useful) codes that exist for the scanned lattices of that tiling given our constraints, since we scanned every possible labeling that was not redundant under a rotational symmetry transformation about the center.
 
-%@<< Figures >>
-%@+node:gcross.20100810123019.1784:<< Figures >>
+%@+<< Figures >>
+%@+node:gcross.20100810123019.1784: *4* << Figures >>
 \begin{figure*}
 \centering
 \subfloat[]{{\includegraphics[width=2.5in]{results-quadrille}}}
@@ -1751,15 +1659,14 @@ Note that in cases where multiple codes were found for the same radius and with 
 A figure containing plots of the results from scanning the (a) hextille, (b) rhombihexadeltille, (c) truncated hextille and (d) hexadeltille tilings.  See the caption of Figure \ref{figure:results-quadrille} for an explanation of how to interpret these plots.
 }
 \end{figure*}
-%@-node:gcross.20100810123019.1784:<< Figures >>
-%@nl
+%@-<< Figures >>
 
 Observe that two kinds of trend appear frequently in the results:  codes that grow in distance but remain constant in the number of logical qubits as the radius increase, and codes that remain constant in distance but grow in the number of logical qubits as the radius increases.  The former trend appears in the quadrille, snub quadrille, isosnub quadrille, hexadeltille, and rhombihexadeltille tilings\footnote{Note that where the former trend was present, the maximum radius that we scanned was often quite limited;  this is due to the exponential explosion in the cost of finding the optimal code as a function of the distance of the code.}.  The latter trend appears in the truncated quadrille, snub quadrille, hextille, truncated hextille, hexadeltille, and rhombihexadeltille tilings.  In many of the tilings there are also codes that were found that do not seem to belong to an obvious trend.
 
 In the following subsections we will focus on some specifics of the results for each of the tilings.
 
 %@+others
-%@+node:gcross.20100805174159.1347:quadrille
+%@+node:gcross.20100805174159.1347: *4* quadrille
 \subsubsection{quadrille}
 
 For the quadrille lattice, we saw only one labeling, illustrated in Figure \ref{figure:quadrille-code-labeling}, that resulted in an interesting code.  This labeling corresponds to the compass model code, and the algorithm correctly found that the distance of the code grows linearly with the radius of the lattice and is exactly equal to the square root of the number of qubits in the lattice.  This result is not terribly surprising, but it is good to see that our search technique employing the algorithm can correctly duplicate known results.
@@ -1771,8 +1678,7 @@ For the quadrille lattice, we saw only one labeling, illustrated in Figure \ref{
 A figure illustrating the single labeling of the quadrille tiling (on a radius-2 lattice) that results in a useful quantum code.
 }
 \end{figure}
-%@-node:gcross.20100805174159.1347:quadrille
-%@+node:gcross.20100810123019.1785:truncated quadrille
+%@+node:gcross.20100810123019.1785: *4* truncated quadrille
 \subsubsection{truncated quadrille}
 
 There are three kinds of code that appear in this tiling where the number of qubits increases with the radius:  two where the distance is fixed at 4, and one where the distance is fixed at 3.  For the best two of these three kinds of code, the number of logical qubits ($l$) is related to the radius ($r$) by $l=(2r-1)^2$.    Since the number of physical qubits ($n$) is given by $n=(4r)^2$, the number of logical qubits per physical qubit is thus given by $\frac{l}{n}=\paren{\half-\frac{1}{r}}^2$, a quantity which converges to $\frac{1}{4}$ as $r\to\infty$.  There were four labelings with this property that we saw in our search:  two with distance-3 qubits (illustrated in Figure \ref{figure:truncated-quadrille-code-3-labelings}), and two with distance-4 qubits (illustrated in Figure \ref{figure:truncated-quadrille-code-4-labelings}).
@@ -1792,19 +1698,14 @@ There are three kinds of code that appear in this tiling where the number of qub
 A figure illustrating four labelings of the truncated quadrille tiling (on a radius-1 lattice) that result in a quantum code with distance-3/4 (in respectively \ref{figure:truncated-quadrille-code-3-labelings}/\ref{figure:truncated-quadrille-code-4-labelings}), and a number of logical qubits proportional to the square of the radius of the labeling.
 }
 \end{figure*}
-%@-node:gcross.20100810123019.1785:truncated quadrille
-%@+node:gcross.20100810123019.1786:snub quadrille
+%@+node:gcross.20100810123019.1786: *4* snub quadrille
 \subsubsection{snub quadrille}
 
 %@+at
-% (select labeling from code_best_distances where tiling = 'snub quadrille' 
-% and radius = 3 and distance = 3 and number_of_qubits=1) intersect
-% (select labeling from code_best_distances where tiling = 'snub quadrille' 
-% and radius = 4 and distance = 4 and number_of_qubits=1) intersect
-% (select labeling from code_best_distances where tiling = 'snub quadrille' 
-% and radius = 5 and distance = 5 and number_of_qubits=1)
+% (select labeling from code_best_distances where tiling = 'snub quadrille' and radius = 3 and distance = 3 and number_of_qubits=1) intersect
+% (select labeling from code_best_distances where tiling = 'snub quadrille' and radius = 4 and distance = 4 and number_of_qubits=1) intersect
+% (select labeling from code_best_distances where tiling = 'snub quadrille' and radius = 5 and distance = 5 and number_of_qubits=1)
 %  order by labeling;
-%@-at
 %@@c
 
 There are two kinds of interesting codes found in this filing.  First, we saw exactly one labeling that has the property that the distance is 4 and the number of logical qubits ($l$) is given by $l=2r(r-1)$, where $r$ is the radius of the lattice.  Since the number of physical qubits ($n$) is given by $n=8r^2$, this means that the number of logical qubits per physical qubit is given by $\frac{l}{n}=\frac{2r(r-1)}{8r^2}=\frac{1}{4}\paren{1-\frac{1}{r}}\to\frac{1}{4}$ as $r\to\infty$.  This labeling is illustrated in Figure \ref{figure:snub-quadrille-code-4-labeling}.
@@ -1827,8 +1728,7 @@ Second, more usefully, we saw 12 labelings which result in a code that has one q
 A figure illustrating two of the labelings of the snub quadrille tiling (on a radius-2 lattice) that result in a quantum code with a single qubit whose distance grows with the radius of the lattice.
 }
 \end{figure*}
-%@-node:gcross.20100810123019.1786:snub quadrille
-%@+node:gcross.20100810123019.1787:isosnub quadrille
+%@+node:gcross.20100810123019.1787: *4* isosnub quadrille
 \subsubsection{isosnub quadrille}
 
 We saw only two labelings of the isosnub lattice that result in useful codes, both of which only have a single qubit that seems (assuming that the trend seen in Figure \ref{figure:results-hextille} can be extrapolated) to have a distance that grows with the radius of the lattice.  These two labelings are illustrated in Figure \ref{figure:isosnub-quadrille-code-r-labeling}.
@@ -1841,15 +1741,11 @@ We saw only two labelings of the isosnub lattice that result in useful codes, bo
 A figure illustrating two of the labelings of the isosnub quadrille tiling (on a radius-1 lattice) that result in a quantum code with a single qubit whose distance grows with the radius of the lattice.
 }
 \end{figure*}
-%@nonl
-%@-node:gcross.20100810123019.1787:isosnub quadrille
-%@+node:gcross.20100806112455.1342:deltille
+%@+node:gcross.20100806112455.1342: *4* deltille
 \subsubsection{deltille}
 
 We scanned this tiling up to a radius of 8;  no interesting codes were found in any of the 122 labelings.
-%@nonl
-%@-node:gcross.20100806112455.1342:deltille
-%@+node:gcross.20100811005016.1353:hextille
+%@+node:gcross.20100811005016.1353: *4* hextille
 \subsubsection{hextille}
 
 In this tiling we saw four labelings which resulted in two kinds of interesting codes:  two of the labelings (illustrated in Figure \ref{figure:hextille-code-3-labelings}) resulted in codes of distance 3 that were present for every value of the radius, and two of the labelings (illustrated in Figure \ref{figure:hextille-code-4-labelings}) resulted in codes of distance 4 that were only present for \emph{even} values of the radius.  The former resulted in codes which had a number of logical qubits ($l_3$) given by $l_3=\frac{(r-1)(r-2)}{2}$, where $r$ is the radius, and the latter resulted in codes which had a number of logical qubits ($l_4$) given by $l_4=r(r+3)$.  Since the number of qubits ($n$) is given by $n=6r^2$, we have that the number of logical qubits per physical qubit for the distance-3 and distance-4 codes were given respectively by $d_3=\frac{l_3}{n}=\frac{1}{12}\paren{1-\frac{1}{r}}\paren{1-\frac{2}{r}}$ and $d_4=\frac{l_4}{n}=\frac{1}{6}\paren{1+\frac{3}{r}}$;  as $r\to\infty$, we have that $d_3\to\frac{1}{12}$ and $d_4\to\frac{1}{6}$.
@@ -1872,8 +1768,7 @@ It is interesting to observe that there is no distance versus qubit count trade-
 A figure illustrating four labelings of the hextille tiling (on a radius-2 lattice) that result in a quantum code with distance-3/4 (in respectively \ref{figure:hextille-code-3-labelings}/\ref{figure:hextille-code-4-labelings}), and a number of distance logical qubits proportional to the square of the radius of the labeling.
 }
 \end{figure*}
-%@-node:gcross.20100811005016.1353:hextille
-%@+node:gcross.20100811134608.1348:truncated hextille
+%@+node:gcross.20100811134608.1348: *4* truncated hextille
 \subsubsection{truncated hextille}
 
 In the truncated hextille there are four kinds of code where the number of qubits increases with the radius:  three with the distance fixed at 3, and one with the distance fixed at 4.
@@ -1898,8 +1793,7 @@ A figure illustrating two labelings of the truncated hextille tiling (on a radiu
 A figure illustrating two labelings of the truncated hextille tiling (on a radius-1 lattice) that result in a quantum code with distance-4 and a number of distance logical qubits proportional to the square of the radius of the labeling.
 }
 \end{figure}
-%@-node:gcross.20100811134608.1348:truncated hextille
-%@+node:gcross.20100811134608.1349:hexadeltille
+%@+node:gcross.20100811134608.1349: *4* hexadeltille
 \subsubsection{hexadeltille}
 
 There are many codes that appear in the hexadeltille tiling, but it is difficult to draw conclusions about trends due to the limit on the size of the lattices that were scanned.  The good news, though, is that the reason why scanning larger radii was difficult is because there is a code in this tiling with a qubit whose distance grows with the radius of the lattice.  One of the nine labelings that we saw with this property is illustrated in Figure \ref{figure:hexadeltille-code-labeling}. 
@@ -1911,8 +1805,7 @@ There are many codes that appear in the hexadeltille tiling, but it is difficult
 A figure illustrating one of the labelings of the hexadeltille tiling (on a radius-1 lattice) that results in quantum code whose distance grows with the size of the tiling.
 }
 \end{figure}
-%@-node:gcross.20100811134608.1349:hexadeltille
-%@+node:gcross.20100812150117.1356:rhombihexadeltille
+%@+node:gcross.20100812150117.1356: *4* rhombihexadeltille
 \subsubsection{rhombihexadeltille}
 
 This tiling is interesting because it had many more labelings that resulted in codes  than all of the other tilings combined;  specifically, for the rhombihexadeltille tiling we saw 48,807 labelings that resulted in useful codes, whereas for all of the other tilings combined we saw only 421 labelings that resulted in useful codes.  This is even more remarkable considering that the largest lattice we were able to scan for the rhombihexadeltille tiling was smaller than that for most of the other tilings.
@@ -1949,11 +1842,8 @@ Two of the labelings resulted in codes with the highest number of qubits -- 16 l
 A figure illustrating two labelings of the rhombihexadeltille tiling (on a radius-2 lattice) that result in a quantum code with distance-4 and sixteen when applied to a radius-3 lattice.
 }
 \end{figure*}
-%@-node:gcross.20100812150117.1356:rhombihexadeltille
 %@-others
-%@nonl
-%@-node:gcross.20100805134725.1340:Results
-%@+node:gcross.20100820103141.1357:Discussion
+%@+node:gcross.20100820103141.1357: *3* Discussion
 \subsection{Discussion} \label{sec:discussion}
 
 There are few surprises in our results.  For example, the best code that we found that maximized the logical qubit distance per physical qubit was the compass model code in the quadrille tiling, which is already well known.  Furthermore, all of the codes obeyed the upper bounds $kd\in O(n)$ and $d^2\in O(n)$ --- where $k$ is the number of logical qubits in the code, $d$ is the distance of the code, and $n$ is the number of physical qubits implementing the code --- that were derived in \cite{Bravyi:10a} for codes having spatially local generators.
@@ -1961,10 +1851,7 @@ There are few surprises in our results.  For example, the best code that we foun
 Some of the observed differences between the tilings are an artifact of the search space.  For example, every code found on the hextille tiling could also be implemented on the deltille tiling, but although we found two kinds of code for the hextille tiling we found no codes for the deltille tilings.  This is because our search space included no way for the deltille tilings to ``knock out'' the middle qubits in each hexagonal tiling, and furthermore the hextille tiling search space included two classes of vertices which could have independent labelings, whereas the deltille tiling search space had only one class of vertices.
 
 Although it is not clear how many of the codes we found will have practical applications, the success of this search demonstrates the feasibility of using brute-force computation to find useful codes within a constrained search space.
-%@nonl
-%@-node:gcross.20100820103141.1357:Discussion
-%@-node:gcross.20100413085158.2885:Practice
-%@+node:gcross.20100413085158.2886:Conclusion
+%@+node:gcross.20100413085158.2886: ** Conclusion
 \section{Conclusion}
 \label{sec:conclusion}
 
@@ -1973,13 +1860,9 @@ In this paper we have presented an algorithm for computing the optimal quantum s
 This algorithm should prove helpful in two kinds of ways in particular.  First, it can be applied in an exploratory setting to do the tedious work of computing the code resulting from a set of measurements so that the researcher can experiment with new ideas for choices of measurement to see how well they work.  Second, it can be applied to hone a ``rough;' idea for how a code might be implemented (such as a particular lattice configuration) into a concrete idea by scanning through the possible choices of the degrees of freedom to see if any result in useful codes; of course, cleverness can often come up with an answer more quickly than a computationally intensive search, but it is good to have the alternative of brute-force computation to fall back on when brute-force cleverness fails.
 
 \emph{Acknowledgements.}  GMC is supported by the DOE through the Computational Science Graduate Fellowship program (administered by the Krell Institute) and also by the DARPA-MTO Quest program through a grant from AFOSR. DB is supported by the NSF under Grants No. 0803478, 0829937, and 0916400, by the DARPA-MTO QuEST program through a grant from AFOSR, and by IAPRA under the MCQO program.
-
-%@nonl
-%@-node:gcross.20100413085158.2886:Conclusion
 %@-others
 
 \bibliography{CodeQuest}
 
 \end{document}
-%@-node:gcross.20090405101642.3:@thin CodeQuest.tex
 %@-leo
